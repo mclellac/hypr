@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cmd="$*"
+setsid alacritty --class hypr -e bash -c "hypr-show-logo; $cmd; hypr-show-done"

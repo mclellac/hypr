@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Copy over Omarchy configs
+# Copy over hypr configs
 mkdir -p ~/.config
-cp -R ~/.local/share/omarchy/config/* ~/.config/
+cp -R ~/.local/share/hypr/config/* ~/.config/
 
-# Use default bashrc from Omarchy
-cp ~/.local/share/omarchy/default/bashrc ~/.bashrc
+# Use default bashrc from hypr
+cp ~/.local/share/hypr/default/bashrc ~/.bashrc

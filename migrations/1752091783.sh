@@ -1,4 +1,4 @@
 echo "Install Plymouth splash screen"
 
-omarchy-pkg-add uwsm plymouth
-source "$OMARCHY_PATH/install/login/plymouth.sh"
+hypr-pkg-add uwsm plymouth
+source "$hypr_PATH/install/login/plymouth.sh"

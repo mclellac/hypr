@@ -1,5 +1,5 @@
-echo "Adding Omarchy version info to fastfetch"
-if ! grep -q "omarchy" ~/.config/fastfetch/config.jsonc; then
-  cp ~/.local/share/omarchy/config/fastfetch/config.jsonc ~/.config/fastfetch/
+echo "Adding hypr version info to fastfetch"
+if ! grep -q "hypr" ~/.config/fastfetch/config.jsonc; then
+  cp ~/.local/share/hypr/config/fastfetch/config.jsonc ~/.config/fastfetch/
 fi
 

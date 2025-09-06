@@ -76,7 +76,7 @@ sudo pacman -S --noconfirm --needed \
   nvim \
   obs-studio \
   obsidian \
-  omarchy-chromium \
+  hypr-chromium \
   pamixer \
   pinta \
   playerctl \
