@@ -1,6 +1,6 @@
-echo "Update fastfetch config with new Omarchy logo"
+echo "Update fastfetch config with new hypr logo"
 
-omarchy-refresh-config fastfetch/config.jsonc
+hypr-refresh-config fastfetch/config.jsonc
 
-mkdir -p ~/.config/omarchy/branding
-cp $OMARCHY_PATH/icon.txt ~/.config/omarchy/branding/about.txt
+mkdir -p ~/.config/hypr/branding
+cp $hypr_PATH/icon.txt ~/.config/hypr/branding/about.txt

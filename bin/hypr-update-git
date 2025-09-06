@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo -e "\e[32mUpdate hypr\e[0m"
+git -C $hypr_PATH pull --autostash
+git -C $hypr_PATH diff --check || git -C $hypr_PATH reset --merge

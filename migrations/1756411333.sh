@@ -1,3 +1,3 @@
-echo "Use new Omarchy mirror as default"
+echo "Use new hypr mirror as default"
 
-omarchy-refresh-pacman-mirrorlist
+hypr-refresh-pacman-mirrorlist

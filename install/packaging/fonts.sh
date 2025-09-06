@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Omarchy logo in a font for Waybar use
+# hypr logo in a font for Waybar use
 mkdir -p ~/.local/share/fonts
-cp ~/.local/share/omarchy/config/omarchy.ttf ~/.local/share/fonts/
+cp ~/.local/share/hypr/config/hypr.ttf ~/.local/share/fonts/
 fc-cache

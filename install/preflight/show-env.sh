@@ -1,4 +1,4 @@
 #!/bin/bash
 
 echo "Installation ENV:"
-env | grep -E "^(OMARCHY_CHROOT_INSTALL|OMARCHY_USER_NAME|OMARCHY_USER_EMAIL|USER|HOME|OMARCHY_REPO|OMARCHY_REF)="
+env | grep -E "^(hypr_CHROOT_INSTALL|hypr_USER_NAME|hypr_USER_EMAIL|USER|HOME|hypr_REPO|hypr_REF)="

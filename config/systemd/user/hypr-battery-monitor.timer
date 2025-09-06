@@ -1,0 +1,11 @@
+[Unit]
+Description=hypr Battery Monitor Timer
+Requires=hypr-battery-monitor.service
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=30sec
+AccuracySec=10sec
+
+[Install]
+WantedBy=timers.target
