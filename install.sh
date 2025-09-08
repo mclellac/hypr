@@ -8,7 +8,7 @@ HYPR_INSTALL="$HYPR_PATH/install"
 export PATH="$HYPR_PATH/bin:$PATH"
 
 # Packaging
-source $HYPR_INSTALL/packages.sh
+#source $HYPR_INSTALL/packages.sh
 source $HYPR_INSTALL/packaging/fonts.sh
 source $HYPR_INSTALL/packaging/lazyvim.sh
 source $HYPR_INSTALL/packaging/webapps.sh
