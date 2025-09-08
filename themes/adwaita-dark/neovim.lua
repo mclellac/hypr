@@ -1,9 +1,9 @@
 return {
-	{ "ellisonleao/gruvbox.nvim" },
+	{ "Mofiqul/adwaita.nvim" },
 	{
 		"LazyVim/LazyVim",
 		opts = {
-			colorscheme = "gruvbox",
+			colorscheme = "adwaita",
 		},
 	},
 }
