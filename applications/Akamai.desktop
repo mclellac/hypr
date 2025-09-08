@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Akamai Control Center
+Comment=Akamai
+Exec=hypr-launch-webapp https://control.akamai.com/
+Terminal=false
+Type=Application
+Icon=/home/mclellac/.local/share/applications/icons/Akamai.png
+StartupNotify=true
