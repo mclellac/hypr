@@ -1,8 +1,7 @@
 #!/bin/bash
 
 yay -S --noconfirm --needed \
-    1password-beta \
-    1password-cli \
+    keepassxc \
     asdcontrol-git \
     alacritty \
     avahi \
@@ -125,5 +124,5 @@ yay -S --noconfirm --needed \
     xmlstarlet \
     xournalpp \
     yaru-icon-theme \
-    yay \
+    yay-bin \
     zoxide
