@@ -9,7 +9,7 @@ This repository is a fork of [Omarchy](https://github.com/omarchy/omarchy).
 To install hypr, run the following command in your terminal:
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/your-username/hypr/main/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mclellac/hypr/main/install.sh)"
 ```
 
 **Note:** You will need to replace `your-username` with the actual username for the repository.
