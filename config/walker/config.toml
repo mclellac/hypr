@@ -39,13 +39,13 @@ hidden = true
 
 [[builtins.bookmarks.entries]]
 label = "hypr - Github"
-url = "https://github.com/basecamp/hypr"
+url = "https://github.com/mclellac/hypr"
 keywords = ["hypr", "github"]
 
-[[builtins.bookmarks.entries]]
-label = "hypr Manual"
-url = "https://manuals.omamix.org/2/the-hypr-manual"
-keywords = ["hypr"]
+#[[builtins.bookmarks.entries]]
+#label = "hypr Manual"
+#url = "https://manuals.omamix.org/2/the-hypr-manual"
+#keywords = ["hypr"]
 
 [builtins.calc]
 name = "Calculator"
