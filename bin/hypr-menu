@@ -55,9 +55,9 @@ aur_install_and_launch() {
 }
 
 show_learn_menu() {
-  case $(menu "Learn" "  Keybindings\n  hypr\n  Hyprland\n󰣇  Arch\n  Neovim\n󱆃  Bash") in
+  case $(menu "Learn" "  Keybindings\n  OWASP CheatSheet\n  Hyprland\n󰣇  Arch\n  Neovim\n󱆃  Bash") in
   *Keybindings*) hypr-menu-keybindings ;;
-  *hypr*) hypr-launch-webapp "https://learn.omacom.io/2/the-hypr-manual" ;;
+  *OWASP*) hypr-launch-webapp "https://cheatsheetseries.owasp.org/index.html" ;;
   *Hyprland*) hypr-launch-webapp "https://wiki.hypr.land/" ;;
   *Arch*) hypr-launch-webapp "https://wiki.archlinux.org/title/Main_page" ;;
   *Bash*) hypr-launch-webapp "https://devhints.io/bash" ;;
