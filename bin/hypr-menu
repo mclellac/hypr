@@ -54,15 +54,22 @@ aur_install_and_launch() {
   present_terminal "echo 'Installing $1 from AUR...'; yay -S --noconfirm $2 && setsid gtk-launch $3"
 }
 
-show_learn_menu() {
-  case $(menu "Learn" "  Keybindings\n  OWASP CheatSheet\n  Hyprland\n󰣇  Arch\n  Neovim\n󱆃  Bash") in
-  *Keybindings*) hypr-menu-keybindings ;;
-  *OWASP*) hypr-launch-webapp "https://cheatsheetseries.owasp.org/index.html" ;;
-  *Hyprland*) hypr-launch-webapp "https://wiki.hypr.land/" ;;
-  *Arch*) hypr-launch-webapp "https://wiki.archlinux.org/title/Main_page" ;;
-  *Bash*) hypr-launch-webapp "https://devhints.io/bash" ;;
-  *Neovim*) hypr-launch-webapp "https://www.lazyvim.org/keymaps" ;;
-  *) show_main_menu ;;
+show_resources_menu() {
+  case $(menu "Resources" "󰣇  Arch\n  Keybindings\n󰅛  OWASP Cheats\n  Web Attack Cheats\n󰎑  PayloadAllTheThings\n󱆃  HackTricks\n  Exploit DB\n  GTFOBins\n󰯁  Living-Off-The-Land Binaries & Scripts\n󱎴  PEASS-ng\n󱫋  SecLists\n󰢩  Reverse Shells\n󰲊  PenTest Monkey Cheats") in
+    *Arch*) hypr-launch-webapp "https://wiki.archlinux.org/title/Main_page" ;;
+    *Keybindings*) hypr-menu-keybindings ;;
+    *OWASP*) hypr-launch-webapp "https://cheatsheetseries.owasp.org/index.html" ;;
+    *Web*) hypr-launch-webapp "https://github.com/riramar/Web-Attack-Cheat-Sheet" ;;
+    *PayloadsAllTheThings*) hypr-launch-webapp "https://github.com/swisskyrepo/PayloadsAllTheThings" ;;
+    *HackTricks*) hypr-launch-webapp "https://book.hacktricks.xyz" ;;
+    *Exploit-DB*) hypr-launch-webapp "https://www.exploit-db.com" ;;
+    *GTFOBins*) hypr-launch-webapp "https://gtfobins.github.io" ;;
+    *LOLBAS*) hypr-launch-webapp  "https://lolbas-project.github.io" ;;
+    *PEASS-ng*) hypr-launch-webapp "https://github.com/peass-ng/PEASS-ng" ;;
+    *SecLists*) hypr-launch-webapp "https://github.com/danielmiessler/SecLists" ;;
+    *revshells.com*) hypr-launch-webapp "https://www.revshells.com/" ;;
+    *Pentestmonkey*) hypr-launch-webapp "https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet" ;;
+    *) show_main_menu ;;
   esac
 }
 
@@ -381,13 +388,13 @@ show_system_menu() {
 }
 
 show_main_menu() {
-  go_to_menu "$(menu "Go" "󰀻  Apps\n󰧑  Learn\n  Capture\n󰔎  Toggle\n  Style\n  Setup\n󰉉  Install\n󰭌  Remove\n  Update\n  About\n  System")"
+  go_to_menu "$(menu "Go" "󰀻  Apps\n󰧑  Resources\n  Capture\n󰔎  Toggle\n  Style\n  Setup\n󰉉  Install\n󰭌  Remove\n  Update\n  About\n  System")"
 }
 
 go_to_menu() {
   case "${1,,}" in
   *apps*) walker -p "Launch…" ;;
-  *learn*) show_learn_menu ;;
+  *resources*) show_resources_menu ;;
   *style*) show_style_menu ;;
   *theme*) show_theme_menu ;;
   *capture*) show_capture_menu ;;
