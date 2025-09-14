@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# hypr-menu-md-pager: Render and page a Markdown file (recommended)
+
+FILE="$1"
+if [[ -z "$FILE" || ! -f "$FILE" ]]; then
+  echo "Usage: $0 <markdown-file>"
+  exit 1
+fi
+
+# Render Markdown (glow > mdcat > cat)
+render_markdown() {
+  local f="$1"
+  if command -v glow >/dev/null 2>&1; then
+    glow -s dark "$f"
+  elif command -v mdcat >/dev/null 2>&1; then
+    mdcat "$f"
+  else
+    cat "$f"
+  fi
+}
+
+# Show rendered output in pager with color support
+render_markdown "$FILE" | less -R
