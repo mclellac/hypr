@@ -1,14 +1,12 @@
-@define-color foreground #D8D8D8;
-@define-color background #0A1014;
-@define-color cyan #00FFFF;
-@define-color teal #00B8D4;
-@define-color dark-teal #00838F;
-@define-color orange #FFAB40;
-@define-color bright-orange #FFD180;
-@define-color dark-orange #FF9100;
-@define-color red #FF5252;
-@define-color blue #448AFF;
-@define-color green #69F0AE;
+@define-color primary #008080;      /* teal */
+@define-color secondary #40E0D0;    /* turquoise */
+@define-color accent #00BFFF;       /* deep sky blue */
+@define-color foreground #00FFFF;   /* cyan */
+@define-color background #0A1A1A;   /* very dark teal */
+@define-color surface #142828;      /* dark teal surface */
+@define-color success #2E8B57;      /* seafoam green */
+@define-color warning #FFA500;      /* orange */
+@define-color error #FF4500;        /* orange-red */
 
 window#waybar {
     background-color: @background;
@@ -18,16 +16,14 @@ window#waybar {
 }
 
 button {
-    /* Use box-shadow instead of border so the text isn't offset */
     box-shadow: inset 0 -3px transparent;
-    /* Avoid rounded borders under each button */
     border: none;
     border-radius: 0;
 }
 
 button:hover {
     background: inherit;
-    box-shadow: inset 0 -3px @cyan;
+    box-shadow: inset 0 -3px @accent;
 }
 
 #workspaces button {
@@ -37,21 +33,21 @@ button:hover {
 }
 
 #workspaces button:hover {
-    background: rgba(0, 0, 0, 0.2);
+    background: @surface;
 }
 
 #workspaces button.focused {
-    background-color: @dark-teal;
-    box-shadow: inset 0 -3px @cyan;
+    background-color: @primary;
+    box-shadow: inset 0 -3px @accent;
 }
 
 #workspaces button.urgent {
-    background-color: @orange;
+    background-color: @warning;
     color: @background;
 }
 
 #mode {
-    background-color: @red;
+    background-color: @error;
     border-bottom: 3px solid @foreground;
     color: @foreground;
 }
@@ -68,32 +64,35 @@ button:hover {
 #custom-media {
     padding: 0 10px;
     color: @foreground;
+    background-color: @surface;
+    margin: 2px;
+    border-radius: 5px;
 }
 
 #clock {
-    background-color: @teal;
-    color: @background;
+    background-color: @primary;
+    color: @foreground;
 }
 
 #battery {
-    background-color: @green;
+    background-color: @success;
     color: @background;
 }
 
 #battery.charging, #battery.plugged {
     color: @background;
-    background-color: @blue;
+    background-color: @secondary;
 }
 
 @keyframes blink {
     to {
-        background-color: @red;
+        background-color: @error;
         color: @background;
     }
 }
 
 #battery.critical:not(.charging) {
-    background-color: @red;
+    background-color: @error;
     color: @background;
     animation-name: blink;
     animation-duration: 0.5s;
@@ -102,52 +101,49 @@ button:hover {
     animation-direction: alternate;
 }
 
-label:focus {
-    background-color: @background;
-}
-
 #cpu {
-    background-color: @orange;
+    background-color: @warning;
     color: @background;
 }
 
 #memory {
-    background-color: @bright-orange;
+    background-color: @accent;
     color: @background;
 }
 
 #disk {
-    background-color: @dark-orange;
+    background-color: @secondary;
+    color: @background;
 }
 
 #network {
-    background-color: @blue;
+    background-color: @accent;
 }
 
 #network.disconnected {
-    background-color: @red;
+    background-color: @error;
 }
 
 #pulseaudio {
-    background-color: #E040FB; /* magenta */
+    background-color: @secondary;
     color: @background;
 }
 
 #pulseaudio.muted {
-    background-color: #616161; /* grey */
+    background-color: @surface;
     color: @foreground;
 }
 
 #custom-media {
-    background-color: @teal;
-    color: @background;
+    background-color: @primary;
+    color: @foreground;
     min-width: 100px;
 }
 
 #temperature {
-    background-color: @orange;
+    background-color: @warning;
 }
 
 #temperature.critical {
-    background-color: @red;
+    background-color: @error;
 }
