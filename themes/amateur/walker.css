@@ -1,10 +1,10 @@
-@define-color selected-text #00FFFF;
-@define-color text #D8D8D8;
-@define-color base #0A1014;
-@define-color border #00B8D4;
-@define-color foreground #D8D8D8;
-@define-color background #0A1014;
-@define-color orange #FFAB40;
+@define-color primary #008080;
+@define-color secondary #40E0D0;
+@define-color accent #00BFFF;
+@define-color foreground #00FFFF;
+@define-color background #0A1A1A;
+@define-color surface #142828;
+@define-color warning #FFA500;
 
 * {
     font-family: "CaskaydiaMono Nerd Font";
@@ -13,7 +13,7 @@
 
 window {
     background-color: @background;
-    border: 2px solid @border;
+    border: 2px solid @primary;
     border-radius: 10px;
 }
 
@@ -21,8 +21,9 @@ window {
     margin: 5px;
     border: none;
     color: @foreground;
-    background-color: @background;
-    border-bottom: 2px solid @orange;
+    background-color: @surface;
+    border-bottom: 2px solid @accent;
+    border-radius: 5px;
 }
 
 #inner-box {
@@ -45,11 +46,11 @@ window {
 #text {
     margin: 5px;
     border: none;
-    color: @text;
+    color: @foreground;
 }
 
 #entry:selected {
-    background-color: @border;
+    background-color: @accent;
     color: @background;
     border-radius: 5px;
 }
@@ -60,13 +61,13 @@ window {
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.4);
+        box-shadow: 0 0 0 0 rgba(0, 191, 255, 0.4);
     }
     70% {
-        box-shadow: 0 0 0 10px rgba(0, 255, 255, 0);
+        box-shadow: 0 0 0 10px rgba(0, 191, 255, 0);
     }
     100% {
-        box-shadow: 0 0 0 0 rgba(0, 255, 255, 0);
+        box-shadow: 0 0 0 0 rgba(0, 191, 255, 0);
     }
 }
 
