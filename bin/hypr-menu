@@ -55,7 +55,7 @@ aur_install_and_launch() {
 }
 
 show_resources_menu() {
-    case $(menu "Resources" "󰣇  Arch\n  Keybindings\n󰅛  OWASP Cheats\n  Web Attack Cheats\n󰎑  PayloadAllTheThings\n󱆃  HackTricks\n  Exploit DB\n  GTFOBins\n󰯁  LOLBAS\n󱎴  PEASS\n󱫋  SecLists\n󰢩  Reverse Shells\n󰲊  PenTest Monkey Cheats") in
+    case $(menu "Resources" "󰣇  Arch\n  Keybindings\n󰅛  OWASP Cheats\n  Web Attack Cheats\n󰎑  PayloadAllTheThings\n󱆃  HackTricks\n  Exploit DB\n  GTFOBins\n󰯁  LOLBAS\n󱎴  PEASS\n󱫋  SecLists\n󰢩  Reverse Shells\n󰲊  Pentest Monkey Cheats") in
     *Arch*) hypr-launch-webapp "https://wiki.archlinux.org/title/Main_page" ;;
     *Keybindings*) hypr-menu-keybindings ;;
     *OWASP*) hypr-launch-webapp "https://cheatsheetseries.owasp.org/index.html" ;;
