@@ -4,3 +4,72 @@
 @define-color border #00B8D4;
 @define-color foreground #D8D8D8;
 @define-color background #0A1014;
+@define-color orange #FFAB40;
+
+* {
+    font-family: "CaskaydiaMono Nerd Font";
+    font-size: 14px;
+}
+
+window {
+    background-color: @background;
+    border: 2px solid @border;
+    border-radius: 10px;
+}
+
+#input {
+    margin: 5px;
+    border: none;
+    color: @foreground;
+    background-color: @background;
+    border-bottom: 2px solid @orange;
+}
+
+#inner-box {
+    margin: 5px;
+    border: none;
+    background-color: @background;
+}
+
+#outer-box {
+    margin: 5px;
+    border: none;
+    background-color: @background;
+}
+
+#scroll {
+    margin: 0px;
+    border: none;
+}
+
+#text {
+    margin: 5px;
+    border: none;
+    color: @text;
+}
+
+#entry:selected {
+    background-color: @border;
+    color: @background;
+    border-radius: 5px;
+}
+
+#entry:selected #text {
+    color: @background;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 255, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 255, 0);
+    }
+}
+
+#entry:selected {
+    animation: pulse 1s infinite;
+}
