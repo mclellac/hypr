@@ -1,8 +1,0 @@
-2025-09-08 11:50:49,938 - ERROR - cbclite - Failed to parse stories from https://www.cbc.ca/lite: Couldn't find a tree builder with the features you requested: lxml. Do you need to install a parser library?
-2025-09-08 11:50:49,968 - ERROR - cbclite - Failed to parse stories from https://www.cbc.ca/lite: Couldn't find a tree builder with the features you requested: lxml. Do you need to install a parser library?
-2025-09-08 11:50:50,308 - ERROR - cbclite - Failed to parse stories from https://www.cbc.ca/lite: Couldn't find a tree builder with the features you requested: lxml. Do you need to install a parser library?
-2025-09-08 11:50:53,181 - ERROR - cbclite - Failed to parse stories from https://www.cbc.ca/lite: Couldn't find a tree builder with the features you requested: lxml. Do you need to install a parser library?
-2025-09-08 11:50:54,804 - ERROR - cbclite - Failed to parse stories from https://www.cbc.ca/lite: Couldn't find a tree builder with the features you requested: lxml. Do you need to install a parser library?
-2025-09-08 11:51:12,514 - ERROR - cbclite - Failed to parse stories from https://www.cbc.ca/lite: Couldn't find a tree builder with the features you requested: lxml. Do you need to install a parser library?
-2025-09-08 11:51:12,533 - ERROR - cbclite - Failed to parse stories from https://www.cbc.ca/lite: Couldn't find a tree builder with the features you requested: lxml. Do you need to install a parser library?
-2025-09-08 11:51:12,916 - ERROR - cbclite - Failed to parse stories from https://www.cbc.ca/lite: Couldn't find a tree builder with the features you requested: lxml. Do you need to install a parser library?
