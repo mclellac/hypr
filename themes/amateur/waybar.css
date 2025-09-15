@@ -50,6 +50,7 @@ button:hover {
     background-color: @error;
     border-bottom: 3px solid @foreground;
     color: @foreground;
+    padding: 0 10px;
 }
 
 #clock,
@@ -63,38 +64,31 @@ button:hover {
 #pulseaudio,
 #custom-media {
     padding: 0 10px;
-    color: @foreground;
-    background-color: @surface;
-    margin: 2px;
-    border-radius: 5px;
+    margin: 0 5px;
+    background-color: transparent;
 }
 
 #clock {
-    background-color: @primary;
-    color: @foreground;
+    color: @primary;
 }
 
 #battery {
-    background-color: @success;
-    color: @background;
+    color: @success;
 }
 
 #battery.charging, #battery.plugged {
-    color: @background;
-    background-color: @secondary;
+    color: @secondary;
 }
 
-@keyframes blink {
+@keyframes blink-text {
     to {
-        background-color: @error;
-        color: @background;
+        color: @error;
     }
 }
 
 #battery.critical:not(.charging) {
-    background-color: @error;
-    color: @background;
-    animation-name: blink;
+    color: @error;
+    animation-name: blink-text;
     animation-duration: 0.5s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
@@ -102,48 +96,41 @@ button:hover {
 }
 
 #cpu {
-    background-color: @warning;
-    color: @background;
+    color: @warning;
 }
 
 #memory {
-    background-color: @accent;
-    color: @background;
+    color: @accent;
 }
 
 #disk {
-    background-color: @secondary;
-    color: @background;
+    color: @secondary;
 }
 
 #network {
-    background-color: @accent;
+    color: @accent;
 }
 
 #network.disconnected {
-    background-color: @error;
+    color: @error;
 }
 
 #pulseaudio {
-    background-color: @secondary;
-    color: @background;
+    color: @secondary;
 }
 
 #pulseaudio.muted {
-    background-color: @surface;
-    color: @foreground;
+    color: @surface;
 }
 
 #custom-media {
-    background-color: @primary;
-    color: @foreground;
-    min-width: 100px;
+    color: @primary;
 }
 
 #temperature {
-    background-color: @warning;
+    color: @warning;
 }
 
 #temperature.critical {
-    background-color: @error;
+    color: @error;
 }
