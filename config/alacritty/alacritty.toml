@@ -14,11 +14,11 @@ padding.x = 24
 padding.y = 24
 decorations = "None"
 
-[bell]
-animation             = "EaseOutExpo"
-duration              = 0
-color                 = "#C0C5CE"
-command               = { program = "notify-send", args = ["alacritty", "bell",] }
+#[bell]
+#animation             = "EaseOutExpo"
+#duration              = 0
+#color                 = "#C0C5CE"
+#command               = { program = "notify-send", args = ["alacritty", "bell",] }
 
 [selection]
 #semantic_escape_chars = ",│‘|:"' ()[]{}<>t"
