@@ -1,65 +1,7 @@
-@define-color primary #008080;
-@define-color secondary #40E0D0;
-@define-color accent #00BFFF;
+@define-color border #008080;
+@define-color selected-text #40E0D0;
+@define-color text #1fb38b;
 @define-color foreground #00FFFF;
 @define-color background #0A1A1A;
-@define-color surface #142828;
-@define-color warning #FFA500;
+@define-color base #142828;
 
-* {
-    font-family: "CaskaydiaMono Nerd Font";
-    font-size: 16px;
-}
-
-window {
-    background-color: @background;
-    border: 3px solid @primary;
-    border-radius: 0;
-}
-
-#input {
-    padding: 10px;
-    margin: 10px;
-    border: none;
-    color: @foreground;
-    background-color: @surface;
-    border-bottom: 3px solid @accent;
-    border-radius: 0;
-}
-
-#inner-box {
-    margin: 10px;
-    border: none;
-    background-color: @background;
-}
-
-#outer-box {
-    margin: 10px;
-    border: none;
-    background-color: @background;
-}
-
-#scroll {
-    margin: 0px;
-    border: none;
-}
-
-#text {
-    padding: 5px;
-    border: none;
-    color: @secondary;
-}
-
-#entry {
-    padding: 5px;
-    border-radius: 0;
-}
-
-#entry:selected {
-    background-color: @primary;
-    color: @foreground;
-}
-
-#entry:selected #text {
-    color: @foreground;
-}
