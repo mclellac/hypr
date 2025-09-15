@@ -1,4 +1,4 @@
-# Theme: Amateur (Final)
+# Theme: Amateur
 # By: Jules
 
 # Main bg
@@ -68,7 +68,7 @@ theme[available_end]="#00FFFF"
 # Mem/Disk used meter
 theme[used_start]="#FFA500"
 theme[used_mid]="#FF4500"
-theme[used_end]="#D21404" # A darker red for the end of the used meter
+theme[used_end]="#FF4500"
 
 # Download graph colors
 theme[download_start]="#40E0D0"
