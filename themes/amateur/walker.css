@@ -8,32 +8,33 @@
 
 * {
     font-family: "CaskaydiaMono Nerd Font";
-    font-size: 14px;
+    font-size: 16px;
 }
 
 window {
     background-color: @background;
-    border: 2px solid @primary;
-    border-radius: 10px;
+    border: 3px solid @primary;
+    border-radius: 0;
 }
 
 #input {
-    margin: 5px;
+    padding: 10px;
+    margin: 10px;
     border: none;
     color: @foreground;
     background-color: @surface;
-    border-bottom: 2px solid @accent;
-    border-radius: 5px;
+    border-bottom: 3px solid @accent;
+    border-radius: 0;
 }
 
 #inner-box {
-    margin: 5px;
+    margin: 10px;
     border: none;
     background-color: @background;
 }
 
 #outer-box {
-    margin: 5px;
+    margin: 10px;
     border: none;
     background-color: @background;
 }
@@ -44,33 +45,21 @@ window {
 }
 
 #text {
-    margin: 5px;
+    padding: 5px;
     border: none;
+    color: @secondary;
+}
+
+#entry {
+    padding: 5px;
+    border-radius: 0;
+}
+
+#entry:selected {
+    background-color: @primary;
     color: @foreground;
 }
 
-#entry:selected {
-    background-color: @accent;
-    color: @background;
-    border-radius: 5px;
-}
-
 #entry:selected #text {
-    color: @background;
-}
-
-@keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(0, 191, 255, 0.4);
-    }
-    70% {
-        box-shadow: 0 0 0 10px rgba(0, 191, 255, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(0, 191, 255, 0);
-    }
-}
-
-#entry:selected {
-    animation: pulse 1s infinite;
+    color: @foreground;
 }
