@@ -1,7 +1,7 @@
 [colors]
 [colors.primary]
 background = '#1d3332'
-foreground = '#09d7d7'
+foreground = '#02efef'
 
 # Normal colors
 [colors.normal]
