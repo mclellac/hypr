@@ -54,6 +54,22 @@ aur_install_and_launch() {
     present_terminal "echo 'Installing $1 from AUR...'; yay -S --noconfirm $2 && setsid gtk-launch $3"
 }
 
+show_work_menu() {
+    case $(menu "Work" "󰔾  Akamai\n  GitLab\n  Bitbucket\n Jira\n  Confluence\n  Bamboo\n  OpenShift Internal\n  OpenShift Prod\n  Gmail\n  Google Calendar") in
+    *Akamai*) hypr-launch-webapp "https://control.akamai.com" ;;
+    *GitLab*) hypr-launch-webapp "https://gitlab.nm.cbc.ca" ;;
+    *Bitbucket*) hypr-launch-webapp "https://bitbucket.org/cbc-digital/workspace/overview" ;;
+    *Jira*) hypr-launch-webapp "https://cbc-digital.atlassian.net/jira/" ;;
+    *Confluence*) hypr-launch-webapp "https://cbc-digital.atlassian.net/wiki/spaces/~McLellac/" ;;
+    *Bamboo*) hypr-launch-webapp "https://bamboo.nm.cbc.ca" ;;
+    *Internal*) hypr-launch-webapp "https://console-openshift-console.apps.ocp.int.nm.cbc.ca/" ;;
+    *Prod*) hypr-launch-webapp "https://console-openshift-console.apps.ocp.nm.cbc.ca/" ;;
+    *Gmail*) hypr-launch-webapp "https://gmail.com" ;;
+    *Calendar*) hypr-launch-webapp "https://calendar.google.com" ;;
+    *) show_main_menu ;;
+    esac
+}
+
 show_resources_menu() {
     case $(menu "Resources" "󰣇  Arch\n  Keybindings\n󰅛  OWASP Cheats\n  Web Attack Cheats\n󰎑  PayloadAllTheThings\n󱆃  HackTricks\n  Exploit DB\n  GTFOBins\n󰯁  LOLBAS\n󱎴  PEASS\n󱫋  SecLists\n󰢩  Reverse Shells\n󰲊  Pentest Monkey Cheats") in
     *Arch*) hypr-launch-webapp "https://wiki.archlinux.org/title/Main_page" ;;
@@ -388,12 +404,13 @@ show_system_menu() {
 }
 
 show_main_menu() {
-    go_to_menu "$(menu "Go" "󰀻  Apps\n󰧑  Resources\n  Capture\n󰔎  Toggle\n  Style\n  Setup\n󰉉  Install\n󰭌  Remove\n  Update\n  About\n  System")"
+    go_to_menu "$(menu "Go" "󰀻  Apps\n󱃐  Work\n󰧑  Resources\n  Capture\n󰔎  Toggle\n  Style\n  Setup\n󰉉  Install\n󰭌  Remove\n  Update\n  About\n  System")"
 }
 
 go_to_menu() {
     case "${1,,}" in
     *apps*) walker -p "Launch…" ;;
+    *work*) show_work_menu ;;
     *resources*) show_resources_menu ;;
     *style*) show_style_menu ;;
     *theme*) show_theme_menu ;;
