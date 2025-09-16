@@ -25,7 +25,7 @@ decorations = "None"
 save_to_clipboard     = true
 
 [cursor.style]
-shape                 = "Beam"
+shape                 = "Block"
 blinking              = "Always"
 
 [cursor.vi_mode_style]
@@ -35,8 +35,8 @@ blinking              = "Off"
 [cursor]
 blink_interval        = 500
 blink_timeout         = 0
-#unfocused_hollow      = true
-#thickness             = 0.15
+unfocused_hollow      = true
+thickness             = 0.15
 
 [terminal]
 #osc52                 = "OnlyCopy"
