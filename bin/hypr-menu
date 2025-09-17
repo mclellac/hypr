@@ -55,17 +55,19 @@ aur_install_and_launch() {
 }
 
 show_work_menu() {
-    case $(menu "Work" "󰔾  Akamai\n  GitLab\n  Bitbucket\n Jira\n  Confluence\n  Bamboo\n  OpenShift Internal\n  OpenShift Prod\n  Gmail\n  Google Calendar") in
+    case $(menu "Work" "󰔾  Akamai\n Jira\n  GitLab\n  Bitbucket\n  Confluence\n  Bamboo\n  OpenShift Internal\n  OpenShift Prod\n  Gmail\n  Google Calendar\n 5736 AWS\n 1300 AWS") in
     *Akamai*) hypr-launch-webapp "https://control.akamai.com" ;;
+    *Jira*) hypr-launch-webapp "https://cbc-digital.atlassian.net/jira/dashboards/10092" ;;
     *GitLab*) hypr-launch-webapp "https://gitlab.nm.cbc.ca" ;;
     *Bitbucket*) hypr-launch-webapp "https://bitbucket.org/cbc-digital/workspace/overview" ;;
-    *Jira*) hypr-launch-webapp "https://cbc-digital.atlassian.net/jira/" ;;
     *Confluence*) hypr-launch-webapp "https://cbc-digital.atlassian.net/wiki/spaces/~McLellac/" ;;
     *Bamboo*) hypr-launch-webapp "https://bamboo.nm.cbc.ca" ;;
     *Internal*) hypr-launch-webapp "https://console-openshift-console.apps.ocp.int.nm.cbc.ca/" ;;
     *Prod*) hypr-launch-webapp "https://console-openshift-console.apps.ocp.nm.cbc.ca/" ;;
     *Gmail*) hypr-launch-webapp "https://gmail.com" ;;
     *Calendar*) hypr-launch-webapp "https://calendar.google.com" ;;
+    *5736\ AWS*) hypr-launch-webapp "https://573618582034.signin.aws.amazon.com/console/" ;;
+    *1300\ AWS*) hypr-launch-webapp "https://130084070345.signin.aws.amazon.com/console/" ;;
     *) show_main_menu ;;
     esac
 }
