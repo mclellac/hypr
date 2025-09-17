@@ -55,7 +55,7 @@ aur_install_and_launch() {
 }
 
 show_work_menu() {
-    case $(menu "Work" "󰔾  Akamai\n Jira\n  GitLab\n  Bitbucket\n  Confluence\n  Bamboo\n  OpenShift Internal\n  OpenShift Prod\n  Gmail\n  Google Calendar\n 5736 AWS\n 1300 AWS") in
+    case $(menu "Work" "󰔾  Akamai\n  Jira\n  GitLab\n  Bitbucket\n  Confluence\n  Bamboo\n  OpenShift Internal\n  OpenShift Prod\n  Gmail\n  Google Calendar\n 5736 AWS\n 1300 AWS") in
     *Akamai*) hypr-launch-webapp "https://control.akamai.com" ;;
     *Jira*) hypr-launch-webapp "https://cbc-digital.atlassian.net/jira/dashboards/10092" ;;
     *GitLab*) hypr-launch-webapp "https://gitlab.nm.cbc.ca" ;;

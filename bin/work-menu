@@ -1,0 +1,42 @@
+#!/bin/bash
+
+export PATH="$HOME/.local/share/hypr/bin:$PATH"
+
+menu() {
+    local prompt="$1"
+    local options="$2"
+    local extra="$3"
+    local preselect="$4"
+
+    read -r -a args <<<"$extra"
+
+    if [[ -n "$preselect" ]]; then
+        local index
+        index=$(echo -e "$options" | grep -nxF "$preselect" | cut -d: -f1)
+        if [[ -n "$index" ]]; then
+            args+=("-a" "$index")
+        fi
+    fi
+
+    echo -e "$options" | walker --dmenu --theme dmenu_250 -p "$prompt…" "${args[@]}"
+}
+
+show_work_menu() {
+    case $(menu "Work" "󰔾  Akamai\n  Jira\n  GitLab\n  Bitbucket\n  Confluence\n  Bamboo\n  OpenShift Internal\n  OpenShift Prod\n  Gmail\n  Google Calendar\n 5736 AWS\n 1300 AWS") in
+    *Akamai*) hypr-launch-webapp "https://control.akamai.com" ;;
+    *Jira*) hypr-launch-webapp "https://cbc-digital.atlassian.net/jira/dashboards/10092" ;;
+    *GitLab*) hypr-launch-webapp "https://gitlab.nm.cbc.ca" ;;
+    *Bitbucket*) hypr-launch-webapp "https://bitbucket.org/cbc-digital/workspace/overview" ;;
+    *Confluence*) hypr-launch-webapp "https://cbc-digital.atlassian.net/wiki/spaces/~McLellac/" ;;
+    *Bamboo*) hypr-launch-webapp "https://bamboo.nm.cbc.ca" ;;
+    *Internal*) hypr-launch-webapp "https://console-openshift-console.apps.ocp.int.nm.cbc.ca/" ;;
+    *Prod*) hypr-launch-webapp "https://console-openshift-console.apps.ocp.nm.cbc.ca/" ;;
+    *Gmail*) hypr-launch-webapp "https://gmail.com" ;;
+    *Calendar*) hypr-launch-webapp "https://calendar.google.com" ;;
+    *5736\ AWS*) hypr-launch-webapp "https://573618582034.signin.aws.amazon.com/console/" ;;
+    *1300\ AWS*) hypr-launch-webapp "https://130084070345.signin.aws.amazon.com/console/" ;;
+    esac
+}
+
+show_work_menu
+
