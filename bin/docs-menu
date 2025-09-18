@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Standalone cheatsheets menu — focused on Linux, Web Security, Programming, Hacking & Tools
-# Links were verified before adding. See the accompanying notes in the chat for which sources
+# All links point to live, viewable cheat-sheet pages or authoritative online docs (no downloads required).
 
 export PATH="$HOME/.local/share/hypr/bin:$PATH"
 
@@ -30,69 +30,137 @@ open_web() {
 }
 
 show_linux_menu() {
-    case $(menu "Linux" "Bash (Devhints)\nLinux CLI (Cheatography)\nGTFOBins\nLOLBAS\nPEASS (Privilege Escalation)\nSecLists\nBack") in
+    case $(menu "  Linux" "  Bash (Devhints)
+  Linux CLI (Devhints)
+  sed & awk (QuickRef)
+  find command (ShortcutWorld)
+  tmux (Devhints)
+  systemd (Devhints)
+󰆍  GTFOBins
+󰢹  LOLBAS
+󰌆  PEASS / Privilege Escalation (GitHub)
+󱂅  SecLists (GitHub)
+  Back") in
     *Bash*) open_web "https://devhints.io/bash" ;;
-    *Linux\ CLI*) open_web "https://cheatography.com/davechild/cheat-sheets/linux-command-line/" ;;
+    *Linux\ CLI*) open_web "https://devhints.io/linux" ;;
+    *sed*) open_web "https://quickref.me/sed" ;;
+    *find*) open_web "https://shortcutworld.com/linux/find.html" ;;
+    *tmux*) open_web "https://devhints.io/tmux" ;;
+    *systemd*) open_web "https://devhints.io/systemd" ;;
     *GTFOBins*) open_web "https://gtfobins.github.io/" ;;
     *LOLBAS*) open_web "https://lolbas-project.github.io/" ;;
-    *PEASS*) open_web "https://github.com/peass-ng/PEASS-ng" ;;
+    *PEASS*) open_web "https://github.com/carlospolop/PEASS-ng" ;;
     *SecLists*) open_web "https://github.com/danielmiessler/SecLists" ;;
     *) show_main_menu ;;
     esac
 }
 
 show_websec_menu() {
-    case $(menu "Web Security" "OWASP Top10\nOWASP Cheat Sheet Series\nHackTricks\nPayloadsAllTheThings\nPortSwigger XSS Cheat Sheet\nPortSwigger SQLi Cheat Sheet\nWeb Attack Cheat Sheet\nBack") in
-    *Top10*) open_web "https://owasp.org/Top10/" ;;
-    *Cheat*Series*) open_web "https://cheatsheetseries.owasp.org/index.html" ;;
-    *HackTricks*) open_web "https://book.hacktricks.wiki/en/index.html" ;;
+    case $(menu "󰖟  Web Security" "󰈙  OWASP Top 10
+󰈙  OWASP API Security Top 10
+󰈙  OWASP Cheat Sheet Series
+󱔗  HackTricks
+󰊂  PayloadsAllTheThings
+󰅘  PortSwigger XSS Cheat Sheet
+󰅘  PortSwigger SQLi Cheat Sheet
+󰀟  JWT.io (Debugger & Libraries)
+󰆆  Web Attack Cheat Sheet (practical)
+  Back") in
+    *"Top 10"*) open_web "https://owasp.org/www-project-top-ten/" ;;
+    *"API Security"*) open_web "https://owasp.org/API-Security/editions/2023/en/0x00-header/" ;;
+    *"Cheat Sheet Series"*) open_web "https://cheatsheetseries.owasp.org/index.html" ;;
+    *HackTricks*) open_web "https://book.hacktricks.xyz/" ;;
     *PayloadsAllTheThings*) open_web "https://github.com/swisskyrepo/PayloadsAllTheThings" ;;
     *PortSwigger\ XSS*) open_web "https://portswigger.net/web-security/cross-site-scripting/cheat-sheet" ;;
     *PortSwigger\ SQLi*) open_web "https://portswigger.net/web-security/sql-injection/cheat-sheet" ;;
+    *JWT*) open_web "https://jwt.io/" ;;
     *Web\ Attack*) open_web "https://github.com/riramar/Web-Attack-Cheat-Sheet" ;;
     *) show_main_menu ;;
     esac
 }
 
 show_programming_menu() {
-    case $(menu "Programming" "Python (gto76)\nPython Security (Bandit / Secure Coding)\nRust (cheats.rs)\nGo (Devhints)\nGTK / libadwaita Docs\nBash (Devhints)\nBack") in
-    *Python*) open_web "https://github.com/gto76/python-cheatsheet" ;;
+    case $(menu "  Programming" "  Python (gto76)
+  Python Security (Bandit)
+  Rust (cheats.rs)
+  Go (Devhints)
+  JavaScript (Devhints)
+  SQL Cheatsheet (SQLTutorial)
+  Bash (Devhints)
+󰡨  Docker (Devhints)
+󰡨  Docker Compose (Devhints)
+  GTK4 Reference (official)
+  Back") in
+    *Python\ *) open_web "https://github.com/gto76/python-cheatsheet" ;;
     *Python\ Security*) open_web "https://bandit.readthedocs.io/en/latest/" ;;
     *Rust*) open_web "https://cheats.rs/" ;;
     *Go*) open_web "https://devhints.io/go" ;;
-    *GTK*) open_web "https://docs.gtk.org/gtk4/" ;;
+    *JavaScript*) open_web "https://devhints.io/javascript" ;;
+    *SQL*) open_web "https://www.sqltutorial.org/sql-cheat-sheet/" ;;
     *Bash*) open_web "https://devhints.io/bash" ;;
+    *Docker\ *) open_web "https://devhints.io/docker" ;;
+    *Docker\ Compose*) open_web "https://devhints.io/docker-compose" ;;
+    *GTK4*) open_web "https://docs.gtk.org/gtk4/" ;;
     *) show_main_menu ;;
     esac
 }
 
 show_hacking_menu() {
-    case $(menu "Hacking" "Exploit-DB\nReverse Shells\nPentest Monkey\nMetasploit (Rapid7)\nInternalAllTheThings\nWindows Privilege Escalation (WinPEAS)\nBack") in
+    case $(menu "󰲯  Hacking" "  Exploit-DB (search)
+  Reverse Shells (revshells.com)
+  Pentest Monkey (reverse shells)
+󱍴  Metasploit Docs
+󱗺  InternalAllTheThings
+  WinPEAS / Windows Priv Esc (GitHub)
+󰢡  CyberChef (The Cyber Swiss Army Knife)
+󰢡  CrackStation (Online Hash Cracker)
+  Back") in
     *Exploit-DB*) open_web "https://www.exploit-db.com/" ;;
     *Reverse\ Shells*) open_web "https://revshells.com/" ;;
     *Pentest\ Monkey*) open_web "https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet" ;;
-    *Metasploit*) open_web "https://github.com/rapid7/metasploit-framework" ;;
+    *Metasploit*) open_web "https://docs.rapid7.com/metasploit/" ;;
     *InternalAllTheThings*) open_web "https://swisskyrepo.github.io/InternalAllTheThings/" ;;
-    *Windows\ Privilege\ Escalation*) open_web "https://github.com/carlospolop/PEASS-ng" ;;
+    *WinPEAS*) open_web "https://github.com/carlospolop/PEASS-ng" ;;
+    *CyberChef*) open_web "https://gchq.github.io/CyberChef/" ;;
+    *CrackStation*) open_web "https://crackstation.net/" ;;
     *) show_main_menu ;;
     esac
 }
 
 show_tools_menu() {
-    case $(menu "Tools" "Nmap Cheat Sheet (HighOn.Coffee)\nSQLMap Cheat Sheet (HighOn.Coffee)\nNikto Cheat Sheet\nBurp Resources (PortSwigger)\nWireshark Cheat Sheet\nBack") in
+    case $(menu "  Tools" "󰛮  Nmap (HighOn.Coffee)
+  SQLMap (HighOn.Coffee)
+󱐋  Nikto (HighOn.Coffee)
+󰒒  ffuf (GitHub)
+󰘦  Burp Suite Docs
+󰍽  Wireshark User Guide
+󰢟  John the Ripper (wiki)
+󰢟  Hashcat (wiki)
+  Back") in
     *Nmap*) open_web "https://highon.coffee/blog/nmap-cheat-sheet/" ;;
     *SQLMap*) open_web "https://highon.coffee/blog/sqlmap-cheat-sheet/" ;;
     *Nikto*) open_web "https://highon.coffee/blog/nikto-cheat-sheet/" ;;
-    *Burp*) open_web "https://portswigger.net/burp" ;;
+    *ffuf*) open_web "https://github.com/ffuf/ffuf" ;;
+    *Burp*) open_web "https://portswigger.net/burp/documentation" ;;
     *Wireshark*) open_web "https://www.wireshark.org/docs/wsug_html_chunked/" ;;
+    *John*) open_web "https://www.openwall.com/john/doc/" ;;
+    *Hashcat*) open_web "https://hashcat.net/wiki/" ;;
     *) show_main_menu ;;
     esac
 }
 
 show_cloud_menu() {
-    case $(menu "Cloud" "AWS CLI Cheat Sheet\nAWS Well-Architected & Whitepapers\nOpenShift Docs\nTerraform Cheat Sheet (Devhints)\nBack") in
-    *AWS\ CLI*) open_web "https://aws.amazon.com/cli/" ;;
-    *AWS\ Well-Architected*) open_web "https://aws.amazon.com/whitepapers/" ;;
+    case $(menu "  Cloud" "  AWS CLI (Devhints)
+  AWS Whitepapers & Architecture
+ Azure CLI Docs
+  GCP gcloud Docs
+󱄚  OpenShift Docs
+󰰞  Terraform (Devhints)
+  Back") in
+    *AWS\ CLI*) open_web "https://devhints.io/aws-cli" ;;
+    *AWS\ Whitepapers*) open_web "https://aws.amazon.com/whitepapers/" ;;
+    *Azure*) open_web "https://learn.microsoft.com/en-us/cli/azure/reference-index" ;;
+    *GCP*) open_web "https://cloud.google.com/sdk/gcloud/reference" ;;
     *OpenShift*) open_web "https://docs.openshift.com/container-platform/latest/" ;;
     *Terraform*) open_web "https://devhints.io/terraform" ;;
     *) show_main_menu ;;
@@ -100,32 +168,66 @@ show_cloud_menu() {
 }
 
 show_k8s_menu() {
-    case $(menu "Kubernetes" "Kubernetes Official Docs\nKubernetes Cheatsheet (kubernetes.io)\nHelm Docs\nKubernetes Security (CIS & Best Practices)\nBack") in
+    case $(menu "󰷤  Kubernetes" "󰠱  Kubernetes Official Docs
+󰠱  Kubernetes Cheatsheet (kubectl)
+󰠱  Helm Docs
+󰠱  Kubernetes Security (CIS / k8s docs)
+  Back") in
     *Official*) open_web "https://kubernetes.io/docs/" ;;
     *Cheatsheet*) open_web "https://kubernetes.io/docs/reference/kubectl/cheatsheet/" ;;
     *Helm*) open_web "https://helm.sh/docs/" ;;
-    *Security*) open_web "https://www.cisecurity.org/benchmark/kubernetes/" ;;
+    *Security*) open_web "https://kubernetes.io/docs/concepts/security/" ;;
     *) show_main_menu ;;
     esac
 }
 
 show_security_docs_menu() {
-    case $(menu "Security Docs" "MITRE ATT&CK\nCIS Benchmarks\nNIST Cybersecurity Framework\nBlue Team / Threat Hunting Resources\nBack") in
+    case $(menu "  Security Docs" "󱘖  MITRE ATT&CK
+󰓾  CIS Benchmarks
+󰙵  NIST Cybersecurity Framework
+󰢻  SANS Resources (Posters, Cheatsheets)
+  Back") in
     *MITRE*) open_web "https://attack.mitre.org/" ;;
     *CIS*) open_web "https://www.cisecurity.org/benchmarks/" ;;
     *NIST*) open_web "https://www.nist.gov/cyberframework" ;;
-    *Blue\ Team*) open_web "https://www.sans.org/" ;;
+    *SANS*) open_web "https://www.sans.org/posters/" ;;
+    *) show_main_menu ;;
+    esac
+}
+
+show_networking_menu() {
+    case $(menu "󰀂  Networking" "󰒄  OSI & TCP/IP Model (Comparitech)
+󰒄  tcpdump Cheatsheet (Comparitech)
+󰒄  netcat Cheatsheet (SANS)
+󰍽  Wireshark Display Filters (Official)
+󰛮  Nmap Cheatsheet (HighOn.Coffee)
+  Back") in
+    *OSI*) open_web "https://www.comparitech.com/net-admin/tcp-ip-vs-osi-model/" ;;
+    *tcpdump*) open_web "https://www.comparitech.com/net-admin/tcpdump-cheat-sheet/" ;;
+    *netcat*) open_web "https://www.sans.org/tools/netcat/" ;;
+    *Wireshark*) open_web "https://www.wireshark.org/docs/dfref/" ;;
+    *Nmap*) open_web "https://highon.coffee/blog/nmap-cheat-sheet/" ;;
     *) show_main_menu ;;
     esac
 }
 
 show_main_menu() {
-    case $(menu "Cheatsheets" "󰣇  Linux\n  Web Security\n  Programming\n󰲯  Hacking\n  Tools\n  Cloud\n󰷤  Kubernetes\n  Security Docs\nExit") in
+    case $(menu "󱔆  Cheatsheets" "󰣇  Linux
+󰖟  Web Security
+  Programming
+󰲯  Hacking
+  Tools
+󰀂  Networking
+  Cloud
+󰷤  Kubernetes
+  Security Docs
+󰅖  Exit") in
     *Linux*) show_linux_menu ;;
     *Web*) show_websec_menu ;;
     *Programming*) show_programming_menu ;;
     *Hacking*) show_hacking_menu ;;
     *Tools*) show_tools_menu ;;
+    *Networking*) show_networking_menu ;;
     *Cloud*) show_cloud_menu ;;
     *Kubernetes*) show_k8s_menu ;;
     *Security*) show_security_docs_menu ;;
@@ -141,6 +243,7 @@ if [[ -n "$1" ]]; then
     prog) show_programming_menu ;;
     hack) show_hacking_menu ;;
     tools) show_tools_menu ;;
+    net | network) show_networking_menu ;;
     cloud) show_cloud_menu ;;
     k8s) show_k8s_menu ;;
     security) show_security_docs_menu ;;
