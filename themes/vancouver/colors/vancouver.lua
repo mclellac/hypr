@@ -1,22 +1,22 @@
--- themes/vancouver/colors/amateur.lua
+-- themes/vancouver/colors/vancouver.lua
 
 -- Set the colorscheme name
 vim.g.colors_name = "vancouver"
 
 -- Get the color palette
 local colors = {
-	bg = "#1A202C",
-	fg = "#E2E8F0",
-	gray = "#4A5568",
+	bg = "#004170",
+	fg = "#ffffff",
+	gray = "#ced4d8",
 	red = "#F56565",
-	green = "#48BB78",
+	green = "#2d4e00",
 	yellow = "#F6AD55",
-	blue = "#63B3ED",
-	magenta = "#4FD1C5",
-	cyan = "#4FD1C5",
-	white = "#F7FAFC",
+	blue = "#32668c",
+	magenta = "#32668c",
+	cyan = "#32668c",
+	white = "#ffffff",
 	orange = "#F6AD55",
-	dark_blue = "#2C5282",
+	dark_blue = "#004170",
 }
 
 -- Helper function to set highlights
