@@ -2,43 +2,43 @@
 # By: Jules
 
 # Main bg
-theme[main_bg]="#0a1a3a"
+theme[main_bg]="#2a2a2a"
 
 # Main text color
 theme[main_fg]="#f0f0f0"
 
 # Title color for boxes
-theme[title]="#f0c04a"
+theme[title]="#d98c4a"
 
 # Highlight color for keyboard shortcuts
 theme[hi_fg]="#4af0f0"
 
 # Background color of selected item in processes box
-theme[selected_bg]="#1a3a7a"
+theme[selected_bg]="#5a5a5a"
 
 # Foreground color of selected item in processes box
 theme[selected_fg]="#f0f0f0"
 
 # Color of inactive/disabled text
-theme[inactive_fg]="#4a4a4a"
+theme[inactive_fg]="#5a5a5a"
 
 # Misc colors for processes box including mini cpu graphs, details memory graph and details status text
 theme[proc_misc]="#f0c04a"
 
 # Cpu box outline color
-theme[cpu_box]="#4af0f0"
+theme[cpu_box]="#d98c4a"
 
 # Memory/disks box outline color
-theme[mem_box]="#4af0f0"
+theme[mem_box]="#f0c04a"
 
 # Net up/down box outline color
-theme[net_box]="#4af0f0"
+theme[net_box]="#f04a4a"
 
 # Processes box outline color
 theme[proc_box]="#4af0f0"
 
 # Box divider line and small boxes line color
-theme[div_line]="#4a4a4a"
+theme[div_line]="#5a5a5a"
 
 # Temperature graph colors
 theme[temp_start]="#1a3a1a"
@@ -56,9 +56,9 @@ theme[free_mid]="#f0c04a"
 theme[free_end]="#f0f0f0"
 
 # Mem/Disk cached meter
-theme[cached_start]="#1a3a7a"
-theme[cached_mid]="#f0c04a"
-theme[cached_end]="#4af0f0"
+theme[cached_start]="#5a3a1a"
+theme[cached_mid]="#d98c4a"
+theme[cached_end]="#f0c04a"
 
 # Mem/Disk available meter
 theme[available_start]="#1a3a1a"
@@ -66,16 +66,16 @@ theme[available_mid]="#f0c04a"
 theme[available_end]="#f0f0f0"
 
 # Mem/Disk used meter
-theme[used_start]="#f0c04a"
+theme[used_start]="#d98c4a"
 theme[used_mid]="#f04a4a"
 theme[used_end]="#f04a4a"
 
 # Download graph colors
-theme[download_start]="#1a3a7a"
+theme[download_start]="#5a3a1a"
 theme[download_mid]="#1a3a1a"
-theme[download_end]="#0a1a3a"
+theme[download_end]="#2a2a2a"
 
 # Upload graph colors
 theme[upload_start]="#1a3a1a"
-theme[upload_mid]="#1a3a7a"
+theme[upload_mid]="#5a3a1a"
 theme[upload_end]="#f0f0f0"
