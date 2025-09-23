@@ -11,7 +11,11 @@ menu() {
     read -r -a args <<<"$extra"
 
     if [[ -n "$preselect" ]]; then
-        args+=("-c" "$preselect")
+        local index
+        index=$(echo -e "$options" | grep -nxF "$preselect" | cut -d: -f1)
+        if [[ -n "$index" ]]; then
+            args+=("-c" "$((index - 1))")
+        fi
     fi
 
     echo -e "$options" | walker --dmenu -p "$prompt…" "${args[@]}"
