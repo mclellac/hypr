@@ -1,7 +1,7 @@
 close_when_open = true
 force_keyboard_focus = true
 selection_wrap = true
-theme = "hypr-default"
+theme = "current"
 
 [shell]
 anchor_top = true

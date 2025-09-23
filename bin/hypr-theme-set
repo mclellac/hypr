@@ -58,10 +58,17 @@ fi
 # Trigger alacritty config reload
 touch "$HOME/.config/alacritty/alacritty.toml"
 
+# Make sure walker theme directory exists
+mkdir -p ~/.config/walker/themes
+
+# Set walker theme
+ln -snf ~/.config/hypr/current/theme/walker.css ~/.config/walker/themes/current.css
+
 # Restart components to apply new theme
 pkill -SIGUSR2 btop
 hypr-restart-waybar
 hypr-restart-swayosd
+hypr-restart-walker
 makoctl reload
 hyprctl reload
 
