@@ -1,0 +1,127 @@
+@define-color window_bg_color alpha(@base, 0.95);
+@define-color accent_bg_color @selected-text;
+@define-color theme_fg_color @text;
+
+* {
+  all: unset;
+  font-family: monospace;
+  font-size: 18px;
+}
+
+.normal-icons {
+  -gtk-icon-size: 16px;
+}
+
+.large-icons {
+  -gtk-icon-size: 32px;
+}
+
+scrollbar {
+  opacity: 0;
+}
+
+.box-wrapper {
+  background: @window_bg_color;
+  padding: 20px;
+  border: 2px solid @border;
+  border-radius: 0px;
+}
+
+.preview-box,
+.elephant-hint,
+.placeholder {
+  color: @theme_fg_color;
+}
+
+.box {
+}
+
+.search-container {
+  background: @base;
+  padding: 10px;
+  margin-bottom: 0;
+}
+
+.input placeholder {
+  opacity: 0.5;
+  color: @theme_fg_color;
+}
+
+.input {
+  background: none;
+  color: @theme_fg_color;
+  padding: 0;
+}
+
+.input:focus,
+.input:active {
+}
+
+.content-container {
+}
+
+.placeholder {
+}
+
+.scroll {
+}
+
+.list {
+  background: transparent;
+}
+
+child {
+  padding: 0px 12px;
+  background: transparent;
+  border-radius: 0;
+}
+
+.item-box {
+  padding: 0;
+}
+
+.item-quick-activation {
+  opacity: 0;
+  min-width: 0;
+}
+
+child:hover .item-box,
+child:selected .item-box {
+  background: transparent;
+}
+
+child:selected .item-text,
+child:selected .item-subtext,
+child:hover .item-text,
+child:hover .item-subtext {
+  color: @selected-text;
+}
+
+.item-text-box {
+}
+
+.item-text {
+  color: @theme_fg_color;
+  padding: 14px 0;
+}
+
+.item-subtext {
+  opacity: 0;
+  font-size: 0;
+  min-height: 0;
+}
+
+.item-image {
+  margin-right: 10px;
+  -gtk-icon-transform: scale(0.7);
+}
+
+.keybind-hints {
+  opacity: 0;
+}
+
+.preview {
+  opacity: 0;
+}
+
+@import url("file://~/.config/hypr/current/theme/walker.css");

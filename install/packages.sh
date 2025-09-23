@@ -109,7 +109,13 @@ yay -S --noconfirm --needed \
     ufw-docker \
     unzip \
     uwsm \
-    walker-bin \
+    go \
+    gtk4 \
+    gtk-layer-shell \
+    protobuf \
+    glib2-devel \
+    gobject-introspection \
+    pkg-config \
     waybar \
     wf-recorder \
     whois \
@@ -126,3 +132,30 @@ yay -S --noconfirm --needed \
     yaru-icon-theme \
     yay-bin \
     zoxide
+
+# Install elephant
+rm -rf /tmp/elephant
+git clone https://github.com/abenz1267/elephant.git /tmp/elephant
+cd /tmp/elephant/cmd
+go build elephant.go
+mkdir -p ~/.local/bin
+cp elephant ~/.local/bin/
+mkdir -p ~/.config/elephant/providers
+cd /tmp/elephant/internal/providers/desktopapplications
+go build -buildmode=plugin
+cp desktopapplications.so ~/.config/elephant/providers/
+cd /tmp/elephant/internal/providers/files
+go build -buildmode=plugin
+cp files.so ~/.config/elephant/providers/
+cd /tmp/elephant/internal/providers/runner
+go build -buildmode=plugin
+cp runner.so ~/.config/elephant/providers/
+
+# Install walker
+rm -rf /tmp/walker
+git clone https://github.com/abenz1267/walker.git /tmp/walker
+cd /tmp/walker
+export PKG_CONFIG_PATH=/usr/lib/pkgconfig
+cargo build --release
+mkdir -p ~/.local/bin
+cp target/release/walker ~/.local/bin/
