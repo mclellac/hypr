@@ -21,7 +21,7 @@ menu() {
         fi
     fi
 
-    echo -e "$options" | walker --dmenu --theme dmenu_250 -p "$prompt…" "${args[@]}"
+    echo -e "$options" | walker --dmenu -p "$prompt…" "${args[@]}"
 }
 
 # helper to open links (keeps parity with your hypr setup)
