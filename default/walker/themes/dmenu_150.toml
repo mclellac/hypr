@@ -5,6 +5,7 @@ width = 150
 max_width = 150
 min_width = 150
 width = 150
+max_height = 600
 
 [ui.window.box.search]
 hide = false

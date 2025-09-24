@@ -18,7 +18,7 @@ menu() {
         fi
     fi
 
-    echo -e "$options" | walker --dmenu -p "$prompt…" "${args[@]}"
+    echo -e "$options" | walker --dmenu --theme dmenu_250 -p "$prompt…" "${args[@]}"
 }
 
 show_work_menu() {

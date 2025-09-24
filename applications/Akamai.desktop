@@ -5,5 +5,5 @@ Comment=Akamai
 Exec=hypr-launch-webapp https://control.akamai.com/
 Terminal=false
 Type=Application
-Icon=Akamai
+Icon=/home/mclellac/.local/share/applications/icons/Akamai.png
 StartupNotify=true
