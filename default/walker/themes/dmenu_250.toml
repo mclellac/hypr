@@ -1,11 +1,11 @@
 [ui.window.box]
-width = 250
+width = 200
 
 [ui.window.box.scroll.list]
-max_width = 250
-min_width = 250
-width = 250
-max_height = 600
+max_width = 200
+min_width = 200
+width = 200
+max_height = 800
 
 [ui.window.box.search]
 hide = false
