@@ -5,5 +5,5 @@ Comment=Jira
 Exec=hypr-launch-webapp https://cbc-digital.atlassian.net/jira/dashboards/10092
 Terminal=false
 Type=Application
-Icon=/home/mclellac/.local/share/applications/icons/Jira.png
+Icon=Jira
 StartupNotify=true
