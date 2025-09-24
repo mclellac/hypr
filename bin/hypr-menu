@@ -112,7 +112,7 @@ show_theme_menu() {
 }
 
 show_font_menu() {
-    theme=$(menu "Font" "$(hypr-font-list)" "" "$(hypr-font-current)")
+    theme=$(menu "Font" "$(hypr-font-list)" "-w 350" "$(hypr-font-current)")
     if [[ "$theme" == "CNCLD" || -z "$theme" ]]; then
         show_main_menu
     else
@@ -283,7 +283,7 @@ show_install_style_menu() {
 }
 
 show_install_font_menu() {
-    case $(menu "Install" "  Meslo LG Mono\n  Fira Code\n  Victor Code\n  Bistream Vera Mono") in
+    case $(menu "Install" "  Meslo LG Mono\n  Fira Code\n  Victor Code\n  Bistream Vera Mono" "-w 350") in
     *Meslo*) install_font "Meslo LG Mono" "ttf-meslo-nerd" "MesloLGL Nerd Font" ;;
     *Fira*) install_font "Fira Code" "ttf-firacode-nerd" "FiraCode Nerd Font" ;;
     *Victor*) install_font "Victor Code" "ttf-victor-mono-nerd" "VictorMono Nerd Font" ;;
