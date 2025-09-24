@@ -5,5 +5,5 @@ Comment=CBC News
 Exec=alacritty --class TUI.tile -e cbcnews.py
 Terminal=false
 Type=Application
-Icon=/home/mclellac/.local/share/applications/icons/CBC News.png
+Icon=CBC News
 StartupNotify=true

@@ -5,5 +5,5 @@ Comment=Bamboo
 Exec=hypr-launch-webapp https://bamboo.nm.cbc.ca
 Terminal=false
 Type=Application
-Icon=/home/mclellac/.local/share/applications/icons/Bamboo.png
+Icon=Bamboo
 StartupNotify=true
