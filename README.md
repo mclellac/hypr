@@ -82,24 +82,19 @@ hypr-theme-set tokyo-night
 
 The `hypr-theme-set` script will update the symlinks for the current theme and restart the necessary components to apply the new theme.
 
-## Improvements and Suggestions
+### Neovim Theming
 
-Here are some suggestions for improving the configuration:
+The Neovim colorscheme is now managed separately from the main Neovim configuration. When you set a theme, the `hypr-theme-set` script will automatically update the colorscheme for Neovim without overwriting your other settings.
 
-*   **Add comments to user-configurable files:** This will make it easier for users to customize their setup.
-*   **Add more robust error handling to the scripts in `bin/`:** This will make the scripts more reliable.
-*   **Consider using Python for new, more complex scripts:** This will make the scripts more readable, maintainable, and testable.
-*   **Add a theme preview feature:** This will make it easier for users to choose a theme.
+Each theme directory contains a `neovim.colorscheme` file that specifies the colorscheme to be used. This file is read by the `hypr-theme-set` script, which then updates a dedicated file at `~/.config/nvim/lua/user/colorscheme.lua`.
 
-### `bin/` Scripts
+This approach allows you to customize your Neovim configuration freely without worrying about it being overwritten when you change themes.
 
-The scripts in the `bin/` directory are generally well-written and easy to understand. However, they could be improved by adding more robust error handling and input validation.
+## Neovim Configuration
 
-### Bash vs. Python
+Your personal Neovim configuration is located in `~/.config/nvim/lua/user/`. You can add your own plugins and settings here. The `hypr` setup uses LazyVim, so you should follow the LazyVim conventions for customization.
 
-The current bash scripts are mostly simple wrappers around other commands. They are not performance-critical. Porting them to Python would not offer any significant performance benefits. In fact, it might even make them slightly slower due to the overhead of starting the Python interpreter.
-
-However, for more complex scripts, Python would be a good choice due to its readability, maintainability, and testing capabilities.
+The base `hypr` Neovim configuration is located in `~/.local/share/hypr/config/nvim/`. During the initial installation, these files are copied to `~/.config/nvim/`. After that, your local configuration will not be overwritten by `hypr` updates unless you manually re-run the installation script.
 
 ## License
 
