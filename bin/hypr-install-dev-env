@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 if [[ -z "$1" ]]; then
   echo "Usage: hypr-install-dev-env <ruby|node|bun|go|laravel|symfony|php|python|elixir|phoenix|rust|java|ocaml|dotnet>" >&2
@@ -6,18 +7,20 @@ if [[ -z "$1" ]]; then
 fi
 
 install_php() {
-  sudo pacman -S php composer php-sqlite --noconfirm
+  echo "Installing PHP and related dependencies..."
+  sudo pacman -S --noconfirm --needed php composer php-sqlite
 
   # Install Path for Composer
   if [[ ":$PATH:" != *":$HOME/.config/composer/vendor/bin:"* ]]; then
+    echo "Adding Composer's global bin directory to PATH in ~/.bashrc..."
     echo 'export PATH="$HOME/.config/composer/vendor/bin:$PATH"' >>"$HOME/.bashrc"
-    source "$HOME/.bashrc"
-    echo "Added Composer global bin directory to PATH."
+    echo "Please start a new terminal session for this change to take effect."
   else
-    echo "Composer global bin directory already in PATH."
+    echo "Composer's global bin directory is already in your PATH."
   fi
 
   # Enable some extensions
+  echo "Enabling PHP extensions in php.ini..."
   local php_ini_path="/etc/php/php.ini"
   local extensions_to_enable=(
     "bcmath"
@@ -29,100 +32,123 @@ install_php() {
   )
 
   for ext in "${extensions_to_enable[@]}"; do
-    sudo sed -i "s/^;extension=${ext}/extension=${ext}/" "$php_ini_path"
+    if grep -q "^;extension=${ext}" "$php_ini_path"; then
+      echo "Enabling ${ext} extension..."
+      sudo sed -i "s/^;extension=${ext}/extension=${ext}/" "$php_ini_path"
+    else
+      echo "${ext} extension is already enabled or not found."
+    fi
   done
 }
 
 install_node() {
-  echo -e "Installing Node.js...\n"
+  echo -e "Installing Node.js (LTS)..."
   mise use --global node@lts
 }
 
 case "$1" in
 ruby)
-  echo -e "Installing Ruby on Rails...\n"
+  echo -e "Installing Ruby on Rails..."
   mise use --global ruby@latest
   mise settings add idiomatic_version_file_enable_tools ruby
+  echo "Installing rails gem..."
   mise x ruby -- gem install rails --no-document
-  echo -e "\nYou can now run: rails new myproject"
+  echo -e "\nInstallation complete. You can now run: rails new myproject"
   ;;
 node)
   install_node
+  echo -e "\nInstallation complete."
   ;;
 bun)
-  echo -e "Installing Bun...\n"
+  echo -e "Installing Bun..."
   mise use -g bun@latest
+  echo -e "\nInstallation complete."
   ;;
 deno)
-  echo -e "Installing Deno...\n"
+  echo -e "Installing Deno..."
   mise use -g deno@latest
+  echo -e "\nInstallation complete."
   ;;
 go)
-  echo -e "Installing Go...\n"
+  echo -e "Installing Go..."
   mise use --global go@latest
+  echo -e "\nInstallation complete."
   ;;
 php)
-  echo -e "Installing PHP...\n"
   install_php
+  echo -e "\nPHP installation complete."
   ;;
 laravel)
-  echo -e "Installing PHP and Laravel...\n"
+  echo -e "Installing PHP and Laravel..."
   install_php
   install_node
+  echo "Installing Laravel installer..."
   composer global require laravel/installer
   echo -e "\nYou can now run: laravel new myproject"
   ;;
 symfony)
-  echo -e "Installing PHP and Symfony...\n"
+  echo -e "Installing PHP and Symfony..."
   install_php
+  echo "Installing Symfony CLI..."
   hypr-pkg-add symfony-cli
   echo -e "\nYou can now run: symfony new --webapp myproject"
   ;;
 python)
-  echo -e "Installing Python...\n"
+  echo -e "Installing Python..."
   mise use --global python@latest
-  echo -e "\nInstalling uv...\n"
+  echo -e "\nInstalling uv..."
   curl -fsSL https://astral.sh/uv/install.sh | sh
+  echo -e "\nInstallation complete."
   ;;
 elixir)
-  echo -e "Installing Elixir...\n"
+  echo -e "Installing Elixir..."
   mise use --global erlang@latest
   mise use --global elixir@latest
+  echo "Running mix local.hex..."
   mise x elixir -- mix local.hex --force
+  echo -e "\nInstallation complete."
   ;;
 phoenix)
-  echo -e "Installing Phoenix Framework...\n"
-  # Ensure Erlang/Elixir first
+  echo -e "Installing Phoenix Framework..."
   mise use --global erlang@latest
   mise use --global elixir@latest
-  # Hex & Rebar
+  echo "Running mix local.hex and local.rebar..."
   mise x elixir -- mix local.hex --force
   mise x elixir -- mix local.rebar --force
-  # Phoenix project (phx_new)
+  echo "Installing phx_new archive..."
   mise x elixir -- mix archive.install hex phx_new --force
   echo -e "\nYou can now run: mix phx.new my_app"
   ;;
 rust)
-  echo -e "Installing Rust...\n"
+  echo -e "Installing Rust..."
   bash -c "$(curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs)" -- -y
+  echo -e "\nInstallation complete."
   ;;
 java)
-  echo -e "Installing Java...\n"
+  echo -e "Installing Java..."
   mise use --global java@latest
+  echo -e "\nInstallation complete."
   ;;
 zig)
-  echo -e "Installing Zig...\n"
+  echo -e "Installing Zig..."
   mise use --global zig@latest
+  echo -e "\nInstallation complete."
   ;;
 ocaml)
-  echo -e "Installing OCaml...\n"
+  echo -e "Installing OCaml..."
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)"
   opam init --yes
   eval "$(opam env)"
   opam install ocaml-lsp-server odoc ocamlformat utop --yes
+  echo -e "\nInstallation complete."
   ;;
 dotnet)
-  echo -e "Installing .NET...\n"
+  echo -e "Installing .NET..."
   mise use --global dotnet@latest
+  echo -e "\nInstallation complete."
+  ;;
+*)
+  echo "Error: Unknown development environment '$1'" >&2
+  exit 1
   ;;
 esac

@@ -55,6 +55,30 @@ if command -v chromium &>/dev/null; then
   fi
 fi
 
+# Set neovim colorscheme
+NVIM_COLOR_FILE="$HOME/.config/nvim/lua/user/colorscheme.lua"
+THEME_NVIM_COLOR_FILE="$THEME_PATH/neovim.colorscheme"
+THEME_NVIM_LUA_FILE="$THEME_PATH/neovim.lua"
+
+if [[ -f "$THEME_NVIM_COLOR_FILE" ]]; then
+  COLOR_SCHEME=$(cat "$THEME_NVIM_COLOR_FILE")
+  echo "Setting neovim colorscheme to $COLOR_SCHEME..."
+  cat << EOF > "$NVIM_COLOR_FILE"
+return {
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "$COLOR_SCHEME",
+    },
+  },
+}
+EOF
+elif [[ -f "$THEME_NVIM_LUA_FILE" ]]; then
+    # Backwards compatibility for old theme format
+    cp "$THEME_NVIM_LUA_FILE" "$NVIM_COLOR_FILE"
+fi
+
+
 # Trigger alacritty config reload
 touch "$HOME/.config/alacritty/alacritty.toml"
 
