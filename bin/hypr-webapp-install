@@ -32,7 +32,7 @@ cat >"$DESKTOP_FILE" <<EOF
 Version=1.0
 Name=$APP_NAME
 Comment=$APP_NAME
-Exec=hypr-launch-webapp $APP_URL
+Exec=hypr-launch-webapp $APP_URL --class=HyprBrowser
 Terminal=false
 Type=Application
 Icon=$ICON_PATH
