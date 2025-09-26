@@ -21,6 +21,22 @@ rm -f "$NVIM_CONFIG_DIR/lua/plugins/theme.lua"
 echo "Copying hypr nvim configuration..."
 cp -n -R "$HYPR_NVIM_CONFIG_DIR/"* "$NVIM_CONFIG_DIR/"
 
+# Create a placeholder for the colorscheme file that will be managed by hypr-theme-set
+# This ensures that a colorscheme is set, even before the user picks a theme.
+if [[ ! -f "$NVIM_CONFIG_DIR/lua/user/colorscheme.lua" ]]; then
+  echo "Creating default colorscheme file..."
+  cat << EOF > "$NVIM_CONFIG_DIR/lua/user/colorscheme.lua"
+return {
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "tokyonight",
+    },
+  },
+}
+EOF
+fi
+
 
 # Ensure relative numbers are disabled by default as per original script
 if ! grep -q "vim.opt.relativenumber = false" "$NVIM_CONFIG_DIR/lua/config/options.lua"; then
