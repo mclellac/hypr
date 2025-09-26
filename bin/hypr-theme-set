@@ -36,7 +36,7 @@ fi
 if [[ -f ~/.config/hypr/current/theme/icons.theme ]]; then
   gsettings set org.gnome.desktop.interface icon-theme "$(<~/.config/hypr/current/theme/icons.theme)"
 else
-  gsettings set org.gnome.desktop.interface icon-theme "Yaru-blue"
+  gsettings set org.gnome.desktop.interface icon-theme "Adwaita"
 fi
 
 # Change Chromium colors
@@ -63,7 +63,7 @@ THEME_NVIM_LUA_FILE="$THEME_PATH/neovim.lua"
 if [[ -f "$THEME_NVIM_COLOR_FILE" ]]; then
   COLOR_SCHEME=$(cat "$THEME_NVIM_COLOR_FILE")
   echo "Setting neovim colorscheme to $COLOR_SCHEME..."
-  cat << EOF > "$NVIM_COLOR_FILE"
+  cat <<EOF >"$NVIM_COLOR_FILE"
 return {
   {
     "LazyVim/LazyVim",
@@ -74,10 +74,9 @@ return {
 }
 EOF
 elif [[ -f "$THEME_NVIM_LUA_FILE" ]]; then
-    # Backwards compatibility for old theme format
-    cp "$THEME_NVIM_LUA_FILE" "$NVIM_COLOR_FILE"
+  # Backwards compatibility for old theme format
+  cp "$THEME_NVIM_LUA_FILE" "$NVIM_COLOR_FILE"
 fi
-
 
 # Trigger alacritty config reload
 touch "$HOME/.config/alacritty/alacritty.toml"
@@ -92,3 +91,4 @@ hyprctl reload
 
 # Set new background
 hypr-theme-bg-next
+
