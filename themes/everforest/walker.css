@@ -2,3 +2,13 @@
 @define-color text #d3c6aa;
 @define-color border #d3c6aa;
 @define-color selected-text #dbbc7f;
+
+.box-wrapper {
+  box-shadow:
+    0 19px 38px rgba(0, 0, 0, 0.3),
+    0 15px 12px rgba(0, 0, 0, 0.22);
+  background: @window_bg_color;
+  padding: 20px;
+  border-radius: 10px;
+  border: 3px solid darker(@accent_bg_color);
+}
