@@ -1,7 +1,9 @@
 #!/bin/bash
 
 hypr-refresh-applications
-update-desktop-database ~/.local/share/applications
+if command -v update-desktop-database &> /dev/null; then
+  update-desktop-database ~/.local/share/applications
+fi
 
 # Open all images with imv
 xdg-mime default imv.desktop image/png
