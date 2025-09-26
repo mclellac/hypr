@@ -2,12 +2,14 @@
 
 # Copy and sync icon files
 mkdir -p ~/.local/share/icons/hicolor/48x48/apps/
-cp ~/.local/share/hypr/applications/icons/*.png ~/.local/share/icons/hicolor/48x48/apps/
+cp $HYPR_PATH/applications/icons/*.png ~/.local/share/icons/hicolor/48x48/apps/
 gtk-update-icon-cache ~/.local/share/icons/hicolor &>/dev/null
 
 # Copy .desktop declarations
 mkdir -p ~/.local/share/applications
-cp ~/.local/share/hypr/applications/*.desktop ~/.local/share/applications/
-cp ~/.local/share/hypr/applications/hidden/*.desktop ~/.local/share/applications/
+cp $HYPR_PATH/applications/*.desktop ~/.local/share/applications/
+cp $HYPR_PATH/applications/hidden/*.desktop ~/.local/share/applications/
 
-update-desktop-database ~/.local/share/applications
+if command -v update-desktop-database &> /dev/null; then
+  update-desktop-database ~/.local/share/applications
+fi

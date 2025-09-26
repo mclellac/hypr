@@ -3,7 +3,7 @@
 # Exit immediately if a command exits with a non-zero status
 set -eE
 
-HYPR_PATH="$HOME/.local/share/hypr"
+export HYPR_PATH=$(cd "$(dirname "$0")" && pwd)
 HYPR_INSTALL="$HYPR_PATH/install"
 export PATH="$HYPR_PATH/bin:$PATH"
 

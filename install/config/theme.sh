@@ -1,17 +1,22 @@
 #!/bin/bash
 
-gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
-gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
-gsettings set org.gnome.desktop.interface icon-theme "Yaru-blue"
+if gsettings list-schemas | grep -q "org.gnome.desktop.interface"; then
+  gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
+  gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+  gsettings set org.gnome.desktop.interface icon-theme "Yaru-blue"
+fi
 
 # Set links for Nautilius action icons
-sudo ln -snf /usr/share/icons/Adwaita/symbolic/actions/go-previous-symbolic.svg /usr/share/icons/Yaru/scalable/actions/go-previous-symbolic.svg
-sudo ln -snf /usr/share/icons/Adwaita/symbolic/actions/go-next-symbolic.svg /usr/share/icons/Yaru/scalable/actions/go-next-symbolic.svg
-sudo gtk-update-icon-cache /usr/share/icons/Yaru
+if [ -d /usr/share/icons/Yaru ]; then
+  sudo mkdir -p /usr/share/icons/Yaru/scalable/actions
+  sudo ln -snf /usr/share/icons/Adwaita/symbolic/actions/go-previous-symbolic.svg /usr/share/icons/Yaru/scalable/actions/go-previous-symbolic.svg
+  sudo ln -snf /usr/share/icons/Adwaita/symbolic/actions/go-next-symbolic.svg /usr/share/icons/Yaru/scalable/actions/go-next-symbolic.svg
+  sudo gtk-update-icon-cache /usr/share/icons/Yaru
+fi
 
 # Setup theme links
 mkdir -p ~/.config/hypr/themes
-for f in ~/.local/share/hypr/themes/*; do ln -nfs "$f" ~/.config/hypr/themes/; done
+for f in $HYPR_PATH/themes/*; do ln -nfs "$f" ~/.config/hypr/themes/; done
 
 # Set initial theme
 mkdir -p ~/.config/hypr/current
