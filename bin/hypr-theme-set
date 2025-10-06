@@ -3,6 +3,8 @@
 # hypr-theme-set: Set a theme, specified by its name.
 # Usage: hypr-theme-set <theme-name>
 
+REPO_ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." &>/dev/null && pwd)
+
 if [[ -z "$1" && "$1" != "CNCLD" ]]; then
   echo "Usage: hypr-theme-set <theme-name>" >&2
   exit 1
@@ -26,7 +28,7 @@ ln -nsf "$THEME_PATH" "$CURRENT_THEME_DIR"
 # Set walker theme
 WALKER_THEME_DIR="$HOME/.config/walker/themes/hypr-default"
 WALKER_THEME_CSS="$WALKER_THEME_DIR/style.css"
-WALKER_DEFAULT_THEME_DIR="$HOME/.local/share/hypr/config/walker/themes/hypr-default"
+WALKER_DEFAULT_THEME_DIR="$REPO_ROOT/default/walker/themes/hypr-default"
 THEME_WALKER_CSS="$THEME_PATH/walker.css"
 
 # Concatenate the theme CSS and the base CSS into the config directory
