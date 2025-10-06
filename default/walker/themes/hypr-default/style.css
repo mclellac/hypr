@@ -126,5 +126,3 @@ child:hover .item-subtext {
 .preview {
   opacity: 0;
 }
-
-@import url("file://~/.config/hypr/current/theme/walker.css");
