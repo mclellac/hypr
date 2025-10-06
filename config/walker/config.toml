@@ -15,11 +15,11 @@ anchor_right = true
 "files" = { input = " Search Files...", list = "No Files Found" }
 
 [keybinds]
-close = "Escape"
-next = "Down"
-previous = "Up"
-toggle_exact = "ctrl e"
-resume_last_query = "ctrl r"
+close = ["Escape"]
+next = ["Down"]
+previous = ["Up"]
+toggle_exact = ["ctrl e"]
+resume_last_query = ["ctrl r"]
 quick_activate = ["F1", "F2", "F3", "F4"]
 
 [providers]
@@ -59,6 +59,5 @@ provider = "websearch"
 prefix = ":"
 provider = "clipboard"
 
-[providers.dmenu]
-default = "select"
-select = "Return"
+[providers.actions]
+dmenu = [{ action = "select", default = true, bind = "Return" }]
