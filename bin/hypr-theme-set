@@ -95,6 +95,11 @@ fi
 # Trigger alacritty config reload
 touch "$HOME/.config/alacritty/alacritty.toml"
 
+# Reload kitty config
+if pgrep -x kitty >/dev/null; then
+  kitty @ set-colors --all --configured "$CURRENT_THEME_DIR/kitty.conf"
+fi
+
 # Restart components to apply new theme
 pkill -SIGUSR2 btop
 hypr-restart-waybar
