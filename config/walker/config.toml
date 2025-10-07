@@ -55,9 +55,5 @@ provider = "calc"
 prefix = "@"
 provider = "websearch"
 
-[[providers.prefixes]]
-prefix = ":"
-provider = "clipboard"
-
 [providers.actions]
 dmenu = [{ action = "select", default = true, bind = "Return" }]

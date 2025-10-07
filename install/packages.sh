@@ -121,7 +121,7 @@ yay -S --noconfirm --needed \
   whois \
   wiremix \
   wireplumber \
-  wl-clip-persist \
+  cliphist \
   wl-clipboard \
   wl-screenrec \
   woff2-font-awesome \
