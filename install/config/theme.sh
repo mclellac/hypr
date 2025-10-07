@@ -31,3 +31,6 @@ ln -snf ~/.config/hypr/current/theme/btop.theme ~/.config/btop/themes/current.th
 
 mkdir -p ~/.config/mako
 ln -snf ~/.config/hypr/current/theme/mako.ini ~/.config/mako/config
+
+mkdir -p ~/.config/kitty
+ln -snf ~/.config/hypr/current/theme/kitty.conf ~/.config/kitty/theme.conf
