@@ -97,7 +97,7 @@ touch "$HOME/.config/alacritty/alacritty.toml"
 
 # Reload kitty config
 if pgrep -x kitty >/dev/null; then
-  kitty @ set-colors --all --configured "$CURRENT_THEME_DIR/kitty.conf"
+  pkill -SIGUSR1 -x kitty
 fi
 
 # Restart components to apply new theme
