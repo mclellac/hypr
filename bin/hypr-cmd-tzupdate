@@ -1,7 +1,44 @@
 #!/bin/bash
+#
+# Updates the system timezone automatically using 'tzupdate' and restarts
+# relevant services to apply the change.
 
-sudo systemctl restart systemd-timesyncd
-sudo tzupdate
-new_timezone=$(timedatectl show -p Timezone --value)
-hypr-restart-waybar
-notify-send "Time synced and timezone set to $new_timezone"
+set -euo pipefail
+
+#######################################
+# Main function to handle the timezone update process.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   Exits with an error if dependencies are not met.
+#######################################
+main() {
+  for cmd in systemctl tzupdate timedatectl notify-send; do
+    if ! command -v "${cmd}" &>/dev/null; then
+      echo "Error: Required command not found: ${cmd}" >&2
+      exit 1
+    fi
+  done
+
+  echo "Restarting systemd-timesyncd to sync system clock..."
+  sudo systemctl restart systemd-timesyncd
+
+  echo "Updating timezone based on location..."
+  if ! sudo tzupdate; then
+    notify-send "Error: tzupdate failed." "Could not determine or set timezone." -u critical
+    exit 1
+  fi
+
+  # Retrieve the newly set timezone to display in the notification.
+  local new_timezone
+  new_timezone=$(timedatectl show -p Timezone --value)
+
+  echo "Timezone updated to ${new_timezone}. Restarting Waybar..."
+  hypr-restart-waybar
+
+  notify-send "Timezone Updated" "System time synced and timezone set to ${new_timezone}"
+}
+
+main

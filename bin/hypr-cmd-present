@@ -1,7 +1,41 @@
 #!/bin/bash
+#
+# Checks if one or more command-line tools are present in the system's PATH.
+# The script iterates through the provided arguments and exits with failure (1)
+# if any of the commands are not found. It succeeds (exits 0) only if all
+# specified commands are present.
 
-for cmd in "$@"; do
-  command -v "$cmd" &>/dev/null || exit 1
-done
+set -euo pipefail
 
-exit 0
+#######################################
+# Main function to check for present commands.
+# Globals:
+#   None
+# Arguments:
+#   $@ - A list of command names to check.
+# Outputs:
+#   Exits with status 0 if all commands are present.
+#   Exits with status 1 if any command is missing.
+#   Exits with status 2 if no arguments are provided.
+#######################################
+main() {
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: $(basename "$0") <command1> [command2]..." >&2
+    exit 2
+  fi
+
+  for cmd in "$@"; do
+    # 'command -v' is a reliable way to check if a command exists in the PATH.
+    # Output is redirected to /dev/null to suppress command path output.
+    if ! command -v "${cmd}" &>/dev/null; then
+      # If a command is not found, exit with failure (1).
+      echo "Error: Required command not found: ${cmd}" >&2
+      exit 1
+    fi
+  done
+
+  # If the loop completes, it means all specified commands were found.
+  exit 0
+}
+
+main "$@"

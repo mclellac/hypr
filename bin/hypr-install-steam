@@ -1,8 +1,63 @@
 #!/bin/bash
+#
+# Installs Steam by first enabling the 'multilib' repository in pacman.conf
+# for 32-bit compatibility, and then installing the 'steam' package.
 
-echo "Adding multilib repository for 32-bit compatibility"
-sudo sed -i '/^#\s*\[multilib\]/,/^#\s*Include/ s/^#\s*//' /etc/pacman.conf
+set -euo pipefail
 
-echo "Now pick dependencies matching your graphics card"
-sudo pacman -Syu --noconfirm steam
-setsid gtk-launch steam >/dev/null 2>&1 &
+readonly PACMAN_CONFIG="/etc/pacman.conf"
+
+#######################################
+# Enables the 'multilib' repository in pacman.conf if it is not already active.
+# Globals:
+#   PACMAN_CONFIG
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+EnableMultilib() {
+  # Check if multilib is already enabled to avoid redundant edits.
+  if grep -q "^\s*\[multilib\]" "${PACMAN_CONFIG}"; then
+    echo "Multilib repository is already enabled."
+    return
+  fi
+
+  echo "Enabling multilib repository for 32-bit compatibility..."
+  # This sed command uncomments the two lines for the [multilib] repository.
+  sudo sed -i '/^#\s*\[multilib\]/,/^#\s*Include/ s/^#\s*//' "${PACMAN_CONFIG}"
+}
+
+#######################################
+# Main function to install and launch Steam.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   Exits with an error if dependencies are not met.
+#######################################
+main() {
+  if ! command -v pacman &>/dev/null; then
+    echo "Error: 'pacman' command not found." >&2
+    exit 1
+  fi
+
+  EnableMultilib
+
+  echo "Updating package database and installing Steam..."
+  echo "You may be prompted to select video driver packages."
+  sudo pacman -Syu --noconfirm steam
+
+  if command -v gtk-launch &>/dev/null; then
+    echo "Launching Steam..."
+    # setsid and backgrounding detaches the process from the terminal.
+    setsid gtk-launch steam &>/dev/null &
+  else
+    echo "Warning: 'gtk-launch' not found. Cannot launch Steam automatically." >&2
+  fi
+
+  echo "Steam installation complete."
+}
+
+main

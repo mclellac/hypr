@@ -1,18 +1,80 @@
 #!/bin/bash
+#
+# Provides an interactive menu to install and run common databases as
+# Docker containers. It uses 'gum' for the interactive selection.
 
-options=("MySQL" "PostgreSQL" "Redis" "MongoDB" "MariaDB")
-choices=$(printf "%s\n" "${options[@]}" | gum choose --no-limit --header "Select databases (space to select, return to install, esc to cancel)") || main_menu
+set -euo pipefail
 
-if [[ -n "$choices" ]]; then
-  for db in $choices; do
-    case $db in
-    MySQL) sudo docker run -d --restart unless-stopped -p "127.0.0.1:3306:3306" --name=mysql8 -e MYSQL_ROOT_PASSWORD= -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql:8.4 ;;
-    PostgreSQL) sudo docker run -d --restart unless-stopped -p "127.0.0.1:5432:5432" --name=postgres16 -e POSTGRES_HOST_AUTH_METHOD=trust postgres:16 ;;
-    MariaDB) sudo docker run -d --restart unless-stopped -p "127.0.0.1:3306:3306" --name=mariadb11 -e MARIADB_ROOT_PASSWORD= -e MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=true mariadb:11.8 ;;
-    Redis) sudo docker run -d --restart unless-stopped -p "127.0.0.1:6379:6379" --name=redis redis:7 ;;
-    MongoDB) sudo docker run -d --restart unless-stopped -p "127.0.0.1:27017:27017" --name mongodb -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin123 mongo:noble ;;
-    esac
+#######################################
+# Pulls and runs a specific database Docker container.
+# Globals:
+#   None
+# Arguments:
+#   $1 - The name of the database to install (e.g., "MySQL", "PostgreSQL").
+# Outputs:
+#   Writes status messages to stdout.
+#######################################
+InstallDatabase() {
+  local db_name="$1"
+  echo "Installing ${db_name}..."
+
+  case "${db_name}" in
+  "MySQL")
+    sudo docker run -d --restart unless-stopped -p "127.0.0.1:3306:3306" --name=mysql8 -e MYSQL_ROOT_PASSWORD= -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql:8.4
+    ;;
+  "PostgreSQL")
+    sudo docker run -d --restart unless-stopped -p "127.0.0.1:5432:5432" --name=postgres16 -e POSTGRES_HOST_AUTH_METHOD=trust postgres:16
+    ;;
+  "MariaDB")
+    sudo docker run -d --restart unless-stopped -p "127.0.0.1:3306:3306" --name=mariadb11 -e MARIADB_ROOT_PASSWORD= -e MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=true mariadb:11.8
+    ;;
+  "Redis")
+    sudo docker run -d --restart unless-stopped -p "127.0.0.1:6379:6379" --name=redis redis:7
+    ;;
+  "MongoDB")
+    sudo docker run -d --restart unless-stopped -p "127.0.0.1:27017:27017" --name mongodb -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin123 mongo:noble
+    ;;
+  *)
+    echo "Warning: Unknown database '${db_name}'. Skipping." >&2
+    ;;
+  esac
+}
+
+#######################################
+# Main function to display the menu and orchestrate installations.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   Exits with an error if dependencies are not met.
+#######################################
+main() {
+  for cmd in docker gum; do
+    if ! command -v "${cmd}" &>/dev/null; then
+      echo "Error: Required command not found: ${cmd}" >&2
+      exit 1
+    fi
   done
-else
-  echo "No databases selected for installation."
-fi
+
+  readonly local options=("MySQL" "PostgreSQL" "Redis" "MongoDB" "MariaDB")
+
+  # 'gum choose' provides an interactive checklist.
+  # The selection is stored in the 'choices' variable, newline-separated.
+  local choices
+  choices=$(printf "%s\n" "${options[@]}" | gum choose --no-limit --header "Select databases to install (space to select, enter to confirm)")
+
+  if [[ -z "${choices}" ]]; then
+    echo "No databases selected. Exiting."
+    exit 0
+  fi
+
+  # Loop through each selected database and install it.
+  while read -r db; do
+    InstallDatabase "${db}"
+  done <<< "${choices}"
+
+  echo "Selected databases have been installed."
+}
+
+main

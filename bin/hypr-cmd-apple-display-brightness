@@ -1,7 +1,59 @@
 #!/bin/bash
+#
+# Adjusts the brightness of a connected Apple display using asdcontrol.
+# This script is designed for systems with Apple displays and requires
+# the 'asdcontrol' utility and appropriate permissions to run.
 
-if [[ $# -eq 0 ]]; then
-  echo "Adjust Apple Display Brightness by passing +5000 or -5000 (or any range from 0-60000)"
-else
-  sudo asdcontrol $(sudo asdcontrol --detect /dev/usb/hiddev* | grep ^/dev/usb/hiddev | cut -d: -f1) -- "$1"
-fi
+set -euo pipefail
+
+#######################################
+# Prints the usage information for the script.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   Writes usage information to stdout.
+#######################################
+PrintUsage() {
+  echo "Usage: $(basename "$0") <value>"
+  echo "Adjusts Apple Display Brightness by a relative value (e.g., +5000 or -5000)."
+}
+
+#######################################
+# Main function to detect the display and adjust its brightness.
+# Globals:
+#   None
+# Arguments:
+#   $1 - The brightness adjustment value (e.g., '+5000', '-5000').
+# Outputs:
+#   Exits with an error if dependencies are not met or arguments are missing.
+#######################################
+main() {
+  if ! command -v asdcontrol &>/dev/null; then
+    echo "Error: 'asdcontrol' command not found. Please install it to use this script." >&2
+    exit 1
+  fi
+
+  if [[ $# -eq 0 ]]; then
+    PrintUsage
+    exit 1
+  fi
+
+  local adjustment="$1"
+  local hid_device
+
+  # Detect the appropriate HID device for the Apple display.
+  # The `grep` and `cut` commands isolate the device path.
+  hid_device=$(sudo asdcontrol --detect /dev/usb/hiddev* 2>/dev/null | grep '^/dev/usb/hiddev' | cut -d: -f1)
+
+  if [[ -z "${hid_device}" ]]; then
+    echo "Error: No Apple display found on a hiddev device." >&2
+    exit 2
+  fi
+
+  echo "Adjusting brightness by ${adjustment} on ${hid_device}..."
+  sudo asdcontrol "${hid_device}" -- "${adjustment}"
+}
+
+main "$@"

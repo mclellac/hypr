@@ -1,8 +1,36 @@
 #!/bin/bash
+#
+# Installs Dropbox and its dependencies, then launches the client.
 
-echo "Installing all dependencies..."
-hypr-pkg-add dropbox dropbox-cli libappindicator-gtk3 python-gpgme nautilus-dropbox
+set -euo pipefail
 
-echo "Starting Dropbox..."
-uwsm app -- dropbox-cli start &>/dev/null &
-echo "See Dropbox icon behind   hover tray in top right and right-click for setup."
+#######################################
+# Main function to install and start Dropbox.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   Exits with an error if dependencies are not met.
+#######################################
+main() {
+  for cmd in hypr-pkg-add uwsm; do
+    if ! command -v "${cmd}" &>/dev/null; then
+      echo "Error: Required command not found: ${cmd}" >&2
+      exit 1
+    fi
+  done
+
+  echo "Installing Dropbox and its dependencies..."
+  hypr-pkg-add dropbox dropbox-cli libappindicator-gtk3 python-gpgme nautilus-dropbox
+
+  echo "Starting Dropbox client in the background..."
+  # 'uwsm app' is used to launch the application in a managed way.
+  # The process is backgrounded to allow the script to complete.
+  uwsm app -- dropbox-cli start &>/dev/null &
+
+  echo "Dropbox setup will continue in the system tray."
+  echo "Look for the Dropbox icon, right-click it, and follow the instructions."
+}
+
+main

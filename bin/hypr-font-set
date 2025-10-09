@@ -1,24 +1,110 @@
 #!/bin/bash
+#
+# Sets a new monospace font for key applications, including Alacritty, Waybar,
+# SwayOSD, and the system-wide fontconfig settings.
 
-font_name="$1"
+set -euo pipefail
 
-if [[ -n "$font_name" && "$font_name" != "CNCLD" ]]; then
-  if fc-list | grep -iq "$font_name"; then
-    sed -i "s/family = \".*\"/family = \"$font_name\"/g" ~/.config/alacritty/alacritty.toml
-    sed -i "s/font-family: .*/font-family: '$font_name';/g" ~/.config/waybar/style.css
-    sed -i "s/font-family: .*/font-family: '$font_name';/g" ~/.config/swayosd/style.css
-    xmlstarlet ed -L \
-      -u '//match[@target="pattern"][test/string="monospace"]/edit[@name="family"]/string' \
-      -v "$font_name" \
-      ~/.config/fontconfig/fonts.conf
+readonly ALACRITTY_CONFIG="${HOME}/.config/alacritty/alacritty.toml"
+readonly WAYBAR_STYLE="${HOME}/.config/waybar/style.css"
+readonly SWAYOSD_STYLE="${HOME}/.config/swayosd/style.css"
+readonly FONTCONFIG_CONFIG="${HOME}/.config/fontconfig/fonts.conf"
 
-    hypr-restart-waybar
-    hypr-restart-swayosd
-    hypr-restart-walker
+#######################################
+# Checks if a given font is available on the system.
+# Globals:
+#   None
+# Arguments:
+#   $1 - The name of the font to check.
+# Outputs:
+#   Returns 0 if the font is found, 1 otherwise.
+#######################################
+IsFontAvailable() {
+  local font_name="$1"
+  fc-list | grep -iqF "${font_name}"
+}
+
+#######################################
+# Updates the font family in a CSS file using sed.
+# Globals:
+#   None
+# Arguments:
+#   $1 - The path to the CSS file.
+#   $2 - The new font name.
+# Outputs:
+#   None
+#######################################
+UpdateCssFont() {
+  local config_file="$1"
+  local font_name="$2"
+
+  if [[ -f "${config_file}" ]]; then
+    sed -i "s/font-family: .*/font-family: '${font_name}';/g" "${config_file}"
   else
-    echo "Font '$font_name' not found."
+    echo "Warning: CSS file not found, skipping: ${config_file}" >&2
+  fi
+}
+
+#######################################
+# Main function to set the new font and restart services.
+# Globals:
+#   ALACRITTY_CONFIG
+#   WAYBAR_STYLE
+#   SWAYOSD_STYLE
+#   FONTCONFIG_CONFIG
+# Arguments:
+#   $1 - The name of the font to set.
+# Outputs:
+#   Exits with an error if dependencies are not met or the font is not found.
+#######################################
+main() {
+  for cmd in sed xmlstarlet fc-list; do
+    if ! command -v "${cmd}" &>/dev/null; then
+      echo "Error: Required command not found: ${cmd}" >&2
+      exit 1
+    fi
+  done
+
+  local font_name="${1:-}"
+  if [[ -z "${font_name}" || "${font_name}" == "CNCLD" ]]; then
+    echo "Usage: $(basename "$0") <font-name>" >&2
     exit 1
   fi
-else
-  echo "Usage: hypr-font-set <font-name>"
-fi
+
+  if ! IsFontAvailable "${font_name}"; then
+    echo "Error: Font '${font_name}' not found on the system." >&2
+    exit 1
+  fi
+
+  echo "Setting font to '${font_name}'..."
+
+  # Update Alacritty config
+  if [[ -f "${ALACRITTY_CONFIG}" ]]; then
+    sed -i "s/family = \".*\"/family = \"${font_name}\"/g" "${ALACRITTY_CONFIG}"
+  else
+    echo "Warning: Alacritty config not found, skipping." >&2
+  fi
+
+  # Update CSS-based applications
+  UpdateCssFont "${WAYBAR_STYLE}" "${font_name}"
+  UpdateCssFont "${SWAYOSD_STYLE}" "${font_name}"
+
+  # Update system-wide monospace font setting
+  if [[ -f "${FONTCONFIG_CONFIG}" ]]; then
+    xmlstarlet ed -L \
+      -u '//match[@target="pattern"][test/string="monospace"]/edit[@name="family"]/string' \
+      -v "${font_name}" \
+      "${FONTCONFIG_CONFIG}"
+  else
+    echo "Warning: Fontconfig file not found, skipping." >&2
+  fi
+
+  echo "Restarting components to apply font changes..."
+  hypr-restart-waybar
+  hypr-restart-swayosd
+  hypr-restart-walker
+
+  echo "Font set successfully."
+}
+
+main "$@"

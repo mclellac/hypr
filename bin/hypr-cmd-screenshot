@@ -1,17 +1,54 @@
 #!/bin/bash
+#
+# Captures a screenshot using 'hyprshot' and opens it in 'satty' for editing
+# and saving. Supports capturing a region, a window, or an entire output.
 
-[[ -f ~/.config/user-dirs.dirs ]] && source ~/.config/user-dirs.dirs
-OUTPUT_DIR="${hypr_SCREENSHOT_DIR:-${XDG_PICTURES_DIR:-$HOME/Pictures}}"
+set -euo pipefail
 
-if [[ ! -d "$OUTPUT_DIR" ]]; then
-  notify-send "Screenshot directory does not exist: $OUTPUT_DIR" -u critical -t 3000
-  exit 1
+# Source user-dirs.dirs to get XDG pictures directory, with fallbacks.
+if [[ -f "${HOME}/.config/user-dirs.dirs" ]]; then
+  # shellcheck source=/dev/null
+  source "${HOME}/.config/user-dirs.dirs"
 fi
+readonly OUTPUT_DIR="${hypr_SCREENSHOT_DIR:-${XDG_PICTURES_DIR:-${HOME}/Pictures}}"
 
-pkill slurp || hyprshot -m ${1:-region} --raw |
-  satty --filename - \
-    --output-filename "$OUTPUT_DIR/screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png" \
-    --early-exit \
-    --actions-on-enter save-to-clipboard \
-    --save-after-copy \
-    --copy-command 'wl-copy'
+#######################################
+# Main function to handle the screenshot process.
+# Globals:
+#   OUTPUT_DIR
+# Arguments:
+#   $1 - (Optional) The capture mode for hyprshot ('region', 'window', 'output').
+#        Defaults to 'region'.
+# Outputs:
+#   Exits with an error if dependencies are not met or directories are missing.
+#######################################
+main() {
+  for cmd in hyprshot satty wl-copy; do
+    if ! command -v "${cmd}" &>/dev/null; then
+      notify-send "Error: Required command not found" "${cmd}" -u critical
+      exit 1
+    fi
+  done
+
+  if [[ ! -d "${OUTPUT_DIR}" ]]; then
+    notify-send "Error: Screenshot directory does not exist" "${OUTPUT_DIR}" -u critical
+    exit 1
+  fi
+
+  local mode="${1:-region}"
+  local output_filename="${OUTPUT_DIR}/screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png"
+
+  # Ensure no slurp process is running, which can interfere with hyprshot.
+  pkill slurp || true
+
+  # The main command pipeline for taking and editing a screenshot.
+  hyprshot -m "${mode}" --raw |
+    satty --filename - \
+      --output-filename "${output_filename}" \
+      --early-exit \
+      --actions-on-enter save-to-clipboard \
+      --save-after-copy \
+      --copy-command 'wl-copy'
+}
+
+main "$@"

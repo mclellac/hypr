@@ -1,11 +1,69 @@
 #!/bin/bash
+#
+# Determines the current working directory (CWD) of the active terminal window.
+# It does this by finding the terminal's process ID (PID) via hyprctl, then
+# finding the PID of its child shell process, and finally reading the CWD
+# from the /proc filesystem.
 
-# Go from current active terminal to its child shell process and run cwd there
-terminal_pid=$(hyprctl activewindow | awk '/pid:/ {print $2}')
-shell_pid=$(pgrep -P "$terminal_pid" | head -n1)
+set -euo pipefail
 
-if [[ -n $shell_pid ]]; then
-  readlink -f "/proc/$shell_pid/cwd" 2>/dev/null
-else
-  echo "$HOME"
-fi
+#######################################
+# Finds the PID of the active window using hyprctl.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   The PID of the active window, or an empty string on failure.
+#######################################
+GetActiveWindowPid() {
+  hyprctl activewindow | awk '/pid:/ {print $2; exit}'
+}
+
+#######################################
+# Finds the PID of the first child process for a given parent PID.
+# Globals:
+#   None
+# Arguments:
+#   $1 - The parent process ID.
+# Outputs:
+#   The PID of the child process, or an empty string if none is found.
+#######################################
+GetChildPid() {
+  local parent_pid="$1"
+  if [[ -z "${parent_pid}" ]]; then
+    return
+  fi
+  pgrep -P "${parent_pid}" | head -n 1
+}
+
+#######################################
+# Main function to find and print the CWD of the active terminal.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   Prints the CWD to stdout. Defaults to $HOME if unable to determine.
+#######################################
+main() {
+  if ! command -v hyprctl &>/dev/null; then
+    echo "${HOME}"
+    exit 1
+  fi
+
+  local terminal_pid
+  terminal_pid=$(GetActiveWindowPid)
+  local shell_pid
+  shell_pid=$(GetChildPid "${terminal_pid}")
+
+  if [[ -n "${shell_pid}" && -d "/proc/${shell_pid}" ]]; then
+    # Read the symbolic link to get the current working directory.
+    readlink -f "/proc/${shell_pid}/cwd" 2>/dev/null || echo "${HOME}"
+  else
+    # Fallback to the user's home directory if the CWD cannot be found.
+    echo "${HOME}"
+  fi
+}
+
+main
