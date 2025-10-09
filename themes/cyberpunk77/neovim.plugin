@@ -1,0 +1,8 @@
+return {
+  "DonJulve/NeoCyberVim",
+  lazy = false,
+  priority = 1000,
+  config = function()
+    vim.cmd("colorscheme NeoCyberVim")
+  end,
+}
