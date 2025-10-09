@@ -1,19 +1,87 @@
 #!/bin/bash
+#
+# Switches the default audio sink to the next available one in the list
+# provided by WirePlumber's 'wpctl' command. It cycles through the sinks
+# and unmutes the selected one.
 
-# Find all the audio sinks but exit if there are none
-sinks=($(wpctl status | sed -n '/Sinks:/,/Sources:/p' | grep -E '^\s*│\s+\*?\s*[0-9]+\.' | sed -E 's/^[^0-9]*([0-9]+)\..*/\1/'))
-[ ${#sinks[@]} -eq 0 ] && exit 1
+set -euo pipefail
 
-# Find current audio sink
-current=$(wpctl status | sed -n '/Sinks:/,/Sources:/p' | grep '^\s*│\s*\*' | sed -E 's/^[^0-9]*([0-9]+)\..*/\1/')
+#######################################
+# Retrieves a list of available audio sink IDs.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   A space-separated list of sink IDs.
+#######################################
+GetSinks() {
+  wpctl status |
+    sed -n '/Sinks:/,/Sources:/p' |
+    grep -E '^\s*│\s+\*?\s*[0-9]+\.' |
+    sed -E 's/^[^0-9]*([0-9]+)\..*/\1/' |
+    tr '\n' ' '
+}
 
-# Find the next sink (looping around in the list)
-for i in "${!sinks[@]}"; do
-  [ "${sinks[$i]}" = "$current" ] && next=${sinks[$(((i + 1) % ${#sinks[@]}))]}
-done
-next=${next:-${sinks[0]}}
+#######################################
+# Identifies the currently active audio sink ID.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   The ID of the current default sink.
+#######################################
+GetCurrentSink() {
+  wpctl status |
+    sed -n '/Sinks:/,/Sources:/p' |
+    grep '^\s*│\s*\*' |
+    sed -E 's/^[^0-9]*([0-9]+)\..*/\1/'
+}
 
-# Set the next sink and ensure it's not muted
-wpctl set-default "$next"
-wpctl set-mute "$next" 0
+#######################################
+# Main function to switch to the next audio sink.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   Exits if 'wpctl' is not found or no sinks are available.
+#######################################
+main() {
+  if ! command -v wpctl &>/dev/null; then
+    echo "Error: 'wpctl' command not found. Please install WirePlumber." >&2
+    exit 1
+  fi
 
+  local -a sinks
+  # shellcheck disable=SC2207
+  sinks=($(GetSinks))
+
+  if [[ ${#sinks[@]} -eq 0 ]]; then
+    echo "No audio sinks found." >&2
+    exit 1
+  fi
+
+  local current_sink
+  current_sink=$(GetCurrentSink)
+  local next_sink
+
+  # Find the index of the current sink and determine the next one.
+  for i in "${!sinks[@]}"; do
+    if [[ "${sinks[$i]}" == "${current_sink}" ]]; then
+      # The modulo operator ensures the list wraps around.
+      next_sink=${sinks[$(((i + 1) % ${#sinks[@]}))]}
+      break
+    fi
+  done
+
+  # If the current sink wasn't found (e.g., a virtual device), default to the first sink.
+  next_sink=${next_sink:-${sinks[0]}}
+
+  echo "Switching audio sink to ${next_sink}..."
+  wpctl set-default "${next_sink}"
+  wpctl set-mute "${next_sink}" 0
+}
+
+main

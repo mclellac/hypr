@@ -1,7 +1,8 @@
 #!/bin/bash
+#
+# Stops any active screen recording session by invoking the main
+# screen recording script, which handles the stop logic.
 
-if pgrep -x wl-screenrec >/dev/null || pgrep -x wf-recorder >/dev/null; then
-  pkill -x wl-screenrec
-  pkill -x wf-recorder
-  notify-send "Screen recording stopped" -t 2000
-fi
+set -euo pipefail
+
+hypr-cmd-screenrecord

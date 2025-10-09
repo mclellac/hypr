@@ -1,32 +1,116 @@
 #!/bin/bash
+#
+# Manages screen recording sessions, supporting different backends based on
+# the available GPU and allowing for full-screen or region-based captures.
+# It also stops any ongoing recording if one is active.
 
-[[ -f ~/.config/user-dirs.dirs ]] && source ~/.config/user-dirs.dirs
-OUTPUT_DIR="${hypr_SCREENRECORD_DIR:-${XDG_VIDEOS_DIR:-$HOME/Videos}}"
+set -euo pipefail
 
-if [[ ! -d "$OUTPUT_DIR" ]]; then
-  notify-send "Screen recording directory does not exist: $OUTPUT_DIR" -u critical -t 3000
-  exit 1
+# Source user-dirs.dirs to get XDG video directory, with fallbacks.
+if [[ -f "${HOME}/.config/user-dirs.dirs" ]]; then
+  # shellcheck source=/dev/null
+  source "${HOME}/.config/user-dirs.dirs"
 fi
+readonly OUTPUT_DIR="${hypr_SCREENRECORD_DIR:-${XDG_VIDEOS_DIR:-${HOME}/Videos}}"
 
-screenrecording() {
-  filename="$OUTPUT_DIR/screenrecording-$(date +'%Y-%m-%d_%H-%M-%S').mp4"
-  notify-send "Screen recording starting..." -t 1000
-  sleep 1
+#######################################
+# Checks if any screen recording process is currently running.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   Returns 0 if a recorder is active, 1 otherwise.
+#######################################
+IsRecorderRunning() {
+  pgrep -x wf-recorder >/dev/null || pgrep -x wl-screenrec >/dev/null
+}
 
+#######################################
+# Stops any active screen recording process and sends a notification.
+# Globals:
+#   OUTPUT_DIR
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+StopRecording() {
+  echo "Stopping active screen recording..."
+  pkill -x wf-recorder || true
+  pkill -x wl-screenrec || true
+  notify-send "Screen recording saved" "The video file is in ${OUTPUT_DIR}" -t 3000
+}
+
+#######################################
+# Starts a new screen recording.
+# Globals:
+#   OUTPUT_DIR
+# Arguments:
+#   $@ - Optional arguments to pass to the recorder (e.g., -g for geometry).
+# Outputs:
+#   None
+#######################################
+StartRecording() {
+  local filename
+  filename="${OUTPUT_DIR}/screenrecording-$(date +'%Y-%m-%d_%H-%M-%S').mp4"
+
+  notify-send "Screen recording starting..." "File: ${filename}" -t 2000
+  sleep 1 # Give time for the notification to be seen.
+
+  # Choose the recorder based on the GPU. wf-recorder is preferred for NVIDIA/Intel.
   if lspci | grep -Eqi 'nvidia|intel.*graphics'; then
-    wf-recorder -f "$filename" -c libx264 -p crf=23 -p preset=medium -p movflags=+faststart "$@"
+    if ! command -v wf-recorder &>/dev/null; then
+      notify-send "Error: wf-recorder not found." -u critical
+      exit 1
+    fi
+    wf-recorder -f "${filename}" -c libx264 -p crf=23 -p preset=medium -p movflags=+faststart "$@"
   else
-    wl-screenrec -f "$filename" --ffmpeg-encoder-options="-c:v libx264 -crf 23 -preset medium -movflags +faststart" "$@"
+    if ! command -v wl-screenrec &>/dev/null; then
+      notify-send "Error: wl-screenrec not found." -u critical
+      exit 1
+    fi
+    wl-screenrec -f "${filename}" --ffmpeg-encoder-options="-c:v libx264 -crf 23 -preset medium -movflags +faststart" "$@"
   fi
 }
 
-if pgrep -x wl-screenrec >/dev/null || pgrep -x wf-recorder >/dev/null; then
-  pkill -x wl-screenrec
-  pkill -x wf-recorder
-  notify-send "Screen recording saved to $OUTPUT_DIR" -t 2000
-elif [[ "$1" == "output" ]]; then
-  screenrecording
-else
-  region=$(slurp) || exit 1
-  screenrecording -g "$region"
-fi
+#######################################
+# Main function to handle the screen recording logic.
+# Globals:
+#   None
+# Arguments:
+#   $1 - (Optional) 'output' to record the entire screen, otherwise prompts for region.
+# Outputs:
+#   Exits with an error if the output directory does not exist.
+#######################################
+main() {
+  if [[ ! -d "${OUTPUT_DIR}" ]]; then
+    notify-send "Error: Screen recording directory does not exist" "${OUTPUT_DIR}" -u critical
+    exit 1
+  fi
+
+  if IsRecorderRunning; then
+    StopRecording
+    exit 0
+  fi
+
+  if [[ "${1:-}" == "output" ]]; then
+    # Record the entire output without region selection.
+    StartRecording
+  else
+    # Use slurp to select a region for recording.
+    if ! command -v slurp &>/dev/null; then
+      notify-send "Error: slurp not found, cannot select region." -u critical
+      exit 1
+    fi
+    local region
+    region=$(slurp)
+    if [[ -n "${region}" ]]; then
+      StartRecording -g "${region}"
+    else
+      echo "Region selection cancelled."
+    fi
+  fi
+}
+
+main "$@"

@@ -1,3 +1,34 @@
 #!/bin/bash
+#
+# Lists available monospace fonts on the system, suitable for use in a terminal
+# or code editor. It uses 'fc-list' to find monospaced fonts and then filters
+# out common symbol, icon, and other non-text fonts.
 
-fc-list :spacing=100 -f "%{family[0]}\n" | grep -v -i -E 'emoji|signwriting|hypr' | sort -u
+set -euo pipefail
+
+#######################################
+# Main function to list and filter monospace fonts.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   A sorted, unique list of monospace font family names to stdout.
+#   Exits with an error if 'fc-list' is not found.
+#######################################
+main() {
+  if ! command -v fc-list &>/dev/null; then
+    echo "Error: 'fc-list' command not found. Please install the 'fontconfig' package." >&2
+    exit 1
+  fi
+
+  # This pipeline performs the following steps:
+  # 1. 'fc-list' finds all fonts with character spacing of 100 (monospace).
+  # 2. 'grep' filters out fonts containing 'emoji', 'signwriting', or 'hypr'.
+  # 3. 'sort -u' sorts the list alphabetically and removes duplicate entries.
+  fc-list :spacing=100 -f "%{family[0]}\n" |
+    grep -v -i -E 'emoji|signwriting|hypr' |
+    sort -u
+}
+
+main

@@ -1,3 +1,31 @@
 #!/bin/bash
+#
+# Detects and prints the current monospace font family by reading it from the
+# Alacritty configuration file.
 
-grep -oP 'family\s*=\s*"\K[^"]+' ~/.config/alacritty/alacritty.toml | head -n1
+set -euo pipefail
+
+readonly ALACRITTY_CONFIG="${HOME}/.config/alacritty/alacritty.toml"
+
+#######################################
+# Main function to find and print the current font.
+# Globals:
+#   ALACRITTY_CONFIG
+# Arguments:
+#   None
+# Outputs:
+#   Prints the font family name to stdout.
+#   Exits with an error if the config file is not found.
+#######################################
+main() {
+  if [[ ! -f "${ALACRITTY_CONFIG}" ]]; then
+    echo "Error: Alacritty config file not found at ${ALACRITTY_CONFIG}" >&2
+    exit 1
+  fi
+
+  # Use grep with a Perl-compatible regex (-P) to find the 'family' setting.
+  # \K resets the start of the match, so only the font name inside the quotes is returned.
+  grep -oP 'family\s*=\s*"\K[^"]+' "${ALACRITTY_CONFIG}" | head -n 1
+}
+
+main

@@ -1,12 +1,62 @@
 #!/bin/bash
+#
+# Executes one-time setup scripts after the initial installation. This script
+# checks for a 'first-run' flag file and, if found, runs necessary setup
+# tasks and removes the flag to prevent re-execution.
 
-set -e
+set -euo pipefail
 
-FIRST_RUN_MODE=~/.local/state/hypr/first-run.mode
+# The presence of this file indicates that the first-run tasks should be executed.
+readonly FIRST_RUN_FLAG="${HOME}/.local/state/hypr/first-run.mode"
 
-if [[ -f "$FIRST_RUN_MODE" ]]; then
-  rm -f "$FIRST_RUN_MODE"
-  $hypr_PATH/install/first-run/battery-monitor.sh
-  $hypr_PATH/install/first-run/firewall.sh
-  sudo rm -f /etc/sudoers.d/first-run
-fi
+#######################################
+# Main function to execute the first-run setup tasks.
+# Globals:
+#   FIRST_RUN_FLAG
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  if [[ ! -f "${FIRST_RUN_FLAG}" ]]; then
+    echo "First-run flag not found. Nothing to do."
+    exit 0
+  fi
+
+  # Determine the repository root directory based on the script's location.
+  local repo_root
+  repo_root=$(cd "$(dirname "$0")/.." && pwd)
+
+  local battery_monitor_script="${repo_root}/install/first-run/battery-monitor.sh"
+  local firewall_script="${repo_root}/install/first-run/firewall.sh"
+  local sudoers_file="/etc/sudoers.d/first-run"
+
+  echo "First-run flag found. Executing setup tasks..."
+
+  # Remove the flag first to prevent re-running on failure.
+  rm -f "${FIRST_RUN_FLAG}"
+
+  if [[ -x "${battery_monitor_script}" ]]; then
+    echo "Running battery monitor setup..."
+    "${battery_monitor_script}"
+  else
+    echo "Warning: Battery monitor setup script not found or not executable." >&2
+  fi
+
+  if [[ -x "${firewall_script}" ]]; then
+    echo "Running firewall setup..."
+    "${firewall_script}"
+  else
+    echo "Warning: Firewall setup script not found or not executable." >&2
+  fi
+
+  if [[ -f "${sudoers_file}" ]]; then
+    echo "Removing temporary sudoers file..."
+    sudo rm -f "${sudoers_file}"
+  fi
+
+  echo "First-run setup complete."
+}
+
+main

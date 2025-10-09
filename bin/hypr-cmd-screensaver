@@ -1,22 +1,96 @@
 #!/bin/bash
+#
+# Launches a terminal-based screensaver using 'tte' (Terminal Text Effects)
+# with a randomly selected visual effect. The screensaver will exit when any
+# key is pressed.
 
-function exit_screensaver {
-  pkill -x tte 2>/dev/null
-  pkill -f "alacritty --class Screensaver" 2>/dev/null
+set -euo pipefail
+
+readonly BRANDING_FILE="${HOME}/.config/hypr/branding/screensaver.txt"
+
+#######################################
+# Cleans up running processes and exits the script.
+# This function is called by the trap and on user input.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+ExitScreensaver() {
+  # Terminate any running 'tte' or screensaver terminal instances.
+  pkill -x tte &>/dev/null || true
+  pkill -f "alacritty --class Screensaver" &>/dev/null || true
   exit 0
 }
 
-trap exit_screensaver SIGINT SIGTERM SIGHUP SIGQUIT
+#######################################
+# Selects a random visual effect from the list provided by 'tte'.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   The name of a single, randomly chosen effect.
+#######################################
+GetRandomEffect() {
+  # This pipeline is used to extract the list of available effects from
+  # the 'tte' command's help text. It is fragile and may break if the
+  # help output of 'tte' changes in a future version.
+  tte 2>&1 |
+    grep -oP '{\K[^}]+' | # Extract comma-separated list from braces
+    tr ',' '\n' |         # Put each effect on a new line
+    sed -n '/^beams$/,$p' | # Filter to a specific subset of effects
+    sort -u |             # Sort and remove duplicates
+    shuf -n 1             # Select one random effect
+}
 
-while true; do
-  effect=$(tte 2>&1 | grep -oP '{\K[^}]+' | tr ',' ' ' | tr ' ' '\n' | sed -n '/^beams$/,$p' | sort -u | shuf -n1)
-  tte -i ~/.config/hypr/branding/screensaver.txt \
-    --frame-rate 240 --canvas-width 0 --canvas-height $(($(tput lines) - 2)) --anchor-canvas c --anchor-text c \
-    "$effect" &
+#######################################
+# Main function to run the screensaver loop.
+# Globals:
+#   BRANDING_FILE
+# Arguments:
+#   None
+# Outputs:
+#   Exits with an error if dependencies are not met.
+#######################################
+main() {
+  if ! command -v tte &>/dev/null; then
+    echo "Error: 'tte' command not found. Please install it to use the screensaver." >&2
+    exit 1
+  fi
 
-  while pgrep -x tte >/dev/null; do
-    if read -n 1 -t 3; then
-      exit_screensaver
-    fi
+  if [[ ! -f "${BRANDING_FILE}" ]]; then
+    echo "Error: Branding file not found at ${BRANDING_FILE}" >&2
+    exit 1
+  fi
+
+  # Set up a trap to ensure a clean exit on common termination signals.
+  trap ExitScreensaver SIGINT SIGTERM SIGHUP SIGQUIT
+
+  while true; do
+    local effect
+    effect=$(GetRandomEffect)
+
+    # Launch the 'tte' screensaver in the background.
+    # The canvas is sized to almost fill the terminal.
+    tte -i "${BRANDING_FILE}" \
+      --frame-rate 60 \
+      --canvas-width 0 \
+      --canvas-height "$(( $(tput lines) - 2 ))" \
+      --anchor-canvas c \
+      --anchor-text c \
+      "${effect}" &
+
+    # Wait for user input to exit.
+    while pgrep -x tte &>/dev/null; do
+      # 'read' waits for a single keypress with a 3-second timeout.
+      if read -n 1 -t 3; then
+        ExitScreensaver
+      fi
+    done
   done
-done
+}
+
+main "$@"

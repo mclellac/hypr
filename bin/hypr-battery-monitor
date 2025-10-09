@@ -1,36 +1,113 @@
 #!/bin/bash
+#
+# Monitors the battery level and sends a critical notification if the charge
+# drops below a defined threshold while discharging. Designed to be run
+# periodically by a systemd timer or cron job.
 
-# Designed to be run by systemd timer every 30 seconds and alerts if battery is low
+set -euo pipefail
 
-BATTERY_THRESHOLD=10
-NOTIFICATION_FLAG="/run/user/$UID/hypr_battery_notified"
+readonly BATTERY_THRESHOLD=10
+readonly NOTIFICATION_FLAG="/run/user/${UID}/hypr_battery_notified"
 
-get_battery_percentage() {
-  upower -i "$(upower -e | grep 'BAT')" \
-  | awk -F: '/percentage/ {
-      gsub(/[%[:space:]]/, "", $2);
-      val=$2;
-      printf("%d\n", (val+0.5))
-      exit
-    }'
+#######################################
+# Retrieves the first battery found by upower.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   The UPower device path for the battery, or an empty string if none is found.
+#######################################
+GetBatteryDevice() {
+  upower -e | grep 'BAT' | head -n 1
 }
 
-get_battery_state() {
-  upower -i $(upower -e | grep 'BAT') | grep -E "state" | awk '{print $2}'
-}
-
-send_notification() {
-  notify-send -u critical "󱐋 Time to recharge!" "Battery is down to ${1}%" -i battery-caution -t 30000
-}
-
-BATTERY_LEVEL=$(get_battery_percentage)
-BATTERY_STATE=$(get_battery_state)
-
-if [[ "$BATTERY_STATE" == "discharging" && "$BATTERY_LEVEL" -le "$BATTERY_THRESHOLD" ]]; then
-  if [[ ! -f "$NOTIFICATION_FLAG" ]]; then
-    send_notification "$BATTERY_LEVEL"
-    touch "$NOTIFICATION_FLAG"
+#######################################
+# Fetches the current battery charge percentage.
+# Globals:
+#   None
+# Arguments:
+#   $1 - The UPower device path for the battery.
+# Outputs:
+#   The battery percentage as an integer, or 100 if no battery is found.
+#######################################
+GetBatteryPercentage() {
+  local battery_device="$1"
+  if [[ -z "${battery_device}" ]]; then
+    echo "100" # Assume 100% if no battery is present
+    return
   fi
-else
-  rm -f "$NOTIFICATION_FLAG"
-fi
+
+  upower -i "${battery_device}" | awk -F: '/percentage/ {gsub(/[%[:space:]]/, "", $2); print $2; exit}'
+}
+
+#######################################
+# Fetches the current battery state (e.g., "discharging").
+# Globals:
+#   None
+# Arguments:
+#   $1 - The UPower device path for the battery.
+# Outputs:
+#   The battery state, or "charging" if no battery is found.
+#######################################
+GetBatteryState() {
+  local battery_device="$1"
+  if [[ -z "${battery_device}" ]]; then
+    echo "charging" # Assume charging if no battery is present
+    return
+  fi
+
+  upower -i "${battery_device}" | awk -F: '/state/ {gsub(/[[:space:]]/, "", $2); print $2; exit}'
+}
+
+#######################################
+# Sends a critical notification about the low battery level.
+# Globals:
+#   None
+# Arguments:
+#   $1 - The current battery level.
+# Outputs:
+#   None
+#######################################
+SendNotification() {
+  local battery_level="$1"
+  notify-send -u critical "󱐋 Time to recharge!" "Battery is down to ${battery_level}%" -i battery-caution -t 30000
+}
+
+#######################################
+# Main function to check battery status and send notifications.
+# Globals:
+#   BATTERY_THRESHOLD
+#   NOTIFICATION_FLAG
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  local battery_device
+  battery_device=$(GetBatteryDevice)
+
+  # If no battery is found, there's nothing to do.
+  if [[ -z "${battery_device}" ]]; then
+    exit 0
+  fi
+
+  local battery_level
+  battery_level=$(GetBatteryPercentage "${battery_device}")
+  local battery_state
+  battery_state=$(GetBatteryState "${battery_device}")
+
+  if [[ "${battery_state}" == "discharging" && "${battery_level}" -le "${BATTERY_THRESHOLD}" ]]; then
+    # Send notification only once per discharge cycle.
+    if [[ ! -f "${NOTIFICATION_FLAG}" ]]; then
+      SendNotification "${battery_level}"
+      touch "${NOTIFICATION_FLAG}"
+    fi
+  else
+    # Remove the flag if the battery is charging or above the threshold.
+    rm -f "${NOTIFICATION_FLAG}"
+  fi
+}
+
+main
