@@ -3,12 +3,12 @@
 
 @define-color workspaces-foreground #575279;
 @define-color hypr-foreground #575279;
-@define-color update-foreground #575279;
+@define-color update-foreground #88C0D0;
 @define-color weather-foreground #575279;
-@define-color cpu-foreground #575279;
+@define-color cpu-foreground #88C0D0;
 @define-color clock-foreground #575279;
 @define-color network-foreground #575279;
-@define-color battery-foreground #575279;
+@define-color battery-foreground #88C0D0;
 @define-color bluetooth-foreground #575279;
-@define-color pulseaudio-foreground #575279;
+@define-color pulseaudio-foreground #88C0D0;
 @define-color tray-expander-foreground #575279;
