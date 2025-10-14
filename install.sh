@@ -10,12 +10,12 @@ export PATH="$HYPR_PATH/bin:$PATH"
 # Packaging
 #source "$HYPR_INSTALL/packages.sh"
 source "$HYPR_INSTALL/packaging/fonts.sh"
-source "$HYPR_INSTALL/packaging/lazyvim.sh"
 source "$HYPR_INSTALL/packaging/webapps.sh"
 source "$HYPR_INSTALL/packaging/tuis.sh"
 
 # Configuration
 source "$HYPR_INSTALL/config/config.sh"
+source "$HYPR_INSTALL/packaging/lazyvim.sh"
 source "$HYPR_INSTALL/config/theme.sh"
 source "$HYPR_INSTALL/config/branding.sh"
 source "$HYPR_INSTALL/config/git.sh"
