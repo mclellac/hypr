@@ -1,0 +1,24 @@
+# All options are commented by default.
+# Check out the documentation for all available options and their meaning.
+
+# The socket path.
+# socket = "/tmp/elephant.sock"
+
+# The idle delay in seconds.
+# After this time, unused providers will be unloaded.
+# idle_delay = 300
+
+# Wether to show logs or not.
+# debug = false
+
+# The log level.
+# log_level = "info"
+
+# The amount of items to keep in the history.
+# history_size = 1000
+
+[providers]
+# A list of providers to load on startup.
+startup = ["desktopapplications", "files"]
+# A list of providers to never unload.
+# persistent = []

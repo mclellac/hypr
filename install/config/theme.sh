@@ -16,7 +16,7 @@ fi
 
 # Set initial theme
 mkdir -p ~/.config/hypr/current
-ln -snf ~/.config/hypr/themes/tokyo-night ~/.config/hypr/current/theme
+ln -snf ~/.config/hypr/themes/material ~/.config/hypr/current/theme
 ln -snf ~/.config/hypr/current/theme/backgrounds/1-scenery-pink-lakeside-sunset-lake-landscape-scenic-panorama-7680x3215-144.png ~/.config/hypr/current/background
 
 # Set specific app links for current theme
@@ -33,4 +33,4 @@ ln -snf ~/.config/hypr/current/theme/kitty.conf ~/.config/kitty/theme.conf
 
 # Apply the default theme to all applications
 echo "Applying default theme..."
-"$HYPR_PATH/bin/hypr-theme-set" tokyo-night
+"$HYPR_PATH/bin/hypr-theme-set" material

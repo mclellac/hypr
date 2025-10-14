@@ -1,6 +1,9 @@
 #!/bin/bash
 
-browser=$(xdg-settings get default-web-browser)
+browser=$(timeout 1s xdg-settings get default-web-browser)
+if [[ $? -ne 0 || -z "$browser" ]]; then
+  browser="chromium.desktop"
+fi
 
 case $browser in
 google-chrome* | brave-browser* | microsoft-edge* | opera* | vivaldi*) ;;
