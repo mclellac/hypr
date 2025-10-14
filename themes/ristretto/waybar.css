@@ -1,14 +1,14 @@
 @define-color foreground #c28f3e;
 @define-color background #2c2525;
 
-@define-color workspaces-foreground #c28f3e;
-@define-color hypr-foreground #c28f3e;
-@define-color update-foreground #c28f3e;
-@define-color weather-foreground #c28f3e;
-@define-color cpu-foreground #c28f3e;
-@define-color clock-foreground #c28f3e;
-@define-color network-foreground #c28f3e;
-@define-color battery-foreground #c28f3e;
-@define-color bluetooth-foreground #c28f3e;
-@define-color pulseaudio-foreground #c28f3e;
-@define-color tray-expander-foreground #c28f3e;
+@define-color workspaces-foreground #2c2525;
+@define-color hypr-foreground #2c2525;
+@define-color update-foreground #c3b7b8;
+@define-color weather-foreground #2c2525;
+@define-color cpu-foreground #c3b7b8;
+@define-color clock-foreground #2c2525;
+@define-color network-foreground #2c2525;
+@define-color battery-foreground #c3b7b8;
+@define-color bluetooth-foreground #2c2525;
+@define-color pulseaudio-foreground #c3b7b8;
+@define-color tray-expander-foreground #2c2525;
