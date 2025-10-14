@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# Fetches weather for Toronto from wttr.in and formats it for Waybar.
+main() {
+  local city="Toronto"
+  local url="https://wttr.in/${city}?format=j1"
+  local weather
+  weather=$(curl -s "${url}")
+
+  if [[ -z "${weather}" ]]; then
+    echo '{"text": "", "tooltip": "Weather data unavailable"}'
+    exit 0
+  fi
+
+  local condition
+  condition=$(echo "${weather}" | jq -r '.current_condition[0].weatherDesc[0].value')
+  local temp_c
+  temp_c=$(echo "${weather}" | jq -r '.current_condition[0].temp_C')
+  local feels_like_c
+  feels_like_c=$(echo "${weather}" | jq -r '.current_condition[0].FeelsLikeC')
+
+  # Map weather condition to an icon
+  local icon
+  case "${condition}" in
+    *Sunny*|*Clear*)
+      icon=""
+      ;;
+    *Partly*Cloudy*)
+      icon=""
+      ;;
+    *Cloudy*|*Overcast*)
+      icon="☁"
+      ;;
+    *Mist*|*Fog*)
+      icon="🌫"
+      ;;
+    *Patchy*rain*|*Light*rain*|*rain*shower*)
+      icon="🌦"
+      ;;
+    *Thundery*outbreaks*)
+      icon="⛈"
+      ;;
+    *snow*|*blizzard*)
+      icon="🌨"
+      ;;
+    *)
+      icon=""
+      ;;
+  esac
+
+  local text="${icon} ${temp_c}°C"
+  local tooltip="${condition}\nFeels like ${feels_like_c}°C"
+
+  printf '{"text": "%s", "tooltip": "%s"}\n' "${text}" "${tooltip}"
+}
+
+main "$@"
