@@ -14,11 +14,11 @@ window#waybar {
 }
 
 .modules-left {
-  margin-left: 10px;
+  margin-left: 16px;
 }
 
 .modules-right {
-  margin-right: 10px;
+  margin-right: 16px;
 }
 
 .workspaces {
@@ -28,7 +28,7 @@ window#waybar {
 .workspaces button {
   all: initial;
   padding: 0 8px;
-  margin: 0 2px;
+  margin: 0 4px;
   min-width: 10px;
 }
 
@@ -47,7 +47,7 @@ window#waybar {
 .pulseaudio,
 .tray-expander {
   min-width: 12px;
-  margin: 0 10px;
+  margin: 0 12px;
 }
 
 .hypr {
@@ -61,6 +61,7 @@ window#waybar {
 
 .weather {
   color: @weather-foreground;
+  margin-left: 10px;
 }
 
 .cpu {
@@ -69,7 +70,7 @@ window#waybar {
 
 .clock {
   color: @clock-foreground;
-  margin-right: 15px; /* Add spacing to the right of the clock */
+  margin-right: 20px; /* Add significant spacing to the right of the clock */
 }
 
 .network {
