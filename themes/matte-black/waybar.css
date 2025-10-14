@@ -3,7 +3,7 @@
 
 @define-color workspaces-background @background;
 @define-color workspaces-foreground @foreground;
-@define-color hypr-background #282828;
+@define-color hypr-background #141414;
 @define-color hypr-foreground #8a8a8d;
 @define-color update-background @background;
 @define-color update-foreground #8a8a8d;
