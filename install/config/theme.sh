@@ -34,3 +34,7 @@ ln -snf ~/.config/hypr/current/theme/mako.ini ~/.config/mako/config
 
 mkdir -p ~/.config/kitty
 ln -snf ~/.config/hypr/current/theme/kitty.conf ~/.config/kitty/theme.conf
+
+# Apply the default theme to all applications
+echo "Applying default theme..."
+"$HYPR_PATH/bin/hypr-theme-set" tokyo-night
