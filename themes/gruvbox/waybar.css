@@ -1,5 +1,5 @@
-@define-color foreground #d4be98;;
-@define-color background #282828;;
+@define-color foreground #d4be98;
+@define-color background #282828;
 
 @define-color workspaces-background @background;
 @define-color workspaces-foreground @foreground;
