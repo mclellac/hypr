@@ -5,7 +5,7 @@
   "spacing": 0,
   "height": 26,
   "modules-left": ["custom/hypr", "hyprland/workspaces"],
-  "modules-center": ["clock", "custom/update"],
+  "modules-center": ["clock", "custom/weather", "custom/update"],
   "modules-right": [
     "group/tray-expander",
     "bluetooth",
@@ -15,6 +15,7 @@
     "battery"
   ],
   "hyprland/workspaces": {
+    "class": "workspaces",
     "on-click": "activate",
     "format": "{icon}",
     "format-icons": {
@@ -39,30 +40,41 @@
     }
   },
   "custom/hypr": {
+    "class": "hypr",
     "format": "<span font='hypr'>\ue900</span>",
     "on-click": "hypr-menu",
     "tooltip-format": "hypr Menu\n\nSuper + Alt + Space"
   },
   "custom/update": {
+    "class": "update",
     "format": "",
     "exec": "hypr-update-available",
     "on-click": "hypr-launch-floating-terminal-with-presentation hypr-update",
     "tooltip-format": "hypr update available",
     "interval": 3600
   },
-
+  "custom/weather": {
+    "class": "weather",
+    "exec": "hypr-weather",
+    "format": "{}",
+    "interval": 900,
+    "tooltip": true
+  },
   "cpu": {
+    "class": "cpu",
     "interval": 5,
     "format": "󰍛",
     "on-click": "alacritty -e btop"
   },
   "clock": {
-    "format": "{:%A %H:%M}",
+    "class": "clock",
+    "format": "{:%A %I:%M %p}",
     "format-alt": "{:%d %B W%V %Y}",
     "tooltip": false,
     "on-click-right": "hypr-cmd-tzupdate"
   },
   "network": {
+    "class": "network",
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
     "format": "{icon}",
     "format-wifi": "{icon}",
@@ -76,6 +88,7 @@
     "on-click": "alacritty --class=Impala -e impala"
   },
   "battery": {
+    "class": "battery",
     "format": "{capacity}% {icon}",
     "format-discharging": "{icon}",
     "format-charging": "{icon}",
@@ -95,6 +108,7 @@
     }
   },
   "bluetooth": {
+    "class": "bluetooth",
     "format": "",
     "format-disabled": "󰂲",
     "format-connected": "",
@@ -102,6 +116,7 @@
     "on-click": "blueberry"
   },
   "pulseaudio": {
+    "class": "pulseaudio",
     "format": "{icon}",
     "on-click": "alacritty --class=Wiremix -e wiremix",
     "on-click-right": "pamixer -t",
@@ -113,6 +128,7 @@
     }
   },
   "group/tray-expander": {
+    "class": "tray-expander",
     "orientation": "inherit",
     "drawer": {
       "transition-duration": 600,
