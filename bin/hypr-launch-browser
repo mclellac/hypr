@@ -11,17 +11,30 @@ if [[ -z "${browser_desktop_file}" ]]; then
     exit 1
 fi
 
-# Find the executable path from the desktop file.
-# We search in the standard application directories.
-exec_path=$(sed -n 's/^Exec=\([^ ]*\).*/\1/p' "${HOME}/.local/share/applications/${browser_desktop_file}" \
-    "${HOME}/.nix-profile/share/applications/${browser_desktop_file}" \
-    "/usr/share/applications/${browser_desktop_file}" 2>/dev/null | head -1)
+# Find the full path to the desktop file.
+desktop_file_path=""
+for dir in "${HOME}/.local/share/applications" "${HOME}/.nix-profile/share/applications" "/usr/share/applications"; do
+    if [[ -f "${dir}/${browser_desktop_file}" ]]; then
+        desktop_file_path="${dir}/${browser_desktop_file}"
+        break
+    fi
+done
 
-# If no executable path is found, exit with an error.
-if [[ -z "${exec_path}" ]]; then
-    echo "ERROR: Could not find the executable for '${browser_desktop_file}'." >&2
+# If no desktop file is found, exit with an error.
+if [[ -z "${desktop_file_path}" ]]; then
+    echo "ERROR: Could not find the .desktop file for '${browser_desktop_file}'." >&2
     exit 1
 fi
 
-# Launch the browser using uwsm.
-exec setsid uwsm app -- "${exec_path}" "$@"
+# Read the Exec line from the desktop file.
+# We remove any desktop-specific field codes like %U, %u, %F, %f.
+exec_line=$(grep -E '^Exec=' "${desktop_file_path}" | head -1 | sed -e 's/^Exec=//' -e 's/ %[UufF]//g')
+
+# If no Exec line is found, exit with an error.
+if [[ -z "${exec_line}" ]]; then
+    echo "ERROR: Could not find the Exec line in '${desktop_file_path}'." >&2
+    exit 1
+fi
+
+# Launch the browser using uwsm. We use eval to handle potential quotes in the exec_line.
+eval "exec setsid uwsm app -- ${exec_line} \"\$@\""
