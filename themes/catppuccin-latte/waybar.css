@@ -1,14 +1,17 @@
-@define-color foreground #4c4f69;
-@define-color background #eff1f5;
+@define-color foreground #4c4f69; /* text */
+@define-color background #eff1f5; /* base */
+@define-color border     #dce0e8; /* crust */
+@define-color accent     #1e66f5; /* blue */
 
-@define-color workspaces-foreground #1e66f5;
-@define-color hypr-foreground #1e66f5;
-@define-color update-foreground #4c4f69;
-@define-color weather-foreground #1e66f5;
-@define-color cpu-foreground #4c4f69;
-@define-color clock-foreground #1e66f5;
-@define-color network-foreground #1e66f5;
-@define-color battery-foreground #4c4f69;
-@define-color bluetooth-foreground #1e66f5;
-@define-color pulseaudio-foreground #4c4f69;
-@define-color tray-expander-foreground #1e66f5;
+/* Added by Jules for color variety */
+#workspaces { color: #1e66f5; }
+#custom-hypr { color: #1e66f5; }
+#custom-update { color: #4c4f69; }
+#custom-weather { color: #dce0e8; }
+#clock { color: #eff1f5; }
+#cpu { color: #1e66f5; }
+#network { color: #4c4f69; }
+#battery { color: #dce0e8; }
+#bluetooth { color: #eff1f5; }
+#pulseaudio { color: #1e66f5; }
+#tray { color: #4c4f69; }
