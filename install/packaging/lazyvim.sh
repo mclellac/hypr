@@ -40,7 +40,7 @@ fi
 
 # Ensure relative numbers are disabled by default as per original script
 mkdir -p "$NVIM_CONFIG_DIR/lua/config"
-if ! grep -q "vim.opt.relativenumber = false" "$NVIM_CONFIG_DIR/lua/config/options.lua"; then
+if ! grep -q "vim.opt.relativenumber = false" "$NVIM_CONFIG_DIR/lua/config/options.lua" 2>/dev/null; then
   echo "Disabling relative numbers in Neovim..."
   echo "vim.opt.relativenumber = false" >>"$NVIM_CONFIG_DIR/lua/config/options.lua"
 fi
