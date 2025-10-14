@@ -1,11 +1,9 @@
 @import "../hypr/current/theme/waybar.css";
 
-window#waybar {
-    background-color: @background;
-    color: @foreground;
-}
-
 * {
+  background-color: @background;
+  color: @foreground;
+
   border: none;
   border-radius: 0;
   min-height: 42px;
@@ -21,76 +19,28 @@ window#waybar {
   margin-right: 18px;
 }
 
-.workspaces {
-  color: @workspaces-foreground;
-}
-
-.workspaces button {
+#workspaces button {
   all: initial;
-  padding: 0 8px;
-  margin: 0 4px;
-  min-width: 10px;
+  padding: 0 6px;
+  margin: 0 1.5px;
+  min-width: 9px;
 }
 
-.workspaces button.empty {
+#workspaces button.empty {
   opacity: 0.5;
 }
 
-.hypr,
-.update,
-.weather,
-.cpu,
-.clock,
-.network,
-.battery,
-.bluetooth,
-.pulseaudio,
-.tray-expander {
+#tray,
+#cpu,
+#battery,
+#network,
+#bluetooth,
+#pulseaudio,
+#custom-hypr,
+#custom-update,
+#custom-weather {
   min-width: 12px;
   margin: 0 18px;
-}
-
-.hypr {
-  color: @hypr-foreground;
-}
-
-.update {
-  color: @update-foreground;
-  font-size: 10px;
-}
-
-.weather {
-  color: @weather-foreground;
-  margin-left: 18px;
-}
-
-.cpu {
-  color: @cpu-foreground;
-}
-
-.clock {
-  color: @clock-foreground;
-  margin-right: 30px;
-}
-
-.network {
-  color: @network-foreground;
-}
-
-.battery {
-  color: @battery-foreground;
-}
-
-.bluetooth {
-  color: @bluetooth-foreground;
-}
-
-.pulseaudio {
-  color: @pulseaudio-foreground;
-}
-
-.tray-expander {
-  color: @tray-expander-foreground;
 }
 
 #custom-expand-icon {
@@ -99,8 +49,15 @@ window#waybar {
 
 tooltip {
   padding: 2px;
-  background-color: @background;
-  color: @foreground;
+}
+
+#custom-update {
+  font-size: 10px;
+}
+
+#clock {
+  margin-left: 8.75px;
+  margin-right: 30px;
 }
 
 .hidden {
