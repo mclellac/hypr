@@ -1,5 +1,10 @@
 @import "../hypr/current/theme/waybar.css";
 
+window#waybar {
+    background-color: @background;
+    color: @foreground;
+}
+
 * {
   border: none;
   border-radius: 0;
@@ -9,23 +14,22 @@
 }
 
 .modules-left {
-  margin-left: 8px;
+  margin-left: 10px;
 }
 
 .modules-right {
-  margin-right: 8px;
+  margin-right: 10px;
 }
 
 .workspaces {
-  background-color: @workspaces-background;
   color: @workspaces-foreground;
 }
 
 .workspaces button {
   all: initial;
-  padding: 0 6px;
-  margin: 0 1.5px;
-  min-width: 9px;
+  padding: 0 8px;
+  margin: 0 2px;
+  min-width: 10px;
 }
 
 .workspaces button.empty {
@@ -43,58 +47,48 @@
 .pulseaudio,
 .tray-expander {
   min-width: 12px;
-  margin: 0 7.5px;
+  margin: 0 10px;
 }
 
 .hypr {
-  background-color: @hypr-background;
   color: @hypr-foreground;
 }
 
 .update {
-  background-color: @update-background;
   color: @update-foreground;
   font-size: 10px;
 }
 
 .weather {
-  background-color: @weather-background;
   color: @weather-foreground;
 }
 
 .cpu {
-  background-color: @cpu-background;
   color: @cpu-foreground;
 }
 
 .clock {
-  background-color: @clock-background;
   color: @clock-foreground;
-  margin-left: 8.75px;
+  margin-right: 15px; /* Add spacing to the right of the clock */
 }
 
 .network {
-  background-color: @network-background;
   color: @network-foreground;
 }
 
 .battery {
-  background-color: @battery-background;
   color: @battery-foreground;
 }
 
 .bluetooth {
-  background-color: @bluetooth-background;
   color: @bluetooth-foreground;
 }
 
 .pulseaudio {
-  background-color: @pulseaudio-background;
   color: @pulseaudio-foreground;
 }
 
 .tray-expander {
-  background-color: @tray-expander-background;
   color: @tray-expander-foreground;
 }
 
