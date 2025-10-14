@@ -14,10 +14,6 @@ if [ -d /usr/share/icons/Yaru ]; then
   sudo gtk-update-icon-cache /usr/share/icons/Yaru
 fi
 
-# Setup theme links
-mkdir -p ~/.config/hypr/themes
-for f in $HYPR_PATH/themes/*; do ln -nfs "$f" ~/.config/hypr/themes/; done
-
 # Set initial theme
 mkdir -p ~/.config/hypr/current
 ln -snf ~/.config/hypr/themes/tokyo-night ~/.config/hypr/current/theme
