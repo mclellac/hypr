@@ -22,7 +22,6 @@ This script lays the primary foundation for the user's configuration.
         *   `config/Typora/` -> `~/.config/Typora/`
         *   `config/alacritty/` -> `~/.config/alacritty/`
         *   `config/btop/` -> `~/.config/btop/`
-        *   `config/chromium/` -> `~/.config/chromium/`
         *   `config/environment.d/` -> `~/.config/environment.d/`
         *   `config/fastfetch/` -> `~/.config/fastfetch/`
         *   `config/fcitx5/` -> `~/.config/fcitx5/`
@@ -114,9 +113,12 @@ These applications have their theme configuration files directly modified or cre
         3.  `cat $WALKER_DEFAULT_THEME_CSS >> .../style.css` (A default base style is appended).
 
 *   **Neovim:**
-    *   **Target File:** `~/.config/nvim/lua/user/colorscheme.lua`
-    *   **Operation:** This file is completely **overwritten**.
-    *   **Process:** The script reads the colorscheme name from `$THEME_PATH/neovim.colorscheme` and writes a new Lua file containing `return { { "LazyVim/LazyVim", opts = { colorscheme = "THEME_NAME" } } }`. This dynamically sets the colorscheme for LazyVim.
+    *   **Target File:** `~/.config/nvim/lua/plugins/theme.lua`
+    *   **Operation:** This file is deleted and then conditionally re-created.
+    *   **Process:** The `hypr-theme-set` script implements a dual-method theming system:
+        1.  **Plugin Method:** It first checks for the existence of a `neovim.plugin` file in the theme directory (e.g., `~/.config/hypr/themes/tokyo-night/neovim.plugin`). If found, this file, which is expected to be a valid LazyVim plugin definition, is copied directly to `~/.config/nvim/lua/plugins/theme.lua`.
+        2.  **Legacy Colorscheme Method:** If `neovim.plugin` is not found, the script then checks for a `neovim.colorscheme` file. If this file exists, the script reads the colorscheme name from it and dynamically creates a new `theme.lua` file containing a basic LazyVim configuration block to set that colorscheme.
+    *   **Effect:** This logic allows themes to be defined either as complete Neovim plugins or as simple colorscheme names, providing both power and backward compatibility.
 
 *   **Alacritty:**
     *   **Target File:** `~/.config/alacritty/alacritty.toml`
