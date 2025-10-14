@@ -56,6 +56,7 @@
   "custom/weather": {
     "class": "weather",
     "exec": "hypr-weather",
+    "return-type": "json",
     "format": "{}",
     "interval": 900,
     "tooltip": true
