@@ -5,11 +5,11 @@
 #workspaces { color: #575279; }
 #custom-hypr { color: #575279; }
 #custom-update { color: #88C0D0; }
-#custom-weather { color: #faf4ed; }
-#clock { color: #575279; }
-#cpu { color: #88C0D0; }
-#network { color: #faf4ed; }
+#custom-weather { color: #575279; }
+#clock { color: #88C0D0; }
+#cpu { color: #575279; }
+#network { color: #88C0D0; }
 #battery { color: #575279; }
 #bluetooth { color: #88C0D0; }
-#pulseaudio { color: #faf4ed; }
-#tray { color: #575279; }
+#pulseaudio { color: #575279; }
+#tray { color: #88C0D0; }
