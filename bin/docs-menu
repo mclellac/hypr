@@ -62,17 +62,19 @@ OpenWeb() {
 #   None
 #######################################
 ShowLinuxMenu() {
-  local options="  Bash (Devhints)\n  Linux CLI (Devhints)\n  sed & awk (QuickRef)\n  find command (ShortcutWorld)\n  tmux (Devhints)\n  systemd (Devhints)\n󰆍  GTFOBins\n󰢹  LOLBAS\n󰌆  PEASS / Privilege Escalation (GitHub)\n󱂅  SecLists (GitHub)\n  Back"
+  local options="  Bash (Devhints)\n  Linux CLI (PhoenixNAP)\n  sed & awk (QuickRef)\n  find command (Devhints)\n  tmux (Devhints)\n  systemd (Devhints)\n  Vim (QuickRef)\n  Emacs (QuickRef)\n󰆍  GTFOBins\n󰢹  LOLBAS\n󰌆  PEASS / Privilege Escalation (GitHub)\n󱂅  SecLists (GitHub)\n  Back"
   local choice
   choice=$(Menu "  Linux" "${options}")
 
   case "${choice}" in
     *"Bash"*) OpenWeb "https://devhints.io/bash" ;;
-    *"Linux CLI"*) OpenWeb "https://devhints.io/linux" ;;
+    *"Linux CLI"*) OpenWeb "https://phoenixnap.com/kb/linux-commands-cheat-sheet" ;;
     *"sed"*) OpenWeb "https://quickref.me/sed" ;;
-    *"find"*) OpenWeb "https://shortcutworld.com/linux/find.html" ;;
+    *"find"*) OpenWeb "https://devhints.io/find" ;;
     *"tmux"*) OpenWeb "https://devhints.io/tmux" ;;
     *"systemd"*) OpenWeb "https://devhints.io/systemd" ;;
+    *"Vim"*) OpenWeb "https://quickref.me/vim" ;;
+    *"Emacs"*) OpenWeb "https://quickref.me/emacs" ;;
     *"GTFOBins"*) OpenWeb "https://gtfobins.github.io/" ;;
     *"LOLBAS"*) OpenWeb "https://lolbas-project.github.io/" ;;
     *"PEASS"*) OpenWeb "https://github.com/carlospolop/PEASS-ng" ;;
@@ -98,9 +100,9 @@ ShowWebSecMenu() {
   case "${choice}" in
     *"Top 10"*) OpenWeb "https://owasp.org/www-project-top-ten/" ;;
     *"API Security"*) OpenWeb "https://owasp.org/API-Security/editions/2023/en/0x00-header/" ;;
-    *"Cheat Sheet Series"*) OpenWeb "https://cheatsheetseries.owasp.org/index.html" ;;
+    *"Cheat Sheet Series"*) OpenWeb "https://cheatsheetseries.owasp.org/" ;;
     *"HackTricks"*) OpenWeb "https://book.hacktricks.xyz/" ;;
-    *"PayloadsAllTheThings"*) OpenWeb "https://github.com/swisskyrepo/PayloadsAllTheThings" ;;
+    *"PayloadsAllTheThings"*) OpenWeb "https://swisskyrepo.github.io/PayloadsAllTheThings/" ;;
     *"PortSwigger XSS"*) OpenWeb "https://portswigger.net/web-security/cross-site-scripting/cheat-sheet" ;;
     *"PortSwigger SQLi"*) OpenWeb "https://portswigger.net/web-security/sql-injection/cheat-sheet" ;;
     *"JWT"*) OpenWeb "https://jwt.io/" ;;
@@ -148,7 +150,7 @@ ShowProgrammingMenu() {
 #   None
 #######################################
 ShowHackingMenu() {
-  local options="  Exploit-DB (search)\n  Reverse Shells (revshells.com)\n  Pentest Monkey (reverse shells)\n󱍴  Metasploit Docs\n󱗺  InternalAllTheThings\n  WinPEAS / Windows Priv Esc (GitHub)\n󰢡  CyberChef (The Cyber Swiss Army Knife)\n󰢡  CrackStation (Online Hash Cracker)\n  Back"
+  local options="  Exploit-DB (search)\n  Reverse Shells (revshells.com)\n  Pentest Monkey (reverse shells)\n󱍴  Metasploit Docs\n󱗺  InternalAllTheThings\n  WinPEAS / Windows Priv Esc (GitHub)\n󰢡  CyberChef (The Cyber Swiss Army Knife)\n󰢡  CrackStation (Online Hash Cracker)\n󰊂  PayloadsAllTheThings\n  Back"
   local choice
   choice=$(Menu "󰲯  Hacking" "${options}")
 
@@ -161,6 +163,7 @@ ShowHackingMenu() {
     *"WinPEAS"*) OpenWeb "https://github.com/carlospolop/PEASS-ng" ;;
     *"CyberChef"*) OpenWeb "https://gchq.github.io/CyberChef/" ;;
     *"CrackStation"*) OpenWeb "https://crackstation.net/" ;;
+    *"PayloadsAllTheThings"*) OpenWeb "https://swisskyrepo.github.io/PayloadsAllTheThings/" ;;
     *) ShowMainMenu ;;
   esac
 }
@@ -250,7 +253,7 @@ ShowK8sMenu() {
 #   None
 #######################################
 ShowSecurityDocsMenu() {
-  local options="󱘖  MITRE ATT&CK\n󰓾  CIS Benchmarks\n󰙵  NIST Cybersecurity Framework\n󰢻  SANS Resources (Posters, Cheatsheets)\n  Back"
+  local options="󱘖  MITRE ATT&CK\n󰓾  CIS Benchmarks\n󰙵  NIST Cybersecurity Framework\n󰢻  SANS Resources (Posters, Cheatsheets)\n󰈙  OWASP Cheat Sheet Series\n  Back"
   local choice
   choice=$(Menu "  Security Docs" "${options}")
 
@@ -259,6 +262,7 @@ ShowSecurityDocsMenu() {
     *"CIS"*) OpenWeb "https://www.cisecurity.org/benchmarks/" ;;
     *"NIST"*) OpenWeb "https://www.nist.gov/cyberframework" ;;
     *"SANS"*) OpenWeb "https://www.sans.org/posters/" ;;
+    *"OWASP"*) OpenWeb "https://cheatsheetseries.owasp.org/" ;;
     *) ShowMainMenu ;;
   esac
 }
