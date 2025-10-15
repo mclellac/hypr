@@ -5,9 +5,11 @@
   "spacing": 0,
   "height": 26,
   "modules-left": ["custom/hypr", "hyprland/workspaces"],
-  "modules-center": ["clock", "custom/weather", "custom/update"],
+  "modules-center": ["clock"],
   "modules-right": [
     "group/tray-expander",
+    "custom/weather",
+    "custom/update",
     "bluetooth",
     "network",
     "pulseaudio",
