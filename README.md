@@ -20,6 +20,13 @@ The installation script will:
 4.  Install fonts, TUIs, and web apps.
 5.  Set up the default theme.
 
+## Features
+
+*   **Update Notifications:** Get notified of official Arch Linux and AUR package updates directly in Waybar.
+*   **One-Click Updates:** Click the update icon to open a terminal and update all your packages.
+*   **Comprehensive Theming:** Easily switch between themes for all your applications.
+*   **Pre-configured Applications:** A wide range of applications are pre-configured for a seamless experience.
+
 ## Directory Structure
 
 The installation script copies the default configuration files directly into your `~/.config` directory, which is the standard location for application configurations in Linux. All the scripts for managing the environment are installed to `~/.local/bin`, and the themes are located in `~/.config/hypr/themes`.
