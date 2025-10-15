@@ -2,14 +2,14 @@
 @define-color background #2d353b;
 
 /* Added by Jules for color variety */
-#workspaces { color: #2d353b; }
-#custom-hypr { color: #2d353b; }
-#custom-update { color: #d3c6aa; }
-#custom-weather { color: #dbbc7f; }
-#clock { color: #2d353b; }
+#workspaces { color: #d3c6aa; }
+#custom-hypr { color: #d3c6aa; }
+#custom-update { color: #dbbc7f; }
+#custom-weather { color: #d3c6aa; }
+#clock { color: #dbbc7f; }
 #cpu { color: #d3c6aa; }
 #network { color: #dbbc7f; }
-#battery { color: #2d353b; }
-#bluetooth { color: #d3c6aa; }
-#pulseaudio { color: #dbbc7f; }
-#tray { color: #2d353b; }
+#battery { color: #d3c6aa; }
+#bluetooth { color: #dbbc7f; }
+#pulseaudio { color: #d3c6aa; }
+#tray { color: #dbbc7f; }
