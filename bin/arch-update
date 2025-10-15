@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+
+import json
+import subprocess
+import sys
+
+
+def GetUpdates():
+    """Returns a list of official and AUR package updates."""
+    try:
+        official_updates = (
+            subprocess.check_output(["checkupdates"], text=True).strip().split("\n")
+        )
+        if official_updates == [""]:
+            official_updates = []
+    except subprocess.CalledProcessError:
+        official_updates = []
+
+    try:
+        aur_updates = (
+            subprocess.check_output(["yay", "-Qum"], text=True).strip().split("\n")
+        )
+        if aur_updates == [""]:
+            aur_updates = []
+    except subprocess.CalledProcessError:
+        aur_updates = []
+
+    return official_updates, aur_updates
+
+
+def main():
+    """Main function."""
+    if len(sys.argv) > 1 and sys.argv[1] == "update":
+        subprocess.run(
+            [
+                "hypr-launch-floating-terminal-with-presentation",
+                "hypr-update",
+            ]
+        )
+        return
+
+    official_updates, aur_updates = GetUpdates()
+    update_count = len(official_updates) + len(aur_updates)
+
+    if update_count == 0:
+        print(json.dumps({}))
+        return
+
+    tooltip = "󱓻 Updates available"
+    if official_updates:
+        tooltip += "\n\nOfficial:\n" + "\n".join(official_updates)
+    if aur_updates:
+        tooltip += "\n\nAUR:\n" + "\n".join(aur_updates)
+
+    print(
+        json.dumps(
+            {
+                "text": f"󰏗 {update_count}",
+                "tooltip": tooltip,
+            }
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()

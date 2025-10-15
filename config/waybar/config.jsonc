@@ -47,10 +47,9 @@
   },
   "custom/update": {
     "class": "update",
-    "format": "",
-    "exec": "hypr-update-available",
-    "on-click": "hypr-launch-floating-terminal-with-presentation hypr-update",
-    "tooltip-format": "hypr update available",
+    "exec": "arch-update",
+    "on-click": "arch-update update",
+    "return-type": "json",
     "interval": 3600
   },
   "custom/weather": {

@@ -150,3 +150,24 @@ To make the changes take effect, the script sends signals or restarts the releva
 *   `hypr-restart-walker`: Restarts the walker (and elephant) service.
 *   `makoctl reload`: Reloads the notification daemon.
 *   `hyprctl reload`: Reloads the Hyprland compositor configuration.
+
+## Part 3: Waybar Update Widget
+
+The `custom/update` module in `config/waybar/config.jsonc` is responsible for displaying software update information.
+
+*   **Script:** `bin/arch-update`
+*   **Functionality:**
+    *   Checks for official Arch Linux and AUR package updates using `checkupdates` and `yay`.
+    *   Displays a package icon and the number of available updates in Waybar.
+    *   Provides a tooltip with a detailed list of packages to be updated.
+    *   When clicked, it launches a floating terminal to run `hypr-update`.
+*   **Configuration:**
+    ```json
+    "custom/update": {
+      "class": "update",
+      "exec": "arch-update",
+      "on-click": "arch-update update",
+      "return-type": "json",
+      "interval": 3600
+    }
+    ```
