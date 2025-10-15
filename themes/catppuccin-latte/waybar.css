@@ -6,12 +6,12 @@
 /* Added by Jules for color variety */
 #workspaces { color: #1e66f5; }
 #custom-hypr { color: #1e66f5; }
-#custom-update { color: #4c4f69; }
-#custom-weather { color: #dce0e8; }
 #clock { color: #1e66f5; }
-#cpu { color: #4c4f69; }
-#network { color: #dce0e8; }
-#battery { color: #1e66f5; }
-#bluetooth { color: #4c4f69; }
-#pulseaudio { color: #dce0e8; }
 #tray { color: #1e66f5; }
+#custom-weather { color: #1e66f5; }
+#custom-update { color: #40a02b; }
+#bluetooth { color: #ea76cb; }
+#network { color: #df8e1d; }
+#pulseaudio { color: #179299; }
+#cpu { color: #d20f39; }
+#battery { color: #4c4f69; }
