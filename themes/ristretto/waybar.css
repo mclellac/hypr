@@ -1,12 +1,3 @@
-@define-color background #2c2525;
-@define-color foreground #e6d9db;
-
-/* Colors sourced from kitty.conf */
-@define-color color1 #f38d70;   /* Blue (Orange) */
-@define-color color2 #e6d9db;   /* Foreground */
-@define-color color3 #adda78;   /* Green */
-@define-color color4 #f9cc6c;   /* Yellow */
-@define-color color5 #a8a9eb;   /* Magenta */
-@define-color color6 #85dacc;   /* Cyan */
-@define-color color7 #fd6883;   /* Red */
-@define-color color8 #f1e5e7;   /* White */
+@define-color theme_background_color #2c2525;
+@define-color theme_foreground_color #e6d9db;
+@define-color theme_accent_color #fabd2f;

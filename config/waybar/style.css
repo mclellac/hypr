@@ -9,16 +9,26 @@
 
 window#waybar {
   background: rgba(30, 30, 46, 0.5);
-  border-bottom: 2px solid @background;
+  border-bottom: 2px solid @theme_background_color;
 }
 
 window#waybar.hidden {
   opacity: 0.2;
 }
 
-#workspaces,
-#clock {
-  background: @background;
+tooltip {
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid @theme_accent_color;
+  background-color: @theme_background_color;
+}
+
+tooltip label {
+  color: @theme_foreground_color;
+}
+
+#workspaces {
+  background: @theme_background_color;
   border-radius: 10px;
   margin: 6px 5px;
   padding: 0px 10px;
@@ -28,18 +38,18 @@ window#waybar.hidden {
   background: transparent;
   padding: 4px;
   margin: 0 2px;
-  color: @foreground;
+  color: @theme_foreground_color;
   transition: all 0.3s ease;
 }
 
 #workspaces button.active {
-  color: @color1;
+  color: @theme_accent_color;
   background-color: rgba(255, 255, 255, 0.15);
   border-radius: 8px;
 }
 
 #workspaces button:hover {
-  color: @foreground;
+  color: @theme_foreground_color;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
 }
@@ -50,24 +60,18 @@ window#waybar.hidden {
 #network,
 #custom-weather,
 #custom-update,
-#custom-hypr {
+#custom-hypr,
+#clock {
   padding: 0 10px;
   margin-top: 6px;
   margin-bottom: 6px;
 }
 
-tooltip {
-  border-radius: 12px;
-  padding: 12px;
-  border: 1px solid @foreground;
-  background-color: @background;
-}
-
 /* --- Left Group --- */
 #custom-hypr {
   font-size: 20px;
-  color: @color1;
-  background: @background;
+  color: @theme_accent_color;
+  background: @theme_background_color;
   padding-right: 15px;
   margin-left: 5px;
   border-top-left-radius: 10px;
@@ -76,8 +80,11 @@ tooltip {
 
 /* --- Center Group --- */
 #clock {
-  background: @color2;
-  color: @background;
+  background: @theme_accent_color;
+  color: @theme_background_color;
+  border-radius: 10px;
+  margin: 6px 5px;
+  padding: 0px 10px;
 }
 
 /* --- Right Group --- */
@@ -86,47 +93,47 @@ tooltip {
 #network,
 #pulseaudio,
 #cpu {
-    background: @background;
+    background: @theme_background_color;
+    color: @theme_foreground_color;
 }
 
 #custom-weather {
-    color: @color3;
     margin-left: 5px;
+    padding-left: 15px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 }
 
 #custom-update {
-    color: @color4;
     border-radius: 0;
     margin-left: 0px;
     margin-right: 0px;
 }
 
 #network {
-  color: @color5;
   border-radius: 0;
   margin-left: 0px;
   margin-right: 0px;
 }
 
 #pulseaudio {
-  color: @color6;
   border-radius: 0;
   margin-left: 0px;
   margin-right: 0px;
 }
 
 #cpu {
-    color: @color7;
-    margin-right: 5px;
+    margin-right: 0px;
+    padding-right: 15px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
 
 #battery {
-  background: @color8;
+  color: @theme_background_color;
+  background: @theme_accent_color;
   margin-right: 5px;
+  padding-right: 15px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
