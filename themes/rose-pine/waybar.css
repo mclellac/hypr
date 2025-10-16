@@ -1,15 +1,11 @@
-@define-color foreground #575279;
 @define-color background #faf4ed;
+@define-color foreground #575279;
 
-/* Added by Jules for color variety */
-#workspaces { color: #575279; }
-#custom-hypr { color: #575279; }
-#clock { color: #88C0D0; }
-#tray { color: #88C0D0; }
-#custom-weather { color: #9ccfd8; }
-#custom-update { color: #31748f; }
-#bluetooth { color: #c4a7e7; }
-#network { color: #f6c177; }
-#pulseaudio { color: #ebbcba; }
-#cpu { color: #eb6f92; }
-#battery { color: #e0def4; }
+@define-color color1 #9ccfd8;   /* Foam - for Hypr icon, active workspace */
+@define-color color2 #88C0D0;   /* Muted Blue - for Clock */
+@define-color color3 #9ccfd8;   /* Foam - for Weather */
+@define-color color4 #31748f;   /* Pine - for Updates */
+@define-color color5 #f6c177;   /* Gold - for Network */
+@define-color color6 #ebbcba;   /* Rose - for Pulseaudio */
+@define-color color7 #eb6f92;   /* Love - for CPU */
+@define-color color8 #e0def4;   /* Iris - for Battery */
