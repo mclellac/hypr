@@ -19,17 +19,7 @@
   margin-right: 18px;
 }
 
-#workspaces button {
-  all: initial;
-  padding: 0 6px;
-  margin: 0 1.5px;
-  min-width: 9px;
-}
-
-#workspaces button.empty {
-  opacity: 0.5;
-}
-
+#workspaces button,
 #tray,
 #cpu,
 #battery,
@@ -39,8 +29,32 @@
 #custom-hypr,
 #custom-update,
 #custom-weather {
-  min-width: 12px;
-  margin: 0 18px;
+  padding: 0 10px;
+  margin: 0 8px;
+  border-radius: 12px;
+  transition: background-color 0.3s ease;
+}
+
+#workspaces button {
+  padding: 0 12px;
+  margin: 0 3px;
+}
+
+#workspaces button:hover,
+#tray:hover,
+#cpu:hover,
+#battery:hover,
+#network:hover,
+#bluetooth:hover,
+#pulseaudio:hover,
+#custom-hypr:hover,
+#custom-update:hover,
+#custom-weather:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+#workspaces button.empty {
+  opacity: 0.5;
 }
 
 #custom-expand-icon {
@@ -48,7 +62,9 @@
 }
 
 tooltip {
-  padding: 2px;
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid @foreground;
 }
 
 #clock {
