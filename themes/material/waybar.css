@@ -1,11 +1,12 @@
 @define-color background #263238;
 @define-color foreground #B0BEC5;
 
-@define-color color1 #009688;   /* Teal - for Hypr icon, active workspace */
-@define-color color2 #B0BEC5;   /* Blue Grey - for Clock */
-@define-color color3 #82aaff;   /* Light Blue - for Weather */
-@define-color color4 #c3e88d;   /* Light Green - for Updates */
-@define-color color5 #ffcb6b;   /* Orange - for Network */
-@define-color color6 #89ddff;   /* Cyan - for Pulseaudio */
-@define-color color7 #f07178;   /* Red - for CPU */
-@define-color color8 #B0BEC5;   /* Blue Grey - for Battery */
+/* Colors sourced from kitty.conf */
+@define-color color1 #82aaff;   /* Blue */
+@define-color color2 #B0BEC5;   /* Foreground */
+@define-color color3 #c3e88d;   /* Green */
+@define-color color4 #ffcb6b;   /* Yellow */
+@define-color color5 #c792ea;   /* Magenta */
+@define-color color6 #89ddff;   /* Cyan */
+@define-color color7 #f07178;   /* Red */
+@define-color color8 #eeffff;   /* White */
