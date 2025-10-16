@@ -1,15 +1,11 @@
-@define-color foreground #f3e600;
 @define-color background #000000;
+@define-color foreground #f3e600;
 
-/* Added by Jules for color variety */
-#workspaces { color: #55ead4; }
-#custom-hypr { color: #55ead4; }
-#clock { color: #f3e600; }
-#tray { color: #f3e600; }
-#custom-weather { color: #0abdc6; }
-#custom-update { color: #55ead4; }
-#bluetooth { color: #711c91; }
-#network { color: #f3e600; }
-#pulseaudio { color: #ea00d9; }
-#cpu { color: #c5003c; }
-#battery { color: #f3e600; }
+@define-color color1 #55ead4;   /* Cyan - for Hypr icon, active workspace */
+@define-color color2 #f3e600;   /* Yellow - for Clock */
+@define-color color3 #0abdc6;   /* Blue - for Weather */
+@define-color color4 #55ead4;   /* Cyan - for Updates */
+@define-color color5 #f3e600;   /* Yellow - for Network */
+@define-color color6 #ea00d9;   /* Magenta - for Pulseaudio */
+@define-color color7 #c5003c;   /* Red - for CPU */
+@define-color color8 #f3e600;   /* Yellow - for Battery */
