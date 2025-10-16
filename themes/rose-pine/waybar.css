@@ -1,11 +1,12 @@
-@define-color background #faf4ed;
-@define-color foreground #575279;
+@define-color background #191724;
+@define-color foreground #e0def4;
 
-@define-color color1 #9ccfd8;   /* Foam - for Hypr icon, active workspace */
-@define-color color2 #88C0D0;   /* Muted Blue - for Clock */
-@define-color color3 #9ccfd8;   /* Foam - for Weather */
-@define-color color4 #31748f;   /* Pine - for Updates */
-@define-color color5 #f6c177;   /* Gold - for Network */
-@define-color color6 #ebbcba;   /* Rose - for Pulseaudio */
-@define-color color7 #eb6f92;   /* Love - for CPU */
-@define-color color8 #e0def4;   /* Iris - for Battery */
+/* Colors sourced from kitty.conf */
+@define-color color1 #9ccfd8;   /* Blue */
+@define-color color2 #e0def4;   /* Foreground */
+@define-color color3 #31748f;   /* Green */
+@define-color color4 #f6c177;   /* Yellow */
+@define-color color5 #c4a7e7;   /* Magenta */
+@define-color color6 #ebbcba;   /* Cyan (Rose) */
+@define-color color7 #eb6f92;   /* Red */
+@define-color color8 #e0def4;   /* White */

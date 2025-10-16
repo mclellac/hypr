@@ -16,11 +16,12 @@ window#waybar.hidden {
   opacity: 0.2;
 }
 
-#workspaces {
-  background: transparent;
+#workspaces,
+#clock {
+  background: @background;
   border-radius: 10px;
   margin: 6px 5px;
-  padding: 0px 6px;
+  padding: 0px 10px;
 }
 
 #workspaces button {
@@ -43,7 +44,6 @@ window#waybar.hidden {
   border-radius: 8px;
 }
 
-#clock,
 #battery,
 #cpu,
 #pulseaudio,
@@ -52,7 +52,7 @@ window#waybar.hidden {
 #custom-update,
 #custom-hypr {
   color: @background;
-  padding: 0 12px;
+  padding: 0 10px;
   margin-top: 6px;
   margin-bottom: 6px;
 }
@@ -64,49 +64,60 @@ tooltip {
   background-color: @background;
 }
 
+/* --- Left Group --- */
 #custom-hypr {
   font-size: 20px;
   color: @color1;
   background: @background;
-  padding-right: 17px;
+  padding-right: 15px;
   margin-left: 5px;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 }
 
+/* --- Center Group --- */
 #clock {
   background: @color2;
   color: @background;
 }
 
+/* --- Right Group --- */
 #custom-weather {
     background: @color3;
-    border-radius: 0;
+    margin-left: 5px;
+    padding-left: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
 #custom-update {
     background: @color4;
     border-radius: 0;
+    margin: 6px 0;
 }
 
 #network {
   background: @color5;
   border-radius: 0;
+  margin: 6px 0;
 }
 
 #pulseaudio {
   background: @color6;
   border-radius: 0;
+  margin: 6px 0;
 }
 
 #cpu {
     background: @color7;
     border-radius: 0;
+    margin: 6px 0;
 }
 
 #battery {
   background: @color8;
   margin-right: 5px;
+  padding-right: 10px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
