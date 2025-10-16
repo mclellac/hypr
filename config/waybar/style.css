@@ -44,19 +44,6 @@ window#waybar.hidden {
   border-radius: 8px;
 }
 
-#battery,
-#cpu,
-#pulseaudio,
-#network,
-#custom-weather,
-#custom-update,
-#custom-hypr {
-  color: @background;
-  padding: 0 10px;
-  margin-top: 6px;
-  margin-bottom: 6px;
-}
-
 tooltip {
   border-radius: 12px;
   padding: 12px;
@@ -69,8 +56,8 @@ tooltip {
   font-size: 20px;
   color: @color1;
   background: @background;
-  padding-right: 15px;
-  margin-left: 5px;
+  padding: 0 15px;
+  margin: 6px 0 6px 5px;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 }
@@ -82,42 +69,32 @@ tooltip {
 }
 
 /* --- Right Group --- */
+.pillbox {
+  background-color: @background;
+  border-radius: 10px;
+  margin: 6px 5px 6px 0;
+}
+
+.pillbox > * {
+  padding: 0 10px;
+}
+
 #custom-weather {
-    background: @color3;
-    margin-left: 5px;
-    padding-left: 10px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+  color: @color3;
 }
 
 #custom-update {
-    background: @color4;
-    border-radius: 0;
-    margin: 6px 0;
+  color: @color4;
 }
 
 #network {
-  background: @color5;
-  border-radius: 0;
-  margin: 6px 0;
+  color: @color5;
 }
 
 #pulseaudio {
-  background: @color6;
-  border-radius: 0;
-  margin: 6px 0;
+  color: @color6;
 }
 
 #cpu {
-    background: @color7;
-    border-radius: 0;
-    margin: 6px 0;
-}
-
-#battery {
-  background: @color8;
-  margin-right: 5px;
-  padding-right: 10px;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+  color: @color7;
 }
