@@ -6,18 +6,13 @@
   "height": 42,
   "modules-left": ["custom/hypr", "hyprland/workspaces"],
   "modules-center": ["clock"],
-  "modules-right": ["group/pillbox"],
-  "group/pillbox": {
-    "class": "pillbox",
-    "orientation": "horizontal",
-    "modules": [
-      "custom/weather",
-      "custom/update",
-      "network",
-      "pulseaudio",
-      "cpu"
-    ]
-  },
+  "modules-right": [
+    "custom/weather",
+    "custom/update",
+    "network",
+    "pulseaudio",
+    "cpu"
+  ],
   "hyprland/workspaces": {
     "class": "workspaces",
     "on-click": "activate",
