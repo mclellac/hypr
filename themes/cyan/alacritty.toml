@@ -1,29 +1,34 @@
+# Alacritty color scheme for the Cyan Cyberpunk v2 theme
+
 [colors]
-[colors.primary]
-background = '#000000'
-foreground = '#f3e600'
+# Default colors
+primary.background = '#0a1414'
+primary.foreground = '#00ffff'
+
+# Cursor colors
+cursor.text = '#0a1414'
+cursor.cursor = '#00e5e5'
+
+# Selection colors
+selection.text = '#0a1414'
+selection.background = '#33cccc'
 
 # Normal colors
-[colors.normal]
-black = '#000000'
-red = '#c5003c'
-green = '#55ead4'
-yellow = '#f3e600'
-blue = '#55ead4'
-magenta = '#c5003c'
-cyan = '#55ead4'
-white = '#f3e600'
+normal.black = '#1a2828'
+normal.red = '#ff4081'
+normal.green = '#2e8b57'
+normal.yellow = '#adff2f'
+normal.blue = '#00bfff'
+normal.magenta = '#9400d3'
+normal.cyan = '#00ffff'
+normal.white = '#e0ffff'
 
 # Bright colors
-[colors.bright]
-black = '#880425'
-red = '#c5003c'
-green = '#55ead4'
-yellow = '#f3e600'
-blue = '#55ead4'
-magenta = '#c5003c'
-cyan = '#55ead4'
-white = '#f3e600'
-
-[colors.selection]
-background = '#880425'
+bright.black = '#5f9ea0'
+bright.red = '#ff4081'
+bright.green = '#2e8b57'
+bright.yellow = '#adff2f'
+bright.blue = '#00bfff'
+bright.magenta = '#9400d3'
+bright.cyan = '#00ffff'
+bright.white = '#ffffff'
