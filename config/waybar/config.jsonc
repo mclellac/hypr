@@ -36,7 +36,7 @@
     "exec": "arch-update",
     "on-click": "arch-update update",
     "return-type": "json",
-    "interval": 3600
+    "interval": 1000
   },
   "custom/weather": {
     "class": "weather",
