@@ -44,4 +44,6 @@
 | `download_end` | #a3a8f7 | btop Download End |
 | `upload_start` | #701c45 | btop Upload Start |
 | `upload_mid` | #b16286 | btop Upload Mid |
-| `check_color` | #d6925c | Hyprlock Check Color |
+| `hyprlock_outer` | rgba(212,190,152,1.0) | Hyprlock Outer Color |
+| `hyprlock_check` | rgba(214, 153, 92, 1.0) | Hyprlock Check Color |
+| `hyprlock_inner` | rgba(40,40,40,0.8) | Hyprlock Inner Color |

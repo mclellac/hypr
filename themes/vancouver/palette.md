@@ -22,4 +22,6 @@
 | `pink` | #e7cde2 | Kitty Bright Magenta |
 | `bright_yellow` | #fff7af | Kitty Bright Yellow |
 | `hyprlock_outer` | rgba(162, 217, 206, 1.0) | Hyprlock Outer Color |
+| `hyprlock_check` | rgba(240, 240, 240, 1.0) | Hyprlock Check Color |
+| `hyprlock_inner` | rgba(42, 42, 42, 0.8) | Hyprlock Inner Color |
 | `btop_net_box` | #f5b7b1 | btop Net Box Outline |

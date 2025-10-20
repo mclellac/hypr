@@ -27,3 +27,22 @@
 | `peach` | #ff9e3b | btop Cached End |
 | `light_magenta` | #9cabca | btop Available End |
 | `light_blue` | #658594 | btop Used Start |
+| `kitty_black` | #090618 | Kitty Black |
+| `kitty_red` | #c34043 | Kitty Red |
+| `kitty_green` | #76946a | Kitty Green |
+| `kitty_yellow` | #c0a36e | Kitty Yellow |
+| `kitty_blue` | #7e9cd8 | Kitty Blue |
+| `kitty_magenta` | #957fb8 | Kitty Magenta |
+| `kitty_cyan` | #6a9589 | Kitty Cyan |
+| `kitty_white` | #c8c093 | Kitty White |
+| `kitty_bright_black` | #727169 | Kitty Bright Black |
+| `kitty_bright_red` | #e82424 | Kitty Bright Red |
+| `kitty_bright_green` | #98bb6c | Kitty Bright Green |
+| `kitty_bright_yellow` | #e6c384 | Kitty Bright Yellow |
+| `kitty_bright_blue` | #7fb4ca | Kitty Bright Blue |
+| `kitty_bright_magenta` | #938aa9 | Kitty Bright Magenta |
+| `kitty_bright_cyan` | #7aa89f | Kitty Bright Cyan |
+| `kitty_bright_white` | #dcd7ba | Kitty Bright White |
+| `hyprlock_outer` | rgba(220,215,186,1.0) | Hyprlock Outer Color |
+| `hyprlock_check` | rgba(126, 156, 216, 1.0) | Hyprlock Check Color |
+| `hyprlock_inner` | rgba(31,31,40,0.8) | Hyprlock Inner Color |

@@ -22,4 +22,6 @@
 | `bright_white` | #eeffff | Alacritty White |
 | `btop_selected_bg` | #546E7A | btop Selected Background |
 | `btop_selected_fg` | #FFFFFF | btop Selected Foreground |
-| `hyprlock_check` | #009688 | Hyprlock Check Color |
+| `hyprlock_outer` | rgba(176,190,197,1.0) | Hyprlock Outer Color |
+| `hyprlock_check` | rgba(0,150,136,1.0) | Hyprlock Check Color |
+| `hyprlock_inner` | rgba(38,50,56,0.8) | Hyprlock Inner Color |

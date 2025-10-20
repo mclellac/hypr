@@ -42,3 +42,4 @@
 | `kitty_magenta` | #c4a7e7 | Kitty Magenta (dark theme) |
 | `kitty_cyan` | #ebbcba | Kitty Cyan (dark theme) |
 | `hyprlock_outer` | rgba(57,52,79,1.0) | Hyprlock Outer Color |
+| `hyprlock_inner` | rgba(250, 244, 237,0.8) | Hyprlock Inner Color |
