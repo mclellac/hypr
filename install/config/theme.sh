@@ -20,7 +20,6 @@ ln -snf ~/.config/hypr/themes/material ~/.config/hypr/current/theme
 ln -snf ~/.config/hypr/current/theme/backgrounds/1-scenery-pink-lakeside-sunset-lake-landscape-scenic-panorama-7680x3215-144.png ~/.config/hypr/current/background
 
 # Set specific app links for current theme
-ln -snf ~/.config/hypr/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
 
 mkdir -p ~/.config/btop/themes
 ln -snf ~/.config/hypr/current/theme/btop.theme ~/.config/btop/themes/current.theme
