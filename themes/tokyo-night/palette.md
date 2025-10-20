@@ -29,5 +29,6 @@
 | `kitty_white` | #c0caf5 | Kitty White |
 | `btop_fg` | #cfc9c2 | btop Foreground, Waybar Foreground |
 | `btop_inactive` | #565f89 | btop Inactive Foreground |
-| `hyprlock_outer` | #cdd6f4 | Hyprlock Outer Color |
-| `hyprlock_check` | #449dab | Hyprlock Check Color |
+| `hyprlock_outer` | rgba(205,214,244,1.0) | Hyprlock Outer Color |
+| `hyprlock_check` | rgba(68, 157, 171, 1.0) | Hyprlock Check Color |
+| `hyprlock_inner` | rgba(26,27,38,0.8) | Hyprlock Inner Color |

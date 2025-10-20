@@ -32,4 +32,6 @@
 | `available_end` | #fce2a3 | btop Available End |
 | `used_end` | #feb5c7 | btop Used End |
 | `download_end` | #c5c6f0 | btop Download End |
-| `hyprlock_check` | #fd6883 | Hyprlock Check Color |
+| `hyprlock_outer` | rgba(230,217,219,1.0) | Hyprlock Outer Color |
+| `hyprlock_check` | rgba(253,104,131,1.0) | Hyprlock Check Color |
+| `hyprlock_inner` | rgba(44,37,37,0.8) | Hyprlock Inner Color |

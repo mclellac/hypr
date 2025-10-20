@@ -45,9 +45,9 @@
 | `btop_upload_mid` | #91C080 | btop Upload Mid |
 | `btop_proc_start` | #72CFA3 | btop Process Start |
 | `btop_proc_mid` | #D0D494 | btop Process Mid |
-| `hyprlock_color` | rgb(7, 40, 32) | Hyprlock Color |
 | `hyprlock_outer` | rgb(167, 172, 132) | Hyprlock Outer Color |
 | `hyprlock_check` | rgb(131, 162, 152) | Hyprlock Check Color |
+| `hyprlock_inner` | rgb(7, 40, 32) | Hyprlock Inner Color |
 | `swayosd_border` | #589A5F | SwayOSD Border |
 | `swayosd_label` | #C0C396 | SwayOSD Label |
 | `waybar_fg` | #ebfff2 | Waybar Foreground |

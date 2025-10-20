@@ -25,3 +25,6 @@
 | `error` | #f85552 | btop Error |
 | `orange` | #e69875 | btop Orange |
 | `btop_selected_bg` | #3d484d | btop Selected Background |
+| `hyprlock_outer` | rgba(211,198,170,1.0) | Hyprlock Outer Color |
+| `hyprlock_check` | rgba(131, 192, 146, 1.0) | Hyprlock Check Color |
+| `hyprlock_inner` | rgba(45,53,59,0.8) | Hyprlock Inner Color |

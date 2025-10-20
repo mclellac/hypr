@@ -27,4 +27,6 @@
 | `url` | #0087BD | Kitty URL Color |
 | `selection_fg` | #000000 | Kitty Selection Foreground |
 | `selection_bg` | #FFFACD | Kitty Selection Background |
-| `hyprlock_check` | #88c0d0 | Hyprlock Check Color |
+| `hyprlock_outer` | rgba(216,222,233,1.0) | Hyprlock Outer Color |
+| `hyprlock_check` | rgba(136, 192, 208, 1.0) | Hyprlock Check Color |
+| `hyprlock_inner` | rgba(46,52,64,0.8) | Hyprlock Inner Color |
