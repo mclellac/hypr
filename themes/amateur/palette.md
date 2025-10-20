@@ -1,27 +1,36 @@
 # Amateur Palette
 
-| Name                  | Hex     |
-| --------------------- | ------- |
-| foreground            | #E2E8F0 |
-| background            | #1A202C |
-| selection_foreground  | #1A202C |
-| selection_background  | #E2E8F0 |
-| url_color             | #63B3ED |
-| cursor                | #E2E8F0 |
-| cursor_text_color     | #1A202C |
-| color0 (Black)        | #4A5568 |
-| color8 (Black)        | #6A7588 |
-| color1 (Red)          | #F56565 |
-| color9 (Red)          | #FF8585 |
-| color2 (Green)        | #48BB78 |
-| color10 (Green)       | #68DB98 |
-| color3 (Yellow)       | #F6AD55 |
-| color11 (Yellow)      | #FFCD75 |
-| color4 (Blue)         | #63B3ED |
-| color12 (Blue)        | #83D3FF |
-| color5 (Magenta)      | #4FD1C5 |
-| color13 (Magenta)     | #6FE1E5 |
-| color6 (Cyan)         | #4FD1C5 |
-| color14 (Cyan)        | #6FE1E5 |
-| color7 (White)        | #F7FAFC |
-| color15 (White)       | #F7FAFC |
+| Name | Hex | Description |
+|---|---|---|
+| `base` | #1A202C | btop, Kitty, Waybar Background |
+| `surface` | #1b2425 | Alacritty Background |
+| `overlay` | #2D3748 | Alacritty Black, btop Box Divider |
+| `muted` | #4A5568 | Alacritty Bright Black, Kitty Black |
+| `subtle` | #6A7588 | Kitty Bright Black |
+| `text` | #7ab9a9 | Alacritty Foreground |
+| `love` | #F56565 | Alacritty Red, Kitty Red |
+| `gold` | #F6AD55 | Alacritty Yellow, btop Yellow |
+| `rose` | #FF8585 | Kitty Bright Red |
+| `pine` | #3edf81 | Alacritty Green |
+| `foam` | #48BB78 | btop, Kitty Green |
+| `iris` | #63B3ED | Alacritty, btop, Kitty Blue |
+| `highlight` | #00eacb | Hyprland Active Border, Waybar Accent |
+| `highlight_inactive` | #00b362 | Hyprland Inactive Border |
+| `sky` | #83D3FF | Kitty Bright Blue |
+| `cyan` | #4FD1C5 | Alacritty, btop, Kitty Cyan |
+| `aqua` | #6FE1E5 | Kitty Bright Cyan |
+| `mauve` | #4FD1C5 | Kitty Magenta |
+| `pink` | #6FE1E5 | Kitty Bright Magenta |
+| `bright_yellow` | #FFCD75 | Kitty Bright Yellow |
+| `bright_white` | #E2E8F0 | Alacritty White, Waybar Foreground |
+| `url` | #63B3ED | Kitty URL Color |
+| `white` | #F7FAFC | Kitty White |
+| `error` | #EF4444 | Alacritty, btop Bright Red |
+| `green` | #38A169 | Alacritty Bright Green |
+| `blue` | #4299E1 | Alacritty, btop Bright Blue |
+| `selection` | #2C5282 | Alacritty, btop Selection Background |
+| `green_alt` | #68DB98 | Kitty Bright Green |
+| `hyprlock_outer` | rgba(99, 179, 237, 1.0) | Hyprlock Outer Color |
+| `hyprlock_inner` | rgba(45, 55, 72, 0.8) | Hyprlock Inner Color |
+| `hyprlock_font` | rgba(226, 232, 240, 1.0) | Hyprlock Font Color |
+| `hyprlock_check` | rgba(226, 232, 240, 1.0) | Hyprlock Check Color |

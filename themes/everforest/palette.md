@@ -1,26 +1,27 @@
 # Everforest Palette
 
-| Name                  | Hex     |
-| --------------------- | ------- |
-| foreground            | #d8caac |
-| background            | #323d43 |
-| selection_foreground  | #d8caac |
-| selection_background  | #505a60 |
-| cursor                | #d8caac |
-| cursor_text_color     | #323d43 |
-| color0 (Black)        | #3c474d |
-| color8 (Black)        | #868d80 |
-| color1 (Red)          | #e68183 |
-| color9 (Red)          | #e68183 |
-| color2 (Green)        | #a7c080 |
-| color10 (Green)       | #a7c080 |
-| color3 (Yellow)       | #d9bb80 |
-| color11 (Yellow)      | #d9bb80 |
-| color4 (Blue)         | #83b6af |
-| color12 (Blue)        | #83b6af |
-| color5 (Magenta)      | #d39bb6 |
-| color13 (Magenta)     | #d39bb6 |
-| color6 (Cyan)         | #87c095 |
-| color14 (Cyan)        | #87c095 |
-| color7 (White)        | #d8caac |
-| color15 (White)       | #868d80 |
+| Name | Hex | Description |
+|---|---|---|
+| `base` | #2d353b | Alacritty, btop, Waybar Background |
+| `surface` | #323d43 | Kitty Background |
+| `overlay` | #3c474d | Kitty Black |
+| `muted` | #475258 | Alacritty Black |
+| `subtle` | #505a60 | Kitty Selection Background |
+| `text` | #d3c6aa | Alacritty, Hyprland, Waybar Foreground |
+| `love` | #e67e80 | Alacritty Red |
+| `gold` | #dbbc7f | Alacritty Yellow, Waybar Accent |
+| `rose` | #e68183 | Kitty Red |
+| `pine` | #a7c080 | Alacritty Green |
+| `foam` | #a7c080 | Kitty Green |
+| `iris` | #7fbbb3 | Alacritty Blue |
+| `highlight` | #83b6af | Kitty Blue |
+| `sky` | #83c092 | Alacritty Cyan |
+| `cyan` | #87c095 | Kitty Cyan |
+| `mauve` | #d699b6 | Alacritty Magenta |
+| `pink` | #d39bb6 | Kitty Magenta |
+| `bright_yellow` | #d9bb80 | Kitty Yellow |
+| `bright_white` | #d8caac | Kitty Foreground |
+| `bright_black` | #868d80 | Kitty Bright Black |
+| `error` | #f85552 | btop Error |
+| `orange` | #e69875 | btop Orange |
+| `btop_selected_bg` | #3d484d | btop Selected Background |
