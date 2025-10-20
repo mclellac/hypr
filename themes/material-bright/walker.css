@@ -1,7 +1,7 @@
 @define-color base #263238;
 @define-color text #B0BEC5;
 @define-color border #B0BEC5;
-@define-color selected-text #38a093;
+@define-color selected-text #00bda5;
 
 .box-wrapper {
   box-shadow:

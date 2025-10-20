@@ -21,7 +21,7 @@
 | color12 (Blue)        | #82aaff |
 | color5 (Magenta)      | #c792ea |
 | color13 (Magenta)     | #c792ea |
-| color6 (Cyan)         | #a1e9ff |
-| color14 (Cyan)        | #a1e9ff |
+| color6 (Cyan)         | #a9ffff |
+| color14 (Cyan)        | #a9ffff |
 | color7 (White)        | #eeffff |
 | color15 (White)       | #eeffff |
