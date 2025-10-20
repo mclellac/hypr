@@ -1,27 +1,29 @@
 # Kanagawa Palette
 
-| Name                  | Hex     |
-| --------------------- | ------- |
-| foreground            | #dcd7ba |
-| background            | #1f1f28 |
-| selection_foreground  | #c8c093 |
-| selection_background  | #2d4f67 |
-| url_color             | #7e9cd8 |
-| cursor                | #dcd7ba |
-| cursor_text_color     | #1f1f28 |
-| color0 (Black)        | #090618 |
-| color8 (Black)        | #727169 |
-| color1 (Red)          | #c34043 |
-| color9 (Red)          | #e82424 |
-| color2 (Green)        | #76946a |
-| color10 (Green)       | #98bb6c |
-| color3 (Yellow)       | #c0a36e |
-| color11 (Yellow)      | #e6c384 |
-| color4 (Blue)         | #7e9cd8 |
-| color12 (Blue)        | #7fb4ca |
-| color5 (Magenta)      | #957fb8 |
-| color13 (Magenta)     | #938aa9 |
-| color6 (Cyan)         | #6a9589 |
-| color14 (Cyan)        | #7aa89f |
-| color7 (White)        | #c8c093 |
-| color15 (White)       | #dcd7ba |
+| Name | Hex | Description |
+|---|---|---|
+| `base` | #1f1f28 | Alacritty, btop, Kitty, Waybar Background |
+| `surface` | #090618 | Alacritty Black |
+| `overlay` | #223249 | btop Selected Background |
+| `muted` | #727169 | Alacritty Bright Black, btop Box Divider |
+| `subtle` | #2d4f67 | Alacritty Selection Background |
+| `text` | #dcd7ba | Alacritty Foreground, Waybar Foreground |
+| `love` | #c34043 | Alacritty Red |
+| `gold` | #c0a36e | Alacritty Yellow |
+| `rose` | #e82424 | Alacritty Bright Red |
+| `pine` | #76946a | Alacritty Green |
+| `foam` | #98bb6c | Alacritty Bright Green |
+| `iris` | #7e9cd8 | Alacritty Blue, Kitty URL Color |
+| `highlight` | #dca561 | btop Selected Foreground, Waybar Accent |
+| `sky` | #7fb4ca | Alacritty Bright Blue |
+| `cyan` | #6a9589 | Alacritty Cyan |
+| `aqua` | #7aa89f | Alacritty Bright Cyan, btop Proc Misc |
+| `mauve` | #957fb8 | Alacritty Magenta |
+| `pink` | #938aa9 | Alacritty Bright Magenta |
+| `bright_yellow` | #e6c384 | Alacritty Bright Yellow |
+| `bright_white` | #c8c093 | Alacritty White |
+| `orange` | #ffa066 | Alacritty Indexed Color 16 |
+| `light_red` | #ff5d62 | Alacritty Indexed Color 17, btop Free End |
+| `peach` | #ff9e3b | btop Cached End |
+| `light_magenta` | #9cabca | btop Available End |
+| `light_blue` | #658594 | btop Used Start |

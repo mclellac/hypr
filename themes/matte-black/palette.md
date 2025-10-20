@@ -1,27 +1,28 @@
 # Matte Black Palette
 
-| Name                  | Hex     |
-| --------------------- | ------- |
-| foreground            | #bebebe |
-| background            | #121212 |
-| selection_foreground  | #bebebe |
-| selection_background  | #333333 |
-| url_color             | #e68e0d |
-| cursor                | #eaeaea |
-| cursor_text_color     | #121212 |
-| color0 (Black)        | #333333 |
-| color8 (Black)        | #8a8a8d |
-| color1 (Red)          | #D35F5F |
-| color9 (Red)          | #B91C1C |
-| color2 (Green)        | #FFC107 |
-| color10 (Green)       | #FFC107 |
-| color3 (Yellow)       | #b91c1c |
-| color11 (Yellow)      | #b90a0a |
-| color4 (Blue)         | #e68e0d |
-| color12 (Blue)        | #f59e0b |
-| color5 (Magenta)      | #D35F5F |
-| color13 (Magenta)     | #B91C1C |
-| color6 (Cyan)         | #bebebe |
-| color14 (Cyan)        | #eaeaea |
-| color7 (White)        | #bebebe |
-| color15 (White)       | #ffffff |
+| Name | Hex | Description |
+|---|---|---|
+| `base` | #121212 | Alacritty, Kitty, Waybar Background |
+| `surface` | #1e1e1e | Mako Background |
+| `overlay` | #333333 | Alacritty Black, Kitty Black |
+| `muted` | #8a8a8d | Alacritty Dim Foreground, Hyprland Active Border |
+| `subtle` | #8a8a8d | btop Title, Kitty Bright Black |
+| `text` | #bebebe | Alacritty Foreground, Kitty Foreground |
+| `love` | #D35F5F | Alacritty Red, Kitty Red |
+| `gold` | #FFC107 | Alacritty Green, Kitty Green |
+| `rose` | #b91c1c | Alacritty Yellow, Kitty Yellow |
+| `pine` | #e68e0d | Alacritty Blue, Kitty URL Color |
+| `foam` | #f59e0b | Alacritty Bright Blue, btop Highlight |
+| `iris` | #D35F5F | Alacritty Magenta, Kitty Magenta |
+| `highlight` | #B91C1C | Alacritty Bright Red, Waybar Accent |
+| `sky` | #bebebe | Alacritty Cyan, Kitty Cyan |
+| `cyan` | #eaeaea | Alacritty Bright Cyan, Kitty Bright Cyan |
+| `white` | #bebebe | Alacritty White, Kitty White |
+| `bright_yellow` | #b90a0a | Alacritty Bright Yellow |
+| `bright_white` | #ffffff | Alacritty Bright White |
+| `bright_magenta` | #B91C1C | Alacritty Bright Magenta |
+| `hyprlock_inner` | rgba(138,138,141,0.3) | Hyprlock Inner Color |
+| `hyprlock_outer` | rgba(234,234,234,0.5) | Hyprlock Outer Color |
+| `hyprlock_font` | rgba(234,234,234,1.0) | Hyprlock Font Color |
+| `hyprlock_check` | rgba(245,158,11,1.0) | Hyprlock Check Color |
+| `btop_selected_fg` | #EAEAEA | btop Selected Foreground, Waybar Foreground |

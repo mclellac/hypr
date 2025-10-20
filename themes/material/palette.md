@@ -1,27 +1,24 @@
 # Material Palette
 
-| Name                  | Hex     |
-| --------------------- | ------- |
-| foreground            | #B0BEC5 |
-| background            | #263238 |
-| selection_foreground  | #B0BEC5 |
-| selection_background  | #37474F |
-| url_color             | #82aaff |
-| cursor                | #B0BEC5 |
-| cursor_text_color     | #263238 |
-| color0 (Black)        | #1E272C |
-| color8 (Black)        | #1E272C |
-| color1 (Red)          | #f07178 |
-| color9 (Red)          | #f07178 |
-| color2 (Green)        | #c3e88d |
-| color10 (Green)       | #c3e88d |
-| color3 (Yellow)       | #ffcb6b |
-| color11 (Yellow)      | #ffcb6b |
-| color4 (Blue)         | #82aaff |
-| color12 (Blue)        | #82aaff |
-| color5 (Magenta)      | #c792ea |
-| color13 (Magenta)     | #c792ea |
-| color6 (Cyan)         | #89ddff |
-| color14 (Cyan)        | #89ddff |
-| color7 (White)        | #eeffff |
-| color15 (White)       | #eeffff |
+| Name | Hex | Description |
+|---|---|---|
+| `base` | #263238 | Alacritty, btop, Kitty, Waybar Background |
+| `surface` | #1E272C | Alacritty Black, Kitty Black |
+| `overlay` | #2A373E | btop Box Divider, Hyprland Inactive Border |
+| `muted` | #37474F | Kitty Selection Background |
+| `subtle` | #415967 | btop Inactive Foreground |
+| `text` | #B0BEC5 | Alacritty, btop, Hyprland, Waybar Foreground |
+| `love` | #f07178 | Alacritty Red, Hyprland Locked Border |
+| `gold` | #ffcb6b | Alacritty Yellow |
+| `rose` | #f78c6c | btop Used End |
+| `pine` | #c3e88d | Alacritty Green |
+| `foam` | #c3e88d | btop Proc Misc |
+| `iris` | #82aaff | Alacritty Blue |
+| `highlight` | #009688 | Hyprland Active Border, Waybar Accent |
+| `sky` | #89ddff | Alacritty Cyan |
+| `cyan` | #89ddff | btop Cached End |
+| `mauve` | #c792ea | Alacritty Magenta |
+| `pink` | #c792ea | btop Temp Mid |
+| `bright_white` | #eeffff | Alacritty White |
+| `btop_selected_bg` | #546E7A | btop Selected Background |
+| `btop_selected_fg` | #FFFFFF | btop Selected Foreground |
