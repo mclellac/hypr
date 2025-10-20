@@ -62,7 +62,7 @@ OpenWeb() {
 #   None
 #######################################
 ShowLinuxMenu() {
-  local options="  Bash (Devhints)\n  Linux CLI (PhoenixNAP)\n  sed & awk (QuickRef)\n  find command (Devhints)\n  tmux (Devhints)\n  systemd (Devhints)\n  Vim (QuickRef)\n  Emacs (QuickRef)\n󰆍  GTFOBins\n󰢹  LOLBAS\n󰌆  PEASS / Privilege Escalation (GitHub)\n󱂅  SecLists (GitHub)\n  Back"
+  local options="  Bash (Devhints)\n  Linux CLI (PhoenixNAP)\n  sed (QuickRef)\n  awk (QuickRef)\n  curl (Ritchie Spears)\n  find command (Devhints)\n  tmux (Devhints)\n  systemd (Clemson University)\n  Vim (QuickRef)\n  Emacs (QuickRef)\n󰆍  GTFOBins\n󰢹  LOLBAS\n󰌆  PEASS / Privilege Escalation (GitHub)\n󱂅  SecLists (GitHub)\n  Back"
   local choice
   choice=$(Menu "  Linux" "${options}")
 
@@ -70,9 +70,11 @@ ShowLinuxMenu() {
     *"Bash"*) OpenWeb "https://devhints.io/bash" ;;
     *"Linux CLI"*) OpenWeb "https://phoenixnap.com/kb/linux-commands-cheat-sheet" ;;
     *"sed"*) OpenWeb "https://quickref.me/sed" ;;
+    *"awk"*) OpenWeb "https://quickref.me/awk" ;;
+    *"curl"*) OpenWeb "https://www.ritchiespears.com/wiki/curl" ;;
     *"find"*) OpenWeb "https://devhints.io/find" ;;
     *"tmux"*) OpenWeb "https://devhints.io/tmux" ;;
-    *"systemd"*) OpenWeb "https://devhints.io/systemd" ;;
+    *"systemd"*) OpenWeb "https://people.computing.clemson.edu/~jmarty/courses/commonCourseContent/common/cheatSheets/systemd-cheat-sheet.pdf" ;;
     *"Vim"*) OpenWeb "https://quickref.me/vim" ;;
     *"Emacs"*) OpenWeb "https://quickref.me/emacs" ;;
     *"GTFOBins"*) OpenWeb "https://gtfobins.github.io/" ;;
@@ -112,6 +114,28 @@ ShowWebSecMenu() {
 }
 
 #######################################
+# Displays a menu for Python programming language cheatsheets.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+ShowPythonMenu() {
+  local options="  Python Cheatsheet (pythoncheatsheet.org)\n  Python for Data Science (DataCamp)\n  Python Security (Bandit)\n  Back"
+  local choice
+  choice=$(Menu "  Python" "${options}")
+
+  case "${choice}" in
+    *"Python Cheatsheet"*) OpenWeb "https://www.pythoncheatsheet.org/" ;;
+    *"Python for Data Science"*) OpenWeb "https://www.datacamp.com/cheat-sheet/python-for-data-science-cheat-sheet" ;;
+    *"Python Security"*) OpenWeb "https://bandit.readthedocs.io/en/latest/" ;;
+    *) ShowProgrammingMenu ;;
+  esac
+}
+
+#######################################
 # Displays a menu for programming language cheatsheets.
 # Globals:
 #   None
@@ -121,13 +145,12 @@ ShowWebSecMenu() {
 #   None
 #######################################
 ShowProgrammingMenu() {
-  local options="  Python (gto76)\n  Python Security (Bandit)\n  Rust (cheats.rs)\n  Go (Devhints)\n  JavaScript (Devhints)\n  SQL Cheatsheet (SQLTutorial)\n  Bash (Devhints)\n󰡨  Docker (Devhints)\n󰡨  Docker Compose (Devhints)\n  GTK4 Reference (official)\n  Back"
+  local options="  Python\n  Rust (cheats.rs)\n  Go (Devhints)\n  JavaScript (Devhints)\n  SQL Cheatsheet (SQLTutorial)\n  Bash (Devhints)\n󰡨  Docker (Devhints)\n󰡨  Docker Compose (Devhints)\n  GTK4 Reference (official)\n  Back"
   local choice
   choice=$(Menu "  Programming" "${options}")
 
   case "${choice}" in
-    *"Python (gto76)"*) OpenWeb "https://github.com/gto76/python-cheatsheet" ;;
-    *"Python Security"*) OpenWeb "https://bandit.readthedocs.io/en/latest/" ;;
+    *"Python"*) ShowPythonMenu ;;
     *"Rust"*) OpenWeb "https://cheats.rs/" ;;
     *"Go"*) OpenWeb "https://devhints.io/go" ;;
     *"JavaScript"*) OpenWeb "https://devhints.io/javascript" ;;
@@ -150,7 +173,7 @@ ShowProgrammingMenu() {
 #   None
 #######################################
 ShowHackingMenu() {
-  local options="  Exploit-DB (search)\n  Reverse Shells (revshells.com)\n  Pentest Monkey (reverse shells)\n󱍴  Metasploit Docs\n󱗺  InternalAllTheThings\n  WinPEAS / Windows Priv Esc (GitHub)\n󰢡  CyberChef (The Cyber Swiss Army Knife)\n󰢡  CrackStation (Online Hash Cracker)\n󰊂  PayloadsAllTheThings\n  Back"
+  local options="  Exploit-DB (search)\n  Reverse Shells (revshells.com)\n  Pentest Monkey (reverse shells)\n󱍴  Metasploit Docs\n󱗺  InternalAllTheThings\n  WinPEAS / Windows Priv Esc (GitHub)\n󰢡  CyberChef (The Cyber Swiss Army Knife)\n󰢡  CrackStation (Online Hash Cracker)\n󰊂  PayloadsAllTheThings\n󰈙  OWASP Injection Cheatsheet\n  Back"
   local choice
   choice=$(Menu "󰲯  Hacking" "${options}")
 
@@ -164,6 +187,7 @@ ShowHackingMenu() {
     *"CyberChef"*) OpenWeb "https://gchq.github.io/CyberChef/" ;;
     *"CrackStation"*) OpenWeb "https://crackstation.net/" ;;
     *"PayloadsAllTheThings"*) OpenWeb "https://swisskyrepo.github.io/PayloadsAllTheThings/" ;;
+    *"OWASP Injection"*) OpenWeb "https://cheatsheetseries.owasp.org/cheatsheets/Injection_Prevention_Cheat_Sheet.html" ;;
     *) ShowMainMenu ;;
   esac
 }
@@ -253,7 +277,7 @@ ShowK8sMenu() {
 #   None
 #######################################
 ShowSecurityDocsMenu() {
-  local options="󱘖  MITRE ATT&CK\n󰓾  CIS Benchmarks\n󰙵  NIST Cybersecurity Framework\n󰢻  SANS Resources (Posters, Cheatsheets)\n󰈙  OWASP Cheat Sheet Series\n  Back"
+  local options="󱘖  MITRE ATT&CK\n󰓾  CIS Benchmarks\n󰙵  NIST Cybersecurity Framework\n󰢻  SANS Resources (Posters, Cheatsheets)\n󰈙  OWASP Cheat Sheet Series\n󰈙  OWASP CSRF Prevention\n  Back"
   local choice
   choice=$(Menu "  Security Docs" "${options}")
 
@@ -263,6 +287,7 @@ ShowSecurityDocsMenu() {
     *"NIST"*) OpenWeb "https://www.nist.gov/cyberframework" ;;
     *"SANS"*) OpenWeb "https://www.sans.org/posters/" ;;
     *"OWASP"*) OpenWeb "https://cheatsheetseries.owasp.org/" ;;
+    *"OWASP CSRF"*) OpenWeb "https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" ;;
     *) ShowMainMenu ;;
   esac
 }
@@ -277,16 +302,17 @@ ShowSecurityDocsMenu() {
 #   None
 #######################################
 ShowNetworkingMenu() {
-  local options="󰀂  Networking\n󰒄  OSI & TCP/IP Model (Comparitech)\n󰒄  tcpdump Cheatsheet (Comparitech)\n󰒄  netcat Cheatsheet (SANS)\n󰍽  Wireshark Display Filters (Official)\n󰛮  Nmap Cheatsheet (HighOn.Coffee)\n  Back"
+  local options="󰀂  OSI & TCP/IP Model (Cloudflare)\n󰒄  tcpdump Cheatsheet (Comparitech)\n󰒄  netcat Cheatsheet (SANS)\n󰍽  Wireshark Display Filters (Official)\n󰛮  Nmap Cheatsheet (HighOn.Coffee)\n󰈙  OWASP TLS Cheatsheet\n  Back"
   local choice
   choice=$(Menu "󰀂  Networking" "${options}")
 
   case "${choice}" in
-    *"OSI"*) OpenWeb "https://www.comparitech.com/net-admin/tcp-ip-vs-osi-model/" ;;
+    *"OSI"*) OpenWeb "https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/" ;;
     *"tcpdump"*) OpenWeb "https://www.comparitech.com/net-admin/tcpdump-cheat-sheet/" ;;
     *"netcat"*) OpenWeb "https://www.sans.org/tools/netcat/" ;;
     *"Wireshark"*) OpenWeb "https://www.wireshark.org/docs/dfref/" ;;
     *"Nmap"*) OpenWeb "https://highon.coffee/blog/nmap-cheat-sheet/" ;;
+    *"OWASP TLS"*) OpenWeb "https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html" ;;
     *) ShowMainMenu ;;
   esac
 }
