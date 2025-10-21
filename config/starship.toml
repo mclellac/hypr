@@ -1,16 +1,63 @@
-add_newline = true
-command_timeout = 200
-format = "[$directory$git_branch$git_status]($style)$character"
+# Starship config file
+# Dependencies:
+# - 'kubectl' or 'oc' CLI must be installed and configured
+# - 'jq' is required for JSON parsing of kubeconfig user info
+# Make sure both are available in your PATH
+
+"$schema" = "https://starship.rs/config-schema.json"
+
+right_format = ""
+continuation_prompt = "[∙](bright-black) "
+scan_timeout = 30
+command_timeout = 3000
+follow_symlinks = true
+
+[palettes.rose-pine-dawn]
+overlay = '#faf4ed'
+love = '#b4637a'
+gold = '#ea9d34'
+rose = '#d7827e'
+pine = '#286983'
+foam = '#56949f'
+iris = '#907aa9'
+
+format = """
+$custom.openshift$directory $python $golang $lua $java $julia $nodejs $nim $rust $scala $c $git_branch $git_status $docker_context $aws $env_var $gcloud $azure $helm [$character](fg:iris)
+"""
 
 [character]
-error_symbol = "[✗](bold cyan)"
+format = "$symbol "
 success_symbol = "[❯](bold cyan)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold green)"
+vimcmd_visual_symbol = "[❮](bold yellow)"
+vimcmd_replace_symbol = "[❮](bold purple)"
+vimcmd_replace_one_symbol = "[❮](bold purple)"
+
+[username]
+disabled = true
 
 [directory]
-truncation_length = 2
+format = " $path "
+style = "fg:pine"
+truncation_length = 12
 truncation_symbol = "…/"
 repo_root_style = "bold cyan"
 repo_root_format = "[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
+read_only = " 󰌾"
+
+[directory.substitutions]
+Documents = "󰈙 "
+Downloads = " "
+Music = "󰝚 "
+Pictures = " "
+"~/Projects/src/github.com" = " "
+"~/Projects/src/gitlab.nm.cbc.ca" = ""
+"~/Projects/src/bitbucket.org" = ""
+
+[fill]
+style = "fg:overlay"
+symbol = " "
 
 [git_branch]
 format = "[$branch]($style) "
@@ -30,3 +77,151 @@ stashed    = ""
 staged     = ""
 renamed    = ""
 deleted    = ""
+
+#[custom.openshift]
+#description = "OpenShift cluster friendly name and username"
+#command = """
+#CONTEXT=$(kubectl config current-context)
+#USER=$(kubectl config view --minify -o json | jq -r '.users[0].name // empty' | cut -d/ -f1)
+#FRIENDLY=""
+#case "$CONTEXT" in
+#  *api-ocp-int-nm-cbc-ca:6443*) FRIENDLY="OpenShift Internal" ;;
+#  *api-ocp-nm-cbc-ca:6443*)      FRIENDLY="OpenShift Prod" ;;
+#  *)                             FRIENDLY="$CONTEXT" ;;
+#esac
+#echo "$FRIENDLY ($USER)"
+#"""
+#when = "command -v oc &>/dev/null && test -f ~/.kube/config && grep -q 'token: ' ~/.kube/config"
+#format = '[$symbol$output]($style) '
+#symbol = " "
+#style = "fg:foam"
+
+[kubernetes]
+disabled = true
+
+[c]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[golang]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[lua]
+format = "via [$symbol($version )]($style)"
+symbol = " "
+style = "bold blue"
+
+[java]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[julia]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[nodejs]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[nim]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
+symbol = "󰆥 "
+
+[rust]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
+symbol = "󱘗 "
+
+[scala]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[python]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[docker_context]
+format = "[$symbol $context]($style)"
+symbol = " "
+style = "fg:foam"
+
+[aws]
+format = 'on [$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
+symbol = "  "
+style = "fg:gold"
+disabled = false
+expiration_symbol = "X"
+force_display = false
+
+[gcloud]
+format = 'on [$symbol$account(@$domain)(\($region\))]($style) '
+symbol = "󱇶 Google Cloud"
+style = "fg:rose"
+disabled = false
+detect_env_vars = ["CLOUDSDK_ACTIVE_CONFIG_NAME"]
+
+[azure]
+format = "on [$symbol($subscription)]($style) "
+symbol = " "
+style = "fg:foam"
+disabled = false
+
+[helm]
+format = "[$symbol $release]($style)"
+symbol = "⎈ "
+style = "fg:love"
+disabled = false
+
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+AlmaLinux = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Kali = " "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+RockyLinux = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Void = " "
+Windows = "󰍲 "
