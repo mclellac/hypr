@@ -106,6 +106,9 @@ UpdateChromiumTheme() {
 #   None
 #######################################
 UpdateNeovimTheme() {
+  # Start with a clean slate to prevent errors.
+  rm -f "${NVIM_PLUGIN_FILE}"
+
   local theme_path="$1"
   local theme_plugin_file="${theme_path}/neovim.plugin"
   local theme_colorscheme_file="${theme_path}/neovim.colorscheme"
@@ -174,6 +177,10 @@ ReloadApplications() {
   hypr-restart-walker
   makoctl reload
   hyprctl reload
+
+  # Add a small delay to ensure the filesystem has time to process the
+  # file changes before we tell Neovim to reload.
+  sleep 0.1
 
   # Reload Neovim configuration in all running instances.
   if command -v nvim &>/dev/null && [ ! -z "$(nvim --serverlist)" ]; then
