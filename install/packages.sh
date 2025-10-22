@@ -11,7 +11,8 @@ yay -S --noconfirm --needed \
     brightnessctl \
     btop \
     cargo \
-    clang \
+    cliphist \ 
+clang \
     cups \
     cups-browsed \
     cups-filters \
@@ -130,6 +131,6 @@ yay -S --noconfirm --needed \
     xmlstarlet \
     xournalpp \
     yay-bin \
-    zoxide #fcitx5 \
-#fcitx5-gtk \
+    zoxide \
+    #fcitx5-gtk #fcitx5 \
 #fcitx5-qt \
