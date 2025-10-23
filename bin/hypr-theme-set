@@ -19,21 +19,21 @@ readonly NVIM_PLUGIN_FILE="${HOME}/.config/nvim/lua/plugins/theme.lua"
 #   None
 #######################################
 UpdateWalkerTheme() {
-  local theme_path="$1"
-  local walker_theme_dir="${HOME}/.config/walker/themes/hypr-default"
-  local walker_theme_css="${walker_theme_dir}/style.css"
-  local walker_default_css="${HOME}/.local/share/hypr/default/walker/themes/hypr-default/style.css"
-  local theme_walker_css="${theme_path}/walker.css"
+    local theme_path="$1"
+    local walker_theme_dir="${HOME}/.config/walker/themes/hypr-default"
+    local walker_theme_css="${walker_theme_dir}/style.css"
+    local walker_default_css="${HOME}/.local/share/hypr/default/walker/themes/hypr-default/style.css"
+    local theme_walker_css="${theme_path}/walker.css"
 
-  if [[ ! -f "${theme_walker_css}" ]]; then
-    return
-  fi
+    if [[ ! -f "${theme_walker_css}" ]]; then
+        return
+    fi
 
-  mkdir -p "${walker_theme_dir}"
-  # Combine the theme's CSS with the default walker CSS.
-  cat "${theme_walker_css}" >"${walker_theme_css}"
-  echo "" >>"${walker_theme_css}"
-  cat "${walker_default_css}" >>"${walker_theme_css}"
+    mkdir -p "${walker_theme_dir}"
+    # Combine the theme's CSS with the default walker CSS.
+    cat "${theme_walker_css}" >"${walker_theme_css}"
+    echo "" >>"${walker_theme_css}"
+    cat "${walker_default_css}" >>"${walker_theme_css}"
 }
 
 #######################################
@@ -46,26 +46,26 @@ UpdateWalkerTheme() {
 #   None
 #######################################
 UpdateGnomeSettings() {
-  if ! command -v gsettings &>/dev/null; then
-    echo "WARNING: gsettings command not found. Skipping GNOME settings update." >&2
-    return
-  fi
+    if ! command -v gsettings &>/dev/null; then
+        echo "WARNING: gsettings command not found. Skipping GNOME settings update." >&2
+        return
+    fi
 
-  if [[ -f "${CURRENT_THEME_DIR}/light.mode" ]]; then
-    gsettings set org.gnome.desktop.interface color-scheme "prefer-light"
-    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
-  else
-    gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
-    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
-  fi
+    if [[ -f "${CURRENT_THEME_DIR}/light.mode" ]]; then
+        gsettings set org.gnome.desktop.interface color-scheme "prefer-light"
+        gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
+    else
+        gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+        gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
+    fi
 
-  if [[ -f "${CURRENT_THEME_DIR}/icons.theme" ]]; then
-    local icon_theme
-    icon_theme=$(<"${CURRENT_THEME_DIR}/icons.theme")
-    gsettings set org.gnome.desktop.interface icon-theme "${icon_theme}"
-  else
-    gsettings set org.gnome.desktop.interface icon-theme "Adwaita"
-  fi
+    if [[ -f "${CURRENT_THEME_DIR}/icons.theme" ]]; then
+        local icon_theme
+        icon_theme=$(<"${CURRENT_THEME_DIR}/icons.theme")
+        gsettings set org.gnome.desktop.interface icon-theme "${icon_theme}"
+    else
+        gsettings set org.gnome.desktop.interface icon-theme "Adwaita"
+    fi
 }
 
 #######################################
@@ -78,21 +78,21 @@ UpdateGnomeSettings() {
 #   None
 #######################################
 UpdateChromiumTheme() {
-  if ! command -v chromium &>/dev/null; then
-    return
-  fi
+    if ! command -v chromium &>/dev/null; then
+        return
+    fi
 
-  local color_scheme="dark"
-  if [[ -f "${CURRENT_THEME_DIR}/light.mode" ]]; then
-    color_scheme="light"
-  fi
-  chromium --no-startup-window --set-color-scheme="${color_scheme}" &>/dev/null
+    local color_scheme="dark"
+    if [[ -f "${CURRENT_THEME_DIR}/light.mode" ]]; then
+        color_scheme="light"
+    fi
+    chromium --no-startup-window --set-color-scheme="${color_scheme}" &>/dev/null
 
-  local theme_color="28,32,39" # Default neutral grey
-  if [[ -f "${CURRENT_THEME_DIR}/chromium.theme" ]]; then
-    theme_color=$(<"${CURRENT_THEME_DIR}/chromium.theme")
-  fi
-  chromium --no-startup-window --set-theme-color="${theme_color}" &>/dev/null
+    local theme_color="28,32,39" # Default neutral grey
+    if [[ -f "${CURRENT_THEME_DIR}/chromium.theme" ]]; then
+        theme_color=$(<"${CURRENT_THEME_DIR}/chromium.theme")
+    fi
+    chromium --no-startup-window --set-theme-color="${theme_color}" &>/dev/null
 }
 
 #######################################
@@ -106,18 +106,18 @@ UpdateChromiumTheme() {
 #   None
 #######################################
 UpdateNeovimTheme() {
-  local theme_path="$1"
-  local theme_plugin_file="${theme_path}/neovim.plugin"
+    local theme_path="$1"
+    local theme_plugin_file="${theme_path}/neovim.plugin"
 
-  # If the theme provides a neovim.plugin file, symlink it directly.
-  # This is the definitive way to set the theme.
-  if [[ -f "${theme_plugin_file}" ]]; then
-    echo "Applying Neovim theme by symlinking ${theme_plugin_file}..."
-    ln -sf "${theme_plugin_file}" "${NVIM_PLUGIN_FILE}"
-  else
-    # If no plugin file exists, remove any old symlink to avoid errors.
-    rm -f "${NVIM_PLUGIN_FILE}"
-  fi
+    # If the theme provides a neovim.plugin file, symlink it directly.
+    # This is the definitive way to set the theme.
+    if [[ -f "${theme_plugin_file}" ]]; then
+        echo "Applying Neovim theme by symlinking ${theme_plugin_file}..."
+        ln -sf "${theme_plugin_file}" "${NVIM_PLUGIN_FILE}"
+    else
+        # If no plugin file exists, remove any old symlink to avoid errors.
+        rm -f "${NVIM_PLUGIN_FILE}"
+    fi
 }
 
 #######################################
@@ -130,30 +130,22 @@ UpdateNeovimTheme() {
 #   None
 #######################################
 ReloadApplications() {
-  # Trigger Alacritty config reload by updating the file's timestamp.
-  touch "${HOME}/.config/alacritty/alacritty.toml"
+    # Trigger Alacritty config reload by updating the file's timestamp.
+    touch "${HOME}/.config/alacritty/alacritty.toml"
 
-  # Reload Kitty config if it's running.
-  if pgrep -x kitty &>/dev/null; then
-    pkill -SIGUSR1 -x kitty
-  fi
+    # Reload Kitty config if it's running.
+    if pgrep -x kitty &>/dev/null; then
+        pkill -SIGUSR1 -x kitty
+    fi
 
-  # Reload other system components.
-  pkill -SIGUSR2 btop || true # Ignore error if btop is not running
-  hypr-restart-waybar
-  hypr-restart-swayosd
-  hypr-restart-walker
-  makoctl reload
-  hyprctl reload
+    # Reload other system components.
+    pkill -SIGUSR2 btop || true # Ignore error if btop is not running
+    hypr-restart-waybar
+    hypr-restart-swayosd
+    hypr-restart-walker
+    makoctl reload
+    hyprctl reload
 
-  # Reload Neovim configuration in all running instances.
-  if command -v nvim &>/dev/null && [ ! -z "$(nvim --serverlist)" ]; then
-    for s in $(nvim --serverlist); do
-      # Use --remote-silent to avoid hanging, and redirect output to prevent errors
-      # from showing up if a server is stale.
-      nvim --server "$s" --remote-send "<Cmd>Lazy sync<CR>" &>/dev/null || true
-    done
-  fi
 }
 
 #######################################
@@ -167,34 +159,34 @@ ReloadApplications() {
 #   Exits with an error if the theme name is not provided or the theme does not exist.
 #######################################
 main() {
-  if [[ -z "${1:-}" || "$1" == "CNCLD" ]]; then
-    echo "Usage: hypr-theme-set <theme-name>" >&2
-    exit 1
-  fi
+    if [[ -z "${1:-}" || "$1" == "CNCLD" ]]; then
+        echo "Usage: hypr-theme-set <theme-name>" >&2
+        exit 1
+    fi
 
-  # Sanitize the theme name: remove HTML tags, convert to lowercase, replace spaces with hyphens.
-  local theme_name
-  theme_name=$(echo "$1" | sed -E 's/<[^>]+>//g' | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
-  local theme_path="${THEMES_DIR}/${theme_name}"
+    # Sanitize the theme name: remove HTML tags, convert to lowercase, replace spaces with hyphens.
+    local theme_name
+    theme_name=$(echo "$1" | sed -E 's/<[^>]+>//g' | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
+    local theme_path="${THEMES_DIR}/${theme_name}"
 
-  if [[ ! -d "${theme_path}" ]]; then
-    echo "Theme '${theme_name}' does not exist in ${THEMES_DIR}" >&2
-    exit 2
-  fi
+    if [[ ! -d "${theme_path}" ]]; then
+        echo "Theme '${theme_name}' does not exist in ${THEMES_DIR}" >&2
+        exit 2
+    fi
 
-  # Atomically switch the current theme by updating the symlink.
-  ln -nsf "${theme_path}" "${CURRENT_THEME_DIR}"
-  echo "Theme set to '${theme_name}'."
+    # Atomically switch the current theme by updating the symlink.
+    ln -nsf "${theme_path}" "${CURRENT_THEME_DIR}"
+    echo "Theme set to '${theme_name}'."
 
-  UpdateWalkerTheme "${theme_path}"
-  UpdateGnomeSettings
-  UpdateChromiumTheme
-  UpdateNeovimTheme "${theme_path}"
-  ReloadApplications
+    UpdateWalkerTheme "${theme_path}"
+    UpdateGnomeSettings
+    UpdateChromiumTheme
+    UpdateNeovimTheme "${theme_path}"
+    ReloadApplications
 
-  # Set a new background from the theme's collection.
-  hypr-theme-bg-next
-  echo "Theme applied successfully."
+    # Set a new background from the theme's collection.
+    hypr-theme-bg-next
+    echo "Theme applied successfully."
 }
 
 main "$@"
