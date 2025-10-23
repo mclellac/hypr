@@ -6,5 +6,20 @@ return {
   opts = {
     flavour = "latte",
     no_italic = true,
+    -- transparent_background = true,
+    -- term_colors = true,
+    -- integrations = {
+    --   cmp = true,
+    --   gitsigns = true,
+    --   nvimtree = true,
+    --   telescope = true,
+    --   notify = true,
+    --   mini = true,
+    -- },
+    -- custom_highlights = function(colors)
+    --   return {
+    --     Comment = { fg = colors.flamingo },
+    --   }
+    -- end,
   },
 }
