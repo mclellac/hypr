@@ -2,22 +2,5 @@ return {
   "rebelot/kanagawa.nvim",
   lazy = false,
   priority = 1000,
-  opts = {
-    commentStyle = { italic = false },
-    keywordStyle = { italic = false },
-    functionStyle = { italic = false },
-    statementStyle = { italic = false, bold = true },
-    -- transparent = true,
-    -- terminalColors = true,
-    -- colors = {
-    --   palette = {
-    --     sumiInk0 = "#000000",
-    --   },
-    -- },
-    -- overrides = function(colors)
-    --   return {
-    --     String = { fg = colors.palette.carpYellow, italic = true },
-    --   }
-    -- end,
-  },
+  opts = {},
 }
