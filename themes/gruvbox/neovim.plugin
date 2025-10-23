@@ -10,5 +10,10 @@ return {
       operators = false,
       folds = false,
     },
+    -- contrast = "hard",
+    -- invert_selection = true,
+    -- palette_overrides = {
+    --   bright_green = "#990000",
+    -- },
   },
 }

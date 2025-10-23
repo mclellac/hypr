@@ -10,6 +10,9 @@ return {
         functions = { italic = false },
         variables = { italic = false },
       },
+      -- transparent = true,
+      -- borders = true,
+      -- diff = { mode = "fg" },
     })
     vim.cmd("colorscheme nord")
   end,
