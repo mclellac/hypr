@@ -3,6 +3,26 @@ return {
   lazy = false,
   priority = 1000,
   config = function()
+    -- The theme supports the following options:
+    -- transparent = false,
+    -- terminal_colors = true,
+    -- diff = { mode = "bg" }, -- "bg" | "fg"
+    -- borders = true,
+    -- errors = { mode = "bg" }, -- "bg" | "fg" | "none"
+    -- search = { theme = "vim" }, -- "vim" | "vscode"
+    -- styles = {
+    --   comments = { italic = true },
+    --   keywords = {},
+    --   functions = {},
+    --   variables = {},
+    -- },
+
+    -- Apply the nord theme
+    require("nord").setup({
+      styles = {
+        comments = { italic = false },
+      },
+    })
     vim.cmd("colorscheme nord")
   end,
 }
