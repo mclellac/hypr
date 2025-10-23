@@ -1,8 +1,21 @@
 return {
-  "tahayvr/matteblack.nvim",
+  "dasupradyumna/midnight.nvim",
   lazy = false,
   priority = 1000,
   config = function()
-    vim.cmd("colorscheme matteblack")
+    -- The theme supports the following options:
+    -- require('midnight').setup {
+    --   Comment = {
+    --     italic = false,
+    --   },
+    -- }
+
+    -- Apply the midnight theme
+    require("midnight").setup({
+      Comment = {
+        italic = false,
+      },
+    })
+    vim.cmd("colorscheme midnight")
   end,
 }

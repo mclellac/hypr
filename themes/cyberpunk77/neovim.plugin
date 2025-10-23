@@ -3,6 +3,27 @@ return {
   lazy = false,
   priority = 1000,
   config = function()
+    -- The theme supports the following options:
+    -- transparent = false, -- Boolean: Sets the background to transparent
+    -- italics = {
+    --   comments = true, -- Boolean: Italicizes comments
+    --   keywords = true, -- Boolean: Italicizes keywords
+    --   functions = true, -- Boolean: Italicizes functions
+    --   strings = true, -- Boolean: Italicizes strings
+    --   variables = true, -- Boolean: Italicizes variables
+    -- },
+    -- overrides = {}, -- A dictionary of group names, can be a function returning a dictionary or a table.
+
+    -- Apply the NeoCyberVim theme
+    require("NeoCyberVim").setup({
+      italics = {
+        comments = false,
+        keywords = false,
+        functions = false,
+        strings = false,
+        variables = false,
+      },
+    })
     vim.cmd("colorscheme NeoCyberVim")
   end,
 }

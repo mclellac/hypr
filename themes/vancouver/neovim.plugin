@@ -3,7 +3,17 @@ return {
   lazy = false,
   priority = 1000,
   config = function()
-    require("night-owl").setup()
-    vim.cmd.colorscheme("night-owl")
+    -- The theme supports the following options:
+    -- bold = true,
+    -- italics = true,
+    -- underline = true,
+    -- undercurl = true,
+    -- transparent_background = false,
+
+    -- Apply the night-owl theme
+    require("night-owl").setup({
+      italics = false,
+    })
+    vim.cmd("colorscheme night-owl")
   end,
 }
