@@ -2,17 +2,5 @@ return {
   "folke/tokyonight.nvim",
   lazy = false,
   priority = 1000,
-  opts = {
-    styles = {
-      comments = { italic = false },
-      keywords = { italic = false },
-      functions = { italic = false },
-      variables = { italic = false },
-    },
-    -- transparent = true,
-    -- terminal_colors = true,
-    -- on_colors = function(colors)
-    --   colors.hint = colors.orange
-    -- end,
-  },
+  opts = {},
 }
