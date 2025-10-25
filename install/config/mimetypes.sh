@@ -1,39 +1,99 @@
 #!/bin/bash
+#
+# Sets default applications for various MIME types.
 
-hypr-refresh-applications
-if command -v update-desktop-database &> /dev/null; then
-  update-desktop-database ~/.local/share/applications
-fi
+# Exit immediately if a command exits with a non-zero status.
+set -euo pipefail
 
-# Open all images with imv
-xdg-mime default imv.desktop image/png
-xdg-mime default imv.desktop image/jpeg
-xdg-mime default imv.desktop image/gif
-xdg-mime default imv.desktop image/webp
-xdg-mime default imv.desktop image/bmp
-xdg-mime default imv.desktop image/tiff
+#######################################
+# Refreshes the application database.
+#######################################
+refresh_database() {
+  echo "Refreshing application database..."
+  hypr-refresh-applications
+  if command -v update-desktop-database &>/dev/null; then
+    update-desktop-database "${HOME}/.local/share/applications"
+  fi
+}
 
-# Open PDFs with the Document Viewer
-xdg-mime default org.gnome.Evince.desktop application/pdf
+#######################################
+# Sets the default image viewer.
+#######################################
+set_image_defaults() {
+  echo "Setting default image viewer..."
+  local -r desktop_file="imv.desktop"
+  local -ra mime_types=(
+    "image/png"
+    "image/jpeg"
+    "image/gif"
+    "image/webp"
+    "image/bmp"
+    "image/tiff"
+  )
+  local mime_type
+  for mime_type in "${mime_types[@]}"; do
+    xdg-mime default "${desktop_file}" "${mime_type}"
+  done
+}
 
-# Use Chromium as the default browser
-xdg-settings set default-web-browser chromium.desktop
-xdg-mime default chromium.desktop x-scheme-handler/http
-xdg-mime default chromium.desktop x-scheme-handler/https
+#######################################
+# Sets the default PDF viewer.
+#######################################
+set_pdf_defaults() {
+  echo "Setting default PDF viewer..."
+  xdg-mime default org.gnome.Evince.desktop application/pdf
+}
 
-# Open video files with mpv
-xdg-mime default mpv.desktop video/mp4
-xdg-mime default mpv.desktop video/x-msvideo
-xdg-mime default mpv.desktop video/x-matroska
-xdg-mime default mpv.desktop video/x-flv
-xdg-mime default mpv.desktop video/x-ms-wmv
-xdg-mime default mpv.desktop video/mpeg
-xdg-mime default mpv.desktop video/ogg
-xdg-mime default mpv.desktop video/webm
-xdg-mime default mpv.desktop video/quicktime
-xdg-mime default mpv.desktop video/3gpp
-xdg-mime default mpv.desktop video/3gpp2
-xdg-mime default mpv.desktop video/x-ms-asf
-xdg-mime default mpv.desktop video/x-ogm+ogg
-xdg-mime default mpv.desktop video/x-theora+ogg
-xdg-mime default mpv.desktop application/ogg
+#######################################
+# Sets the default web browser.
+#######################################
+set_browser_defaults() {
+  echo "Setting default web browser..."
+  local -r desktop_file="chromium.desktop"
+  xdg-settings set default-web-browser "${desktop_file}"
+  xdg-mime default "${desktop_file}" x-scheme-handler/http
+  xdg-mime default "${desktop_file}" x-scheme-handler/https
+}
+
+#######################################
+# Sets the default video player.
+#######################################
+set_video_defaults() {
+  echo "Setting default video player..."
+  local -r desktop_file="mpv.desktop"
+  local -ra mime_types=(
+    "video/mp4"
+    "video/x-msvideo"
+    "video/x-matroska"
+    "video/x-flv"
+    "video/x-ms-wmv"
+    "video/mpeg"
+    "video/ogg"
+    "video/webm"
+    "video/quicktime"
+    "video/3gpp"
+    "video/3gpp2"
+    "video/x-ms-asf"
+    "video/x-ogm+ogg"
+    "video/x-theora+ogg"
+    "application/ogg"
+  )
+  local mime_type
+  for mime_type in "${mime_types[@]}"; do
+    xdg-mime default "${desktop_file}" "${mime_type}"
+  done
+}
+
+#######################################
+# Main function to orchestrate MIME type configuration.
+#######################################
+main() {
+  refresh_database
+  set_image_defaults
+  set_pdf_defaults
+  set_browser_defaults
+  set_video_defaults
+  echo "MIME type configuration complete."
+}
+
+main "$@"

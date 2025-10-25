@@ -1,27 +1,42 @@
 #!/bin/bash
+#
+# Configures Plymouth for a seamless boot splash and auto-login experience.
 
-# Hyprland launched via UWSM and login directly as user, rely on disk encryption + hyprlock for security
+# Exit immediately if a command exits with a non-zero status.
+set -euo pipefail
 
-# ==============================================================================
-# PLYMOUTH SETUP
-# ==============================================================================
+#######################################
+# Sets the default Plymouth theme to 'hypr'.
+# Globals:
+#   HOME (read-only)
+#######################################
+set_plymouth_theme() {
+  if [ "$(plymouth-set-default-theme)" != "hypr" ]; then
+    echo "Setting Plymouth theme to hypr..."
+    sudo cp -r "${HOME}/.local/share/hypr/default/plymouth" /usr/share/plymouth/themes/hypr/
+    sudo plymouth-set-default-theme -R hypr
+  else
+    echo "Plymouth theme already set to hypr. Skipping."
+  fi
+}
 
-if [ "$(plymouth-set-default-theme)" != "hypr" ]; then
-  sudo cp -r "$HOME/.local/share/hypr/default/plymouth" /usr/share/plymouth/themes/hypr/
-  sudo plymouth-set-default-theme -R hypr
-fi
+#######################################
+# Compiles and installs the seamless-login helper utility.
+# This C program manages the virtual terminal to prevent console text from
+# appearing between the boot splash and the desktop.
+#######################################
+compile_and_install_seamless_login() {
+  if [ -x /usr/local/bin/seamless-login ]; then
+    echo "seamless-login utility already installed. Skipping compilation."
+    return
+  fi
 
-# ==============================================================================
-# SEAMLESS LOGIN
-# ==============================================================================
+  echo "Compiling and installing seamless-login utility..."
+  local -r temp_c_file="/tmp/seamless-login.c"
+  local -r temp_executable="/tmp/seamless-login"
 
-if [ ! -x /usr/local/bin/seamless-login ]; then
-  # Compile the seamless login helper -- needed to prevent seeing terminal between loader and desktop
-  cat <<'CCODE' >/tmp/seamless-login.c
-/*
-* Seamless Login - Minimal SDDM-style Plymouth transition
-* Replicates SDDM's VT management for seamless auto-login
-*/
+  # Write the C source code to a temporary file.
+  cat >"${temp_c_file}" <<'CCODE'
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -42,7 +57,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     
-    // Open the VT (simple approach like SDDM)
     snprintf(vt_path, sizeof(vt_path), "/dev/tty%d", vt_num);
     vt_fd = open(vt_path, O_RDWR);
     if (vt_fd < 0) {
@@ -50,28 +64,24 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     
-    // Activate the VT
     if (ioctl(vt_fd, VT_ACTIVATE, vt_num) < 0) {
         perror("VT_ACTIVATE failed");
         close(vt_fd);
         return 1;
     }
     
-    // Wait for VT to be active
     if (ioctl(vt_fd, VT_WAITACTIVE, vt_num) < 0) {
         perror("VT_WAITACTIVE failed");
         close(vt_fd);
         return 1;
     }
     
-    // Critical: Set graphics mode to prevent console text
     if (ioctl(vt_fd, KDSETMODE, KD_GRAPHICS) < 0) {
         perror("KDSETMODE KD_GRAPHICS failed");
         close(vt_fd);
         return 1;
     }
     
-    // Clear VT and close (like SDDM does)
     const char *clear_seq = "\33[H\33[2J";
     if (write(vt_fd, clear_seq, strlen(clear_seq)) < 0) {
         perror("Failed to clear VT");
@@ -79,25 +89,40 @@ int main(int argc, char *argv[]) {
     
     close(vt_fd);
     
-    // Set working directory to user's home
     const char *home = getenv("HOME");
     if (home) chdir(home);
     
-    // Now execute the session command
     execvp(argv[1], &argv[1]);
     perror("Failed to exec session");
     return 1;
 }
 CCODE
 
-  gcc -o /tmp/seamless-login /tmp/seamless-login.c
-  sudo mv /tmp/seamless-login /usr/local/bin/seamless-login
-  sudo chmod +x /usr/local/bin/seamless-login
-  rm /tmp/seamless-login.c
-fi
+  # Compile the C code.
+  gcc -o "${temp_executable}" "${temp_c_file}"
 
-if [ ! -f /etc/systemd/system/hypr-seamless-login.service ]; then
-  cat <<EOF | sudo tee /etc/systemd/system/hypr-seamless-login.service
+  # Install the compiled program.
+  sudo mv "${temp_executable}" /usr/local/bin/seamless-login
+  sudo chmod +x /usr/local/bin/seamless-login
+
+  # Clean up the temporary source file.
+  rm "${temp_c_file}"
+}
+
+#######################################
+# Creates the systemd service file for the seamless login process.
+# Globals:
+#   USER (read-only)
+#######################################
+create_seamless_login_service() {
+  local -r service_file="/etc/systemd/system/hypr-seamless-login.service"
+  if [ -f "${service_file}" ]; then
+    echo "seamless-login systemd service already exists. Skipping."
+    return
+  fi
+
+  echo "Creating seamless-login systemd service..."
+  sudo tee "${service_file}" >/dev/null <<EOF
 [Unit]
 Description=hypr Seamless Auto-Login
 Documentation=https://github.com/basecamp/hypr
@@ -112,7 +137,7 @@ Restart=always
 RestartSec=2
 StartLimitIntervalSec=30
 StartLimitBurst=2
-User=$USER
+User=${USER}
 TTYPath=/dev/tty1
 TTYReset=yes
 TTYVHangup=yes
@@ -125,29 +150,56 @@ PAMName=login
 [Install]
 WantedBy=graphical.target
 EOF
-fi
+}
 
-if [ ! -f /etc/systemd/system/plymouth-quit.service.d/wait-for-graphical.conf ]; then
-  # Make plymouth remain until graphical.target
-  sudo mkdir -p /etc/systemd/system/plymouth-quit.service.d
-  sudo tee /etc/systemd/system/plymouth-quit.service.d/wait-for-graphical.conf <<'EOF'
+#######################################
+# Configures Plymouth services to wait for the graphical target.
+#######################################
+configure_plymouth_services() {
+  local -r override_dir="/etc/systemd/system/plymouth-quit.service.d"
+  local -r override_file="${override_dir}/wait-for-graphical.conf"
+
+  if [ ! -f "${override_file}" ]; then
+    echo "Configuring plymouth-quit service..."
+    sudo mkdir -p "${override_dir}"
+    sudo tee "${override_file}" >/dev/null <<'EOF'
 [Unit]
 After=multi-user.target
 EOF
-fi
+  fi
 
-# Mask plymouth-quit-wait.service only if not already masked
-if ! systemctl is-enabled plymouth-quit-wait.service | grep -q masked; then
-  sudo systemctl mask plymouth-quit-wait.service
-  sudo systemctl daemon-reload
-fi
+  if ! systemctl is-enabled plymouth-quit-wait.service | grep -q "masked"; then
+    echo "Masking plymouth-quit-wait service..."
+    sudo systemctl mask plymouth-quit-wait.service
+    sudo systemctl daemon-reload
+  fi
+}
 
-# Enable hypr-seamless-login.service only if not already enabled
-if ! systemctl is-enabled hypr-seamless-login.service | grep -q enabled; then
-  sudo systemctl enable hypr-seamless-login.service
-fi
+#######################################
+# Enables and disables the necessary systemd services for seamless login.
+#######################################
+manage_systemd_services() {
+  if ! systemctl is-enabled hypr-seamless-login.service | grep -q "enabled"; then
+    echo "Enabling hypr-seamless-login service..."
+    sudo systemctl enable hypr-seamless-login.service
+  fi
 
-# Disable getty@tty1.service only if not already disabled
-if ! systemctl is-enabled getty@tty1.service | grep -q disabled; then
-  sudo systemctl disable getty@tty1.service
-fi
+  if ! systemctl is-enabled getty@tty1.service | grep -q "disabled"; then
+    echo "Disabling getty@tty1 service..."
+    sudo systemctl disable getty@tty1.service
+  fi
+}
+
+#######################################
+# Main function to orchestrate the Plymouth and seamless login setup.
+#######################################
+main() {
+  set_plymouth_theme
+  compile_and_install_seamless_login
+  create_seamless_login_service
+  configure_plymouth_services
+  manage_systemd_services
+  echo "Plymouth and seamless login configuration complete."
+}
+
+main "$@"

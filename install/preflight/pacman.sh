@@ -1,11 +1,23 @@
 #!/bin/bash
+#
+# Sets up pacman configuration and refreshes repositories.
 
-# Install build tools
-sudo pacman -S --needed --noconfirm base-devel
+# Exit immediately if a command exits with a non-zero status.
+set -euo pipefail
 
-# Configure pacman
-sudo cp -f ~/.local/share/hypr/default/pacman/pacman.conf /etc/pacman.conf
-sudo cp -f ~/.local/share/hypr/default/pacman/mirrorlist /etc/pacman.d/mirrorlist
+#######################################
+# Main function
+#######################################
+main() {
+  # Install build tools
+  sudo pacman -S --needed --noconfirm base-devel
 
-# Refresh all repos
-sudo pacman -Syu --noconfirm
+  # Configure pacman
+  sudo cp -f ~/.local/share/hypr/default/pacman/pacman.conf /etc/pacman.conf
+  sudo cp -f ~/.local/share/hypr/default/pacman/mirrorlist /etc/pacman.d/mirrorlist
+
+  # Refresh all repos
+  sudo pacman -Syu --noconfirm
+}
+
+main "$@"

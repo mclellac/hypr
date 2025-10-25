@@ -1,13 +1,28 @@
 #!/bin/bash
+#
+# Installs pinned packages that are held back from upstream.
 
-# We pin explicit packages that are bad upstream here
-pinned_packages=$(hypr-pkg-pinned)
+# Exit immediately if a command exits with a non-zero status.
+set -euo pipefail
 
-if [[ -n $pinned_packages ]]; then
-  echo -e "\e[32m\nInstall pinned system packages\e[0m"
+#######################################
+# Installs packages from a predefined list of pinned versions.
+#######################################
+main() {
+  # The `mapfile` command reads lines from standard input into an array.
+  # This is safer than simple command substitution if filenames contain spaces.
+  local -a pinned_packages
+  mapfile -t pinned_packages < <(hypr-pkg-pinned)
 
-  for pinned in $pinned_packages; do
-    echo "sudo pacman -U --noconfirm $pinned"
-    sudo pacman -U --noconfirm $pinned
-  done
-fi
+  if [[ "${#pinned_packages[@]}" -gt 0 ]]; then
+    echo -e "\e[32m\nInstall pinned system packages\e[0m"
+
+    local pinned
+    for pinned in "${pinned_packages[@]}"; do
+      echo "Installing pinned package: ${pinned}"
+      sudo pacman -U --noconfirm "${pinned}"
+    done
+  fi
+}
+
+main "$@"
