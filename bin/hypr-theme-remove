@@ -1,40 +1,59 @@
 #!/bin/bash
+#
+# Removes a theme from hypr by name.
+# Usage: hypr-theme-remove [theme-name]
 
-# hypr-theme-remove: Remove a theme from hypr by name
-# Usage: hypr-theme-remove <theme-name>
+set -euo pipefail
 
-if [ -z "$1" ]; then
-  mapfile -t extra_themes < <(find ~/.config/hypr/themes -mindepth 1 -maxdepth 1 -type d ! -xtype l -printf '%f\n')
+readonly THEMES_DIR="${HOME}/.config/hypr/themes"
+readonly CURRENT_DIR="${HOME}/.config/hypr/current"
 
-  if [[ ${#extra_themes[@]} -gt 0 ]]; then
-    THEME_NAME=$(gum choose --header="Remove extra theme" "${extra_themes[@]}")
-  else
-    echo "No extra themes installed."
+#######################################
+# Main function to remove a theme.
+# Globals:
+#   THEMES_DIR
+#   CURRENT_DIR
+# Arguments:
+#   $1 - (Optional) The name of the theme to remove.
+# Outputs:
+#   Exits with an error if the theme is not found.
+#######################################
+main() {
+  local theme_name="${1:-}"
+  if [[ -z "${theme_name}" ]]; then
+    local -a extra_themes
+    mapfile -t extra_themes < <(find "${THEMES_DIR}" -mindepth 1 -maxdepth 1 -type d ! -xtype l -printf '%f\n')
+
+    if [[ ${#extra_themes[@]} -gt 0 ]]; then
+      theme_name=$(gum choose --header="Remove extra theme" "${extra_themes[@]}")
+    else
+      echo "No extra themes installed."
+      exit 0
+    fi
+  fi
+
+  if [[ -z "${theme_name}" ]]; then
+    exit 0
+  fi
+
+  local theme_path="${THEMES_DIR}/${theme_name}"
+
+  # Check if theme exists before attempting removal.
+  if [[ ! -d "${theme_path}" ]]; then
+    echo "Error: Theme '${theme_name}' not found." >&2
     exit 1
   fi
-else
-  THEME_NAME="$1"
-fi
 
-THEMES_DIR="$HOME/.config/hypr/themes"
-CURRENT_DIR="$HOME/.config/hypr/current"
-THEME_PATH="$THEMES_DIR/$THEME_NAME"
+  # Move to the next theme if the current theme is the one being removed.
+  if [[ "$(readlink -f "${CURRENT_DIR}/theme")" == "$(readlink -f "${theme_path}")" ]]; then
+    echo "Current theme is being removed, switching to the next one."
+    hypr-theme-next
+  fi
 
-# Ensure a theme was set
-if [ -z "$THEME_NAME" ]; then
-  exit 1
-fi
+  # Now remove the theme directory.
+  echo "Removing theme: ${theme_name}"
+  rm -rf "${theme_path}"
+  echo "Theme removed successfully."
+}
 
-# Check if theme exists before attempting removal
-if [ ! -d "$THEME_PATH" ]; then
-  echo "Error: Theme '$THEME_NAME' not found."
-  exit 1
-fi
-
-# Move to the next theme if the current theme is the one being removed
-if [ "$(readlink -f "$CURRENT_DIR/theme")" = "$(readlink -f "$THEME_PATH")" ]; then
-  hypr-theme-next
-fi
-
-# Now remove the theme directory for THEME_NAME
-rm -rf "$THEME_PATH"
+main "$@"

@@ -1,4 +1,21 @@
 #!/bin/bash
+#
+# Refreshes the walker configuration and restarts the service.
 
-hypr-refresh-config walker/config.toml
-hypr-restart-walker
+set -euo pipefail
+
+#######################################
+# Main function to refresh the walker configuration.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  hypr-refresh-config walker/config.toml
+  hypr-restart-walker
+}
+
+main

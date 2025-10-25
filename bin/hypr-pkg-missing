@@ -1,9 +1,37 @@
 #!/bin/bash
+#
+# Checks if one or more packages are missing from the system.
+# It exits with success (0) if any of the specified packages are not installed.
+# It exits with failure (1) only if all specified packages are present.
 
-for pkg in "$@"; do
-  if ! pacman -Q "$pkg" &>/dev/null; then
-    exit 0
+set -euo pipefail
+
+#######################################
+# Main function to check for missing packages.
+# Globals:
+#   None
+# Arguments:
+#   $@ - A list of package names to check.
+# Outputs:
+#   Exits with status 0 if any package is missing.
+#   Exits with status 1 if all packages are present.
+#######################################
+main() {
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: $(basename "$0") <package1> [package2]..." >&2
+    exit 2
   fi
-done
 
-exit 1
+  for pkg in "$@"; do
+    # Check if the package is *not* installed.
+    if ! pacman -Q "${pkg}" &>/dev/null; then
+      # If a package is missing, exit with success (0) as per the script's purpose.
+      exit 0
+    fi
+  done
+
+  # If the loop completes, all packages were found. Exit with failure (1).
+  exit 1
+}
+
+main "$@"

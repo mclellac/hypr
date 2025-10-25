@@ -1,7 +1,31 @@
 #!/bin/bash
+#
+# Reads the list of pinned packages from the configuration file and prints
+# them as a single, comma-separated string.
 
-PINNED_PACKAGES_FILE="$hypr_PATH/install/packages.pinned"
+set -euo pipefail
 
-if [[ -f $PINNED_PACKAGES_FILE ]]; then
-  tr '\r\n' ',' <"$PINNED_PACKAGES_FILE" | sed 's/,$//'
-fi
+#######################################
+# Main function to read and format the pinned packages list.
+# Globals:
+#   hypr_PATH - The root path of the hypr configuration.
+# Arguments:
+#   None
+# Outputs:
+#   A comma-separated string of pinned package names.
+#######################################
+main() {
+  if [[ -z "${hypr_PATH:-}" ]]; then
+    echo "Error: hypr_PATH environment variable is not set." >&2
+    exit 1
+  fi
+
+  local pinned_packages_file="${hypr_PATH}/install/packages.pinned"
+
+  if [[ -f "${pinned_packages_file}" ]]; then
+    # `tr` replaces newlines with commas, and `sed` removes the trailing comma.
+    tr '\r\n' ',' <"${pinned_packages_file}" | sed 's/,$//'
+  fi
+}
+
+main

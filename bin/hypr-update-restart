@@ -1,21 +1,94 @@
 #!/bin/bash
+#
+# Checks for pending reboot or relaunch requirements after an update and
+# prompts the user to take action. Also restarts any services that have
+# been marked as needing a restart.
 
-if [ "$(uname -r | sed 's/-arch/\.arch/')" != "$(pacman -Q linux | awk '{print $2}')" ]; then
-  gum confirm "Linux kernel has been updated. Reboot?" && hypr-state clear re*-required && sudo reboot now
+set -euo pipefail
 
-elif [ -f "$HOME/.local/state/hypr/reboot-required" ]; then
-  gum confirm "Updates require reboot. Ready?" && hypr-state clear re*-required && sudo reboot now
+#######################################
+# Checks if a reboot is required due to a kernel update.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   Returns 0 if a reboot is required, 1 otherwise.
+#######################################
+is_kernel_updated() {
+  local running_kernel
+  running_kernel=$(uname -r | sed 's/-arch/\.arch/')
+  local installed_kernel
+  installed_kernel=$(pacman -Q linux | awk '{print $2}')
 
-elif [ -f "$HOME/.local/state/hypr/relaunch-required" ]; then
-  gum confirm "Updates require Hyprland relaunch. Ready?" && hypr-state clear re*-required && uwsm stop
-fi
+  [[ "${running_kernel}" != "${installed_kernel}" ]]
+}
 
-for file in "$HOME"/.local/state/hypr/restart-*-required; do
-  if [ -f "$file" ]; then
-    filename=$(basename "$file")
-    service=$(echo "$filename" | sed 's/restart-\(.*\)-required/\1/')
-    echo "Restarting $service"
-    hypr-state clear "$filename"
-    hypr-restart-"$service"
+#######################################
+# Handles required reboots or relaunches by prompting the user.
+# Globals:
+#   HOME - The user's home directory.
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+handle_reboot_and_relaunch() {
+  if is_kernel_updated; then
+    if gum confirm "Linux kernel has been updated. Reboot now?"; then
+      hypr-state clear 're*-required'
+      sudo reboot now
+    fi
+  elif [[ -f "${HOME}/.local/state/hypr/reboot-required" ]]; then
+    if gum confirm "Updates require a reboot. Reboot now?"; then
+      hypr-state clear 're*-required'
+      sudo reboot now
+    fi
+  elif [[ -f "${HOME}/.local/state/hypr/relaunch-required" ]]; then
+    if gum confirm "Updates require a Hyprland relaunch. Relaunch now?"; then
+      hypr-state clear 're*-required'
+      uwsm stop
+    fi
   fi
-done
+}
+
+#######################################
+# Restarts any services that have been marked as needing a restart.
+# Globals:
+#   HOME - The user's home directory.
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+restart_pending_services() {
+    local state_dir="${HOME}/.local/state/hypr"
+    for file in "${state_dir}"/restart-*-required; do
+        if [[ -f "${file}" ]]; then
+            local filename
+            filename=$(basename "${file}")
+            local service
+            service=$(echo "${filename}" | sed 's/restart-\(.*\)-required/\1/')
+
+            echo "Restarting ${service}..."
+            hypr-state clear "${filename}"
+            "hypr-restart-${service}"
+        fi
+    done
+}
+
+#######################################
+# Main function to drive the script.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  handle_reboot_and_relaunch
+  restart_pending_services
+}
+
+main

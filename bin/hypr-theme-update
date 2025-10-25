@@ -1,5 +1,34 @@
 #!/bin/bash
+#
+# Updates all git-based themes by running 'git pull' in each theme's directory.
 
-for dir in ~/.config/hypr/themes/*/; do
-  [ -d "$dir" ] && [ ! -L "${dir%/}" ] && echo "Updating: $(basename "$dir")" && git -C "$dir" pull
-done
+set -euo pipefail
+
+#######################################
+# Main function to update all themes.
+# Globals:
+#   HOME - The user's home directory.
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  local themes_dir="${HOME}/.config/hypr/themes"
+  if [[ ! -d "${themes_dir}" ]]; then
+    echo "Themes directory not found: ${themes_dir}" >&2
+    exit 1
+  fi
+
+  for dir in "${themes_dir}"/*/; do
+    # Ensure it's a directory and not a symlink.
+    if [[ -d "${dir}" && ! -L "${dir%/}" && -d "${dir}/.git" ]]; then
+      echo "Updating: $(basename "${dir}")"
+      git -C "${dir}" pull
+    fi
+  done
+
+  echo "All themes updated."
+}
+
+main

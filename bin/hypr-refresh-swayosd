@@ -1,5 +1,22 @@
 #!/bin/bash
+#
+# Refreshes the swayosd configuration and restarts the service.
 
-hypr-refresh-config swayosd/config.toml
-hypr-refresh-config swayosd/style.css
-hypr-restart-swayosd
+set -euo pipefail
+
+#######################################
+# Main function to refresh the swayosd configuration.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  hypr-refresh-config swayosd/config.toml
+  hypr-refresh-config swayosd/style.css
+  hypr-restart-swayosd
+}
+
+main

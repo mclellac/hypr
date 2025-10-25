@@ -1,4 +1,25 @@
 #!/bin/bash
+#
+# Displays a "Done!" message with a spinner and waits for a keypress
+# before exiting. This is typically used at the end of a terminal-based
+# task to indicate completion.
 
-echo
-gum spin --spinner "globe" --title "Done! Press any key to close..." -- bash -c 'read -n 1 -s'
+set -euo pipefail
+
+#######################################
+# Main function to display the "Done" message.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  echo
+  # 'gum spin' shows an animated spinner with a title.
+  # The -- bash -c '...' part executes a command that waits for a single keypress.
+  gum spin --spinner "globe" --title "Done! Press any key to close..." -- bash -c 'read -n 1 -s'
+}
+
+main

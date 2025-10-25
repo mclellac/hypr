@@ -1,3 +1,25 @@
 #!/bin/bash
+#
+# Prints the most recent git tag of the local hypr repository.
 
-git -C "$hypr_PATH" describe --tags $(git -C "$hypr_PATH" rev-list --tags --max-count=1)
+set -euo pipefail
+
+#######################################
+# Main function to get and print the repository version.
+# Globals:
+#   hypr_PATH - The path to the hypr git repository.
+# Arguments:
+#   None
+# Outputs:
+#   The git tag to stdout.
+#######################################
+main() {
+  if [[ -z "${hypr_PATH:-}" || ! -d "${hypr_PATH}/.git" ]]; then
+    echo "Error: hypr_PATH is not set or is not a git repository." >&2
+    exit 1
+  fi
+
+  git -C "${hypr_PATH}" describe --tags "$(git -C "${hypr_PATH}" rev-list --tags --max-count=1)"
+}
+
+main

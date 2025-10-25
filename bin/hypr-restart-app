@@ -1,4 +1,33 @@
 #!/bin/bash
+#
+# Restarts a given application by killing any existing instances and then
+# launching a new one.
 
-pkill -x $1
-setsid uwsm app -- $1 >/dev/null 2>&1 &
+set -euo pipefail
+
+#######################################
+# Main function to restart the application.
+# Globals:
+#   None
+# Arguments:
+#   $1 - The name of the application executable to restart.
+# Outputs:
+#   Exits with an error if no application name is provided.
+#######################################
+main() {
+  local app_name="${1:-}"
+  if [[ -z "${app_name}" ]]; then
+    echo "Usage: $(basename "$0") <application-name>" >&2
+    exit 1
+  fi
+
+  echo "Restarting ${app_name}..."
+  # Kill the application if it's running. The `|| true` prevents an exit on error
+  # if the process is not found.
+  pkill -x "${app_name}" || true
+
+  # Launch the new instance in the background.
+  setsid uwsm app -- "${app_name}" >/dev/null 2>&1 &
+}
+
+main "$@"

@@ -1,6 +1,40 @@
 #!/bin/bash
+#
+# Creates a new database migration script in the appropriate directory.
+# The script is named with the current Unix timestamp to ensure uniqueness
+# and chronological ordering. It then opens the new script in Neovim for editing.
 
-cd ~/.local/share/hypr
-migration_file="$HOME/.local/share/hypr/migrations/$(git log -1 --format=%cd --date=unix).sh"
-touch $migration_file
-nvim $migration_file
+set -euo pipefail
+
+#######################################
+# Main function to create and open a new migration script.
+# Globals:
+#   HOME - The user's home directory.
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  local migration_dir="${HOME}/.local/share/hypr/migrations"
+  mkdir -p "${migration_dir}"
+
+  # The filename is the current Unix timestamp to ensure a unique, ordered name.
+  local migration_file
+  migration_file="${migration_dir}/$(date +%s).sh"
+
+  echo "Creating new migration file: ${migration_file}"
+  touch "${migration_file}"
+  chmod +x "${migration_file}"
+
+  # Open the new migration script in the default editor.
+  if command -v nvim &>/dev/null; then
+    nvim "${migration_file}"
+  elif command -v vim &>/dev/null; then
+    vim "${migration_file}"
+  else
+    echo "No suitable editor found (nvim or vim). Please edit the file manually." >&2
+  fi
+}
+
+main

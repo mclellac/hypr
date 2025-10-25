@@ -1,15 +1,57 @@
 #!/bin/bash
+#
+# Refreshes the system's application database by copying over custom .desktop
+# files and icons, then updating the relevant caches.
 
-# Copy and sync icon files
-mkdir -p ~/.local/share/icons/hicolor/48x48/apps/
-cp $HYPR_PATH/applications/icons/*.png ~/.local/share/icons/hicolor/48x48/apps/
-gtk-update-icon-cache ~/.local/share/icons/hicolor &>/dev/null
+set -euo pipefail
 
-# Copy .desktop declarations
-mkdir -p ~/.local/share/applications
-cp $HYPR_PATH/applications/*.desktop ~/.local/share/applications/
-cp $HYPR_PATH/applications/hidden/*.desktop ~/.local/share/applications/
+#######################################
+# Main function to refresh the application database.
+# Globals:
+#   hypr_PATH - The root path of the hypr configuration.
+#   HOME - The user's home directory.
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  if [[ -z "${hypr_PATH:-}" ]]; then
+    echo "Error: hypr_PATH environment variable is not set." >&2
+    exit 1
+  fi
 
-if command -v update-desktop-database &> /dev/null; then
-  update-desktop-database ~/.local/share/applications
-fi
+  local local_icons_dir="${HOME}/.local/share/icons/hicolor/48x48/apps"
+  local local_apps_dir="${HOME}/.local/share/applications"
+  local source_icons_dir="${hypr_PATH}/applications/icons"
+  local source_apps_dir="${hypr_PATH}/applications"
+  local source_hidden_apps_dir="${hypr_PATH}/applications/hidden"
+
+  # Copy and sync icon files.
+  echo "Syncing application icons..."
+  mkdir -p "${local_icons_dir}"
+  if ls "${source_icons_dir}"/*.png &>/dev/null; then
+    cp "${source_icons_dir}"/*.png "${local_icons_dir}/"
+  fi
+  gtk-update-icon-cache "${HOME}/.local/share/icons/hicolor" &>/dev/null
+
+  # Copy .desktop files.
+  echo "Syncing .desktop files..."
+  mkdir -p "${local_apps_dir}"
+  if ls "${source_apps_dir}"/*.desktop &>/dev/null; then
+    cp "${source_apps_dir}"/*.desktop "${local_apps_dir}/"
+  fi
+  if ls "${source_hidden_apps_dir}"/*.desktop &>/dev/null; then
+    cp "${source_hidden_apps_dir}"/*.desktop "${local_apps_dir}/"
+  fi
+
+  # Update the desktop database if the command is available.
+  if command -v update-desktop-database &>/dev/null; then
+    echo "Updating desktop database..."
+    update-desktop-database "${local_apps_dir}"
+  fi
+
+  echo "Application refresh complete."
+}
+
+main

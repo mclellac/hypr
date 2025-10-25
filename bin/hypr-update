@@ -1,10 +1,40 @@
 #!/bin/bash
+#
+# Performs a full system update, including creating a snapshot, updating git
+# repositories, running migrations, and updating system packages.
 
-set -e
+set -euo pipefail
 
-hypr-snapshot create || [ $? -eq 127 ]
-hypr-update-git
-hypr-migrate
-hypr-update-system-pkgs
-hypr-update-restart
-hypr-restart-waybar # removes update-available icon
+#######################################
+# Main function to perform the system update.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  echo "Starting full system update..."
+
+  # Create a system snapshot before making changes.
+  # The `|| [ $? -eq 127 ]` part ignores the error if snapper is not installed.
+  hypr-snapshot create || [[ $? -eq 127 ]]
+
+  # Update the hypr git repository.
+  hypr-update-git
+
+  # Run any pending database migrations.
+  hypr-migrate
+
+  # Update all system packages.
+  hypr-update-system-pkgs
+
+  # Restart services to apply updates.
+  hypr-update-restart
+  hypr-restart-waybar # This removes the 'update-available' icon.
+
+  echo "System update complete."
+}
+
+main

@@ -1,22 +1,50 @@
 #!/bin/bash
+#
+# Manages simple state flags by creating or deleting files in a dedicated
+# state directory. This is a lightweight way for scripts to track state.
 
-STATE_DIR="$HOME/.local/state/hypr"
-mkdir -p "$STATE_DIR"
+set -euo pipefail
 
-COMMAND="$1"
-STATE_NAME="$2"
+readonly STATE_DIR="${HOME}/.local/state/hypr"
 
-if [[ -z "$COMMAND" ]]; then
-  echo "Usage: hypr-state <set|clear> <state-name-or-pattern>"
-  exit 1
-fi
+#######################################
+# Main function to set or clear a state flag.
+# Globals:
+#   STATE_DIR
+# Arguments:
+#   $1 - The command (set|clear).
+#   $2 - The name or pattern of the state flag.
+# Outputs:
+#   Exits with an error if arguments are missing or the command is invalid.
+#######################################
+main() {
+  mkdir -p "${STATE_DIR}"
 
-if [[ -z "$STATE_NAME" ]]; then
-  echo "Usage: hypr-state $COMMAND <state-name>"
-  exit 1
-fi
+  local command="${1:-}"
+  local state_name="${2:-}"
 
-case "$COMMAND" in
-set) touch "$STATE_DIR/$STATE_NAME" ;;
-clear) find "$STATE_DIR" -maxdepth 1 -type f -name "$STATE_NAME" -delete ;;
-esac
+  if [[ -z "${command}" ]]; then
+    echo "Usage: $(basename "$0") <set|clear> <state-name-or-pattern>" >&2
+    exit 1
+  fi
+
+  if [[ -z "${state_name}" ]]; then
+    echo "Usage: $(basename "$0") ${command} <state-name>" >&2
+    exit 1
+  fi
+
+  case "${command}" in
+  set)
+    touch "${STATE_DIR}/${state_name}"
+    ;;
+  clear)
+    find "${STATE_DIR}" -maxdepth 1 -type f -name "${state_name}" -delete
+    ;;
+  *)
+    echo "Error: Invalid command '${command}'. Use 'set' or 'clear'." >&2
+    exit 1
+    ;;
+  esac
+}
+
+main "$@"

@@ -16,7 +16,7 @@ set -euo pipefail
 # Outputs:
 #   The PID of the active window, or an empty string on failure.
 #######################################
-GetActiveWindowPid() {
+get_active_window_pid() {
   hyprctl activewindow | awk '/pid:/ {print $2; exit}'
 }
 
@@ -29,7 +29,7 @@ GetActiveWindowPid() {
 # Outputs:
 #   The PID of the child process, or an empty string if none is found.
 #######################################
-GetChildPid() {
+get_child_pid() {
   local parent_pid="$1"
   if [[ -z "${parent_pid}" ]]; then
     return
@@ -53,9 +53,9 @@ main() {
   fi
 
   local terminal_pid
-  terminal_pid=$(GetActiveWindowPid)
+  terminal_pid=$(get_active_window_pid)
   local shell_pid
-  shell_pid=$(GetChildPid "${terminal_pid}")
+  shell_pid=$(get_child_pid "${terminal_pid}")
 
   if [[ -n "${shell_pid}" && -d "/proc/${shell_pid}" ]]; then
     # Read the symbolic link to get the current working directory.

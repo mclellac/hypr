@@ -1,3 +1,20 @@
 #!/bin/bash
+#
+# Refreshes the hyprlock configuration.
 
-hypr-refresh-config hypr/hyprlock.conf
+set -euo pipefail
+
+#######################################
+# Main function to refresh the hyprlock configuration.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  hypr-refresh-config hypr/hyprlock.conf
+}
+
+main

@@ -1,3 +1,20 @@
 #!/bin/bash
+#
+# Restarts the fcitx5 input method editor, which handles XCompose.
 
-hypr-restart-app fcitx5
+set -euo pipefail
+
+#######################################
+# Main function to restart the fcitx5 service.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  hypr-restart-app fcitx5
+}
+
+main

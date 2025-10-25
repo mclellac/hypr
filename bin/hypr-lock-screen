@@ -1,12 +1,35 @@
 #!/bin/bash
+#
+# Locks the screen using hyprlock, locks the 1Password vault, and stops any
+# running screensavers to prevent interference.
 
-# Lock the screen
-pidof hyprlock || hyprlock &
+set -euo pipefail
 
-# Ensure 1password is locked
-if pgrep -x "1password" >/dev/null; then
-  1password --lock &
-fi
+#######################################
+# Main function to perform the screen locking sequence.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  echo "Locking the screen..."
+  # Start hyprlock only if it's not already running.
+  pidof hyprlock || hyprlock &
 
-# Avoid running screensaver when locked
-pkill -f "alacritty --class Screensaver"
+  # Lock 1Password if it is running.
+  if pgrep -x "1password" >/dev/null; then
+    echo "Locking 1Password..."
+    1password --lock &
+  fi
+
+  # Terminate any running screensaver processes.
+  if pgrep -f "alacritty --class Screensaver" >/dev/null; then
+    echo "Stopping screensaver..."
+    pkill -f "alacritty --class Screensaver"
+  fi
+}
+
+main

@@ -1,26 +1,59 @@
 #!/bin/bash
+#
+# Launches the terminal-based screensaver on all connected monitors.
+# It checks for dependencies and running instances before starting.
 
-# Exit early if we don't have the tte show
-if ! command -v tte &>/dev/null; then
-  exit 1
-fi
+set -euo pipefail
 
-# Exit early if screensave is already running
-pgrep -f "alacritty --class Screensaver" && exit 0
+readonly SCREENSAVER_TOGGLE="${HOME}/.local/state/hypr/toggles/screensaver-off"
 
-# Allow screensaver to be turned off but also force started
-if [[ -f ~/.local/state/hypr/toggles/screensaver-off ]] && [[ $1 != "force" ]]; then
-  exit 1
-fi
+#######################################
+# Main function to orchestrate the screensaver launch.
+# Globals:
+#   SCREENSAVER_TOGGLE
+# Arguments:
+#   $1 - (Optional) "force" to bypass the toggle check.
+# Outputs:
+#   None
+#######################################
+main() {
+  # Exit early if 'tte' (the screensaver binary) is not installed.
+  if ! command -v tte &>/dev/null; then
+    echo "Error: 'tte' command not found. Cannot start screensaver." >&2
+    exit 1
+  fi
 
-focused=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true).name')
+  # Exit if a screensaver instance is already running to prevent duplicates.
+  if pgrep -f "alacritty --class Screensaver" >/dev/null; then
+    echo "Screensaver is already running."
+    exit 0
+  fi
 
-for m in $(hyprctl monitors -j | jq -r '.[] | .name'); do
-  hyprctl dispatch focusmonitor $m
-  hyprctl dispatch exec -- \
-    alacritty --class Screensaver \
-    --config-file ~/.local/share/hypr/default/alacritty/screensaver.toml \
-    -e hypr-cmd-screensaver
-done
+  # Exit if the screensaver is toggled off, unless forced.
+  if [[ -f "${SCREENSAVER_TOGGLE}" && "${1:-}" != "force" ]]; then
+    echo "Screensaver is disabled by toggle file."
+    exit 1
+  fi
 
-hyprctl dispatch focusmonitor $focused
+  # Get the currently focused monitor to restore focus later.
+  local focused_monitor
+  focused_monitor=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true).name')
+
+  # Launch the screensaver on each monitor.
+  local monitor_names
+  monitor_names=$(hyprctl monitors -j | jq -r '.[] | .name')
+  for m in ${monitor_names}; do
+    hyprctl dispatch focusmonitor "${m}"
+    hyprctl dispatch exec -- \
+      alacritty --class Screensaver \
+      --config-file ~/.local/share/hypr/default/alacritty/screensaver.toml \
+      -e hypr-cmd-screensaver
+  done
+
+  # Restore focus to the originally active monitor.
+  if [[ -n "${focused_monitor}" ]]; then
+    hyprctl dispatch focusmonitor "${focused_monitor}"
+  fi
+}
+
+main "$@"

@@ -15,7 +15,7 @@ set -euo pipefail
 # Outputs:
 #   A space-separated list of sink IDs.
 #######################################
-GetSinks() {
+get_sinks() {
   wpctl status |
     sed -n '/Sinks:/,/Sources:/p' |
     grep -E '^\s*│\s+\*?\s*[0-9]+\.' |
@@ -32,7 +32,7 @@ GetSinks() {
 # Outputs:
 #   The ID of the current default sink.
 #######################################
-GetCurrentSink() {
+get_current_sink() {
   wpctl status |
     sed -n '/Sinks:/,/Sources:/p' |
     grep '^\s*│\s*\*' |
@@ -56,7 +56,7 @@ main() {
 
   local -a sinks
   # shellcheck disable=SC2207
-  sinks=($(GetSinks))
+  sinks=($(get_sinks))
 
   if [[ ${#sinks[@]} -eq 0 ]]; then
     echo "No audio sinks found." >&2
@@ -64,7 +64,7 @@ main() {
   fi
 
   local current_sink
-  current_sink=$(GetCurrentSink)
+  current_sink=$(get_current_sink)
   local next_sink
 
   # Find the index of the current sink and determine the next one.

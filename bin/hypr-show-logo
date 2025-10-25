@@ -1,7 +1,29 @@
 #!/bin/bash
+#
+# Clears the screen and displays the 'hypr' logo from a text file.
 
-clear
-echo -e "\033[32m"
-cat <~/.local/share/hypr/logo.txt
-echo -e "\033[0m"
-echo
+set -euo pipefail
+
+#######################################
+# Main function to display the logo.
+# Globals:
+#   HOME - The user's home directory.
+# Arguments:
+#   None
+# Outputs:
+#   The logo text to stdout.
+#######################################
+main() {
+  local logo_file="${HOME}/.local/share/hypr/logo.txt"
+  if [[ -f "${logo_file}" ]]; then
+    clear
+    echo -e "\033[32m" # Green text
+    cat "${logo_file}"
+    echo -e "\033[0m" # Reset color
+    echo
+  else
+    echo "Logo file not found: ${logo_file}" >&2
+  fi
+}
+
+main

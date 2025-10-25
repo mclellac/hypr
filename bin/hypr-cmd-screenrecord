@@ -22,7 +22,7 @@ readonly OUTPUT_DIR="${hypr_SCREENRECORD_DIR:-${XDG_VIDEOS_DIR:-${HOME}/Videos}}
 # Outputs:
 #   Returns 0 if a recorder is active, 1 otherwise.
 #######################################
-IsRecorderRunning() {
+is_recorder_running() {
   pgrep -x wf-recorder >/dev/null || pgrep -x wl-screenrec >/dev/null
 }
 
@@ -35,7 +35,7 @@ IsRecorderRunning() {
 # Outputs:
 #   None
 #######################################
-StopRecording() {
+stop_recording() {
   echo "Stopping active screen recording..."
   pkill -x wf-recorder || true
   pkill -x wl-screenrec || true
@@ -51,7 +51,7 @@ StopRecording() {
 # Outputs:
 #   None
 #######################################
-StartRecording() {
+start_recording() {
   local filename
   filename="${OUTPUT_DIR}/screenrecording-$(date +'%Y-%m-%d_%H-%M-%S').mp4"
 
@@ -89,14 +89,14 @@ main() {
     exit 1
   fi
 
-  if IsRecorderRunning; then
-    StopRecording
+  if is_recorder_running; then
+    stop_recording
     exit 0
   fi
 
   if [[ "${1:-}" == "output" ]]; then
     # Record the entire output without region selection.
-    StartRecording
+    start_recording
   else
     # Use slurp to select a region for recording.
     if ! command -v slurp &>/dev/null; then
@@ -106,7 +106,7 @@ main() {
     local region
     region=$(slurp)
     if [[ -n "${region}" ]]; then
-      StartRecording -g "${region}"
+      start_recording -g "${region}"
     else
       echo "Region selection cancelled."
     fi

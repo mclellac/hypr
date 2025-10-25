@@ -14,7 +14,7 @@ set -euo pipefail
 # Outputs:
 #   None
 #######################################
-InstallPhp() {
+install_php() {
   echo "Installing PHP and related dependencies..."
   sudo pacman -S --noconfirm --needed php composer php-sqlite
 
@@ -43,7 +43,7 @@ InstallPhp() {
 # Outputs:
 #   None
 #######################################
-InstallNode() {
+install_node() {
   echo "Installing Node.js (LTS)..."
   mise use --global node@lts
 }
@@ -58,7 +58,7 @@ InstallNode() {
 # Outputs:
 #   None
 #######################################
-InstallWithMise() {
+install_with_mise() {
   local name="$1"
   local tool_version="$2"
   echo "Installing ${name}..."
@@ -88,50 +88,50 @@ main() {
 
   case "${env_target}" in
   ruby)
-    InstallWithMise "Ruby" "ruby@latest"
+    install_with_mise "Ruby" "ruby@latest"
     echo "Installing Rails gem..."
     mise x ruby -- gem install rails --no-document
     ;;
   node)
-    InstallNode
+    install_node
     ;;
   bun)
-    InstallWithMise "Bun" "bun@latest"
+    install_with_mise "Bun" "bun@latest"
     ;;
   deno)
-    InstallWithMise "Deno" "deno@latest"
+    install_with_mise "Deno" "deno@latest"
     ;;
   go)
-    InstallWithMise "Go" "go@latest"
+    install_with_mise "Go" "go@latest"
     ;;
   php)
-    InstallPhp
+    install_php
     ;;
   laravel)
-    InstallPhp
-    InstallNode
+    install_php
+    install_node
     echo "Installing Laravel installer via Composer..."
     composer global require laravel/installer
     ;;
   symfony)
-    InstallPhp
+    install_php
     echo "Installing Symfony CLI..."
     hypr-pkg-add symfony-cli
     ;;
   python)
-    InstallWithMise "Python" "python@latest"
+    install_with_mise "Python" "python@latest"
     echo "Installing uv package manager..."
     curl -fsSL https://astral.sh/uv/install.sh | sh
     ;;
   elixir)
-    InstallWithMise "Erlang" "erlang@latest"
-    InstallWithMise "Elixir" "elixir@latest"
+    install_with_mise "Erlang" "erlang@latest"
+    install_with_mise "Elixir" "elixir@latest"
     echo "Running mix local.hex..."
     mise x elixir -- mix local.hex --force
     ;;
   phoenix)
-    InstallWithMise "Erlang" "erlang@latest"
-    InstallWithMise "Elixir" "elixir@latest"
+    install_with_mise "Erlang" "erlang@latest"
+    install_with_mise "Elixir" "elixir@latest"
     echo "Running mix local.hex and local.rebar..."
     mise x elixir -- mix local.hex --force
     mise x elixir -- mix local.rebar --force
@@ -143,10 +143,10 @@ main() {
     bash -c "$(curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs)" -- -y
     ;;
   java)
-    InstallWithMise "Java" "java@latest"
+    install_with_mise "Java" "java@latest"
     ;;
   zig)
-    InstallWithMise "Zig" "zig@latest"
+    install_with_mise "Zig" "zig@latest"
     ;;
   ocaml)
     echo "Installing OCaml via opam..."
@@ -156,7 +156,7 @@ main() {
     opam install ocaml-lsp-server odoc ocamlformat utop --yes
     ;;
   dotnet)
-    InstallWithMise ".NET" "dotnet@latest"
+    install_with_mise ".NET" "dotnet@latest"
     ;;
   *)
     echo "Error: Unknown development environment '${env_target}'" >&2

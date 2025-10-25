@@ -1,23 +1,49 @@
 #!/usr/bin/env bash
-# hypr-menu-md-pager: Render and page a Markdown file (recommended)
+#
+# Renders a Markdown file in the terminal and displays it through a pager.
+# It attempts to use 'glow' or 'mdcat' for rendering, falling back to 'cat'.
 
-FILE="$1"
-if [[ -z "$FILE" || ! -f "$FILE" ]]; then
-  echo "Usage: $0 <markdown-file>"
-  exit 1
-fi
+set -euo pipefail
 
-# Render Markdown (glow > mdcat > cat)
+#######################################
+# Renders a Markdown file using the best available tool.
+# Globals:
+#   None
+# Arguments:
+#   $1 - The path to the Markdown file.
+# Outputs:
+#   The rendered content of the Markdown file to stdout.
+#######################################
 render_markdown() {
-  local f="$1"
-  if command -v glow >/dev/null 2>&1; then
-    glow -s dark "$f"
-  elif command -v mdcat >/dev/null 2>&1; then
-    mdcat "$f"
+  local file_path="$1"
+  if command -v glow &>/dev/null; then
+    glow -s dark "${file_path}"
+  elif command -v mdcat &>/dev/null; then
+    mdcat "${file_path}"
   else
-    cat "$f"
+    # Fallback to simple cat if no dedicated renderer is found.
+    cat "${file_path}"
   fi
 }
 
-# Show rendered output in pager with color support
-render_markdown "$FILE" | less -R
+#######################################
+# Main function to render and page the Markdown file.
+# Globals:
+#   None
+# Arguments:
+#   $1 - The path to the Markdown file.
+# Outputs:
+#   Exits with an error if the file is not provided or does not exist.
+#######################################
+main() {
+  local file_path="${1:-}"
+  if [[ -z "${file_path}" || ! -f "${file_path}" ]]; then
+    echo "Usage: $(basename "$0") <markdown-file>" >&2
+    exit 1
+  fi
+
+  # Pipe the rendered output to 'less' with color support enabled (-R).
+  render_markdown "${file_path}" | less -R
+}
+
+main "$@"

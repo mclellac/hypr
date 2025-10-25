@@ -171,3 +171,16 @@ The `custom/update` module in `config/waybar/config.jsonc` is responsible for di
       "interval": 3600
     }
     ```
+
+## Part 4: Shell Scripting Style Guide
+
+All shell scripts in the `bin/` directory must adhere to the [Google Shell Style Guide](https://google.github.io/styleguide/shellguide.html).
+
+Key requirements include:
+- All scripts must start with `set -euo pipefail`.
+- All functions must be written in `snake_case`.
+- All scripts must have a `main` function.
+- All variables in functions must be declared with `local`.
+- Global constants must be declared with `readonly`.
+- All scripts must have a header comment explaining their purpose.
+- All functions must have a comment explaining their purpose, globals, arguments, and outputs.

@@ -1,23 +1,77 @@
 #!/bin/bash
+#
+# Checks if an update is available for the hypr repository by comparing the
+# latest remote git tag with the current local tag.
 
-# Get remote tag
-latest_tag=$(git -C "$hypr_PATH" ls-remote --tags origin | grep -v "{}" | awk '{print $2}' | sed 's#refs/tags/##' | sort -V | tail -n 1)
-if [[ -z "$latest_tag" ]]; then
-  echo "Error: Could not retrieve latest tag."
-  exit 1
-fi
+set -euo pipefail
 
-# Get local tag
-current_tag=$(git -C "$hypr_PATH" describe --tags $(git -C "$hypr_PATH" rev-list --tags --max-count=1))
-if [[ -z "$current_tag" ]]; then
-  echo "Error: Could not retrieve current tag."
-  exit 1
-fi
+#######################################
+# Gets the latest git tag from the remote repository.
+# Globals:
+#   hypr_PATH - The path to the hypr git repository.
+# Arguments:
+#   None
+# Outputs:
+#   The latest remote tag.
+#######################################
+get_latest_remote_tag() {
+  git -C "${hypr_PATH}" ls-remote --tags origin |
+    grep -v "{}" |
+    awk '{print $2}' |
+    sed 's#refs/tags/##' |
+    sort -V |
+    tail -n 1
+}
 
-if [[ "$current_tag" != "$latest_tag" ]]; then
-  echo "hypr update available ($latest_tag)"
-  exit 0
-else
-  echo "hypr is up to date ($current_tag)"
-  exit 1
-fi
+#######################################
+# Gets the most recent git tag on the local repository.
+# Globals:
+#   hypr_PATH - The path to the hypr git repository.
+# Arguments:
+#   None
+# Outputs:
+#   The latest local tag.
+#######################################
+get_current_local_tag() {
+  git -C "${hypr_PATH}" describe --tags "$(git -C "${hypr_PATH}" rev-list --tags --max-count=1)"
+}
+
+#######################################
+# Main function to check for updates.
+# Globals:
+#   hypr_PATH - The path to the hypr git repository.
+# Arguments:
+#   None
+# Outputs:
+#   Exits with status 0 if an update is available, 1 otherwise.
+#######################################
+main() {
+  if [[ -z "${hypr_PATH:-}" || ! -d "${hypr_PATH}/.git" ]]; then
+    echo "Error: hypr_PATH is not set or is not a git repository." >&2
+    exit 1
+  fi
+
+  local latest_tag
+  latest_tag=$(get_latest_remote_tag)
+  if [[ -z "${latest_tag}" ]]; then
+    echo "Error: Could not retrieve latest remote tag." >&2
+    exit 1
+  fi
+
+  local current_tag
+  current_tag=$(get_current_local_tag)
+  if [[ -z "${current_tag}" ]]; then
+    echo "Error: Could not retrieve current local tag." >&2
+    exit 1
+  fi
+
+  if [[ "${current_tag}" != "${latest_tag}" ]]; then
+    echo "hypr update available (${latest_tag})"
+    exit 0
+  else
+    echo "hypr is up to date (${current_tag})"
+    exit 1
+  fi
+}
+
+main

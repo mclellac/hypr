@@ -1,24 +1,47 @@
 #!/bin/bash
+#
+# Provides an interactive TUI for searching and installing packages from the
+# official Arch repositories using 'pacman' and 'fzf'.
 
-set -e
+set -euo pipefail
 
-fzf_args=(
-  --multi
-  --preview 'pacman -Sii {1}'
-  --preview-label='alt-p: toggle description, alt-j/k: scroll, tab: multi-select, F11: maximize'
-  --preview-label-pos='bottom'
-  --preview-window 'down:65%:wrap'
-  --bind 'alt-p:toggle-preview'
-  --bind 'alt-d:preview-half-page-down,alt-u:preview-half-page-up'
-  --bind 'alt-k:preview-up,alt-j:preview-down'
-  --color 'pointer:green,marker:green'
-)
+#######################################
+# Main function to run the interactive installation process.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  # These arguments configure fzf for an enhanced user experience,
+  # including a preview window with package details.
+  local -a fzf_args=(
+    --multi
+    --preview 'pacman -Sii {1}'
+    --preview-label='alt-p: toggle description, alt-j/k: scroll, tab: multi-select, F11: maximize'
+    --preview-label-pos='bottom'
+    --preview-window 'down:65%:wrap'
+    --bind 'alt-p:toggle-preview'
+    --bind 'alt-d:preview-half-page-down,alt-u:preview-half-page-up'
+    --bind 'alt-k:preview-up,alt-j:preview-down'
+    --color 'pointer:green,marker:green'
+  )
 
-pkg_names=$(pacman -Slq | fzf "${fzf_args[@]}")
+  # Get a list of all available packages and pipe it to fzf for selection.
+  local pkg_names
+  pkg_names=$(pacman -Slq | fzf "${fzf_args[@]}")
 
-if [[ -n "$pkg_names" ]]; then
-  # Convert newline-separated selections to space-separated for yay
-  echo "$pkg_names" | tr '\n' ' ' | xargs sudo pacman -S --noconfirm
-  sudo updatedb
-  hypr-show-done
-fi
+  # If one or more packages were selected, install them.
+  if [[ -n "${pkg_names}" ]]; then
+    # Convert newline-separated selections to space-separated for pacman.
+    echo "${pkg_names}" | tr '\n' ' ' | xargs sudo pacman -S --noconfirm
+    sudo updatedb
+    hypr-show-done
+  else
+    echo "No packages selected."
+  fi
+}
+
+main

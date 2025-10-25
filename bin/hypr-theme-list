@@ -1,5 +1,27 @@
 #!/bin/bash
+#
+# Lists the available themes in a human-readable format.
 
-find ~/.config/hypr/themes/ -mindepth 1 -maxdepth 1 \( -type d -o -type l \) | sort | while read -r path; do
-  echo "$(basename "$path" | sed -E 's/(^|-)([a-z])/\1\u\2/g; s/-/ /g')"
-done
+set -euo pipefail
+
+#######################################
+# Main function to list and format theme names.
+# Globals:
+#   HOME - The user's home directory.
+# Arguments:
+#   None
+# Outputs:
+#   A newline-separated list of formatted theme names.
+#######################################
+main() {
+  local themes_dir="${HOME}/.config/hypr/themes"
+  if [[ -d "${themes_dir}" ]]; then
+    find "${themes_dir}" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0 | sort -z |
+      while IFS= read -r -d '' path; do
+        # `basename` gets the directory name, and `sed` capitalizes words and replaces hyphens.
+        basename "${path}" | sed -E 's/(^|-)([a-z])/\1\u\2/g; s/-/ /g'
+      done
+  fi
+}
+
+main

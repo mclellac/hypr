@@ -1,41 +1,76 @@
 #!/bin/bash
+#
+# Removes a TUI application's .desktop file and icon.
 
-ICON_DIR="$HOME/.local/share/applications/icons"
-DESKTOP_DIR="$HOME/.local/share/applications/"
+set -euo pipefail
 
-if [ "$#" -eq 0 ]; then
-  # Find all TUIs
+readonly ICON_DIR="${HOME}/.local/share/applications/icons"
+readonly DESKTOP_DIR="${HOME}/.local/share/applications"
+
+#######################################
+# Finds all installed TUI applications.
+# Globals:
+#   DESKTOP_DIR
+# Arguments:
+#   None
+# Outputs:
+#   A sorted, newline-separated list of TUI application names.
+#######################################
+find_tuis() {
+  local -a tuis
   while IFS= read -r -d '' file; do
-    if grep -q '^Exec=.*alacritty.*-e' "$file"; then
-      TUIS+=("$(basename "${file%.desktop}")")
+    if grep -q '^Exec=.*alacritty.*-e' "${file}"; then
+      tuis+=("$(basename "${file%.desktop}")")
     fi
-  done < <(find "$DESKTOP_DIR" -name '*.desktop' -print0)
+  done < <(find "${DESKTOP_DIR}" -name '*.desktop' -print0)
 
-  if ((${#TUIS[@]})); then
-    IFS=$'\n' SORTED_TUIS=($(sort <<<"${TUIS[*]}"))
+  if ((${#tuis[@]})); then
+    IFS=$'\n'
+    sorted_tuis=($(sort <<<"${tuis[*]}"))
     unset IFS
-    APP_NAMES_STRING=$(gum choose --no-limit --header "Select TUI to remove..." --selected-prefix="✗ " "${SORTED_TUIS[@]}")
-    # Convert newline-separated string to array
-    APP_NAMES=()
-    while IFS= read -r line; do
-      [[ -n "$line" ]] && APP_NAMES+=("$line")
-    done <<< "$APP_NAMES_STRING"
-  else
-    echo "No TUIs to remove."
-    exit 1
+    printf "%s\n" "${sorted_tuis[@]}"
   fi
-else
-  # Use array to preserve spaces in app names
-  APP_NAMES=("$@")
-fi
+}
 
-if [[ ${#APP_NAMES[@]} -eq 0 ]]; then
-  echo "You must provide TUI names."
-  exit 1
-fi
+#######################################
+# Main function to remove TUI applications.
+# Globals:
+#   ICON_DIR
+#   DESKTOP_DIR
+# Arguments:
+#   $@ - (Optional) A list of TUI application names to remove.
+# Outputs:
+#   None
+#######################################
+main() {
+  local -a app_names
+  if [[ "$#" -eq 0 ]]; then
+    local tuis
+    tuis=$(find_tuis)
+    if [[ -n "${tuis}" ]]; then
+      local app_names_string
+      app_names_string=$(echo "${tuis}" | gum choose --no-limit --header "Select TUI to remove..." --selected-prefix="✗ ")
+      while IFS= read -r line; do
+        [[ -n "${line}" ]] && app_names+=("${line}")
+      done <<< "${app_names_string}"
+    else
+      echo "No TUI applications to remove."
+      exit 0
+    fi
+  else
+    app_names=("$@")
+  fi
 
-for APP_NAME in "${APP_NAMES[@]}"; do
-  rm -f "$DESKTOP_DIR/$APP_NAME.desktop"
-  rm -f "$ICON_DIR/$APP_NAME.png"
-  echo "Removed $APP_NAME"
-done
+  if [[ ${#app_names[@]} -eq 0 ]]; then
+    echo "No TUI applications selected for removal."
+    exit 0
+  fi
+
+  for app_name in "${app_names[@]}"; do
+    rm -f "${DESKTOP_DIR}/${app_name}.desktop"
+    rm -f "${ICON_DIR}/${app_name}.png"
+    echo "Removed ${app_name}"
+  done
+}
+
+main "$@"

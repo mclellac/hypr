@@ -1,7 +1,34 @@
 #!/bin/bash
+#
+# Removes one or more packages using 'pacman' if they are currently installed.
 
-for pkg in "$@"; do
-  if pacman -Q "$pkg" &>/dev/null; then
-    sudo pacman -Rns --noconfirm "$pkg"
+set -euo pipefail
+
+#######################################
+# Main function to remove the specified packages.
+# Globals:
+#   None
+# Arguments:
+#   $@ - A list of package names to remove.
+# Outputs:
+#   Exits with an error if pacman fails.
+#######################################
+main() {
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: $(basename "$0") <package1> [package2]..." >&2
+    exit 1
   fi
-done
+
+  for pkg in "$@"; do
+    # Check if the package is currently installed.
+    if pacman -Q "${pkg}" &>/dev/null; then
+      echo "Removing ${pkg}..."
+      # Remove the package, its dependencies, and configuration files.
+      sudo pacman -Rns --noconfirm "${pkg}"
+    else
+      echo "${pkg} is not installed."
+    fi
+  done
+}
+
+main "$@"

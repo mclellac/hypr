@@ -1,9 +1,36 @@
 #!/bin/bash
+#
+# Installs one or more packages using 'pacman' if they are not already installed.
 
-for pkg in "$@"; do
-  if ! pacman -Q "$pkg" &>/dev/null; then
-    sudo pacman -S --noconfirm "$pkg" || exit 1
+set -euo pipefail
+
+#######################################
+# Main function to install the specified packages.
+# Globals:
+#   None
+# Arguments:
+#   $@ - A list of package names to install.
+# Outputs:
+#   Exits with an error if pacman fails.
+#######################################
+main() {
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: $(basename "$0") <package1> [package2]..." >&2
+    exit 1
   fi
-done
 
-exit 0
+  for pkg in "$@"; do
+    # Check if the package is already installed.
+    if ! pacman -Q "${pkg}" &>/dev/null; then
+      echo "Installing ${pkg}..."
+      # Install the package without confirmation.
+      sudo pacman -S --noconfirm "${pkg}" || exit 1
+    else
+      echo "${pkg} is already installed."
+    fi
+  done
+
+  exit 0
+}
+
+main "$@"

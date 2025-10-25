@@ -1,41 +1,76 @@
 #!/bin/bash
+#
+# Removes a web application's .desktop file and icon.
 
-ICON_DIR="$HOME/.local/share/applications/icons"
-DESKTOP_DIR="$HOME/.local/share/applications/"
+set -euo pipefail
 
-if [ "$#" -eq 0 ]; then
-  # Find all web apps
+readonly ICON_DIR="${HOME}/.local/share/applications/icons"
+readonly DESKTOP_DIR="${HOME}/.local/share/applications"
+
+#######################################
+# Finds all installed web applications.
+# Globals:
+#   DESKTOP_DIR
+# Arguments:
+#   None
+# Outputs:
+#   A sorted, newline-separated list of web application names.
+#######################################
+find_web_apps() {
+  local -a web_apps
   while IFS= read -r -d '' file; do
-    if grep -q '^Exec=.*hypr-launch-webapp.*' "$file"; then
-      WEB_APPS+=("$(basename "${file%.desktop}")")
+    if grep -q '^Exec=.*hypr-launch-webapp.*' "${file}"; then
+      web_apps+=("$(basename "${file%.desktop}")")
     fi
-  done < <(find "$DESKTOP_DIR" -name '*.desktop' -print0)
+  done < <(find "${DESKTOP_DIR}" -name '*.desktop' -print0)
 
-  if ((${#WEB_APPS[@]})); then
-    IFS=$'\n' SORTED_WEB_APPS=($(sort <<<"${WEB_APPS[*]}"))
+  if ((${#web_apps[@]})); then
+    IFS=$'\n'
+    sorted_web_apps=($(sort <<<"${web_apps[*]}"))
     unset IFS
-    APP_NAMES_STRING=$(gum choose --no-limit --header "Select web app to remove..." --selected-prefix="✗ " "${SORTED_WEB_APPS[@]}")
-    # Convert newline-separated string to array
-    APP_NAMES=()
-    while IFS= read -r line; do
-      [[ -n "$line" ]] && APP_NAMES+=("$line")
-    done <<< "$APP_NAMES_STRING"
-  else
-    echo "No web apps to remove."
-    exit 1
+    printf "%s\n" "${sorted_web_apps[@]}"
   fi
-else
-  # Use array to preserve spaces in app names
-  APP_NAMES=("$@")
-fi
+}
 
-if [[ ${#APP_NAMES[@]} -eq 0 ]]; then
-  echo "You must provide web app names."
-  exit 1
-fi
+#######################################
+# Main function to remove web applications.
+# Globals:
+#   ICON_DIR
+#   DESKTOP_DIR
+# Arguments:
+#   $@ - (Optional) A list of web application names to remove.
+# Outputs:
+#   None
+#######################################
+main() {
+  local -a app_names
+  if [[ "$#" -eq 0 ]]; then
+    local web_apps
+    web_apps=$(find_web_apps)
+    if [[ -n "${web_apps}" ]]; then
+      local app_names_string
+      app_names_string=$(echo "${web_apps}" | gum choose --no-limit --header "Select web app to remove..." --selected-prefix="✗ ")
+      while IFS= read -r line; do
+        [[ -n "${line}" ]] && app_names+=("${line}")
+      done <<< "${app_names_string}"
+    else
+      echo "No web applications to remove."
+      exit 0
+    fi
+  else
+    app_names=("$@")
+  fi
 
-for APP_NAME in "${APP_NAMES[@]}"; do
-  rm -f "$DESKTOP_DIR/$APP_NAME.desktop"
-  rm -f "$ICON_DIR/$APP_NAME.png"
-  echo "Removed $APP_NAME"
-done
+  if [[ ${#app_names[@]} -eq 0 ]]; then
+    echo "No web applications selected for removal."
+    exit 0
+  fi
+
+  for app_name in "${app_names[@]}"; do
+    rm -f "${DESKTOP_DIR}/${app_name}.desktop"
+    rm -f "${ICON_DIR}/${app_name}.png"
+    echo "Removed ${app_name}"
+  done
+}
+
+main "$@"

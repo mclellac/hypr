@@ -14,7 +14,7 @@ set -euo pipefail
 # Outputs:
 #   None
 #######################################
-CloseAllWindows() {
+close_all_windows() {
   # Get a list of all client window addresses in JSON format.
   local window_addresses
   window_addresses=$(hyprctl clients -j | jq -r '.[].address')
@@ -51,7 +51,7 @@ main() {
     exit 1
   fi
 
-  CloseAllWindows
+  close_all_windows
   echo "All windows closed. Switching to workspace 1."
   hyprctl dispatch workspace 1
 }

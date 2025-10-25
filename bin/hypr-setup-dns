@@ -1,89 +1,151 @@
 #!/bin/bash
+#
+# Configures the system's DNS settings via systemd-resolved. It allows
+# choosing between Cloudflare, DHCP-provided, or custom DNS servers.
 
-if [[ -z $1 ]]; then
-  dns=$(gum choose --height 5 --header "Select DNS provider" Cloudflare DHCP Custom)
-else
-  dns=$1
-fi
+set -euo pipefail
 
-case "$dns" in
-Cloudflare)
+#######################################
+# Configures systemd-resolved to use Cloudflare's DNS servers.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+configure_cloudflare_dns() {
+  echo "Configuring Cloudflare DNS..."
   sudo tee /etc/systemd/resolved.conf >/dev/null <<'EOF'
 [Resolve]
 DNS=1.1.1.1#cloudflare-dns.com 1.0.0.1#cloudflare-dns.com
 FallbackDNS=9.9.9.9 149.112.112.112
 DNSOverTLS=opportunistic
 EOF
-  
-  # Ensure network interfaces don't override our DNS settings
-  for file in /etc/systemd/network/*.network; do
-    [[ -f "$file" ]] || continue
-    if ! grep -q "^\[DHCPv4\]" "$file"; then continue; fi
-    
-    # Add UseDNS=no to DHCPv4 section if not present
-    if ! sed -n '/^\[DHCPv4\]/,/^\[/p' "$file" | grep -q "^UseDNS="; then
-      sudo sed -i '/^\[DHCPv4\]/a UseDNS=no' "$file"
-    fi
-    
-    # Add UseDNS=no to IPv6AcceptRA section if present
-    if grep -q "^\[IPv6AcceptRA\]" "$file" && ! sed -n '/^\[IPv6AcceptRA\]/,/^\[/p' "$file" | grep -q "^UseDNS="; then
-      sudo sed -i '/^\[IPv6AcceptRA\]/a UseDNS=no' "$file"
-    fi
-  done
-  
-  sudo systemctl restart systemd-networkd systemd-resolved
-  ;;
+  disable_dhcp_dns
+}
 
-DHCP)
+#######################################
+# Configures systemd-resolved to use DNS servers provided by DHCP.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+configure_dhcp_dns() {
+  echo "Configuring DHCP-provided DNS..."
   sudo tee /etc/systemd/resolved.conf >/dev/null <<'EOF'
 [Resolve]
 DNS=
 FallbackDNS=
 DNSOverTLS=no
 EOF
-  
-  # Allow network interfaces to use DHCP DNS
-  for file in /etc/systemd/network/*.network; do
-    [[ -f "$file" ]] || continue
-    sudo sed -i '/^UseDNS=no/d' "$file"
-  done
-  
-  sudo systemctl restart systemd-networkd systemd-resolved
-  ;;
+  enable_dhcp_dns
+}
 
-Custom)
-  echo "Enter your DNS servers (space-separated, e.g. '192.168.1.1 1.1.1.1'):"
+#######################################
+# Configures systemd-resolved to use custom, user-provided DNS servers.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+configure_custom_dns() {
+  echo "Enter your DNS servers (space-separated, e.g., '192.168.1.1 1.1.1.1'):"
   read -r dns_servers
 
-  if [[ -z "$dns_servers" ]]; then
-    echo "Error: No DNS servers provided."
+  if [[ -z "${dns_servers}" ]]; then
+    echo "Error: No DNS servers provided." >&2
     exit 1
   fi
 
+  echo "Configuring custom DNS servers..."
   sudo tee /etc/systemd/resolved.conf >/dev/null <<EOF
 [Resolve]
-DNS=$dns_servers
+DNS=${dns_servers}
 FallbackDNS=9.9.9.9 149.112.112.112
 EOF
-  
-  # Ensure network interfaces don't override our DNS settings
+  disable_dhcp_dns
+}
+
+#######################################
+# Prevents network interfaces from overriding the DNS settings in resolved.conf.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+disable_dhcp_dns() {
   for file in /etc/systemd/network/*.network; do
-    [[ -f "$file" ]] || continue
-    if ! grep -q "^\[DHCPv4\]" "$file"; then continue; fi
-    
-    # Add UseDNS=no to DHCPv4 section if not present
-    if ! sed -n '/^\[DHCPv4\]/,/^\[/p' "$file" | grep -q "^UseDNS="; then
-      sudo sed -i '/^\[DHCPv4\]/a UseDNS=no' "$file"
+    [[ -f "${file}" ]] || continue
+    if ! grep -q "^\[DHCPv4\]" "${file}"; then continue; fi
+
+    if ! sed -n '/^\[DHCPv4\]/,/^\[/p' "${file}" | grep -q "^UseDNS="; then
+      sudo sed -i '/^\[DHCPv4\]/a UseDNS=no' "${file}"
     fi
-    
-    # Add UseDNS=no to IPv6AcceptRA section if present
-    if grep -q "^\[IPv6AcceptRA\]" "$file" && ! sed -n '/^\[IPv6AcceptRA\]/,/^\[/p' "$file" | grep -q "^UseDNS="; then
-      sudo sed -i '/^\[IPv6AcceptRA\]/a UseDNS=no' "$file"
+
+    if grep -q "^\[IPv6AcceptRA\]" "${file}" && ! sed -n '/^\[IPv6AcceptRA\]/,/^\[/p' "${file}" | grep -q "^UseDNS="; then
+      sudo sed -i '/^\[IPv6AcceptRA\]/a UseDNS=no' "${file}"
     fi
   done
-  
+}
+
+#######################################
+# Allows network interfaces to use DNS settings from DHCP.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+enable_dhcp_dns() {
+  for file in /etc/systemd/network/*.network; do
+    [[ -f "${file}" ]] || continue
+    sudo sed -i '/^UseDNS=no/d' "${file}"
+  done
+}
+
+#######################################
+# Main function to select and apply DNS configuration.
+# Globals:
+#   None
+# Arguments:
+#   $1 - (Optional) The DNS provider to use (Cloudflare, DHCP, Custom).
+# Outputs:
+#   None
+#######################################
+main() {
+  local dns_provider="${1:-}"
+  if [[ -z "${dns_provider}" ]]; then
+    dns_provider=$(gum choose --height 5 --header "Select DNS provider" Cloudflare DHCP Custom)
+  fi
+
+  case "${dns_provider}" in
+  Cloudflare)
+    configure_cloudflare_dns
+    ;;
+  DHCP)
+    configure_dhcp_dns
+    ;;
+  Custom)
+    configure_custom_dns
+    ;;
+  *)
+    echo "Invalid DNS provider selected."
+    exit 1
+    ;;
+  esac
+
+  echo "Restarting network services to apply changes..."
   sudo systemctl restart systemd-networkd systemd-resolved
+  echo "DNS configuration updated successfully."
+}
 
-  ;;
-esac
-
+main "$@"

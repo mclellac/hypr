@@ -18,7 +18,7 @@ readonly BRANDING_FILE="${HOME}/.config/hypr/branding/screensaver.txt"
 # Outputs:
 #   None
 #######################################
-ExitScreensaver() {
+exit_screensaver() {
   # Terminate any running 'tte' or screensaver terminal instances.
   pkill -x tte &>/dev/null || true
   pkill -f "alacritty --class Screensaver" &>/dev/null || true
@@ -34,7 +34,7 @@ ExitScreensaver() {
 # Outputs:
 #   The name of a single, randomly chosen effect.
 #######################################
-GetRandomEffect() {
+get_random_effect() {
   # This pipeline is used to extract the list of available effects from
   # the 'tte' command's help text. It is fragile and may break if the
   # help output of 'tte' changes in a future version.
@@ -67,11 +67,11 @@ main() {
   fi
 
   # Set up a trap to ensure a clean exit on common termination signals.
-  trap ExitScreensaver SIGINT SIGTERM SIGHUP SIGQUIT
+  trap exit_screensaver SIGINT SIGTERM SIGHUP SIGQUIT
 
   while true; do
     local effect
-    effect=$(GetRandomEffect)
+    effect=$(get_random_effect)
 
     # Launch the 'tte' screensaver in the background.
     # The canvas is sized to almost fill the terminal.
@@ -87,7 +87,7 @@ main() {
     while pgrep -x tte &>/dev/null; do
       # 'read' waits for a single keypress with a 3-second timeout.
       if read -n 1 -t 3; then
-        ExitScreensaver
+        exit_screensaver
       fi
     done
   done

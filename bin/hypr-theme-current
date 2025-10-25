@@ -1,3 +1,27 @@
 #!/bin/bash
+#
+# Prints the name of the currently active theme in a human-readable format.
 
-basename "$(realpath "$HOME/.config/hypr/current/theme")" | sed -E 's/(^|-)([a-z])/\1\u\2/g; s/-/ /g'
+set -euo pipefail
+
+#######################################
+# Main function to get and format the current theme name.
+# Globals:
+#   HOME - The user's home directory.
+# Arguments:
+#   None
+# Outputs:
+#   The formatted theme name to stdout.
+#######################################
+main() {
+  local theme_path="${HOME}/.config/hypr/current/theme"
+  if [[ -L "${theme_path}" ]]; then
+    # `realpath` resolves the symlink, `basename` gets the directory name,
+    # and `sed` capitalizes the words and replaces hyphens with spaces.
+    basename "$(realpath "${theme_path}")" | sed -E 's/(^|-)([a-z])/\1\u\2/g; s/-/ /g'
+  else
+    echo "Unknown"
+  fi
+}
+
+main

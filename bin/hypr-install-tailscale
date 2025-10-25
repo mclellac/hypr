@@ -1,13 +1,64 @@
 #!/bin/bash
+#
+# Installs and configures Tailscale and its graphical TUI client, 'tsui'.
+# It also adds the necessary sudoers permissions for 'tsui' and creates
+# launcher entries for both the TUI and the web admin console.
 
-curl -fsSL https://tailscale.com/install.sh | sh
-curl -fsSL https://neuralink.com/tsui/install.sh | bash
+set -euo pipefail
 
-echo -e "\nStarting Tailscale..."
-sudo tailscale up --accept-routes
+#######################################
+# Installs a component from a URL using a shell script.
+# Globals:
+#   None
+# Arguments:
+#   $1 - The name of the component being installed (for logging).
+#   $2 - The URL of the installation script.
+# Outputs:
+#   None
+#######################################
+install_from_url() {
+  local component_name="$1"
+  local install_url="$2"
+  echo "Installing ${component_name}..."
+  if ! curl -fsSL "${install_url}" | sh; then
+    echo "Error: Failed to install ${component_name}." >&2
+    exit 1
+  fi
+}
 
-echo -e "\nAdd tsui to sudoers..."
-echo "$USER ALL=(ALL) NOPASSWD: $(which tsui)" | sudo tee /etc/sudoers.d/tsui
+#######################################
+# Main function to orchestrate the installation process.
+# Globals:
+#   USER - The current user's name.
+# Arguments:
+#   None
+# Outputs:
+#   Exits with an error if any installation step fails.
+#######################################
+main() {
+  install_from_url "Tailscale" "https://tailscale.com/install.sh"
+  install_from_url "tsui (Tailscale TUI)" "https://neuralink.com/tsui/install.sh"
 
-hypr-tui-install "Tailscale" "sudo tsui" float https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/tailscale-light.png
-hypr-webapp-install "Tailscale Admin Console" "https://login.tailscale.com/admin/machines" https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/tailscale-light.png
+  echo -e "\nStarting Tailscale..."
+  if ! sudo tailscale up --accept-routes; then
+    echo "Error: Failed to start Tailscale." >&2
+    exit 1
+  fi
+
+  echo -e "\nAdding 'tsui' to sudoers to allow passwordless execution..."
+  local tsui_path
+  tsui_path=$(which tsui)
+  if [[ -z "${tsui_path}" ]]; then
+    echo "Error: 'tsui' command not found after installation." >&2
+    exit 1
+  fi
+  echo "${USER} ALL=(ALL) NOPASSWD: ${tsui_path}" | sudo tee "/etc/sudoers.d/tsui" >/dev/null
+
+  echo "Creating launcher entries..."
+  hypr-tui-install "Tailscale" "sudo ${tsui_path}" float "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/tailscale-light.png"
+  hypr-webapp-install "Tailscale Admin Console" "https://login.tailscale.com/admin/machines" "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/tailscale-light.png"
+
+  echo "Tailscale installation complete."
+}
+
+main

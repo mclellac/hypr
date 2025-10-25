@@ -16,7 +16,7 @@ readonly PACMAN_CONFIG="/etc/pacman.conf"
 # Outputs:
 #   None
 #######################################
-EnableMultilib() {
+enable_multilib() {
   # Check if multilib is already enabled to avoid redundant edits.
   if grep -q "^\s*\[multilib\]" "${PACMAN_CONFIG}"; then
     echo "Multilib repository is already enabled."
@@ -43,7 +43,7 @@ main() {
     exit 1
   fi
 
-  EnableMultilib
+  enable_multilib
 
   echo "Updating package database and installing Steam..."
   echo "You may be prompted to select video driver packages."
