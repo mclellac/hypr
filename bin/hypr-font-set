@@ -19,7 +19,7 @@ readonly FONTCONFIG_CONFIG="${HOME}/.config/fontconfig/fonts.conf"
 # Outputs:
 #   Returns 0 if the font is found, 1 otherwise.
 #######################################
-IsFontAvailable() {
+is_font_available() {
   local font_name="$1"
   fc-list | grep -iqF "${font_name}"
 }
@@ -34,7 +34,7 @@ IsFontAvailable() {
 # Outputs:
 #   None
 #######################################
-UpdateCssFont() {
+update_css_font() {
   local config_file="$1"
   local font_name="$2"
 
@@ -71,7 +71,7 @@ main() {
     exit 1
   fi
 
-  if ! IsFontAvailable "${font_name}"; then
+  if ! is_font_available "${font_name}"; then
     echo "Error: Font '${font_name}' not found on the system." >&2
     exit 1
   fi
@@ -86,8 +86,8 @@ main() {
   fi
 
   # Update CSS-based applications
-  UpdateCssFont "${WAYBAR_STYLE}" "${font_name}"
-  UpdateCssFont "${SWAYOSD_STYLE}" "${font_name}"
+  update_css_font "${WAYBAR_STYLE}" "${font_name}"
+  update_css_font "${SWAYOSD_STYLE}" "${font_name}"
 
   # Update system-wide monospace font setting
   if [[ -f "${FONTCONFIG_CONFIG}" ]]; then

@@ -1,13 +1,93 @@
 #!/bin/bash
+#
+# Launches a web application (a URL in a browser with app-like flags)
+# using a supported Chromium-based browser.
 
-browser=$(timeout 1s xdg-settings get default-web-browser)
-if [[ $? -ne 0 || -z "$browser" ]]; then
-  browser="chromium.desktop"
-fi
+set -euo pipefail
 
-case $browser in
-google-chrome* | brave-browser* | microsoft-edge* | opera* | vivaldi*) ;;
-*) browser="chromium.desktop" ;;
-esac
+#######################################
+# Determines the default Chromium-based browser.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   The .desktop filename of a supported browser.
+#######################################
+get_chromium_browser() {
+  local browser
+  browser=$(timeout 1s xdg-settings get default-web-browser || echo "chromium.desktop")
 
-exec setsid uwsm app -- $(sed -n 's/^Exec=\([^ ]*\).*/\1/p' {~/.local,~/.nix-profile,/usr}/share/applications/$browser 2>/dev/null | head -1) --app="$1" "${@:2}"
+  # Fallback to a known-good default if the detected browser is not supported.
+  case "${browser}" in
+  google-chrome* | brave-browser* | microsoft-edge* | opera* | vivaldi*)
+    echo "${browser}"
+    ;;
+  *)
+    echo "chromium.desktop"
+    ;;
+  esac
+}
+
+#######################################
+# Finds the executable path from a .desktop file.
+# Globals:
+#   HOME - The user's home directory.
+# Arguments:
+#   $1 - The .desktop filename.
+# Outputs:
+#   The full path to the browser's executable.
+#######################################
+get_browser_executable() {
+  local browser_desktop_file="$1"
+  local -a search_dirs=(
+    "${HOME}/.local/share/applications"
+    "${HOME}/.nix-profile/share/applications"
+    "/usr/share/applications"
+  )
+  local desktop_file_path=""
+
+  for dir in "${search_dirs[@]}"; do
+    if [[ -f "${dir}/${browser_desktop_file}" ]]; then
+      desktop_file_path="${dir}/${browser_desktop_file}"
+      break
+    fi
+  done
+
+  if [[ -n "${desktop_file_path}" ]]; then
+    # Parse the Exec line to get the command, ignoring arguments.
+    sed -n 's/^Exec=\([^ ]*\).*/\1/p' "${desktop_file_path}" | head -1
+  fi
+}
+
+#######################################
+# Main function to launch the web application.
+# Globals:
+#   None
+# Arguments:
+#   $1 - The URL to open as a web app.
+#   $@ - Additional arguments for the browser.
+# Outputs:
+#   Exits with an error if the URL or browser executable is not found.
+#######################################
+main() {
+  if [[ -z "${1:-}" ]]; then
+    echo "Usage: $(basename "$0") <url> [browser-args...]" >&2
+    exit 1
+  fi
+
+  local browser_desktop_file
+  browser_desktop_file=$(get_chromium_browser)
+
+  local browser_executable
+  browser_executable=$(get_browser_executable "${browser_desktop_file}")
+  if [[ -z "${browser_executable}" ]]; then
+    echo "Error: Could not find executable for '${browser_desktop_file}'." >&2
+    exit 1
+  fi
+
+  # Launch the browser with the --app flag to create a PWA-like experience.
+  exec setsid uwsm app -- "${browser_executable}" "--app=${1}" "${@:2}"
+}
+
+main "$@"

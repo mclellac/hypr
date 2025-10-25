@@ -1,4 +1,23 @@
 #!/bin/bash
+#
+# Resets the sudo lockout for the current user. This is useful if you have
+# entered your password incorrectly too many times.
 
-# Resetting sudo lockout for user
-su -c "faillock --reset --user $USER"
+set -euo pipefail
+
+#######################################
+# Main function to reset the sudo lockout.
+# Globals:
+#   USER - The current user's name.
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  echo "Resetting sudo lockout for user: ${USER}"
+  # This command must be run as root to reset the faillock for another user.
+  su -c "faillock --reset --user ${USER}"
+}
+
+main

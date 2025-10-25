@@ -14,7 +14,7 @@ set -euo pipefail
 # Outputs:
 #   Writes status messages to stdout.
 #######################################
-InstallDatabase() {
+install_database() {
   local db_name="$1"
   echo "Installing ${db_name}..."
 
@@ -71,7 +71,7 @@ main() {
 
   # Loop through each selected database and install it.
   while read -r db; do
-    InstallDatabase "${db}"
+    install_database "${db}"
   done <<< "${choices}"
 
   echo "Selected databases have been installed."

@@ -1,40 +1,86 @@
 #!/bin/bash
+#
+# Launches the default web browser with the provided arguments.
+# It determines the browser from xdg-settings, finds its .desktop file,
+# parses the Exec line, and launches it in a managed way.
+
 set -euo pipefail
 
-# Get the default browser, with a timeout and fallback.
-# xdg-settings can sometimes hang, so we wrap it in a timeout.
-browser_desktop_file=$(timeout 1s xdg-settings get default-web-browser || echo "chromium.desktop")
+#######################################
+# Gets the filename of the default web browser's .desktop file.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   The filename of the default browser (e.g., "chromium.desktop").
+#######################################
+get_default_browser_desktop_file() {
+  # xdg-settings can sometimes hang, so we wrap it in a timeout.
+  timeout 1s xdg-settings get default-web-browser || echo "chromium.desktop"
+}
 
-# If the browser is still not found, exit with an error.
-if [[ -z "${browser_desktop_file}" ]]; then
+#######################################
+# Finds the full path to a given .desktop file.
+# Globals:
+#   HOME - The user's home directory.
+# Arguments:
+#   $1 - The filename of the .desktop file.
+# Outputs:
+#   The full path to the .desktop file, or an empty string if not found.
+#######################################
+find_desktop_file_path() {
+  local browser_desktop_file="$1"
+  local desktop_file_path=""
+  local -a search_dirs=(
+    "${HOME}/.local/share/applications"
+    "${HOME}/.nix-profile/share/applications"
+    "/usr/share/applications"
+  )
+
+  for dir in "${search_dirs[@]}"; do
+    if [[ -f "${dir}/${browser_desktop_file}" ]]; then
+      desktop_file_path="${dir}/${browser_desktop_file}"
+      break
+    fi
+  done
+  echo "${desktop_file_path}"
+}
+
+#######################################
+# Main function to launch the browser.
+# Globals:
+#   None
+# Arguments:
+#   $@ - Arguments to pass to the browser.
+# Outputs:
+#   Exits with an error if the browser cannot be launched.
+#######################################
+main() {
+  local browser_desktop_file
+  browser_desktop_file=$(get_default_browser_desktop_file)
+  if [[ -z "${browser_desktop_file}" ]]; then
     echo "ERROR: Could not determine the default web browser." >&2
     exit 1
-fi
+  fi
 
-# Find the full path to the desktop file.
-desktop_file_path=""
-for dir in "${HOME}/.local/share/applications" "${HOME}/.nix-profile/share/applications" "/usr/share/applications"; do
-    if [[ -f "${dir}/${browser_desktop_file}" ]]; then
-        desktop_file_path="${dir}/${browser_desktop_file}"
-        break
-    fi
-done
-
-# If no desktop file is found, exit with an error.
-if [[ -z "${desktop_file_path}" ]]; then
+  local desktop_file_path
+  desktop_file_path=$(find_desktop_file_path "${browser_desktop_file}")
+  if [[ -z "${desktop_file_path}" ]]; then
     echo "ERROR: Could not find the .desktop file for '${browser_desktop_file}'." >&2
     exit 1
-fi
+  fi
 
-# Read the Exec line from the desktop file.
-# We remove any desktop-specific field codes like %U, %u, %F, %f.
-exec_line=$(grep -E '^Exec=' "${desktop_file_path}" | head -1 | sed -e 's/^Exec=//' -e 's/ %[UufF]//g')
-
-# If no Exec line is found, exit with an error.
-if [[ -z "${exec_line}" ]]; then
+  # Read the Exec line from the desktop file and remove field codes.
+  local exec_line
+  exec_line=$(grep -E '^Exec=' "${desktop_file_path}" | head -1 | sed -e 's/^Exec=//' -e 's/ %[UufF]//g')
+  if [[ -z "${exec_line}" ]]; then
     echo "ERROR: Could not find the Exec line in '${desktop_file_path}'." >&2
     exit 1
-fi
+  fi
 
-# Launch the browser using uwsm. We use eval to handle potential quotes in the exec_line.
-eval "exec setsid uwsm app -- ${exec_line} \"\$@\""
+  # Launch the browser using uwsm. `eval` is used to handle potential quotes.
+  eval "exec setsid uwsm app -- ${exec_line} \"\$@\""
+}
+
+main "$@"

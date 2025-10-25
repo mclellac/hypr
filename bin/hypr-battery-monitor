@@ -18,7 +18,7 @@ readonly NOTIFICATION_FLAG="/run/user/${UID}/hypr_battery_notified"
 # Outputs:
 #   The UPower device path for the battery, or an empty string if none is found.
 #######################################
-GetBatteryDevice() {
+get_battery_device() {
   upower -e | grep 'BAT' | head -n 1
 }
 
@@ -31,7 +31,7 @@ GetBatteryDevice() {
 # Outputs:
 #   The battery percentage as an integer, or 100 if no battery is found.
 #######################################
-GetBatteryPercentage() {
+get_battery_percentage() {
   local battery_device="$1"
   if [[ -z "${battery_device}" ]]; then
     echo "100" # Assume 100% if no battery is present
@@ -50,7 +50,7 @@ GetBatteryPercentage() {
 # Outputs:
 #   The battery state, or "charging" if no battery is found.
 #######################################
-GetBatteryState() {
+get_battery_state() {
   local battery_device="$1"
   if [[ -z "${battery_device}" ]]; then
     echo "charging" # Assume charging if no battery is present
@@ -69,7 +69,7 @@ GetBatteryState() {
 # Outputs:
 #   None
 #######################################
-SendNotification() {
+send_notification() {
   local battery_level="$1"
   notify-send -u critical "󱐋 Time to recharge!" "Battery is down to ${battery_level}%" -i battery-caution -t 30000
 }
@@ -86,7 +86,7 @@ SendNotification() {
 #######################################
 main() {
   local battery_device
-  battery_device=$(GetBatteryDevice)
+  battery_device=$(get_battery_device)
 
   # If no battery is found, there's nothing to do.
   if [[ -z "${battery_device}" ]]; then
@@ -94,14 +94,14 @@ main() {
   fi
 
   local battery_level
-  battery_level=$(GetBatteryPercentage "${battery_device}")
+  battery_level=$(get_battery_percentage "${battery_device}")
   local battery_state
-  battery_state=$(GetBatteryState "${battery_device}")
+  battery_state=$(get_battery_state "${battery_device}")
 
   if [[ "${battery_state}" == "discharging" && "${battery_level}" -le "${BATTERY_THRESHOLD}" ]]; then
     # Send notification only once per discharge cycle.
     if [[ ! -f "${NOTIFICATION_FLAG}" ]]; then
-      SendNotification "${battery_level}"
+      send_notification "${battery_level}"
       touch "${NOTIFICATION_FLAG}"
     fi
   else

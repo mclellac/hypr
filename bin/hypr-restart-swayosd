@@ -1,3 +1,20 @@
 #!/bin/bash
+#
+# Restarts the swayosd service.
 
-hypr-restart-app swayosd-server
+set -euo pipefail
+
+#######################################
+# Main function to restart the swayosd service.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  hypr-restart-app swayosd-server
+}
+
+main

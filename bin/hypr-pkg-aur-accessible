@@ -1,4 +1,24 @@
 #!/bin/bash
+#
+# Checks if the Arch User Repository (AUR) is accessible by making a test
+# request to its RPC interface.
 
-curl -sf --connect-timeout 30 --retry 3 --retry-delay 3 -A "hypr-update" \
-  "https://aur.archlinux.org/rpc/?v=5&type=info&arg=base" >/dev/null
+set -euo pipefail
+
+#######################################
+# Main function to check AUR accessibility.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   Exits with status 0 on success, or a non-zero status on failure (e.g., timeout).
+#######################################
+main() {
+  # We send a request for a known package ('base') to test connectivity.
+  # The output is discarded as we only care about the exit code.
+  curl -sf --connect-timeout 30 --retry 3 --retry-delay 3 -A "hypr-aur-check" \
+    "https://aur.archlinux.org/rpc/?v=5&type=info&arg=base" >/dev/null
+}
+
+main

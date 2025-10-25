@@ -1,6 +1,39 @@
 #!/bin/bash
+#
+# Refreshes the Plymouth boot splash theme with the default 'hypr' theme
+# and rebuilds the initramfs to apply the changes.
 
-if [[ "$1" == "-y" ]]; then
-  sudo cp ~/.local/share/hypr/default/plymouth/* /usr/share/plymouth/themes/hypr/
-  sudo plymouth-set-default-theme -R hypr
-fi
+set -euo pipefail
+
+#######################################
+# Main function to refresh the Plymouth theme.
+# Globals:
+#   HOME - The user's home directory.
+# Arguments:
+#   $1 - (Optional) "-y" to proceed without confirmation.
+# Outputs:
+#   None
+#######################################
+main() {
+  # The '-y' flag is a simple confirmation mechanism.
+  if [[ "${1:-}" == "-y" ]]; then
+    local source_dir="${HOME}/.local/share/hypr/default/plymouth"
+    local target_dir="/usr/share/plymouth/themes/hypr"
+
+    if [[ -d "${source_dir}" ]]; then
+      echo "Copying default Plymouth theme files..."
+      sudo cp -f "${source_dir}"/* "${target_dir}/"
+
+      echo "Setting default Plymouth theme and rebuilding initramfs..."
+      sudo plymouth-set-default-theme -R hypr
+    else
+      echo "Error: Default Plymouth theme source not found at ${source_dir}" >&2
+      exit 1
+    fi
+  else
+    echo "This will replace your Plymouth theme with the hypr default."
+    echo "Run with -y to confirm."
+  fi
+}
+
+main "$@"

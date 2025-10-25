@@ -1,7 +1,30 @@
 #!/bin/bash
+#
+# Restarts the 'walker' application launcher and its 'elephant' service.
 
-pkill walker
-pkill elephant
-setsid walker --gapplication-service &
-setsid elephant &
-echo # Always end in success so we don't terminate further running
+set -euo pipefail
+
+#######################################
+# Main function to restart walker and elephant.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  echo "Restarting walker and elephant services..."
+
+  # Kill existing processes.
+  pkill walker || true
+  pkill elephant || true
+
+  # Start new instances in the background.
+  setsid walker --gapplication-service &
+  setsid elephant &
+
+  echo "Walker and elephant restarted."
+}
+
+main

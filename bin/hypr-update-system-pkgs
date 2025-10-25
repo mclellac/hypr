@@ -1,31 +1,94 @@
 #!/bin/bash
+#
+# Updates all system packages, including official and AUR packages, and
+# removes any orphaned packages.
 
-# Used in package emergencies if a bad package has been pushed and we can't revoke.
-# Requires manually installing the good package using sudo pacman -U <url>
-ignored_packages=$(hypr-pkg-ignored)
+set -euo pipefail
 
-echo -e "\e[32m\nUpdate system packages\e[0m"
-[[ -n $ignored_packages ]] && echo "sudo pacman -Syu --noconfirm --ignore \"$ignored_packages\""
-sudo pacman -Syu --noconfirm --ignore "$ignored_packages"
+#######################################
+# Updates official system packages using pacman.
+# Globals:
+#   None
+# Arguments:
+#   $1 - A comma-separated string of packages to ignore.
+# Outputs:
+#   None
+#######################################
+update_official_packages() {
+  local ignored_packages="$1"
+  echo -e "\e[32m\nUpdating official system packages...\e[0m"
+  local pacman_cmd="sudo pacman -Syu --noconfirm"
+  if [[ -n "${ignored_packages}" ]]; then
+    pacman_cmd+=" --ignore ${ignored_packages}"
+  fi
+  ${pacman_cmd}
+}
 
-# Update AUR packages if any are installed
-if pacman -Qem >/dev/null; then
-  if hypr-pkg-aur-accessible; then
-    echo -e "\e[32m\nUpdate AUR packages\e[0m"
-    [[ -n $ignored_packages ]] && echo "yay -Sua --noconfirm  --ignore \"$ignored_packages\""
-    yay -Sua --noconfirm --ignore "$ignored_packages"
-    echo
-  else
-    echo -e "\e[31m\nAUR is unavailable (so skipping updates)\e[0m"
+#######################################
+# Updates AUR packages using yay.
+# Globals:
+#   None
+# Arguments:
+#   $1 - A comma-separated string of packages to ignore.
+# Outputs:
+#   None
+#######################################
+update_aur_packages() {
+  local ignored_packages="$1"
+  if pacman -Qem >/dev/null; then
+    if hypr-pkg-aur-accessible; then
+      echo -e "\e[32m\nUpdating AUR packages...\e[0m"
+      local yay_cmd="yay -Sua --noconfirm"
+      if [[ -n "${ignored_packages}" ]]; then
+        yay_cmd+=" --ignore ${ignored_packages}"
+      fi
+      ${yay_cmd}
+      echo
+    else
+      echo -e "\e[31m\nAUR is unavailable, skipping updates.\e[0m"
+      echo
+    fi
+  fi
+}
+
+#######################################
+# Removes orphaned packages from the system.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+remove_orphaned_packages() {
+  local orphans
+  orphans=$(pacman -Qtdq)
+  if [[ -n "${orphans}" ]]; then
+    echo -e "\e[32m\nRemoving orphaned packages...\e[0m"
+    # shellcheck disable=SC2068
+    for pkg in ${orphans[@]}; do
+      sudo pacman -Rs --noconfirm "${pkg}" || true
+    done
     echo
   fi
-fi
+}
 
-orphans=$(pacman -Qtdq)
-if [[ -n $orphans ]]; then
-  echo -e "\e[32m\nRemove orphan system packages\e[0m"
-  for pkg in $orphans; do
-    sudo pacman -Rs --noconfirm "$pkg" || true
-  done
-  echo
-fi
+#######################################
+# Main function to drive the system update process.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  local ignored_packages
+  ignored_packages=$(hypr-pkg-ignored)
+
+  update_official_packages "${ignored_packages}"
+  update_aur_packages "${ignored_packages}"
+  remove_orphaned_packages
+}
+
+main

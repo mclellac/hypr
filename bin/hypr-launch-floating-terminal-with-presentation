@@ -1,4 +1,30 @@
 #!/bin/bash
+#
+# Launches a floating terminal window (Alacritty) to execute a given command.
+# Before the command runs, a logo is displayed. After the command finishes,
+# a "Done" message is shown.
 
-cmd="$*"
-setsid alacritty --class hypr -e bash -c "hypr-show-logo; $cmd; hypr-show-done"
+set -euo pipefail
+
+#######################################
+# Main function to launch the floating terminal.
+# Globals:
+#   None
+# Arguments:
+#   $@ - The command to be executed within the terminal.
+# Outputs:
+#   None
+#######################################
+main() {
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: $(basename "$0") <command>" >&2
+    exit 1
+  fi
+
+  local cmd="$*"
+  # `setsid` detaches the new terminal from the current one.
+  # The Alacritty window is given a specific class 'hypr' for potential window rules.
+  setsid alacritty --class hypr -e bash -c "hypr-show-logo; ${cmd}; hypr-show-done"
+}
+
+main "$@"

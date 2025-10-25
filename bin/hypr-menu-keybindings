@@ -1,16 +1,21 @@
 #!/bin/bash
-
-# A script to display Hyprland keybindings defined in your configuration
-# using walker for an interactive search menu.
-
-# Fetch dynamic keybindings from Hyprland
 #
-# Also do some pre-processing:
-# - Remove standard hypr bin path prefix
-# - Remove uwsm prefix
-# - Map numeric modifier key mask to a textual rendition
-# - Output comma-separated values that the parser can understand
-dynamic_bindings() {
+# Displays a searchable menu of Hyprland keybindings using 'walker'.
+# It fetches bindings directly from 'hyprctl', formats them for readability,
+# and pipes the result into the 'walker' dmenu.
+
+set -euo pipefail
+
+#######################################
+# Fetches raw keybinding data from hyprctl and performs initial cleaning.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   A stream of comma-separated keybinding data.
+#######################################
+fetch_and_clean_bindings() {
   hyprctl -j binds |
     jq -r '.[] | {modmask, key, keycode, description, dispatcher, arg} | "\(.modmask),\(.key)@\(.keycode),\(.description),\(.dispatcher),\(.arg)"' |
     sed -r \
@@ -37,54 +42,68 @@ dynamic_bindings() {
       -e 's/^77,/SUPER SHIFT CTRL ALT,/'
 }
 
-# Parse and format keybindings
-#
-# `awk` does the heavy lifting:
-# - Set the field separator to a comma ','.
-# - Joins the key combination (e.g., "SUPER + Q").
-# - Joins the command that the key executes.
-# - Prints everything in a nicely aligned format.
-parse_bindings() {
+#######################################
+# Parses and formats the cleaned keybinding data into a human-readable format.
+# Globals:
+#   None
+# Arguments:
+#   None (reads from stdin)
+# Outputs:
+#   A formatted list of keybindings, ready for display.
+#######################################
+parse_and_format_bindings() {
   awk -F, '
-{
-    # Combine the modifier and key (first two fields)
-    key_combo = $1 " + " $2;
+  {
+      # Combine the modifier and key (first two fields)
+      key_combo = $1 " + " $2;
 
-    # Clean up: strip leading "+" if present, trim spaces
-    gsub(/^[ \t]*\+?[ \t]*/, "", key_combo);
-    gsub(/[ \t]+$/, "", key_combo);
+      # Clean up: strip leading "+" if present, trim spaces
+      gsub(/^[ \t]*\+?[ \t]*/, "", key_combo);
+      gsub(/[ \t]+$/, "", key_combo);
 
-    # Use description, if set
-    action = $3;
+      # Use description, if set
+      action = $3;
 
-    if (action == "") {
-        # Reconstruct the command from the remaining fields
-        for (i = 4; i <= NF; i++) {
-            action = action $i (i < NF ? "," : "");
-        }
+      if (action == "") {
+          # Reconstruct the command from the remaining fields
+          for (i = 4; i <= NF; i++) {
+              action = action $i (i < NF ? "," : "");
+          }
 
-        # Clean up trailing commas, remove leading "exec, ", and trim
-        sub(/,$/, "", action);
-        gsub(/(^|,)[[:space:]]*exec[[:space:]]*,?/, "", action);
-        gsub(/^[ \t]+|[ \t]+$/, "", action);
-        gsub(/[ \t]+/, " ", key_combo);  # Collapse multiple spaces to one
+          # Clean up trailing commas, remove leading "exec, ", and trim
+          sub(/,$/, "", action);
+          gsub(/(^|,)[[:space:]]*exec[[:space:]]*,?/, "", action);
+          gsub(/^[ \t]+|[ \t]+$/, "", action);
+          gsub(/[ \t]+/, " ", key_combo);  # Collapse multiple spaces to one
 
-        # Escape XML entities
-        gsub(/&/, "\\&amp;", action);
-        gsub(/</, "\\&lt;", action);
-        gsub(/>/, "\\&gt;", action);
-        gsub(/"/, "\\&quot;", action);
-        gsub(/'"'"'/, "\\&apos;", action);
-    }
+          # Escape XML entities for display in Pango markup
+          gsub(/&/, "\\&amp;", action);
+          gsub(/</, "\\&lt;", action);
+          gsub(/>/, "\\&gt;", action);
+          gsub(/"/, "\\&quot;", action);
+          gsub(/'"'"'/, "\\&apos;", action);
+      }
 
-    if (action != "") {
-        printf "%-35s → %s\n", key_combo, action;
-    }
-}'
+      if (action != "") {
+          printf "%-35s → %s\n", key_combo, action;
+      }
+  }'
 }
 
-dynamic_bindings |
-  sort -u |
-  parse_bindings |
-  #walker --dmenu --theme keybindings -p 'Keybindings'
-  walker --dmenu --theme hypr-default --width 960 -p 'Keybindings'
+#######################################
+# Main function to orchestrate the keybinding menu.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  fetch_and_clean_bindings |
+    sort -u |
+    parse_and_format_bindings |
+    walker --dmenu --theme hypr-default --width 960 -p 'Keybindings'
+}
+
+main

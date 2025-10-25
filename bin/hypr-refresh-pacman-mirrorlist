@@ -1,3 +1,29 @@
 #!/bin/bash
+#
+# Refreshes the pacman mirrorlist with the default version from the hypr repository.
 
-sudo cp -f ~/.local/share/hypr/default/pacman/mirrorlist /etc/pacman.d/mirrorlist
+set -euo pipefail
+
+#######################################
+# Main function to refresh the pacman mirrorlist.
+# Globals:
+#   HOME - The user's home directory.
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  local default_mirrorlist="${HOME}/.local/share/hypr/default/pacman/mirrorlist"
+  local system_mirrorlist="/etc/pacman.d/mirrorlist"
+
+  if [[ -f "${default_mirrorlist}" ]]; then
+    echo "Refreshing pacman mirrorlist..."
+    sudo cp -f "${default_mirrorlist}" "${system_mirrorlist}"
+  else
+    echo "Error: Default mirrorlist not found at ${default_mirrorlist}" >&2
+    exit 1
+  fi
+}
+
+main

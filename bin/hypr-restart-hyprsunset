@@ -1,3 +1,20 @@
 #!/bin/bash
+#
+# Restarts the hyprsunset service.
 
-hypr-restart-app hyprsunset
+set -euo pipefail
+
+#######################################
+# Main function to restart the hyprsunset service.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  hypr-restart-app hyprsunset
+}
+
+main

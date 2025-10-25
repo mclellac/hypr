@@ -18,7 +18,7 @@ set -euo pipefail
 # Outputs:
 #   The selected option from the menu.
 #######################################
-Menu() {
+menu() {
   local prompt="$1"
   local options="$2"
   local extra_args_str="${3:-}"
@@ -48,7 +48,7 @@ Menu() {
 # Outputs:
 #   None
 #######################################
-OpenWeb() {
+open_web() {
   hypr-launch-webapp "$1"
 }
 
@@ -61,27 +61,27 @@ OpenWeb() {
 # Outputs:
 #   None
 #######################################
-ShowLinuxMenu() {
+show_linux_menu() {
   local options="  Bash (Devhints)\n  Linux CLI (PhoenixNAP)\n  sed (QuickRef)\n  awk (QuickRef)\n  curl (Ritchie Spears)\n  find command (Devhints)\n  tmux (Devhints)\n  systemd (Clemson University)\n  Vim (QuickRef)\n  Emacs (QuickRef)\n󰆍  GTFOBins\n󰢹  LOLBAS\n󰌆  PEASS / Privilege Escalation (GitHub)\n󱂅  SecLists (GitHub)\n  Back"
   local choice
-  choice=$(Menu "  Linux" "${options}")
+  choice=$(menu "  Linux" "${options}")
 
   case "${choice}" in
-    *"Bash"*) OpenWeb "https://devhints.io/bash" ;;
-    *"Linux CLI"*) OpenWeb "https://phoenixnap.com/kb/linux-commands-cheat-sheet" ;;
-    *"sed"*) OpenWeb "https://quickref.me/sed" ;;
-    *"awk"*) OpenWeb "https://quickref.me/awk" ;;
-    *"curl"*) OpenWeb "https://www.ritchiespears.com/wiki/curl" ;;
-    *"find"*) OpenWeb "https://devhints.io/find" ;;
-    *"tmux"*) OpenWeb "https://devhints.io/tmux" ;;
-    *"systemd"*) OpenWeb "https://people.computing.clemson.edu/~jmarty/courses/commonCourseContent/common/cheatSheets/systemd-cheat-sheet.pdf" ;;
-    *"Vim"*) OpenWeb "https://quickref.me/vim" ;;
-    *"Emacs"*) OpenWeb "https://quickref.me/emacs" ;;
-    *"GTFOBins"*) OpenWeb "https://gtfobins.github.io/" ;;
-    *"LOLBAS"*) OpenWeb "https://lolbas-project.github.io/" ;;
-    *"PEASS"*) OpenWeb "https://github.com/carlospolop/PEASS-ng" ;;
-    *"SecLists"*) OpenWeb "https://github.com/danielmiessler/SecLists" ;;
-    *) ShowMainMenu ;;
+    *"Bash"*) open_web "https://devhints.io/bash" ;;
+    *"Linux CLI"*) open_web "https://phoenixnap.com/kb/linux-commands-cheat-sheet" ;;
+    *"sed"*) open_web "https://quickref.me/sed" ;;
+    *"awk"*) open_web "https://quickref.me/awk" ;;
+    *"curl"*) open_web "https://www.ritchiespears.com/wiki/curl" ;;
+    *"find"*) open_web "https://devhints.io/find" ;;
+    *"tmux"*) open_web "https://devhints.io/tmux" ;;
+    *"systemd"*) open_web "https://people.computing.clemson.edu/~jmarty/courses/commonCourseContent/common/cheatSheets/systemd-cheat-sheet.pdf" ;;
+    *"Vim"*) open_web "https://quickref.me/vim" ;;
+    *"Emacs"*) open_web "https://quickref.me/emacs" ;;
+    *"GTFOBins"*) open_web "https://gtfobins.github.io/" ;;
+    *"LOLBAS"*) open_web "https://lolbas-project.github.io/" ;;
+    *"PEASS"*) open_web "https://github.com/carlospolop/PEASS-ng" ;;
+    *"SecLists"*) open_web "https://github.com/danielmiessler/SecLists" ;;
+    *) show_main_menu ;;
   esac
 }
 
@@ -94,22 +94,22 @@ ShowLinuxMenu() {
 # Outputs:
 #   None
 #######################################
-ShowWebSecMenu() {
+show_web_sec_menu() {
   local options="󰈙  OWASP Top 10\n󰈙  OWASP API Security Top 10\n󰈙  OWASP Cheat Sheet Series\n󱔗  HackTricks\n󰊂  PayloadsAllTheThings\n󰅘  PortSwigger XSS Cheat Sheet\n󰅘  PortSwigger SQLi Cheat Sheet\n󰀟  JWT.io (Debugger & Libraries)\n󰆆  Web Attack Cheat Sheet (practical)\n  Back"
   local choice
-  choice=$(Menu "󰖟  Web Security" "${options}")
+  choice=$(menu "󰖟  Web Security" "${options}")
 
   case "${choice}" in
-    *"Top 10"*) OpenWeb "https://owasp.org/www-project-top-ten/" ;;
-    *"API Security"*) OpenWeb "https://owasp.org/API-Security/editions/2023/en/0x00-header/" ;;
-    *"Cheat Sheet Series"*) OpenWeb "https://cheatsheetseries.owasp.org/" ;;
-    *"HackTricks"*) OpenWeb "https://book.hacktricks.xyz/" ;;
-    *"PayloadsAllTheThings"*) OpenWeb "https://swisskyrepo.github.io/PayloadsAllTheThings/" ;;
-    *"PortSwigger XSS"*) OpenWeb "https://portswigger.net/web-security/cross-site-scripting/cheat-sheet" ;;
-    *"PortSwigger SQLi"*) OpenWeb "https://portswigger.net/web-security/sql-injection/cheat-sheet" ;;
-    *"JWT"*) OpenWeb "https://jwt.io/" ;;
-    *"Web Attack"*) OpenWeb "https://github.com/riramar/Web-Attack-Cheat-Sheet" ;;
-    *) ShowMainMenu ;;
+    *"Top 10"*) open_web "https://owasp.org/www-project-top-ten/" ;;
+    *"API Security"*) open_web "https://owasp.org/API-Security/editions/2023/en/0x00-header/" ;;
+    *"Cheat Sheet Series"*) open_web "https://cheatsheetseries.owasp.org/" ;;
+    *"HackTricks"*) open_web "https://book.hacktricks.xyz/" ;;
+    *"PayloadsAllTheThings"*) open_web "https://swisskyrepo.github.io/PayloadsAllTheThings/" ;;
+    *"PortSwigger XSS"*) open_web "https://portswigger.net/web-security/cross-site-scripting/cheat-sheet" ;;
+    *"PortSwigger SQLi"*) open_web "https://portswigger.net/web-security/sql-injection/cheat-sheet" ;;
+    *"JWT"*) open_web "https://jwt.io/" ;;
+    *"Web Attack"*) open_web "https://github.com/riramar/Web-Attack-Cheat-Sheet" ;;
+    *) show_main_menu ;;
   esac
 }
 
@@ -122,16 +122,16 @@ ShowWebSecMenu() {
 # Outputs:
 #   None
 #######################################
-ShowPythonMenu() {
+show_python_menu() {
   local options="  Python Cheatsheet (pythoncheatsheet.org)\n  Python for Data Science (DataCamp)\n  Python Security (Bandit)\n  Back"
   local choice
-  choice=$(Menu "  Python" "${options}")
+  choice=$(menu "  Python" "${options}")
 
   case "${choice}" in
-    *"Python Cheatsheet"*) OpenWeb "https://www.pythoncheatsheet.org/" ;;
-    *"Python for Data Science"*) OpenWeb "https://www.datacamp.com/cheat-sheet/python-for-data-science-cheat-sheet" ;;
-    *"Python Security"*) OpenWeb "https://bandit.readthedocs.io/en/latest/" ;;
-    *) ShowProgrammingMenu ;;
+    *"Python Cheatsheet"*) open_web "https://www.pythoncheatsheet.org/" ;;
+    *"Python for Data Science"*) open_web "https://www.datacamp.com/cheat-sheet/python-for-data-science-cheat-sheet" ;;
+    *"Python Security"*) open_web "https://bandit.readthedocs.io/en/latest/" ;;
+    *) show_programming_menu ;;
   esac
 }
 
@@ -144,22 +144,22 @@ ShowPythonMenu() {
 # Outputs:
 #   None
 #######################################
-ShowProgrammingMenu() {
+show_programming_menu() {
   local options="  Python\n  Rust (cheats.rs)\n  Go (Devhints)\n  JavaScript (Devhints)\n  SQL Cheatsheet (SQLTutorial)\n  Bash (Devhints)\n󰡨  Docker (Devhints)\n󰡨  Docker Compose (Devhints)\n  GTK4 Reference (official)\n  Back"
   local choice
-  choice=$(Menu "  Programming" "${options}")
+  choice=$(menu "  Programming" "${options}")
 
   case "${choice}" in
-    *"Python"*) ShowPythonMenu ;;
-    *"Rust"*) OpenWeb "https://cheats.rs/" ;;
-    *"Go"*) OpenWeb "https://devhints.io/go" ;;
-    *"JavaScript"*) OpenWeb "https://devhints.io/javascript" ;;
-    *"SQL"*) OpenWeb "https://www.sqltutorial.org/sql-cheat-sheet/" ;;
-    *"Bash"*) OpenWeb "https://devhints.io/bash" ;;
-    *"Docker (Devhints)"*) OpenWeb "https://devhints.io/docker" ;;
-    *"Docker Compose"*) OpenWeb "https://devhints.io/docker-compose" ;;
-    *"GTK4"*) OpenWeb "https://docs.gtk.org/gtk4/" ;;
-    *) ShowMainMenu ;;
+    *"Python"*) show_python_menu ;;
+    *"Rust"*) open_web "https://cheats.rs/" ;;
+    *"Go"*) open_web "https://devhints.io/go" ;;
+    *"JavaScript"*) open_web "https://devhints.io/javascript" ;;
+    *"SQL"*) open_web "https://www.sqltutorial.org/sql-cheat-sheet/" ;;
+    *"Bash"*) open_web "https://devhints.io/bash" ;;
+    *"Docker (Devhints)"*) open_web "https://devhints.io/docker" ;;
+    *"Docker Compose"*) open_web "https://devhints.io/docker-compose" ;;
+    *"GTK4"*) open_web "https://docs.gtk.org/gtk4/" ;;
+    *) show_main_menu ;;
   esac
 }
 
@@ -172,23 +172,23 @@ ShowProgrammingMenu() {
 # Outputs:
 #   None
 #######################################
-ShowHackingMenu() {
+show_hacking_menu() {
   local options="  Exploit-DB (search)\n  Reverse Shells (revshells.com)\n  Pentest Monkey (reverse shells)\n󱍴  Metasploit Docs\n󱗺  InternalAllTheThings\n  WinPEAS / Windows Priv Esc (GitHub)\n󰢡  CyberChef (The Cyber Swiss Army Knife)\n󰢡  CrackStation (Online Hash Cracker)\n󰊂  PayloadsAllTheThings\n󰈙  OWASP Injection Cheatsheet\n  Back"
   local choice
-  choice=$(Menu "󰲯  Hacking" "${options}")
+  choice=$(menu "󰲯  Hacking" "${options}")
 
   case "${choice}" in
-    *"Exploit-DB"*) OpenWeb "https://www.exploit-db.com/" ;;
-    *"Reverse Shells"*) OpenWeb "https://revshells.com/" ;;
-    *"Pentest Monkey"*) OpenWeb "https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet" ;;
-    *"Metasploit"*) OpenWeb "https://docs.rapid7.com/metasploit/" ;;
-    *"InternalAllTheThings"*) OpenWeb "https://swisskyrepo.github.io/InternalAllTheThings/" ;;
-    *"WinPEAS"*) OpenWeb "https://github.com/carlospolop/PEASS-ng" ;;
-    *"CyberChef"*) OpenWeb "https://gchq.github.io/CyberChef/" ;;
-    *"CrackStation"*) OpenWeb "https://crackstation.net/" ;;
-    *"PayloadsAllTheThings"*) OpenWeb "https://swisskyrepo.github.io/PayloadsAllTheThings/" ;;
-    *"OWASP Injection"*) OpenWeb "https://cheatsheetseries.owasp.org/cheatsheets/Injection_Prevention_Cheat_Sheet.html" ;;
-    *) ShowMainMenu ;;
+    *"Exploit-DB"*) open_web "https://www.exploit-db.com/" ;;
+    *"Reverse Shells"*) open_web "https://revshells.com/" ;;
+    *"Pentest Monkey"*) open_web "https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet" ;;
+    *"Metasploit"*) open_web "https://docs.rapid7.com/metasploit/" ;;
+    *"InternalAllTheThings"*) open_web "https://swisskyrepo.github.io/InternalAllTheThings/" ;;
+    *"WinPEAS"*) open_web "https://github.com/carlospolop/PEASS-ng" ;;
+    *"CyberChef"*) open_web "https://gchq.github.io/CyberChef/" ;;
+    *"CrackStation"*) open_web "https://crackstation.net/" ;;
+    *"PayloadsAllTheThings"*) open_web "https://swisskyrepo.github.io/PayloadsAllTheThings/" ;;
+    *"OWASP Injection"*) open_web "https://cheatsheetseries.owasp.org/cheatsheets/Injection_Prevention_Cheat_Sheet.html" ;;
+    *) show_main_menu ;;
   esac
 }
 
@@ -201,21 +201,21 @@ ShowHackingMenu() {
 # Outputs:
 #   None
 #######################################
-ShowToolsMenu() {
+show_tools_menu() {
   local options="󰛮  Nmap (HighOn.Coffee)\n  SQLMap (HighOn.Coffee)\n󱐋  Nikto (HighOn.Coffee)\n󰒒  ffuf (GitHub)\n󰘦  Burp Suite Docs\n󰍽  Wireshark User Guide\n󰢟  John the Ripper (wiki)\n󰢟  Hashcat (wiki)\n  Back"
   local choice
-  choice=$(Menu "  Tools" "${options}")
+  choice=$(menu "  Tools" "${options}")
 
   case "${choice}" in
-    *"Nmap"*) OpenWeb "https://highon.coffee/blog/nmap-cheat-sheet/" ;;
-    *"SQLMap"*) OpenWeb "https://highon.coffee/blog/sqlmap-cheat-sheet/" ;;
-    *"Nikto"*) OpenWeb "https://highon.coffee/blog/nikto-cheat-sheet/" ;;
-    *"ffuf"*) OpenWeb "https://github.com/ffuf/ffuf" ;;
-    *"Burp"*) OpenWeb "https://portswigger.net/burp/documentation" ;;
-    *"Wireshark"*) OpenWeb "https://www.wireshark.org/docs/wsug_html_chunked/" ;;
-    *"John"*) OpenWeb "https://www.openwall.com/john/doc/" ;;
-    *"Hashcat"*) OpenWeb "https://hashcat.net/wiki/" ;;
-    *) ShowMainMenu ;;
+    *"Nmap"*) open_web "https://highon.coffee/blog/nmap-cheat-sheet/" ;;
+    *"SQLMap"*) open_web "https://highon.coffee/blog/sqlmap-cheat-sheet/" ;;
+    *"Nikto"*) open_web "https://highon.coffee/blog/nikto-cheat-sheet/" ;;
+    *"ffuf"*) open_web "https://github.com/ffuf/ffuf" ;;
+    *"Burp"*) open_web "https://portswigger.net/burp/documentation" ;;
+    *"Wireshark"*) open_web "https://www.wireshark.org/docs/wsug_html_chunked/" ;;
+    *"John"*) open_web "https://www.openwall.com/john/doc/" ;;
+    *"Hashcat"*) open_web "https://hashcat.net/wiki/" ;;
+    *) show_main_menu ;;
   esac
 }
 
@@ -228,19 +228,19 @@ ShowToolsMenu() {
 # Outputs:
 #   None
 #######################################
-ShowCloudMenu() {
+show_cloud_menu() {
   local options="  AWS CLI (Devhints)\n  AWS Whitepapers & Architecture\n Azure CLI Docs\n  GCP gcloud Docs\n󱄚  OpenShift Docs\n󰰞  Terraform (Devhints)\n  Back"
   local choice
-  choice=$(Menu "  Cloud" "${options}")
+  choice=$(menu "  Cloud" "${options}")
 
   case "${choice}" in
-    *"AWS CLI"*) OpenWeb "https://devhints.io/aws-cli" ;;
-    *"AWS Whitepapers"*) OpenWeb "https://aws.amazon.com/whitepapers/" ;;
-    *"Azure"*) OpenWeb "https://learn.microsoft.com/en-us/cli/azure/reference-index" ;;
-    *"GCP"*) OpenWeb "https://cloud.google.com/sdk/gcloud/reference" ;;
-    *"OpenShift"*) OpenWeb "https://docs.openshift.com/container-platform/latest/" ;;
-    *"Terraform"*) OpenWeb "https://devhints.io/terraform" ;;
-    *) ShowMainMenu ;;
+    *"AWS CLI"*) open_web "https://devhints.io/aws-cli" ;;
+    *"AWS Whitepapers"*) open_web "https://aws.amazon.com/whitepapers/" ;;
+    *"Azure"*) open_web "https://learn.microsoft.com/en-us/cli/azure/reference-index" ;;
+    *"GCP"*) open_web "https://cloud.google.com/sdk/gcloud/reference" ;;
+    *"OpenShift"*) open_web "https://docs.openshift.com/container-platform/latest/" ;;
+    *"Terraform"*) open_web "https://devhints.io/terraform" ;;
+    *) show_main_menu ;;
   esac
 }
 
@@ -253,17 +253,17 @@ ShowCloudMenu() {
 # Outputs:
 #   None
 #######################################
-ShowK8sMenu() {
+show_k8s_menu() {
   local options="󰠱  Kubernetes Official Docs\n󰠱  Kubernetes Cheatsheet (kubectl)\n󰠱  Helm Docs\n󰠱  Kubernetes Security (CIS / k8s docs)\n  Back"
   local choice
-  choice=$(Menu "󰷤  Kubernetes" "${options}")
+  choice=$(menu "󰷤  Kubernetes" "${options}")
 
   case "${choice}" in
-    *"Official"*) OpenWeb "https://kubernetes.io/docs/" ;;
-    *"Cheatsheet"*) OpenWeb "https://kubernetes.io/docs/reference/kubectl/cheatsheet/" ;;
-    *"Helm"*) OpenWeb "https://helm.sh/docs/" ;;
-    *"Security"*) OpenWeb "https://kubernetes.io/docs/concepts/security/" ;;
-    *) ShowMainMenu ;;
+    *"Official"*) open_web "https://kubernetes.io/docs/" ;;
+    *"Cheatsheet"*) open_web "https://kubernetes.io/docs/reference/kubectl/cheatsheet/" ;;
+    *"Helm"*) open_web "https://helm.sh/docs/" ;;
+    *"Security"*) open_web "https://kubernetes.io/docs/concepts/security/" ;;
+    *) show_main_menu ;;
   esac
 }
 
@@ -276,19 +276,19 @@ ShowK8sMenu() {
 # Outputs:
 #   None
 #######################################
-ShowSecurityDocsMenu() {
+show_security_docs_menu() {
   local options="󱘖  MITRE ATT&CK\n󰓾  CIS Benchmarks\n󰙵  NIST Cybersecurity Framework\n󰢻  SANS Resources (Posters, Cheatsheets)\n󰈙  OWASP Cheat Sheet Series\n󰈙  OWASP CSRF Prevention\n  Back"
   local choice
-  choice=$(Menu "  Security Docs" "${options}")
+  choice=$(menu "  Security Docs" "${options}")
 
   case "${choice}" in
-    *"MITRE"*) OpenWeb "https://attack.mitre.org/" ;;
-    *"CIS"*) OpenWeb "https://www.cisecurity.org/benchmarks/" ;;
-    *"NIST"*) OpenWeb "https://www.nist.gov/cyberframework" ;;
-    *"SANS"*) OpenWeb "https://www.sans.org/posters/" ;;
-    *"OWASP"*) OpenWeb "https://cheatsheetseries.owasp.org/" ;;
-    *"OWASP CSRF"*) OpenWeb "https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" ;;
-    *) ShowMainMenu ;;
+    *"MITRE"*) open_web "https://attack.mitre.org/" ;;
+    *"CIS"*) open_web "https://www.cisecurity.org/benchmarks/" ;;
+    *"NIST"*) open_web "https://www.nist.gov/cyberframework" ;;
+    *"SANS"*) open_web "https://www.sans.org/posters/" ;;
+    *"OWASP"*) open_web "https://cheatsheetseries.owasp.org/" ;;
+    *"OWASP CSRF"*) open_web "https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" ;;
+    *) show_main_menu ;;
   esac
 }
 
@@ -301,19 +301,19 @@ ShowSecurityDocsMenu() {
 # Outputs:
 #   None
 #######################################
-ShowNetworkingMenu() {
+show_networking_menu() {
   local options="󰀂  OSI & TCP/IP Model (Cloudflare)\n󰒄  tcpdump Cheatsheet (Comparitech)\n󰒄  netcat Cheatsheet (SANS)\n󰍽  Wireshark Display Filters (Official)\n󰛮  Nmap Cheatsheet (HighOn.Coffee)\n󰈙  OWASP TLS Cheatsheet\n  Back"
   local choice
-  choice=$(Menu "󰀂  Networking" "${options}")
+  choice=$(menu "󰀂  Networking" "${options}")
 
   case "${choice}" in
-    *"OSI"*) OpenWeb "https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/" ;;
-    *"tcpdump"*) OpenWeb "https://www.comparitech.com/net-admin/tcpdump-cheat-sheet/" ;;
-    *"netcat"*) OpenWeb "https://www.sans.org/tools/netcat/" ;;
-    *"Wireshark"*) OpenWeb "https://www.wireshark.org/docs/dfref/" ;;
-    *"Nmap"*) OpenWeb "https://highon.coffee/blog/nmap-cheat-sheet/" ;;
-    *"OWASP TLS"*) OpenWeb "https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html" ;;
-    *) ShowMainMenu ;;
+    *"OSI"*) open_web "https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/" ;;
+    *"tcpdump"*) open_web "https://www.comparitech.com/net-admin/tcpdump-cheat-sheet/" ;;
+    *"netcat"*) open_web "https://www.sans.org/tools/netcat/" ;;
+    *"Wireshark"*) open_web "https://www.wireshark.org/docs/dfref/" ;;
+    *"Nmap"*) open_web "https://highon.coffee/blog/nmap-cheat-sheet/" ;;
+    *"OWASP TLS"*) open_web "https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html" ;;
+    *) show_main_menu ;;
   esac
 }
 
@@ -326,21 +326,21 @@ ShowNetworkingMenu() {
 # Outputs:
 #   None
 #######################################
-ShowMainMenu() {
+show_main_menu() {
   local options="󰣇  Linux\n󰖟  Web Security\n  Programming\n󰲯  Hacking\n  Tools\n󰀂  Networking\n  Cloud\n󰷤  Kubernetes\n  Security Docs\n󰅖  Exit"
   local choice
-  choice=$(Menu "󱔆  Cheatsheets" "${options}")
+  choice=$(menu "󱔆  Cheatsheets" "${options}")
 
   case "${choice}" in
-    *"Linux"*) ShowLinuxMenu ;;
-    *"Web"*) ShowWebSecMenu ;;
-    *"Programming"*) ShowProgrammingMenu ;;
-    *"Hacking"*) ShowHackingMenu ;;
-    *"Tools"*) ShowToolsMenu ;;
-    *"Networking"*) ShowNetworkingMenu ;;
-    *"Cloud"*) ShowCloudMenu ;;
-    *"Kubernetes"*) ShowK8sMenu ;;
-    *"Security"*) ShowSecurityDocsMenu ;;
+    *"Linux"*) show_linux_menu ;;
+    *"Web"*) show_web_sec_menu ;;
+    *"Programming"*) show_programming_menu ;;
+    *"Hacking"*) show_hacking_menu ;;
+    *"Tools"*) show_tools_menu ;;
+    *"Networking"*) show_networking_menu ;;
+    *"Cloud"*) show_cloud_menu ;;
+    *"Kubernetes"*) show_k8s_menu ;;
+    *"Security"*) show_security_docs_menu ;;
     *"Exit"*) exit 0 ;;
   esac
 }
@@ -360,19 +360,19 @@ main() {
   if [[ -n "${1:-}" ]]; then
     local menu_target="${1,,}"
     case "${menu_target}" in
-      "linux") ShowLinuxMenu ;;
-      "web") ShowWebSecMenu ;;
-      "prog") ShowProgrammingMenu ;;
-      "hack") ShowHackingMenu ;;
-      "tools") ShowToolsMenu ;;
-      "net" | "network") ShowNetworkingMenu ;;
-      "cloud") ShowCloudMenu ;;
-      "k8s") ShowK8sMenu ;;
-      "security") ShowSecurityDocsMenu ;;
-      *) ShowMainMenu ;;
+      "linux") show_linux_menu ;;
+      "web") show_web_sec_menu ;;
+      "prog") show_programming_menu ;;
+      "hack") show_hacking_menu ;;
+      "tools") show_tools_menu ;;
+      "net" | "network") show_networking_menu ;;
+      "cloud") show_cloud_menu ;;
+      "k8s") show_k8s_menu ;;
+      "security") show_security_docs_menu ;;
+      *) show_main_menu ;;
     esac
   else
-    ShowMainMenu
+    show_main_menu
   fi
 }
 

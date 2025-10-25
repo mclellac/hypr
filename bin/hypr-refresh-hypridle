@@ -1,4 +1,21 @@
 #!/bin/bash
+#
+# Refreshes the hypridle configuration and restarts the service.
 
-hypr-refresh-config hypr/hypridle.conf
-hypr-restart-hypridle
+set -euo pipefail
+
+#######################################
+# Main function to refresh the hypridle configuration.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  hypr-refresh-config hypr/hypridle.conf
+  hypr-restart-hypridle
+}
+
+main

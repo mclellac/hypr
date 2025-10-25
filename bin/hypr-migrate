@@ -1,27 +1,59 @@
 #!/bin/bash
+#
+# Runs pending database migration scripts. It checks a state directory to
+# determine which migrations have already been run and skips them.
 
-# Where we store an empty file for each migration that has already been performed.
-STATE_DIR="$HOME/.local/state/hypr/migrations"
-mkdir -p "$STATE_DIR"
+set -euo pipefail
 
-# Skipped migrations are tracked separately
-mkdir -p "$STATE_DIR/skipped"
+readonly MIGRATION_DIR="${HOME}/.local/share/hypr/migrations"
+readonly STATE_DIR="${HOME}/.local/state/hypr/migrations"
 
-# Run any pending migrations
-for file in ~/.local/share/hypr/migrations/*.sh; do
-  filename=$(basename "$file")
+#######################################
+# Main function to execute pending migrations.
+# Globals:
+#   MIGRATION_DIR
+#   STATE_DIR
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  # Ensure the state directories exist.
+  mkdir -p "${STATE_DIR}"
+  mkdir -p "${STATE_DIR}/skipped"
 
-  if [[ ! -f "$STATE_DIR/$filename" && ! -f "$STATE_DIR/skipped/$filename" ]]; then
-    echo -e "\e[32m\nRunning migration (${filename%.sh})\e[0m"
+  # Exit if there are no migration scripts to run.
+  if ! ls "${MIGRATION_DIR}"/*.sh &>/dev/null; then
+    echo "No migration scripts found."
+    exit 0
+  fi
 
-    if bash $file; then
-      touch "$STATE_DIR/$filename"
-    else
-      if gum confirm "Migration ${filename%.sh} failed. Skip and continue?"; then
-        touch "$STATE_DIR/skipped/$filename"
+  # Iterate over each migration script.
+  for file in "${MIGRATION_DIR}"/*.sh; do
+    local filename
+    filename=$(basename "${file}")
+
+    # Check if the migration has already been run or skipped.
+    if [[ ! -f "${STATE_DIR}/${filename}" && ! -f "${STATE_DIR}/skipped/${filename}" ]]; then
+      echo -e "\e[32m\nRunning migration (${filename%.sh})\e[0m"
+
+      # Execute the migration script.
+      if bash "${file}"; then
+        # On success, create a state file to mark it as completed.
+        touch "${STATE_DIR}/${filename}"
       else
-        exit 1
+        # On failure, prompt the user to skip the migration.
+        if gum confirm "Migration ${filename%.sh} failed. Skip and continue?"; then
+          touch "${STATE_DIR}/skipped/${filename}"
+        else
+          exit 1
+        fi
       fi
     fi
-  fi
-done
+  done
+
+  echo -e "\e[32m\nAll pending migrations have been processed.\e[0m"
+}
+
+main

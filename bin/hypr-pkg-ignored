@@ -1,7 +1,31 @@
 #!/bin/bash
+#
+# Reads the list of ignored packages from the configuration file and prints
+# them as a single, comma-separated string.
 
-IGNORED_PACKAGES_FILE="$hypr_PATH/install/packages.ignored"
+set -euo pipefail
 
-if [[ -f $IGNORED_PACKAGES_FILE ]]; then
-  tr '\r\n' ',' <"$IGNORED_PACKAGES_FILE" | sed 's/,$//'
-fi
+#######################################
+# Main function to read and format the ignored packages list.
+# Globals:
+#   hypr_PATH - The root path of the hypr configuration.
+# Arguments:
+#   None
+# Outputs:
+#   A comma-separated string of ignored package names.
+#######################################
+main() {
+  if [[ -z "${hypr_PATH:-}" ]]; then
+    echo "Error: hypr_PATH environment variable is not set." >&2
+    exit 1
+  fi
+
+  local ignored_packages_file="${hypr_PATH}/install/packages.ignored"
+
+  if [[ -f "${ignored_packages_file}" ]]; then
+    # `tr` replaces newlines with commas, and `sed` removes the trailing comma.
+    tr '\r\n' ',' <"${ignored_packages_file}" | sed 's/,$//'
+  fi
+}
+
+main

@@ -1,4 +1,21 @@
 #!/bin/bash
+#
+# Refreshes the hyprsunset configuration and restarts the service.
 
-hypr-refresh-config hypr/hyprsunset.conf
-hypr-restart-hyprsunset
+set -euo pipefail
+
+#######################################
+# Main function to refresh the hyprsunset configuration.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  hypr-refresh-config hypr/hyprsunset.conf
+  hypr-restart-hyprsunset
+}
+
+main

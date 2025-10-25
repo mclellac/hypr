@@ -18,7 +18,7 @@ readonly NVIM_PLUGIN_FILE="${HOME}/.config/nvim/lua/plugins/theme.lua"
 # Outputs:
 #   None
 #######################################
-UpdateWalkerTheme() {
+update_walker_theme() {
     local theme_path="$1"
     local walker_theme_dir="${HOME}/.config/walker/themes/hypr-default"
     local walker_theme_css="${walker_theme_dir}/style.css"
@@ -45,7 +45,7 @@ UpdateWalkerTheme() {
 # Outputs:
 #   None
 #######################################
-UpdateGnomeSettings() {
+update_gnome_settings() {
     if ! command -v gsettings &>/dev/null; then
         echo "WARNING: gsettings command not found. Skipping GNOME settings update." >&2
         return
@@ -77,7 +77,7 @@ UpdateGnomeSettings() {
 # Outputs:
 #   None
 #######################################
-UpdateChromiumTheme() {
+update_chromium_theme() {
     if ! command -v chromium &>/dev/null; then
         return
     fi
@@ -105,7 +105,7 @@ UpdateChromiumTheme() {
 # Outputs:
 #   None
 #######################################
-UpdateNeovimTheme() {
+update_neovim_theme() {
     local theme_path="$1"
     local theme_plugin_file="${theme_path}/neovim.plugin"
 
@@ -129,7 +129,7 @@ UpdateNeovimTheme() {
 # Outputs:
 #   None
 #######################################
-ReloadApplications() {
+reload_applications() {
     # Trigger Alacritty config reload by updating the file's timestamp.
     touch "${HOME}/.config/alacritty/alacritty.toml"
 
@@ -178,11 +178,11 @@ main() {
     ln -nsf "${theme_path}" "${CURRENT_THEME_DIR}"
     echo "Theme set to '${theme_name}'."
 
-    UpdateWalkerTheme "${theme_path}"
-    UpdateGnomeSettings
-    UpdateChromiumTheme
-    UpdateNeovimTheme "${theme_path}"
-    ReloadApplications
+    update_walker_theme "${theme_path}"
+    update_gnome_settings
+    update_chromium_theme
+    update_neovim_theme "${theme_path}"
+    reload_applications
 
     # Set a new background from the theme's collection.
     hypr-theme-bg-next

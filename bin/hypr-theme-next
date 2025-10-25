@@ -1,34 +1,62 @@
 #!/bin/bash
+#
+# Switches to the next available theme in the themes directory.
 
-THEMES_DIR="$HOME/.config/hypr/themes/"
-CURRENT_THEME_LINK="$HOME/.config/hypr/current/theme"
+set -euo pipefail
 
-THEMES=($(find "$THEMES_DIR" -mindepth 1 -maxdepth 1 | sort))
-TOTAL=${#THEMES[@]}
+readonly THEMES_DIR="${HOME}/.config/hypr/themes/"
+readonly CURRENT_THEME_LINK="${HOME}/.config/hypr/current/theme"
 
-# Get current theme from symlink
-if [[ -L "$CURRENT_THEME_LINK" ]]; then
-  CURRENT_THEME=$(realpath "$CURRENT_THEME_LINK")
-else
-  # Default to first theme if no symlink exists
-  CURRENT_THEME=$(realpath "${THEMES[0]}")
-fi
-
-# Find current theme index
-INDEX=0
-for i in "${!THEMES[@]}"; do
-  THEMES[$i]=$(realpath "${THEMES[$i]}")
-
-  if [[ "${THEMES[$i]}" == "$CURRENT_THEME" ]]; then
-    INDEX=$i
-    break
+#######################################
+# Main function to cycle to the next theme.
+# Globals:
+#   THEMES_DIR
+#   CURRENT_THEME_LINK
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  if [[ ! -d "${THEMES_DIR}" ]]; then
+    echo "Error: Themes directory not found at ${THEMES_DIR}" >&2
+    exit 1
   fi
-done
 
-# Get next theme (wrap around)
-NEXT_INDEX=$(((INDEX + 1) % TOTAL))
-NEW_THEME=${THEMES[$NEXT_INDEX]}
-NEW_THEME_NAME=$(basename "$NEW_THEME")
+  local -a themes
+  mapfile -t themes < <(find "${THEMES_DIR}" -mindepth 1 -maxdepth 1 -type d | sort)
+  local total=${#themes[@]}
 
-hypr-theme-set $NEW_THEME_NAME
-notify-send "Theme changed to $NEW_THEME_NAME" -t 2000
+  if [[ ${total} -eq 0 ]]; then
+    echo "No themes found in ${THEMES_DIR}" >&2
+    exit 1
+  fi
+
+  local current_theme=""
+  if [[ -L "${CURRENT_THEME_LINK}" ]]; then
+    current_theme=$(realpath "${CURRENT_THEME_LINK}")
+  else
+    # Default to the first theme if no symlink exists.
+    current_theme=$(realpath "${themes[0]}")
+  fi
+
+  local current_index=0
+  for i in "${!themes[@]}"; do
+    themes[$i]=$(realpath "${themes[$i]}")
+    if [[ "${themes[$i]}" == "${current_theme}" ]]; then
+      current_index=$i
+      break
+    fi
+  done
+
+  local next_index=$(((current_index + 1) % total))
+  local new_theme_path="${themes[${next_index}]}"
+  local new_theme_name
+  new_theme_name=$(basename "${new_theme_path}")
+
+  echo "Switching to next theme: ${new_theme_name}"
+  hypr-theme-set "${new_theme_name}"
+  notify-send "Theme changed to ${new_theme_name}" -t 2000
+}
+
+main

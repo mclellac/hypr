@@ -1,5 +1,32 @@
 #!/bin/bash
+#
+# Updates the local hypr git repository by pulling the latest changes.
 
-echo -e "\e[32mUpdate hypr\e[0m"
-git -C $hypr_PATH pull --autostash
-git -C $hypr_PATH diff --check || git -C $hypr_PATH reset --merge
+set -euo pipefail
+
+#######################################
+# Main function to update the git repository.
+# Globals:
+#   hypr_PATH - The path to the hypr git repository.
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  if [[ -z "${hypr_PATH:-}" || ! -d "${hypr_PATH}/.git" ]]; then
+    echo "Error: hypr_PATH is not set or is not a git repository." >&2
+    exit 1
+  fi
+
+  echo -e "\e[32mUpdating hypr repository...\e[0m"
+  git -C "${hypr_PATH}" pull --autostash
+
+  # This checks for merge conflicts and resets if any are found.
+  if ! git -C "${hypr_PATH}" diff --check; then
+    echo "Merge conflicts detected. Resetting..."
+    git -C "${hypr_PATH}" reset --merge
+  fi
+}
+
+main

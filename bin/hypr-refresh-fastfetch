@@ -1,3 +1,20 @@
 #!/bin/bash
+#
+# Refreshes the fastfetch configuration by calling the main config refresh script.
 
-hypr-refresh-config fastfetch/config.jsonc
+set -euo pipefail
+
+#######################################
+# Main function to refresh the fastfetch configuration.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  hypr-refresh-config fastfetch/config.jsonc
+}
+
+main

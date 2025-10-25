@@ -1,7 +1,24 @@
 #!/bin/bash
+#
+# Refreshes all core Hyprland configuration files.
 
-hypr-refresh-config hypr/autostart.conf
-hypr-refresh-config hypr/bindings.conf
-hypr-refresh-config hypr/envs.conf
-hypr-refresh-config hypr/input.conf
-hypr-refresh-config hypr/hyprland.conf
+set -euo pipefail
+
+#######################################
+# Main function to refresh the Hyprland configuration files.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  hypr-refresh-config hypr/autostart.conf
+  hypr-refresh-config hypr/bindings.conf
+  hypr-refresh-config hypr/envs.conf
+  hypr-refresh-config hypr/input.conf
+  hypr-refresh-config hypr/hyprland.conf
+}
+
+main

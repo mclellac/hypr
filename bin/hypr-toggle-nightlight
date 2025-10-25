@@ -1,30 +1,58 @@
 #!/bin/bash
+#
+# Toggles the screen's color temperature between a 'nightlight' and 'daylight'
+# setting using 'hyprsunset'.
 
-# Default temperature values
-ON_TEMP=4000
-OFF_TEMP=6000
+set -euo pipefail
 
-# Ensure hyprsunset is running
-if ! pgrep -x hyprsunset; then
-  setsid uwsm app -- hyprsunset &
-  sleep 1 # Give it time to register
-fi
+readonly ON_TEMP=4000
+readonly OFF_TEMP=6000
 
-# Query the current temperature
-CURRENT_TEMP=$(hyprctl hyprsunset temperature 2>/dev/null | grep -oE '[0-9]+')
-
-restart_nightlighted_waybar() {
-  if grep -q "custom/nightlight" ~/.config/waybar/config.jsonc; then
-    hypr-restart-waybar # restart waybar in case user has waybar module for hyprsunset
+#######################################
+# Restarts Waybar if the nightlight module is enabled.
+# Globals:
+#   HOME - The user's home directory.
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+restart_waybar_if_needed() {
+  if grep -q "custom/nightlight" "${HOME}/.config/waybar/config.jsonc"; then
+    hypr-restart-waybar
   fi
 }
 
-if [[ "$CURRENT_TEMP" == "$OFF_TEMP" ]]; then
-  hyprctl hyprsunset temperature $ON_TEMP
-  notify-send "  Nightlight screen temperature"
-  restart_nightlighted_waybar
-else
-  hyprctl hyprsunset temperature $OFF_TEMP
-  notify-send "   Daylight screen temperature"
-  restart_nightlighted_waybar
-fi
+#######################################
+# Main function to toggle the nightlight.
+# Globals:
+#   ON_TEMP
+#   OFF_TEMP
+# Arguments:
+#   None
+# Outputs:
+#   None
+#######################################
+main() {
+  # Ensure hyprsunset is running.
+  if ! pgrep -x hyprsunset &>/dev/null; then
+    setsid uwsm app -- hyprsunset &
+    sleep 1 # Give it time to start.
+  fi
+
+  # Query the current temperature.
+  local current_temp
+  current_temp=$(hyprctl hyprsunset temperature 2>/dev/null | grep -oE '[0-9]+')
+
+  if [[ "${current_temp}" == "${OFF_TEMP}" ]]; then
+    hyprctl hyprsunset temperature "${ON_TEMP}"
+    notify-send "  Nightlight On"
+  else
+    hyprctl hyprsunset temperature "${OFF_TEMP}"
+    notify-send "   Nightlight Off"
+  fi
+
+  restart_waybar_if_needed
+}
+
+main
