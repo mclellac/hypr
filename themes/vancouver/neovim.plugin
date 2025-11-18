@@ -1,20 +1,10 @@
 return {
-  "oxfist/night-owl.nvim",
+  "ayu-theme/ayu-vim",
   name = "vancouver",
   lazy = false,
   priority = 1000,
   config = function()
-    -- The theme supports the following options:
-    -- bold = true,
-    -- italics = true,
-    -- underline = true,
-    -- undercurl = true,
-    -- transparent_background = false,
-
-    -- Apply the night-owl theme
-    require("night-owl").setup({
-      italics = false,
-    })
-    vim.cmd("colorscheme night-owl")
+    vim.g.ayu_dark = 1
+    vim.cmd("colorscheme ayu")
   end,
 }
