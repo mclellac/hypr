@@ -1,0 +1,29 @@
+[colors]
+[colors.primary]
+background = '#351409'
+foreground = '#fff69f'
+
+# Normal colors
+[colors.normal]
+black = '#351409'
+red = '#a15501'
+green = '#d0902f'
+yellow = '#fff69f'
+blue = '#d0902f'
+magenta = '#a15501'
+cyan = '#d0902f'
+white = '#fff69f'
+
+# Bright colors
+[colors.bright]
+black = '#a15501'
+red = '#a15501'
+green = '#d0902f'
+yellow = '#fff69f'
+blue = '#d0902f'
+magenta = '#a15501'
+cyan = '#d0902f'
+white = '#fff69f'
+
+[colors.selection]
+background = '#a15501'
