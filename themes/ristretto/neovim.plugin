@@ -1,5 +1,6 @@
 return {
   "loctvl842/monokai-pro.nvim",
+  name = "ristretto",
   lazy = false,
   priority = 1000,
   opts = {
