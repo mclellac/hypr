@@ -3,6 +3,10 @@ return {
   name = "material",
   lazy = false,
   priority = 1000,
+  config = function(_, opts)
+    require("material").setup(opts)
+    vim.cmd.colorscheme("material")
+  end,
   opts = {
     contrast = {
       terminal = false, -- Enable contrast for the built-in terminal
