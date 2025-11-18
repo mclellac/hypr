@@ -1,22 +1,15 @@
 return {
-  "dasupradyumna/midnight.nvim",
+  "ficcdaf/ashen.nvim",
   name = "matte-black",
   lazy = false,
   priority = 1000,
   config = function()
-    -- The theme supports the following options:
-    -- require('midnight').setup {
-    --   Comment = {
-    --     italic = false,
-    --   },
-    -- }
-
-    -- Apply the midnight theme
-    require("midnight").setup({
-      Comment = {
-        italic = false,
+    require("ashen").setup({
+      transparent = false,
+      styles = {
+        comment = { italic = false },
       },
     })
-    vim.cmd("colorscheme midnight")
+    vim.cmd("colorscheme ashen")
   end,
 }
