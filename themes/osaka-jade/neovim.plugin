@@ -3,6 +3,10 @@ return {
   name = "osaka-jade",
   lazy = false,
   priority = 1000,
+  config = function(_, opts)
+    require("solarized-osaka").setup(opts)
+    vim.cmd("colorscheme solarized-osaka")
+  end,
   opts = {
     transparent = false, -- Enable this to disable setting the background color
     terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim

@@ -4,6 +4,7 @@ return {
   lazy = false,
   priority = 1000,
   config = function(_, opts)
+    vim.g.material_style = "oceanic"
     require("material").setup(opts)
     vim.cmd.colorscheme("material")
   end,
