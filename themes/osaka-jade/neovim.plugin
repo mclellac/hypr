@@ -1,5 +1,6 @@
 return {
   "craftzdog/solarized-osaka.nvim",
+  name = "osaka-jade",
   lazy = false,
   priority = 1000,
   opts = {

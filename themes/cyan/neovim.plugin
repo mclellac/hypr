@@ -1,5 +1,6 @@
 return {
   "scottmckendry/cyberdream.nvim",
+  name = "cyan",
   lazy = false,
   priority = 1000,
   config = function()
