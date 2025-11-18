@@ -3,8 +3,12 @@ return {
   name = "material-bright",
   lazy = false,
   priority = 1000,
+  config = function(_, opts)
+    vim.g.material_style = "lighter"
+    require("material").setup(opts)
+    vim.cmd.colorscheme("material")
+  end,
   opts = {
-    style = "lighter",
     contrast = {
       terminal = false, -- Enable contrast for the built-in terminal
       sidebars = false, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
