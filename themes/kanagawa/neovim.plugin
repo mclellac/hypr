@@ -3,6 +3,10 @@ return {
   name = "kanagawa",
   lazy = false,
   priority = 1000,
+  config = function(_, opts)
+    require("kanagawa").setup(opts)
+    vim.cmd.colorscheme("kanagawa")
+  end,
   opts = {
     compile = false, -- enable compiling the colorscheme
     undercurl = true, -- enable undercurls
