@@ -1,0 +1,15 @@
+# Input configuration
+
+input * {
+    xkb_options compose:caps
+    repeat_rate 40
+    repeat_delay 600
+}
+
+input type:touchpad {
+    # natural_scroll enabled
+    # tap enabled
+    scroll_factor 0.4
+}
+
+# Note: Sway does not support per-window input rules (like 'scrolltouchpad 1.5, class:Alacritty') directly.

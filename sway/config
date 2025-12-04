@@ -1,0 +1,46 @@
+# Sway Configuration
+# Based on Hyprland config
+
+# Variables
+set $mod Mod4
+set $left Left
+set $down Down
+set $up Up
+set $right Right
+
+set $terminal alacritty
+# Note: hypr-cmd-terminal-cwd uses hyprctl, so it won't work in Sway. Using default working directory.
+set $terminal_cwd $terminal
+
+# Include other config files
+include monitors
+include input
+include bindings
+include autostart
+include rules
+
+# Note: Environment variables for the session (like WLR_NO_HARDWARE_CURSORS)
+# must be set BEFORE starting Sway. See sway/env.sh for a script to source.
+
+# Default seat configuration
+seat seat0 xcursor_theme default 24
+
+# Default border
+default_border pixel 2
+default_floating_border pixel 2
+
+# Gap
+gaps inner 5
+gaps outer 5
+
+# Bar (Using Waybar as implied by Hyprland setup)
+bar {
+    swaybar_command waybar
+}
+
+# Idle configuration
+exec swayidle -w \
+         timeout 300 'swaylock -f -c 000000' \
+         timeout 600 'swaymsg "output * dpms off"' \
+         resume 'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock -f -c 000000'
