@@ -1,0 +1,23 @@
+# Autostart configuration
+
+# Execute these commands on startup
+# exec_always helps with reloading config
+
+# Environment for apps
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+
+# Clipboard manager
+exec wl-paste --watch cliphist store
+
+# Wallpaper (using swaybg as generic fallback, or hypr-theme-bg-next if it works)
+# exec swaybg -c '#000000'
+
+# Status Bar
+# exec waybar
+
+# Applets
+# exec nm-applet --indicator
+
+# From Hyprland autostart.conf (commented out there, so commented out here)
+# exec elephant
+# exec walker --gapplication-service
