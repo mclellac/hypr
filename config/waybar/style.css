@@ -87,6 +87,7 @@ window#waybar {
 #custom-sunset,
 #custom-playerctl,
 #custom-weather {
+    color: @theme_foreground_color;
     margin-left: 2px;
     margin-right: 2px;
     padding-left: 5px;
@@ -95,6 +96,7 @@ window#waybar {
 }
 
 #custom-update {
+    color: @warning_color;
     border-radius: 0;
     margin-left: 0px;
     margin-right: 0px;
@@ -220,3 +222,18 @@ window#waybar {
     color: @error_color;
     padding-right: 10px;
 }
+
+tooltip {
+  border-radius: 12px;
+  padding: 3px;
+  margin: 3px;
+  border: 2px solid @theme_accent_color;
+  background-color: @theme_background_color;
+}
+
+tooltip label {
+  padding: 10px;
+  margin: 10px;
+  color: @theme_foreground_color;
+}
+

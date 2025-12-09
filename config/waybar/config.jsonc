@@ -21,12 +21,12 @@
     "modules-center": [
         "custom/wf-recorder",
         "sway/mode",
-        "clock"
+        "clock",
+        "custom/weather"
     ],
     "modules-right": [
         // informational
         "custom/update",
-        "custom/weather",
         "sway/language",
         "custom/github",
         "custom/clipboard",
