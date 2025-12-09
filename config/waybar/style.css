@@ -80,9 +80,10 @@ window#waybar {
 #custom-playerctl,
 #custom-weather {
     margin-left: 5px;
+    margin-right: 5px;
     padding-left: 15px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    padding-right: 15px;
+    border-radius: 10px;
 }
 
 #custom-update {
