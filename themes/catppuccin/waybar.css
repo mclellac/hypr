@@ -1,3 +1,6 @@
 @define-color theme_background_color #24273a;
 @define-color theme_foreground_color #c6d0f5;
 @define-color theme_accent_color #8caaee;
+@define-color warning_color #f9e2af;
+@define-color error_color #f38ba8;
+@define-color wm_icon_bg #585b70;
