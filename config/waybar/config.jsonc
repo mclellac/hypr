@@ -20,7 +20,8 @@
     ],
     "modules-center": [
         "custom/wf-recorder",
-        "sway/mode"
+        "sway/mode",
+        "clock"
     ],
     "modules-right": [
         // informational
@@ -45,8 +46,7 @@
         // system
         "custom/sunset",
         "custom/pacman",
-        "tray",
-        "clock"
+        "tray"
     ],
     // -------------------------------------------------------------------------
     // Modules
