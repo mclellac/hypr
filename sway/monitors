@@ -1,7 +1,0 @@
-# Monitor configuration
-
-# Default monitor
-output * resolution preferred position auto scale 1
-
-# Example for specific monitors
-# output DP-1 resolution 1920x1080 position 0,0

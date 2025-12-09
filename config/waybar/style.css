@@ -1,102 +1,82 @@
-@import "../hypr/current/theme/waybar.css";
+/* =============================================================================
+ *
+ * Waybar configuration
+ *
+ * Configuration reference: https://github.com/Alexays/Waybar/wiki/Configuration
+ *
+ * =========================================================================== */
 
+/* import css definitions for current theme */
+
+/* -----------------------------------------------------------------------------
+ * Keyframes
+ * -------------------------------------------------------------------------- */
+
+@keyframes blink-warning {
+    70% {
+        color: @wm_icon_bg;
+    }
+
+    to {
+        color: @wm_icon_bg;
+        background-color: @warning_color;
+    }
+}
+
+@keyframes blink-critical {
+    70% {
+        color: @wm_icon_bg;
+    }
+
+    to {
+        color: @wm_icon_bg;
+        background-color: @error_color;
+    }
+}
+
+/* -----------------------------------------------------------------------------
+ * Base styles
+ * -------------------------------------------------------------------------- */
+
+/* Reset all styles */
 * {
-  border: none;
-  font-family: CaskaydiaMono Nerd Font;
-  font-size: 16px;
-  min-height: 10px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    margin: 2;
+    padding: 0;
+    font-family: "Adwaita Mono", "JetBrainsMono NF", "Roboto Mono", sans-serif;
 }
 
+/* The whole bar */
 window#waybar {
-  background: rgba(30, 30, 46, 0.5);
-  border-bottom: 2px solid @theme_background_color;
-}
-
-window#waybar.hidden {
-  opacity: 0.2;
-}
-
-tooltip {
-  border-radius: 12px;
-  padding: 12px;
-  border: 1px solid @theme_accent_color;
-  background-color: @theme_background_color;
-}
-
-tooltip label {
-  color: @theme_foreground_color;
-}
-
-#workspaces {
-  background: @theme_background_color;
-  border-radius: 10px;
-  margin: 6px 5px;
-  padding: 0px 10px;
-}
-
-#workspaces button {
-  background: transparent;
-  padding: 4px;
-  margin: 0 2px;
-  color: @theme_foreground_color;
-  transition: all 0.3s ease;
-}
-
-#workspaces button.active {
-  color: @theme_accent_color;
-  background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-}
-
-#workspaces button:hover {
-  color: @theme_foreground_color;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-}
-
-#battery,
-#cpu,
-#pulseaudio,
-#network,
-#custom-weather,
-#custom-update,
-#custom-hypr,
-#clock {
-  padding: 0 10px;
-  margin-top: 6px;
-  margin-bottom: 6px;
-}
-
-/* --- Left Group --- */
-#custom-hypr {
-  font-size: 20px;
-  color: @theme_accent_color;
-  background: @theme_background_color;
-  padding-right: 15px;
-  margin-left: 5px;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-}
-
-/* --- Center Group --- */
-#clock {
-  background: @theme_accent_color;
-  color: @theme_background_color;
-  border-radius: 10px;
-  margin: 6px 5px;
-  padding: 0px 10px;
-}
-
-/* --- Right Group --- */
-#custom-weather,
-#custom-update,
-#network,
-#pulseaudio,
-#cpu {
     background: @theme_background_color;
     color: @theme_foreground_color;
+    font-size: 14px;
 }
 
+/* Each module */
+#custom-pacman,
+#custom-hypr,
+#custom-help,
+#custom-scratchpad,
+#custom-github,
+#custom-clipboard,
+#custom-zeit,
+#custom-dnd,
+#bluetooth,
+#battery,
+#clock,
+#cpu,
+#memory,
+#mode,
+#network,
+#pulseaudio,
+#temperature,
+#backlight,
+#language,
+#custom-sunset,
+#custom-playerctl,
 #custom-weather {
     margin-left: 5px;
     padding-left: 15px;
@@ -109,31 +89,128 @@ tooltip label {
     margin-left: 0px;
     margin-right: 0px;
 }
-
-#network {
-  border-radius: 0;
-  margin-left: 0px;
-  margin-right: 0px;
+#tray {
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
-#pulseaudio {
-  border-radius: 0;
-  margin-left: 0px;
-  margin-right: 0px;
+/* -----------------------------------------------------------------------------
+ * Module styles
+ * -------------------------------------------------------------------------- */
+·
+#custom-scratchpad,
+#custom-hyper,
+#workspaces button.focused,
+#clock {
+    color: @theme_background_color;
+    background-color: @theme_accent_color;
 }
 
-#cpu {
-    margin-right: 0px;
-    padding-right: 15px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+#custom-zeit.tracking {
+    background-color: @warning_color;
 }
 
 #battery {
-  color: @theme_background_color;
-  background: @theme_accent_color;
-  margin-right: 5px;
-  padding-right: 15px;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
 }
+
+#battery.warning {
+    color: @warning_color;
+}
+
+#battery.critical {
+    color: @error_color;
+}
+
+#battery.warning.discharging {
+    animation-name: blink-warning;
+    animation-duration: 3s;
+}
+
+#battery.critical.discharging {
+    animation-name: blink-critical;
+    animation-duration: 2s;
+}
+
+#clock {
+    font-weight: bold;
+}
+
+#cpu.warning {
+    color: @warning_color;
+}
+
+#cpu.critical {
+    color: @error_color;
+}
+
+#custom-hypr {
+    padding-left: 8px;
+    padding-right: 13px;
+}
+
+#memory {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#memory.warning {
+    color: @warning_color;
+}
+
+#memory.critical {
+    color: @error_color;
+    animation-name: blink-critical;
+    animation-duration: 2s;
+}
+
+#mode {
+    background: @theme_background_color;
+}
+
+#network.disconnected {
+    color: @warning_color;
+}
+
+#pulseaudio.muted {
+    color: @warning_color;
+}
+
+#temperature.critical {
+    color: @error_color;
+}
+
+#workspaces button {
+    border-top: 2px solid transparent;
+    /* To compensate for the top border and still have vertical centering */
+    padding-bottom: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: @theme_accent_color;
+}
+
+#workspaces button.focused {
+    border-color: @theme_accent_color;
+}
+
+#workspaces button.urgent {
+    border-color: @error_color;
+    color: @error_color;
+}
+
+#workspaces button:hover {
+    color: @theme_background_color;
+}
+
+#bluetooth.disabled {
+    color: @warning_color;
+}
+
+#custom-wf-recorder {
+    color: @error_color;
+    padding-right: 10px;
+}
+

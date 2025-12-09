@@ -1,7 +1,0 @@
-# Window Rules
-
-# Example:
-# for_window [class="Alacritty"] opacity 0.9
-
-# XWayland scaling
-# xwayland force_zero_scaling enable # Sway doesn't have this exact command, usually configured in output
