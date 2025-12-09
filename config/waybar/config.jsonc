@@ -15,7 +15,7 @@
     "position": "top",
     "modules-left": [
         "custom/hypr",
-        "sway/workspaces",
+        "hyprland/workspaces",
         "custom/scratchpad"
     ],
     "modules-center": [
@@ -56,6 +56,18 @@
         "format": "<span font='hypr'>\ue900</span>",
         "on-click": "hypr-menu",
         "tooltip-format": "hypr Menu\n\nSuper + Alt + Space"
+    },
+    "hyprland/workspaces": {
+        "class": "workspaces",
+        "on-click": "activate",
+        "format": "{icon}",
+        "format-icons": {
+            "default": "",
+            "active": "󱓻"
+        },
+        "persistent-workspaces": {
+        "*": 3
+        }
     },
     "battery": {
         "interval": 30,
