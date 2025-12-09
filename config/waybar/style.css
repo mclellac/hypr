@@ -193,14 +193,14 @@ window#waybar {
 }
 
 #workspaces button {
-    border-top: 2px solid transparent;
+    /* border-top: 2px solid transparent; */
     /* To compensate for the top border and still have vertical centering */
-    margin-right: 3px;
+    margin-right: 5px;
     color: @theme_foreground_color;
 }
 
 #workspaces button.active {
-    border-color: @theme_accent_color;
+    color: @theme_accent_color;
 }
 
 #workspaces button.focused {
