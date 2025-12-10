@@ -15,22 +15,19 @@
     "position": "top",
     "modules-left": [
         "custom/hypr",
-        "hyprland/workspaces",
-        "custom/scratchpad"
+        "hyprland/workspaces"
     ],
     "modules-center": [
-        "custom/wf-recorder",
-        "sway/mode",
+        "hyprland/submap",
         "clock",
         "custom/weather"
     ],
     "modules-right": [
         // informational
         "custom/update",
-        "sway/language",
+        "hyprland/language",
         "custom/github",
         "custom/clipboard",
-        "custom/zeit",
         "cpu",
         // "temperature",
         "memory",
@@ -40,11 +37,9 @@
         "bluetooth",
         // media
         "custom/playerctl",
-        "custom/dnd",
         "pulseaudio",
         "backlight",
         // system
-        "custom/sunset",
         "custom/pacman",
         "tray"
     ],
@@ -95,8 +90,7 @@
         "interval": 60,
         "format": "{:%e %b %Y %H:%M}",
         "tooltip": true,
-        "tooltip-format": "<big>{:%B %Y}</big>\n<tt>{calendar}</tt>",
-        "on-click": "swaymsg exec \\$calendar"
+        "tooltip-format": "<big>{:%B %Y}</big>\n<tt>{calendar}</tt>"
     },
     "cpu": {
         "interval": 10,
@@ -105,7 +99,7 @@
             "warning": 70,
             "critical": 90
         },
-        "on-click": "swaymsg exec \\$task_manager",
+        "on-click": "hypr-launch-floating-terminal-with-presentation btop",
         "tooltip": true
     },
     "memory": {
@@ -115,7 +109,7 @@
             "warning": 70,
             "critical": 90
         },
-        "on-click": "swaymsg exec \\$task_manager",
+        "on-click": "hypr-launch-floating-terminal-with-presentation btop",
         "tooltip": true
     },
     "network": {
@@ -136,9 +130,9 @@
         "tooltip-format-wifi": "{icon} {ifname} ({essid}): {ipaddr}",
         "tooltip-format-disconnected": "{icon} disconnected",
         "tooltip-format-disabled": "{icon} disabled",
-        "on-click": "swaymsg exec \\$once \\$term_float nmtui connect"
+        "on-click": "hypr-launch-floating-terminal-with-presentation nmtui"
     },
-    "sway/mode": {
+    "hyprland/submap": {
         "format": "<span style=\"italic\">{}</span>",
         "tooltip": false
     },
@@ -148,9 +142,7 @@
             "󰃞",
             "󰃟",
             "󰃠"
-        ],
-        "on-scroll-up": "swaymsg exec \\$brightness_up",
-        "on-scroll-down": "swaymsg exec \\$brightness_down"
+        ]
     },
     "pulseaudio": {
         "class": "pulseaudio",
@@ -175,7 +167,7 @@
             ""
         ],
         "tooltip": true,
-        "on-click": "swaymsg exec \"\\$once \\$term_float watch sensors\""
+        "on-click": "hypr-launch-floating-terminal-with-presentation \"watch sensors\""
     },
     "tray": {
         "icon-size": 21,
@@ -184,50 +176,15 @@
     "bluetooth": {
         "format": "󰂯",
         "format-disabled": "󰂲",
-        "on-click": "swaymsg exec \\$bluetooth",
+        "on-click": "hypr-launch-floating-terminal-with-presentation bluetuith",
         "on-click-right": "rfkill toggle bluetooth",
         "tooltip-format": "{}"
     },
-    "sway/language": {
+    "hyprland/language": {
         "format": " {}",
         "min-length": 5,
         "tooltip": false,
-        "on-click": "swaymsg input type:keyboard xkb_switch_layout next"
-    },
-    "custom/scratchpad": {
-        "interval": "once",
-        "return-type": "json",
-        "format": "{icon}",
-        "format-icons": {
-            "one": "󰖯",
-            "many": "󰖲"
-        },
-        "exec": "/bin/sh /usr/share/sway/scripts/scratchpad.sh",
-        "on-click": "swaymsg 'scratchpad show'",
-        "signal": 7
-    },
-    "custom/sunset": {
-        "interval": "once",
-        "tooltip": true,
-        "return-type": "json",
-        "format": "{icon}",
-        "format-icons": {
-            "on": "󰌵",
-            "off": "󰌶"
-        },
-        "exec": "fallback_latitude=50.1 fallback_longitude=8.7 latitude= longitude= /usr/share/sway/scripts/sunset.sh",
-        "on-click": "/usr/share/sway/scripts/sunset.sh toggle",
-        "exec-if": "/usr/share/sway/scripts/sunset.sh check",
-        "signal": 6
-    },
-    "custom/wf-recorder": {
-        "interval": "once",
-        "return-type": "json",
-        "format": "{}",
-        "exec": "echo '{\"class\": \"recording\",\"text\":\"󰑊\",\"tooltip\":\"press $mod+Esc to stop recording\"}'",
-        "exec-if": "pgrep wf-recorder",
-        "on-click": "waybar-signal recorder",
-        "signal": 8
+        "on-click": "hyprctl switchxkblayout all next"
     },
     "custom/github": {
         "interval": 300,
@@ -236,7 +193,7 @@
         "format": " {}",
         "exec": "gh api '/notifications' -q '{ text: length }' | cat -",
         "exec-if": "[ -x \"$(command -v gh)\" ] && gh auth status 2>&1 | grep -q -m 1 'Logged in' && test $(gh api '/notifications' -q 'length') -ne 0",
-        "on-click": "test $(gh api '/notifications' -q 'length') -ne 0 && xdg-open https://github.com/notifications && sleep 30 && waybar-signal github",
+        "on-click": "test $(gh api '/notifications' -q 'length') -ne 0 && xdg-open https://github.com/notifications && sleep 30 && pkill -RTMIN+4 waybar",
         "signal": 4
     },
     "custom/playerctl": {
@@ -279,31 +236,5 @@
         "format": "{}",
         "interval": 900,
         "tooltip": true
-    },
-    "custom/zeit": {
-        "return-type": "json",
-        "interval": "once",
-        "format": "{icon}",
-        "format-icons": {
-            "tracking": "󰖷",
-            "stopped": "󰋣"
-        },
-        "exec": "/usr/share/sway/scripts/zeit.sh status",
-        "on-click": "/usr/share/sway/scripts/zeit.sh click; waybar-signal zeit",
-        "exec-if": "[ -x \"$(command -v zeit)\" ]",
-        "signal": 10
-    },
-    "custom/dnd": {
-        "interval": "once",
-        "return-type": "json",
-        "format": "{}{icon}",
-        "format-icons": {
-            "default": "󰚢",
-            "dnd": "󰚣"
-        },
-        "on-click": "/usr/share/sway/scripts/dnd.sh toggle; waybar-signal dnd",
-        "on-click-right": "/usr/share/sway/scripts/dnd.sh restore",
-        "exec": "/usr/share/sway/scripts/dnd.sh status",
-        "signal": 11
-    },
+    }
 }

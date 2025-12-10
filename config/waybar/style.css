@@ -59,9 +59,8 @@ window#waybar {
 /* Left and Center modules */
 #custom-hypr,
 #custom-help,
-#custom-scratchpad,
 #clock,
-#mode {
+#submap {
     margin-left: 5px;
     margin-right: 5px;
     padding-left: 10px;
@@ -73,8 +72,6 @@ window#waybar {
 #custom-pacman,
 #custom-github,
 #custom-clipboard,
-#custom-zeit,
-#custom-dnd,
 #bluetooth,
 #battery,
 #cpu,
@@ -84,7 +81,6 @@ window#waybar {
 #temperature,
 #backlight,
 #language,
-#custom-sunset,
 #custom-playerctl,
 #custom-weather {
     color: @theme_foreground_color;
@@ -109,18 +105,13 @@ window#waybar {
 /* -----------------------------------------------------------------------------
  * Module styles
  * -------------------------------------------------------------------------- */
-·
-#custom-scratchpad,
+
 #custom-hyper,
-#workspaces button.focused,
+#workspaces button.active,
 #clock {
     color: @theme_background_color;
     background-color: @theme_accent_color;
     font-weight: bold;
-}
-
-#custom-zeit.tracking {
-    background-color: @warning_color;
 }
 
 #battery {
@@ -176,7 +167,7 @@ window#waybar {
     animation-duration: 2s;
 }
 
-#mode {
+#submap {
     background: @theme_background_color;
 }
 
@@ -220,11 +211,6 @@ window#waybar {
     color: @warning_color;
 }
 
-#custom-wf-recorder {
-    color: @error_color;
-    padding-right: 10px;
-}
-
 tooltip {
   border-radius: 12px;
   padding: 3px;
@@ -238,4 +224,3 @@ tooltip label {
   margin: 10px;
   color: @theme_foreground_color;
 }
-
