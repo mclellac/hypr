@@ -4,3 +4,5 @@
 @define-color warning_color #FFC107;
 @define-color error_color #D35F5F;
 @define-color wm_icon_bg #333333;
+
+@define-color theme_secondary_accent_color #d35f5f;
