@@ -60,7 +60,9 @@ window#waybar {
 #custom-hypr,
 #custom-help,
 #clock,
-#submap {
+#submap,
+#window,
+#mpris {
     margin-left: 5px;
     margin-right: 5px;
     padding-left: 10px;
@@ -76,13 +78,18 @@ window#waybar {
 #battery,
 #cpu,
 #memory,
+#disk,
 #network,
 #pulseaudio,
 #temperature,
 #backlight,
 #language,
 #custom-playerctl,
-#custom-weather {
+#custom-weather,
+#privacy,
+#gamemode,
+#idle_inhibitor,
+#custom-power {
     color: @theme_foreground_color;
     margin-left: 2px;
     margin-right: 2px;
@@ -100,6 +107,24 @@ window#waybar {
 #tray {
     padding-left: 8px;
     padding-right: 8px;
+}
+
+/* -----------------------------------------------------------------------------
+ * Group styles
+ * -------------------------------------------------------------------------- */
+
+#hardware {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 2px;
+}
+
+#hardware > * {
+    margin: 0;
+    padding: 0 5px;
+    background: transparent;
 }
 
 /* -----------------------------------------------------------------------------
@@ -209,6 +234,15 @@ window#waybar {
 
 #bluetooth.disabled {
     color: @warning_color;
+}
+
+#privacy {
+    color: @theme_accent_color;
+}
+
+#idle_inhibitor.activated {
+    background-color: @theme_accent_color;
+    color: @theme_background_color;
 }
 
 tooltip {
