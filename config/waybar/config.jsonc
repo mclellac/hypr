@@ -60,9 +60,9 @@
     // -------------------------------------------------------------------------
     "custom/hypr": {
         "class": "hypr",
-        "format": "<span font='hypr'>\ue900</span>",
+        "format": "󰚌 ",
         "on-click": "hypr-menu",
-        "tooltip-format": "hypr Menu\n\nSuper + Alt + Space"
+        "tooltip-format": "Hypr Menu\n\nSuper + Alt + Space"
     },
     "hyprland/workspaces": {
         "class": "workspaces",
