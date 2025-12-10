@@ -8,12 +8,13 @@
     "position": "top",
     "modules-left": [
         "custom/hypr",
-        "hyprland/workspaces"
+        "hyprland/workspaces",
+        "group/application",
+        "group/media"
     ],
     "modules-center": [
         "hyprland/submap",
-        "group/application",
-        "group/media"
+        "group/datetime"
     ],
     "modules-right": [
         // informational
@@ -24,15 +25,12 @@
         "group/hardware",
         // connecting
         "network",
-        "bluetooth",
         // media
         "custom/playerctl",
-        "pulseaudio",
         "backlight",
         // system
         "custom/pacman",
         "tray",
-        "group/datetime",
         "custom/power"
     ],
     // -------------------------------------------------------------------------
@@ -57,7 +55,9 @@
             "memory",
             "disk",
             "temperature",
-            "battery"
+            "battery",
+            "pulseaudio",
+            "bluetooth"
         ]
     },
     "group/datetime": {
