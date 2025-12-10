@@ -20,12 +20,8 @@
     "modules-right": [
         // informational
         "custom/update",
-        "hyprland/language",
-        "custom/github",
         "custom/clipboard",
         "privacy",
-        "gamemode",
-        "idle_inhibitor",
         // hardware group
         "group/hardware",
         // connecting
@@ -204,22 +200,6 @@
         "on-click-right": "rfkill toggle bluetooth",
         "tooltip-format": "{}"
     },
-    "hyprland/language": {
-        "format": " {}",
-        "min-length": 5,
-        "tooltip": false,
-        "on-click": "hyprctl switchxkblayout all next"
-    },
-    "custom/github": {
-        "interval": 300,
-        "tooltip": false,
-        "return-type": "json",
-        "format": " {}",
-        "exec": "gh api '/notifications' -q '{ text: length }' | cat -",
-        "exec-if": "[ -x \"$(command -v gh)\" ] && gh auth status 2>&1 | grep -q -m 1 'Logged in' && test $(gh api '/notifications' -q 'length') -ne 0",
-        "on-click": "test $(gh api '/notifications' -q 'length') -ne 0 && xdg-open https://github.com/notifications && sleep 30 && pkill -RTMIN+4 waybar",
-        "signal": 4
-    },
     "custom/playerctl": {
         "interval": "once",
         "tooltip": true,
@@ -277,25 +257,6 @@
                 "tooltip-icon-size": 24
             }
         ]
-    },
-    "gamemode": {
-        "format": "{glyph}",
-        "format-alt": "{glyph} {count}",
-        "glyph": "",
-        "hide-not-running": true,
-        "use-icon": true,
-        "icon-name": "input-gaming-symbolic",
-        "icon-spacing": 4,
-        "icon-size": 20,
-        "tooltip": true,
-        "tooltip-format": "Games running: {count}"
-    },
-    "idle_inhibitor": {
-        "format": "{icon}",
-        "format-icons": {
-            "activated": "",
-            "deactivated": ""
-        }
     },
     "mpris": {
         "format": "{player_icon} {dynamic}",

@@ -72,7 +72,6 @@ window#waybar {
 
 /* Right modules */
 #custom-pacman,
-#custom-github,
 #custom-clipboard,
 #bluetooth,
 #battery,
@@ -83,12 +82,9 @@ window#waybar {
 #pulseaudio,
 #temperature,
 #backlight,
-#language,
 #custom-playerctl,
 #custom-weather,
 #privacy,
-#gamemode,
-#idle_inhibitor,
 #custom-power {
     color: @theme_foreground_color;
     margin-left: 2px;
@@ -132,7 +128,10 @@ window#waybar {
  * -------------------------------------------------------------------------- */
 
 #custom-hyper,
-#workspaces button.active,
+#workspaces button.active {
+    color: @theme_accent_color;
+    background-color: @theme_background_color;
+}
 #clock {
     color: @theme_background_color;
     background-color: @theme_accent_color;
