@@ -20,6 +20,16 @@ main() {
   temp_c=$(echo "${weather}" | jq -r '.current_condition[0].temp_C')
   local feels_like_c
   feels_like_c=$(echo "${weather}" | jq -r '.current_condition[0].FeelsLikeC')
+  local humidity
+  humidity=$(echo "${weather}" | jq -r '.current_condition[0].humidity')
+  local wind_speed
+  wind_speed=$(echo "${weather}" | jq -r '.current_condition[0].windspeedKmph')
+  local wind_dir
+  wind_dir=$(echo "${weather}" | jq -r '.current_condition[0].winddir16Point')
+  local pressure
+  pressure=$(echo "${weather}" | jq -r '.current_condition[0].pressure')
+  local visibility
+  visibility=$(echo "${weather}" | jq -r '.current_condition[0].visibility')
 
   # Map weather condition to an icon
   local icon
@@ -51,7 +61,7 @@ main() {
   esac
 
   local text="${icon} ${temp_c}°C"
-  local tooltip="${condition}\nFeels like ${feels_like_c}°C"
+  local tooltip="${condition}\nFeels like ${feels_like_c}°C\nHumidity: ${humidity}%\nWind: ${wind_speed}km/h ${wind_dir}\nPressure: ${pressure}hPa\nVisibility: ${visibility}km"
 
   printf '{"text": "%s", "tooltip": "%s"}\n' "${text}" "${tooltip}"
 }

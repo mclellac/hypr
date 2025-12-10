@@ -40,13 +40,17 @@ def main():
         return
 
     official_updates, aur_updates = GetUpdates()
-    update_count = len(official_updates) + len(aur_updates)
+    count_official = len(official_updates)
+    count_aur = len(aur_updates)
+    update_count = count_official + count_aur
 
     if update_count == 0:
         print(json.dumps({}))
         return
 
-    tooltip = "󱓻 Updates available"
+    tooltip = f"󱓻 Updates available: {update_count}\n"
+    tooltip += f"Official: {count_official}  AUR: {count_aur}"
+
     if official_updates:
         tooltip += "\n\nOfficial:\n" + "\n".join(official_updates)
     if aur_updates:

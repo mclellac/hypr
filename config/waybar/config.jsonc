@@ -1,10 +1,3 @@
-// =============================================================================
-//
-// Waybar configuration
-//
-// Configuration reference: https://github.com/Alexays/Waybar/wiki/Configuration
-//
-// =============================================================================
 {
     // -------------------------------------------------------------------------
     // Global configuration
@@ -15,12 +8,14 @@
     "position": "top",
     "modules-left": [
         "custom/hypr",
-        "hyprland/workspaces"
+        "hyprland/workspaces",
+        "hyprland/window"
     ],
     "modules-center": [
         "hyprland/submap",
         "clock",
-        "custom/weather"
+        "custom/weather",
+        "mpris"
     ],
     "modules-right": [
         // informational
@@ -28,10 +23,11 @@
         "hyprland/language",
         "custom/github",
         "custom/clipboard",
-        "cpu",
-        // "temperature",
-        "memory",
-        "battery",
+        "privacy",
+        "gamemode",
+        "idle_inhibitor",
+        // hardware group
+        "group/hardware",
         // connecting
         "network",
         "bluetooth",
@@ -41,8 +37,22 @@
         "backlight",
         // system
         "custom/pacman",
-        "tray"
+        "tray",
+        "custom/power"
     ],
+    // -------------------------------------------------------------------------
+    // Grouping
+    // -------------------------------------------------------------------------
+    "group/hardware": {
+        "orientation": "horizontal",
+        "modules": [
+            "cpu",
+            "memory",
+            "disk",
+            "temperature",
+            "battery"
+        ]
+    },
     // -------------------------------------------------------------------------
     // Modules
     // -------------------------------------------------------------------------
@@ -64,6 +74,11 @@
         "*": 3
         }
     },
+    "hyprland/window": {
+        "format": "{title}",
+        "max-length": 50,
+        "separate-outputs": true
+    },
     "battery": {
         "interval": 30,
         "states": {
@@ -84,7 +99,8 @@
             "󰂂",
             "󰁹"
         ],
-        "tooltip": true
+        "tooltip": true,
+        "tooltip-format": "{timeTo}\nPower: {power}W"
     },
     "clock": {
         "interval": 60,
@@ -112,10 +128,18 @@
         "on-click": "hypr-launch-floating-terminal-with-presentation btop",
         "tooltip": true
     },
+    "disk": {
+        "interval": 30,
+        "format": "󰋊 {percentage_used}%",
+        "path": "/",
+        "tooltip": true,
+        "tooltip-format": "{used} used out of {total} on {path} ({percentage_used}%)",
+        "on-click": "hypr-launch-floating-terminal-with-presentation btop"
+    },
     "network": {
         "interval": 5,
-        "format-wifi": "{icon}",
-        "format-ethernet": "󰈀",
+        "format-wifi": "{icon} {bandwidthDownBytes}  {bandwidthUpBytes} ",
+        "format-ethernet": "󰈀 {bandwidthDownBytes}  {bandwidthUpBytes} ",
         "format-disconnected": "󰖪",
         "format-disabled": "󰀝",
         "format-icons": [
@@ -236,5 +260,57 @@
         "format": "{}",
         "interval": 900,
         "tooltip": true
+    },
+    "privacy": {
+        "icon-spacing": 4,
+        "icon-size": 18,
+        "transition-duration": 250,
+        "modules": [
+            {
+                "type": "screenshare",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            },
+            {
+                "type": "audio-in",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            }
+        ]
+    },
+    "gamemode": {
+        "format": "{glyph}",
+        "format-alt": "{glyph} {count}",
+        "glyph": "",
+        "hide-not-running": true,
+        "use-icon": true,
+        "icon-name": "input-gaming-symbolic",
+        "icon-spacing": 4,
+        "icon-size": 20,
+        "tooltip": true,
+        "tooltip-format": "Games running: {count}"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+    "mpris": {
+        "format": "{player_icon} {dynamic}",
+        "format-paused": "{status_icon} <i>{dynamic}</i>",
+        "player-icons": {
+            "default": "▶",
+            "mpv": "🎵"
+        },
+        "status-icons": {
+            "paused": "⏸"
+        }
+    },
+    "custom/power": {
+        "format": "⏻",
+        "on-click": "walker --modules power",
+        "tooltip": false
     }
 }
