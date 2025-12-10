@@ -8,13 +8,12 @@
     "position": "top",
     "modules-left": [
         "custom/hypr",
-        "hyprland/workspaces",
-        "hyprland/window"
+        "hyprland/workspaces"
     ],
     "modules-center": [
         "hyprland/submap",
-        "group/datetime",
-        "mpris"
+        "group/application",
+        "group/media"
     ],
     "modules-right": [
         // informational
@@ -33,11 +32,24 @@
         // system
         "custom/pacman",
         "tray",
+        "group/datetime",
         "custom/power"
     ],
     // -------------------------------------------------------------------------
     // Grouping
     // -------------------------------------------------------------------------
+    "group/application": {
+        "orientation": "horizontal",
+        "modules": [
+            "hyprland/window"
+        ]
+    },
+    "group/media": {
+        "orientation": "horizontal",
+        "modules": [
+            "mpris"
+        ]
+    },
     "group/hardware": {
         "orientation": "horizontal",
         "modules": [
