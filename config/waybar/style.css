@@ -59,7 +59,6 @@ window#waybar {
 /* Left and Center modules */
 #custom-hypr,
 #custom-help,
-#clock,
 #submap,
 #window,
 #mpris {
@@ -83,7 +82,6 @@ window#waybar {
 #temperature,
 #backlight,
 #custom-playerctl,
-#custom-weather,
 #privacy,
 #custom-power {
     color: @theme_foreground_color;
@@ -123,6 +121,12 @@ window#waybar {
     background: transparent;
 }
 
+/* Date and Time Group */
+#datetime {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 /* -----------------------------------------------------------------------------
  * Module styles
  * -------------------------------------------------------------------------- */
@@ -132,10 +136,27 @@ window#waybar {
     color: @theme_accent_color;
     background-color: @theme_background_color;
 }
+
 #clock {
     color: @theme_background_color;
     background-color: @theme_accent_color;
     font-weight: bold;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px 0 0 10px;
+}
+
+#custom-weather {
+    color: @theme_background_color;
+    background-color: @theme_secondary_accent_color;
+    font-weight: bold;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 0 10px 10px 0;
 }
 
 #battery {

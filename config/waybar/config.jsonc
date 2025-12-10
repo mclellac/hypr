@@ -13,8 +13,7 @@
     ],
     "modules-center": [
         "hyprland/submap",
-        "clock",
-        "custom/weather",
+        "group/datetime",
         "mpris"
     ],
     "modules-right": [
@@ -47,6 +46,13 @@
             "disk",
             "temperature",
             "battery"
+        ]
+    },
+    "group/datetime": {
+        "orientation": "horizontal",
+        "modules": [
+            "clock",
+            "custom/weather"
         ]
     },
     // -------------------------------------------------------------------------
