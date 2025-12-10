@@ -107,7 +107,9 @@ window#waybar {
  * Group styles
  * -------------------------------------------------------------------------- */
 
-#hardware {
+#hardware,
+#application,
+#media {
     background-color: rgba(0,0,0,0.2);
     border-radius: 10px;
     margin-left: 5px;
@@ -115,7 +117,9 @@ window#waybar {
     padding: 2px;
 }
 
-#hardware > * {
+#hardware > *,
+#application > *,
+#media > * {
     margin: 0;
     padding: 0 5px;
     background: transparent;
