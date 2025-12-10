@@ -268,7 +268,7 @@
     "custom/update": {
         "class": "update",
         "exec": "arch-update",
-        "on-click": "arch-update update",
+        "on-click": "hypr-launch-floating-terminal-with-presentation hypr-update",
         "return-type": "json",
         "interval": 1000
     },
