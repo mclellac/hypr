@@ -1,6 +1,6 @@
 return {
   "DonJulve/NeoCyberVim",
-  name = "cyberpunk77",
+  name = "cyberpunk",
   lazy = false,
   priority = 1000,
   config = function()

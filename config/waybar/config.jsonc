@@ -289,7 +289,7 @@
     },
     "custom/power": {
         "format": "⏻",
-        "on-click": "walker --modules power",
+        "on-click": "hypr-power-menu",
         "tooltip": false
     }
 }
