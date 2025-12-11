@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# https://google.github.io/styleguide/shellguide.html
+
+set -euo pipefail
+
+# Define actions
+readonly LOCK="Lock"
+readonly LOGOUT="Logout"
+readonly REBOOT="Reboot"
+readonly SHUTDOWN="Shutdown"
+
+function main() {
+  local selection
+  selection=$(echo -e "${LOCK}\n${LOGOUT}\n${REBOOT}\n${SHUTDOWN}" | walker --dmenu --placeholder "Power Menu")
+
+  case "${selection}" in
+    "${LOCK}")
+      hypr-lock-screen
+      ;;
+    "${LOGOUT}")
+      loginctl terminate-user "${USER}"
+      ;;
+    "${REBOOT}")
+      systemctl reboot
+      ;;
+    "${SHUTDOWN}")
+      systemctl poweroff
+      ;;
+  esac
+}
+
+main "$@"
