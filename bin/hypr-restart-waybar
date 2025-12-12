@@ -14,7 +14,14 @@ set -euo pipefail
 #   None
 #######################################
 main() {
-  hypr-restart-app waybar
+  if pgrep -x waybar >/dev/null; then
+    echo "Reloading waybar..."
+    # SIGUSR2 reloads the configuration and style without restarting the process.
+    pkill -SIGUSR2 -x waybar
+  else
+    echo "Starting waybar..."
+    hyprctl dispatch exec waybar
+  fi
 }
 
 main

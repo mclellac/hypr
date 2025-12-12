@@ -23,8 +23,6 @@
         "privacy",
         // hardware group
         "group/hardware",
-        // connecting
-        "network",
         // media
         "custom/playerctl",
         "backlight",
@@ -56,7 +54,8 @@
             "temperature",
             "battery",
             "pulseaudio",
-            "bluetooth"
+            "bluetooth",
+            "network"
         ]
     },
     "group/datetime": {
@@ -72,7 +71,7 @@
     "custom/hypr": {
         "class": "hypr",
         "format": "󰚌 ",
-        "on-click": "hypr-menu",
+        "on-click": "hyprctl dispatch exec hypr-menu",
         "tooltip-format": "Hypr Menu\n\nSuper + Alt + Space"
     },
     "hyprland/workspaces": {
@@ -207,7 +206,7 @@
         "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation 'watch sensors'\""
     },
     "tray": {
-        "icon-size": 24,
+        "icon-size": 21,
         "spacing": 5
     },
     "bluetooth": {
@@ -237,7 +236,7 @@
         "format": "󰨸",
         "interval": "once",
         "return-type": "json",
-        "on-click": "walker --provider clipboard",
+        "on-click": "hyprctl dispatch exec \"walker --provider clipboard\"",
         "on-click-middle": "rm -f ~/.cache/cliphist/db; pkill -RTMIN+9 waybar",
         "exec": "printf '{\"tooltip\":\"%s\"}' $(cliphist list | wc -l)' item(s) in the clipboard\r(Mid click to clear)'",
         "exec-if": "[ -x \"$(command -v cliphist)\" ] && [ $(cliphist list | wc -l) -gt 0 ]",
@@ -288,7 +287,8 @@
     },
     "custom/power": {
         "format": "⏻",
-        "on-click": "hypr-power-menu",
-        "tooltip": false
+        "on-click": "hyprctl dispatch exec hypr-power-menu",
+        "tooltip": true,
+        "tooltip-format": "Power Menu"
     }
 }
