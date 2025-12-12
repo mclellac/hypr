@@ -53,7 +53,7 @@
 window#waybar {
     background: @theme_background_color;
     color: @theme_foreground_color;
-    font-size: 15px;
+    font-size: 17px;
 }
 
 /* Left and Center modules */
