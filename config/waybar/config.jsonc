@@ -29,7 +29,6 @@
         "custom/playerctl",
         "backlight",
         // system
-        "custom/pacman",
         "tray",
         "custom/power"
     ],
@@ -129,7 +128,7 @@
             "warning": 70,
             "critical": 90
         },
-        "on-click": "hypr-launch-floating-terminal-with-presentation btop",
+        "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation btop\"",
         "tooltip": true
     },
     "memory": {
@@ -139,7 +138,7 @@
             "warning": 70,
             "critical": 90
         },
-        "on-click": "hypr-launch-floating-terminal-with-presentation btop",
+        "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation btop\"",
         "tooltip": true
     },
     "disk": {
@@ -148,7 +147,7 @@
         "path": "/",
         "tooltip": true,
         "tooltip-format": "{used} used out of {total} on {path} ({percentage_used}%)",
-        "on-click": "hypr-launch-floating-terminal-with-presentation btop"
+        "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation btop\""
     },
     "network": {
         "interval": 5,
@@ -168,7 +167,7 @@
         "tooltip-format-wifi": "{icon} {ifname} ({essid}): {ipaddr}",
         "tooltip-format-disconnected": "{icon} disconnected",
         "tooltip-format-disabled": "{icon} disabled",
-        "on-click": "hypr-launch-floating-terminal-with-presentation nmtui"
+        "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation nmtui\""
     },
     "hyprland/submap": {
         "format": "<span style=\"italic\">{}</span>",
@@ -185,7 +184,7 @@
     "pulseaudio": {
         "class": "pulseaudio",
         "format": "{icon}",
-        "on-click": "alacritty --class=Wiremix -e wiremix",
+        "on-click": "hyprctl dispatch exec \"alacritty --class=Wiremix -e wiremix\"",
         "on-click-right": "pamixer -t",
         "tooltip-format": "Playing at {volume}%",
         "scroll-step": 5,
@@ -205,16 +204,16 @@
             ""
         ],
         "tooltip": true,
-        "on-click": "hypr-launch-floating-terminal-with-presentation \"watch sensors\""
+        "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation 'watch sensors'\""
     },
     "tray": {
-        "icon-size": 21,
+        "icon-size": 24,
         "spacing": 5
     },
     "bluetooth": {
         "format": "󰂯",
         "format-disabled": "󰂲",
-        "on-click": "hypr-launch-floating-terminal-with-presentation bluetuith",
+        "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation bluetuith\"",
         "on-click-right": "rfkill toggle bluetooth",
         "tooltip-format": "{}"
     },
@@ -247,7 +246,7 @@
     "custom/update": {
         "class": "update",
         "exec": "arch-update",
-        "on-click": "hypr-launch-floating-terminal-with-presentation hypr-update",
+        "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation hypr-update\"",
         "return-type": "json",
         "interval": 1000
     },
@@ -261,7 +260,7 @@
     },
     "privacy": {
         "icon-spacing": 4,
-        "icon-size": 18,
+        "icon-size": 21,
         "transition-duration": 250,
         "modules": [
             {
