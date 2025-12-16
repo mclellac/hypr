@@ -275,7 +275,7 @@
         ]
     },
     "mpris": {
-        "format": "{player_icon} {dynamic}",
+        "format": "{player_icon}", 
         "format-paused": "{status_icon} <i>{dynamic}</i>",
         "player-icons": {
             "default": "▶",
