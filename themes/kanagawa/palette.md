@@ -2,47 +2,27 @@
 
 | Name | Hex | Description |
 |---|---|---|
-| `base` | #1f1f28 | Alacritty, btop, Kitty, Waybar Background |
-| `surface` | #090618 | Alacritty Black |
-| `overlay` | #223249 | btop Selected Background |
-| `muted` | #727169 | Alacritty Bright Black, btop Box Divider |
-| `subtle` | #2d4f67 | Alacritty Selection Background |
-| `text` | #dcd7ba | Alacritty Foreground, Waybar Foreground |
-| `love` | #c34043 | Alacritty Red |
-| `gold` | #c0a36e | Alacritty Yellow |
-| `rose` | #e82424 | Alacritty Bright Red |
-| `pine` | #76946a | Alacritty Green |
-| `foam` | #98bb6c | Alacritty Bright Green |
-| `iris` | #7e9cd8 | Alacritty Blue, Kitty URL Color |
-| `highlight` | #dca561 | btop Selected Foreground, Waybar Accent |
-| `sky` | #7fb4ca | Alacritty Bright Blue |
-| `cyan` | #6a9589 | Alacritty Cyan |
-| `aqua` | #7aa89f | Alacritty Bright Cyan, btop Proc Misc |
-| `mauve` | #957fb8 | Alacritty Magenta |
-| `pink` | #938aa9 | Alacritty Bright Magenta |
-| `bright_yellow` | #e6c384 | Alacritty Bright Yellow |
-| `bright_white` | #c8c093 | Alacritty White |
-| `orange` | #ffa066 | Alacritty Indexed Color 16 |
-| `light_red` | #ff5d62 | Alacritty Indexed Color 17, btop Free End |
-| `peach` | #ff9e3b | btop Cached End |
-| `light_magenta` | #9cabca | btop Available End |
-| `light_blue` | #658594 | btop Used Start |
-| `kitty_black` | #090618 | Kitty Black |
-| `kitty_red` | #c34043 | Kitty Red |
-| `kitty_green` | #76946a | Kitty Green |
-| `kitty_yellow` | #c0a36e | Kitty Yellow |
-| `kitty_blue` | #7e9cd8 | Kitty Blue |
-| `kitty_magenta` | #957fb8 | Kitty Magenta |
-| `kitty_cyan` | #6a9589 | Kitty Cyan |
-| `kitty_white` | #c8c093 | Kitty White |
-| `kitty_bright_black` | #727169 | Kitty Bright Black |
-| `kitty_bright_red` | #e82424 | Kitty Bright Red |
-| `kitty_bright_green` | #98bb6c | Kitty Bright Green |
-| `kitty_bright_yellow` | #e6c384 | Kitty Bright Yellow |
-| `kitty_bright_blue` | #7fb4ca | Kitty Bright Blue |
-| `kitty_bright_magenta` | #938aa9 | Kitty Bright Magenta |
-| `kitty_bright_cyan` | #7aa89f | Kitty Bright Cyan |
-| `kitty_bright_white` | #dcd7ba | Kitty Bright White |
-| `hyprlock_outer` | rgba(220,215,186,1.0) | Hyprlock Outer Color |
-| `hyprlock_check` | rgba(126, 156, 216, 1.0) | Hyprlock Check Color |
-| `hyprlock_inner` | rgba(31,31,40,0.8) | Hyprlock Inner Color |
+| `accent_color` | #DCA561 | Waybar Accent, btop selected_fg, btop temp_mid, btop cpu_mid, btop cached_mid, btop upload_start, btop process_mid, Walker selected-text |
+| `background_color` | #1F1F28 | Waybar Background, btop main_bg, Walker base |
+| `btop_available_end` | #9CABCA | btop available_end |
+| `btop_available_mid` | #957FBB | btop available_mid, btop download_end |
+| `btop_available_start` | #938AA9 | btop available_start, btop download_mid |
+| `btop_cached_end` | #FF9E3B | btop cached_end |
+| `btop_free_end` | #FF5D62 | btop free_end |
+| `btop_proc_misc` | #7AA89F | btop proc_misc |
+| `btop_selected_bg` | #223249 | btop selected_bg |
+| `btop_temp_end` | #E82424 | btop temp_end, btop cpu_end, btop free_start, btop upload_end |
+| `btop_temp_start` | #98BB6C | btop temp_start, btop cpu_start, btop process_start |
+| `btop_upload_mid` | #E6C384 | btop upload_mid |
+| `btop_used_end` | #7FB4CA | btop used_end |
+| `btop_used_mid` | #7E9CDB | btop used_mid, btop download_start |
+| `btop_used_start` | #658594 | btop used_start |
+| `error_color` | #C34043 | Waybar, btop hi_fg, btop free_mid, btop process_end |
+| `foreground_color` | #DCD7BA | Waybar Foreground, btop main_fg, btop title, Walker text, Walker border |
+| `hyprlock_check_color` | rgba(126, 156, 216, 1.0) | Hyprlock check_color |
+| `hyprlock_color` | rgba(31,31,40,1.0) | Hyprlock color |
+| `hyprlock_inner_color` | rgba(31,31,40,0.8) | Hyprlock inner_color |
+| `hyprlock_outer_color` | rgba(220,215,186,1.0) | Hyprlock outer_color, Hyprlock font_color |
+| `secondary_accent_color` | #7E9CD8 | Waybar |
+| `warning_color` | #C0A36E | Waybar, btop cached_start |
+| `wm_icon_bg` | #727169 | Waybar, btop inactive_fg, btop cpu_box, btop mem_box, btop net_box, btop proc_box, btop div_line |

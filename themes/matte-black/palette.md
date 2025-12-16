@@ -1,28 +1,17 @@
-# Matte Black Palette
+# Matte-black Palette
 
 | Name | Hex | Description |
 |---|---|---|
-| `base` | #121212 | Alacritty, Kitty, Waybar Background |
-| `surface` | #1e1e1e | Mako Background |
-| `overlay` | #333333 | Alacritty Black, Kitty Black |
-| `muted` | #8a8a8d | Alacritty Dim Foreground, Hyprland Active Border |
-| `subtle` | #8a8a8d | btop Title, Kitty Bright Black |
-| `text` | #bebebe | Alacritty Foreground, Kitty Foreground |
-| `love` | #D35F5F | Alacritty Red, Kitty Red |
-| `gold` | #FFC107 | Alacritty Green, Kitty Green |
-| `rose` | #b91c1c | Alacritty Yellow, Kitty Yellow |
-| `pine` | #e68e0d | Alacritty Blue, Kitty URL Color |
-| `foam` | #f59e0b | Alacritty Bright Blue, btop Highlight |
-| `iris` | #D35F5F | Alacritty Magenta, Kitty Magenta |
-| `highlight` | #B91C1C | Alacritty Bright Red, Waybar Accent |
-| `sky` | #bebebe | Alacritty Cyan, Kitty Cyan |
-| `cyan` | #eaeaea | Alacritty Bright Cyan, Kitty Bright Cyan |
-| `white` | #bebebe | Alacritty White, Kitty White |
-| `bright_yellow` | #b90a0a | Alacritty Bright Yellow |
-| `bright_white` | #ffffff | Alacritty Bright White |
-| `bright_magenta` | #B91C1C | Alacritty Bright Magenta |
-| `hyprlock_inner` | rgba(138,138,141,0.3) | Hyprlock Inner Color |
-| `hyprlock_outer` | rgba(234,234,234,0.5) | Hyprlock Outer Color |
-| `hyprlock_font` | rgba(234,234,234,1.0) | Hyprlock Font Color |
-| `hyprlock_check` | rgba(245,158,11,1.0) | Hyprlock Check Color |
-| `btop_selected_fg` | #EAEAEA | btop Selected Foreground, Waybar Foreground |
+| `accent_color` | #B91C1C | Waybar Accent, btop temp_end, btop cpu_end, btop free_end, btop cached_end, btop available_end, btop used_end, btop download_end, btop upload_end, Walker selected-text |
+| `background_color` | #121212 | Waybar Background, Walker base |
+| `btop_hi_fg` | #F59E0B | btop hi_fg, btop selected_bg, btop temp_mid, btop cpu_mid, btop free_mid, btop cached_mid, btop available_mid, btop used_mid, btop download_mid, btop upload_mid |
+| `btop_title` | #8A8A8D | btop title, btop proc_misc, btop cpu_box, btop mem_box, btop net_box, btop proc_box, btop div_line, btop temp_start, btop cpu_start, btop free_start, btop cached_start, btop available_start, btop used_start, btop download_start, btop upload_start |
+| `foreground_color` | #EAEAEA | Waybar Foreground, btop main_fg, btop selected_fg, Walker text, Walker border |
+| `hyprlock_check_color` | rgba(245,158,11,1.0) | Hyprlock check_color |
+| `hyprlock_color` | rgba(12,12,12,1.0) | Hyprlock color |
+| `hyprlock_font_color` | rgba(234,234,234,1.0) | Hyprlock font_color |
+| `hyprlock_inner_color` | rgba(138,138,141,0.3) | Hyprlock inner_color |
+| `hyprlock_outer_color` | rgba(234,234,234,0.5) | Hyprlock outer_color |
+| `secondary_accent_color` | #D35F5F | Waybar |
+| `warning_color` | #FFC107 | Waybar |
+| `wm_icon_bg` | #333333 | Waybar, btop inactive_fg |

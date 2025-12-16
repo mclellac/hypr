@@ -1,26 +1,18 @@
-# Cyan Cyberpunk v2 Palette
+# Cyan Palette
 
 | Name | Hex | Description |
 |---|---|---|
-| `base` | #0a1414 | Alacritty Background, Kitty Background, Waybar Background |
-| `surface` | #1a2828 | Alacritty Black, Kitty Black |
-| `overlay` | #33cccc | Alacritty Selection Background |
-| `muted` | #5f9ea0 | Alacritty Bright Black, Kitty Bright Black |
-| `text` | #00ffff | Alacritty Foreground, Kitty Foreground, Waybar Foreground |
-| `love` | #ff4081 | Alacritty Red, Kitty Red |
-| `gold` | #adff2f | Alacritty Yellow, Kitty Yellow |
-| `rose` | #ff4081 | Alacritty Bright Red, Kitty Bright Red |
-| `pine` | #2e8b57 | Alacritty Green, Kitty Green |
-| `foam` | #2e8b57 | Alacritty Bright Green, Kitty Bright Green |
-| `iris` | #00bfff | Alacritty Blue, Kitty Blue |
-| `highlight` | #00e5e5 | Alacritty Cursor, Hyprland Active Border, Waybar Accent |
-| `sky` | #00bfff | Alacritty Bright Blue, Kitty Bright Blue |
-| `cyan` | #00ffff | Alacritty Cyan, Kitty Cyan |
-| `aqua` | #00ffff | Alacritty Bright Cyan, Kitty Bright Cyan |
-| `mauve` | #9400d3 | Alacritty Magenta, Kitty Magenta |
-| `pink` | #9400d3 | Alacritty Bright Magenta, Kitty Bright Magenta |
-| `bright_white` | #ffffff | Alacritty Bright White, Kitty Bright White |
-| `white` | #e0ffff | Alacritty White, Kitty White |
-| `hyprlock_outer` | rgba(0,229,229,1.0) | Hyprlock Outer Color |
-| `hyprlock_check` | rgba(0,191,255,1.0) | Hyprlock Check Color |
-| `hyprlock_inner` | rgba(10,20,20,0.8) | Hyprlock Inner Color |
+| `accent_color` | #00E5E5 | Waybar Accent, btop title, btop cpu_box, btop mem_box, btop net_box, btop proc_box, Walker border, Walker selected-text |
+| `background_color` | #0A1414 | Waybar Background, btop main_bg, Walker base |
+| `btop_selected_bg` | #1A2828 | btop selected_bg |
+| `btop_temp_start` | #2E8B57 | btop temp_start, btop cpu_start, btop free_start, btop cached_start, btop available_start, btop download_start, btop upload_start |
+| `btop_used_mid` | #9400D3 | btop used_mid |
+| `error_color` | #FF4081 | Waybar, btop used_start, btop used_end |
+| `foreground_color` | #00FFFF | Waybar Foreground, btop main_fg, btop selected_fg, btop download_end, btop upload_end, Walker text |
+| `hyprlock_color` | rgba(10,20,20,1.0) | Hyprlock color |
+| `hyprlock_font_color` | rgba(0,255,255,1.0) | Hyprlock font_color |
+| `hyprlock_inner_color` | rgba(10,20,20,0.8) | Hyprlock inner_color |
+| `hyprlock_outer_color` | rgba(0,229,229,1.0) | Hyprlock outer_color |
+| `secondary_accent_color` | #00BFFF | Waybar, btop hi_fg, btop proc_misc, btop temp_mid, btop cpu_mid, btop free_mid, btop cached_mid, btop available_mid, btop download_mid, btop upload_mid |
+| `warning_color` | #ADFF2F | Waybar, btop temp_end, btop cpu_end, btop free_end, btop cached_end, btop available_end |
+| `wm_icon_bg` | #5F9EA0 | Waybar, btop inactive_fg, btop div_line |

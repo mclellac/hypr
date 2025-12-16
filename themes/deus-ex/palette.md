@@ -1,14 +1,14 @@
-# Deus Ex Palette
+# Deus-ex Palette
 
-| Name | Hex | RGB | Description |
-|---|---|---|---|
-| `base` | #351409 | 53,20,9 | Alacritty Background, Kitty Background, Waybar Background |
-| `surface` | #a15501 | 161,85,1 | Alacritty Bright Black, Kitty Bright Black, btop Selected Background |
-| `text` | #fff69f | 255,246,159 | Alacritty Foreground, Kitty Foreground, Waybar Foreground |
-| `love` | #a15501 | 161,85,1 | Alacritty Red, Kitty Red |
-| `pine` | #d0902f | 208,144,47 | Alacritty Green, Kitty Green, Waybar Accent |
-| `highlight` | #fdd870 | 253,216,112 | Hyprland Active Border |
-| `highlight_inactive` | #d0902f | 208,144,47 | Hyprland Inactive Border |
-| `hyprlock_outer` | rgba(255,246,159,1.0) | | Hyprlock Outer Color |
-| `hyprlock_check` | rgba(253,216,112,1.0) | | Hyprlock Check Color |
-| `hyprlock_inner` | rgba(53,20,9,0.8) | | Hyprlock Inner Color |
+| Name | Hex | Description |
+|---|---|---|
+| `accent_color` | #D0902F | Waybar Accent, btop hi_fg, btop proc_misc, btop temp_start, btop cpu_start, btop free_start, btop cached_start, btop available_start, btop used_start, btop download_start, btop upload_start, Walker selected-text |
+| `background_color` | #351409 | Waybar Background, btop main_bg, Walker base |
+| `foreground_color` | #FFF69F | Waybar Foreground, btop main_fg, btop title, btop selected_fg, btop temp_mid, btop cpu_mid, btop free_mid, btop cached_mid, btop available_mid, btop used_mid, btop download_mid, btop upload_mid, Walker text, Walker border |
+| `hyprlock_check_color` | rgba(253,216,112,1.0) | Hyprlock check_color |
+| `hyprlock_color` | rgba(53,20,9,1.0) | Hyprlock color |
+| `hyprlock_inner_color` | rgba(53,20,9,0.8) | Hyprlock inner_color |
+| `hyprlock_outer_color` | rgba(255,246,159,1.0) | Hyprlock outer_color, Hyprlock font_color |
+| `kitty_selection_foreground` | none | Kitty selection_foreground |
+| `secondary_accent_color` | #A15501 | Waybar, btop selected_bg, btop inactive_fg, btop cpu_box, btop mem_box, btop net_box, btop proc_box, btop div_line, btop temp_end, btop cpu_end, btop free_end, btop cached_end, btop available_end, btop used_end, btop download_end, btop upload_end |
+| `warning_color` | #FDD870 | Waybar |
