@@ -2,14 +2,22 @@
 
 | Name | Hex | Description |
 |---|---|---|
-| `accent_color` | #00EACB | Waybar |
+| `accent_color` | #00EACB | Waybar, Hyprland active border gradient |
+| `active_border_color_1` | #00EACB | Hyprland active border |
+| `active_border_color_2` | #00b362ff | Hyprland active border gradient |
 | `background_color` | #1A202C | Waybar, btop main_bg |
 | `cursor_color` | #E2E8F0 | Cursor, btop available_end, btop free_end, btop main_fg, btop selected_fg, btop upload_end |
 | `cursor_text_color` | #1A202C | Cursor Text, btop main_bg |
+| `diff_add_color` | #1B4232 | Neovim DiffAdd |
+| `diff_change_color` | #2D3748 | Neovim DiffChange |
+| `diff_delete_color` | #5A2B2B | Neovim DiffDelete |
+| `diff_text_color` | #2C5282 | Neovim DiffText |
 | `div_line_color` | #2D3748 | btop div_line |
 | `error_color` | #F56565 | Waybar, btop cpu_end, btop temp_end, btop used_mid |
 | `foreground_color` | #E2E8F0 | Waybar, btop available_end, btop free_end, btop main_fg, btop selected_fg, btop upload_end |
 | `hi_fg_color` | #4299E1 | btop hi_fg |
+| `inactive_border_color` | #2D3748ff | Hyprland inactive border |
+| `nogroup_border_color` | #1A202Cff | Hyprland nogroup border |
 | `secondary_accent_color` | #63B3ED | Waybar, btop cached_mid, btop cpu_start, btop download_start, btop proc_box, btop proc_misc, btop title |
 | `selected_bg_color` | #2C5282 | btop cached_start, btop download_end, btop selected_bg |
 | `selection_background_color` | #4A5568 | Waybar, btop inactive_fg |

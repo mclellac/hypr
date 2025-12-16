@@ -1,7 +1,7 @@
--- themes/amateur/colors/amateur.lua
+-- themes/green-monster/colors/green-monster.lua
 
 -- Set the colorscheme name
-vim.g.colors_name = "amateur"
+vim.g.colors_name = "green-monster"
 
 -- Get the color palette
 local colors = {

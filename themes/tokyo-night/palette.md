@@ -2,7 +2,9 @@
 
 | Name | Hex | Description |
 |---|---|---|
-| `accent_color` | #7DCFFF | Waybar, btop hi_fg, btop proc_misc |
+| `accent_color` | #7DCFFF | Waybar, btop hi_fg, btop proc_misc, Hyprland active border gradient |
+| `active_border_color_1` | #33ccff | Hyprland active border |
+| `active_border_color_2` | #00ff99 | Hyprland active border gradient |
 | `background_color` | #1A1B26 | Waybar, btop main_bg |
 | `cursor_color` | #C0CAF5 | Cursor |
 | `cursor_text_color` | #1A1B26 | Cursor Text, btop main_bg |
