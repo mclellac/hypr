@@ -3,24 +3,6 @@
 | Name | Hex | Description |
 |---|---|---|
 | `accent_color` | #8CAAEE | Waybar, btop cached_mid, btop free_end, btop hi_fg, btop proc_box, btop selected_fg |
-| `alacritty_background_color` | #24273A | Alacritty, btop main_bg |
-| `alacritty_foreground_color` | #CAD3F5 | Alacritty |
-| `alacritty_term_color0` | #494D64 | Alacritty |
-| `alacritty_term_color1` | #ED8796 | Alacritty |
-| `alacritty_term_color10` | #A6DA95 | Alacritty |
-| `alacritty_term_color11` | #EED49F | Alacritty |
-| `alacritty_term_color12` | #8AADF4 | Alacritty |
-| `alacritty_term_color13` | #F5BDE6 | Alacritty |
-| `alacritty_term_color14` | #8BD5CA | Alacritty |
-| `alacritty_term_color15` | #A5ADCB | Alacritty |
-| `alacritty_term_color2` | #A6DA95 | Alacritty |
-| `alacritty_term_color3` | #EED49F | Alacritty |
-| `alacritty_term_color4` | #8AADF4 | Alacritty |
-| `alacritty_term_color5` | #F5BDE6 | Alacritty |
-| `alacritty_term_color6` | #8BD5CA | Alacritty |
-| `alacritty_term_color7` | #B8C0E0 | Alacritty |
-| `alacritty_term_color8` | #5B6078 | Alacritty |
-| `alacritty_term_color9` | #ED8796 | Alacritty |
 | `available_start_color` | #EF9F76 | btop available_start, btop download_start |
 | `background_color` | #24273A | Waybar, btop main_bg |
 | `cpu_box_color` | #CA9EE6 | btop cpu_box, btop free_start, btop process_end |

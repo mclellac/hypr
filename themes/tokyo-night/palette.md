@@ -3,18 +3,6 @@
 | Name | Hex | Description |
 |---|---|---|
 | `accent_color` | #7DCFFF | Waybar, btop hi_fg, btop proc_misc |
-| `alacritty_term_color0` | #32344A | Alacritty |
-| `alacritty_term_color10` | #B9F27C | Alacritty |
-| `alacritty_term_color11` | #FF9E64 | Alacritty |
-| `alacritty_term_color12` | #7DA6FF | Alacritty |
-| `alacritty_term_color14` | #0DB9D7 | Alacritty |
-| `alacritty_term_color15` | #ACB0D0 | Alacritty |
-| `alacritty_term_color2` | #9ECE6A | Alacritty, btop available_start, btop cached_start, btop cpu_start, btop download_start, btop free_start, btop temp_start, btop upload_start, btop used_start |
-| `alacritty_term_color5` | #AD8EE6 | Alacritty |
-| `alacritty_term_color6` | #449DAB | Alacritty |
-| `alacritty_term_color7` | #787C99 | Alacritty |
-| `alacritty_term_color8` | #444B6A | Alacritty |
-| `alacritty_term_color9` | #FF7A93 | Alacritty |
 | `background_color` | #1A1B26 | Waybar, btop main_bg |
 | `cursor_color` | #C0CAF5 | Cursor |
 | `cursor_text_color` | #1A1B26 | Cursor Text, btop main_bg |

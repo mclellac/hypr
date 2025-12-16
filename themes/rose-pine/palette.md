@@ -3,24 +3,6 @@
 | Name | Hex | Description |
 |---|---|---|
 | `accent_color` | #88C0D0 | Waybar |
-| `alacritty_background_color` | #FAF4ED | Alacritty, btop main_bg |
-| `alacritty_foreground_color` | #575279 | Alacritty, btop main_fg |
-| `alacritty_term_color0` | #F2E9E1 | Alacritty |
-| `alacritty_term_color1` | #B4637A | Alacritty |
-| `alacritty_term_color10` | #286983 | Alacritty |
-| `alacritty_term_color11` | #EA9D34 | Alacritty |
-| `alacritty_term_color12` | #56949F | Alacritty |
-| `alacritty_term_color13` | #907AA9 | Alacritty |
-| `alacritty_term_color14` | #D7827E | Alacritty |
-| `alacritty_term_color15` | #575279 | Alacritty, btop main_fg |
-| `alacritty_term_color2` | #286983 | Alacritty |
-| `alacritty_term_color3` | #EA9D34 | Alacritty |
-| `alacritty_term_color4` | #56949F | Alacritty |
-| `alacritty_term_color5` | #907AA9 | Alacritty |
-| `alacritty_term_color6` | #D7827E | Alacritty |
-| `alacritty_term_color7` | #575279 | Alacritty, btop main_fg |
-| `alacritty_term_color8` | #9893A5 | Alacritty |
-| `alacritty_term_color9` | #B4637A | Alacritty |
 | `background_color` | #FAF4ED | Waybar, btop main_bg |
 | `cursor_color` | #524F67 | Cursor, btop selected_bg |
 | `cursor_text_color` | #E0DEF4 | Cursor Text, btop hi_fg |

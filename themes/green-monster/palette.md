@@ -3,23 +3,13 @@
 | Name | Hex | Description |
 |---|---|---|
 | `accent_color` | #00EACB | Waybar |
-| `alacritty_background_color` | #1B2425 | Alacritty |
-| `alacritty_foreground_color` | #7AB9A9 | Alacritty |
-| `alacritty_term_color0` | #2D3748 | Alacritty, btop div_line |
-| `alacritty_term_color10` | #38A169 | Alacritty |
-| `alacritty_term_color11` | #F6AD55 | Alacritty, btop cpu_box, btop cpu_mid, btop temp_mid, btop used_start |
-| `alacritty_term_color12` | #4299E1 | Alacritty, btop hi_fg |
-| `alacritty_term_color13` | #4FD1C5 | Alacritty, btop available_mid, btop cached_end, btop download_mid, btop free_mid, btop mem_box, btop temp_start, btop upload_mid |
-| `alacritty_term_color14` | #4FD1C5 | Alacritty, btop available_mid, btop cached_end, btop download_mid, btop free_mid, btop mem_box, btop temp_start, btop upload_mid |
-| `alacritty_term_color2` | #3EDF81 | Alacritty |
-| `alacritty_term_color7` | #E2E8F0 | Alacritty, btop available_end, btop free_end, btop main_fg, btop selected_fg, btop upload_end |
-| `alacritty_term_color8` | #4A5568 | Alacritty, btop inactive_fg |
-| `alacritty_term_color9` | #EF4444 | Alacritty, btop used_end |
 | `background_color` | #1A202C | Waybar, btop main_bg |
 | `cursor_color` | #E2E8F0 | Cursor, btop available_end, btop free_end, btop main_fg, btop selected_fg, btop upload_end |
 | `cursor_text_color` | #1A202C | Cursor Text, btop main_bg |
+| `div_line_color` | #2D3748 | btop div_line |
 | `error_color` | #F56565 | Waybar, btop cpu_end, btop temp_end, btop used_mid |
 | `foreground_color` | #E2E8F0 | Waybar, btop available_end, btop free_end, btop main_fg, btop selected_fg, btop upload_end |
+| `hi_fg_color` | #4299E1 | btop hi_fg |
 | `secondary_accent_color` | #63B3ED | Waybar, btop cached_mid, btop cpu_start, btop download_start, btop proc_box, btop proc_misc, btop title |
 | `selected_bg_color` | #2C5282 | btop cached_start, btop download_end, btop selected_bg |
 | `selection_background_color` | #4A5568 | Waybar, btop inactive_fg |
@@ -42,4 +32,5 @@
 | `terminal_background_color` | #1A202C | Kitty, btop main_bg |
 | `terminal_foreground_color` | #E2E8F0 | Kitty, btop available_end, btop free_end, btop main_fg, btop selected_fg, btop upload_end |
 | `url_color` | #63B3ED | URL Color, btop cached_mid, btop cpu_start, btop download_start, btop proc_box, btop proc_misc, btop title |
+| `used_end_color` | #EF4444 | btop used_end |
 | `warning_color` | #F6AD55 | Waybar, btop cpu_box, btop cpu_mid, btop temp_mid, btop used_start |

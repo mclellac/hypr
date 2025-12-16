@@ -3,7 +3,6 @@
 | Name | Hex | Description |
 |---|---|---|
 | `accent_color` | #E1B55E | Waybar, btop temp_mid |
-| `alacritty_term_color10` | #143614 | Alacritty |
 | `background_color` | #11221C | Waybar |
 | `cpu_box_color` | #81B8A8 | btop cpu_box, btop div_line, btop mem_box, btop net_box, btop proc_box |
 | `cpu_end_color` | #76AD98 | btop available_end, btop cached_end, btop cpu_end, btop free_end, btop used_end |

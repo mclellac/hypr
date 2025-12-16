@@ -3,10 +3,6 @@
 | Name | Hex | Description |
 |---|---|---|
 | `accent_color` | #1E66F5 | Waybar, btop cached_mid, btop free_end, btop hi_fg, btop proc_box, btop selected_fg |
-| `alacritty_term_color0` | #BCC0CC | Alacritty, btop meter_bg, btop selected_bg |
-| `alacritty_term_color15` | #6C6F85 | Alacritty |
-| `alacritty_term_color7` | #5C5F77 | Alacritty |
-| `alacritty_term_color8` | #ACB0BE | Alacritty |
 | `available_start_color` | #FE640B | btop available_start, btop download_start |
 | `background_color` | #EFF1F5 | Waybar, btop main_bg |
 | `cpu_box_color` | #8839EF | btop cpu_box, btop free_start, btop process_end |

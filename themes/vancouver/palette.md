@@ -3,14 +3,6 @@
 | Name | Hex | Description |
 |---|---|---|
 | `accent_color` | #A2D9CE | Waybar, btop hi_fg, btop proc_box |
-| `alacritty_term_color0` | #2A2A2A | Alacritty, btop download_end, btop main_bg |
-| `alacritty_term_color10` | #A3E4D7 | Alacritty, btop available_start, btop cpu_start, btop download_mid, btop free_start, btop temp_start, btop upload_start |
-| `alacritty_term_color11` | #F9E79F | Alacritty, btop available_mid, btop cached_end, btop cpu_mid, btop free_mid, btop mem_box, btop proc_misc, btop temp_mid |
-| `alacritty_term_color12` | #A9CCE3 | Alacritty, btop cached_start, btop download_start, btop upload_mid |
-| `alacritty_term_color13` | #D7BDE2 | Alacritty |
-| `alacritty_term_color14` | #A2D9CE | Alacritty, btop hi_fg, btop proc_box |
-| `alacritty_term_color8` | #888888 | Alacritty, btop div_line, btop inactive_fg, btop selected_bg |
-| `alacritty_term_color9` | #F5B7B1 | Alacritty, btop cpu_end, btop net_box, btop temp_end, btop used_end, btop used_mid |
 | `background_color` | #2A2A2A | Waybar, btop download_end, btop main_bg |
 | `cursor_color` | #F0F0F0 | Cursor, btop available_end, btop free_end, btop main_fg, btop selected_fg, btop upload_end |
 | `cursor_text_color` | #2A2A2A | Cursor Text, btop download_end, btop main_bg |
