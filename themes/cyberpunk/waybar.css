@@ -1,8 +1,8 @@
 /* Theme Colors */
-@define-color background_color #00060E;
-@define-color foreground_color #FEE801;
-@define-color accent_color #39C4B6;
-@define-color warning_color #FEE801;
-@define-color error_color #9A9F17;
-@define-color selection_background_color #00060E;
-@define-color secondary_accent_color #9A9F17;
+@define-color background_color #020202;
+@define-color foreground_color #E0E0E0;
+@define-color accent_color #FCE803;
+@define-color warning_color #FCE803;
+@define-color error_color #FF003C;
+@define-color selection_background_color #262626;
+@define-color secondary_accent_color #00F0FF;
