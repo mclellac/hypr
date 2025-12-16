@@ -3,23 +3,8 @@
 | Name | Hex | Description |
 |---|---|---|
 | `accent_color` | #DBBC7F | Waybar, btop available_mid, btop cpu_mid, btop free_mid, btop selected_fg, btop temp_mid, btop upload_start, btop used_mid |
-| `alacritty_background_color` | #2D353B | Alacritty, btop inactive_fg, btop main_bg |
-| `alacritty_foreground_color` | #D3C6AA | Alacritty, btop graph_text, btop main_fg, btop title |
-| `alacritty_term_color0` | #475258 | Alacritty |
-| `alacritty_term_color1` | #E67E80 | Alacritty, btop hi_fg, btop process_mid, btop upload_end |
-| `alacritty_term_color11` | #DBBC7F | Alacritty, btop available_mid, btop cpu_mid, btop free_mid, btop selected_fg, btop temp_mid, btop upload_start, btop used_mid |
-| `alacritty_term_color12` | #7FBBB3 | Alacritty, btop cached_start, btop download_end |
-| `alacritty_term_color13` | #D699B6 | Alacritty |
-| `alacritty_term_color14` | #83C092 | Alacritty, btop cached_mid, btop download_mid |
-| `alacritty_term_color15` | #D3C6AA | Alacritty, btop graph_text, btop main_fg, btop title |
-| `alacritty_term_color3` | #DBBC7F | Alacritty, btop available_mid, btop cpu_mid, btop free_mid, btop selected_fg, btop temp_mid, btop upload_start, btop used_mid |
-| `alacritty_term_color4` | #7FBBB3 | Alacritty, btop cached_start, btop download_end |
-| `alacritty_term_color5` | #D699B6 | Alacritty |
-| `alacritty_term_color6` | #83C092 | Alacritty, btop cached_mid, btop download_mid |
-| `alacritty_term_color7` | #D3C6AA | Alacritty, btop graph_text, btop main_fg, btop title |
-| `alacritty_term_color8` | #475258 | Alacritty |
-| `alacritty_term_color9` | #E67E80 | Alacritty, btop hi_fg, btop process_mid, btop upload_end |
 | `background_color` | #2D353B | Waybar, btop inactive_fg, btop main_bg |
+| `cached_mid_color` | #83C092 | btop cached_mid, btop download_mid |
 | `cursor_color` | #D8CAAC | Cursor |
 | `cursor_text_color` | #323D43 | Cursor Text |
 | `error_color` | #E67E80 | Waybar, btop hi_fg, btop process_mid, btop upload_end |
