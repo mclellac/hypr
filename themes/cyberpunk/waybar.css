@@ -1,8 +1,10 @@
-@define-color theme_background_color #00060e;
-@define-color theme_foreground_color #fee801;
-@define-color theme_accent_color #39c4b6;
-@define-color warning_color #fee801;
-@define-color error_color #9a9f17;
-@define-color wm_icon_bg #00060e;
+/* cyberpunk Waybar colors */
 
-@define-color theme_secondary_accent_color #9a9f17;
+@define-color accent_color #39C4B6;
+@define-color background_color #00060E;
+@define-color entry_background_color rgba(0,6,14,0.8);
+@define-color foreground_color #FEE801;
+@define-color quaternary_accent_color rgba(254,232,1,1.0);
+@define-color secondary_accent_color #9A9F17;
+@define-color secondary_background_color rgba(0,6,14,1.0);
+@define-color tertiary_accent_color rgba(84,193,230,1.0);

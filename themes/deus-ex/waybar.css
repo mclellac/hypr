@@ -1,8 +1,11 @@
-@define-color theme_background_color #351409;
-@define-color theme_foreground_color #fff69f;
-@define-color theme_accent_color #d0902f;
-@define-color warning_color #fdd870;
-@define-color error_color #a15501;
-@define-color wm_icon_bg #a15501;
+/* deus-ex Waybar colors */
 
-@define-color theme_secondary_accent_color #a15501;
+@define-color accent_color #D0902F;
+@define-color background_color #351409;
+@define-color entry_background_color rgba(53,20,9,0.8);
+@define-color foreground_color #FFF69F;
+@define-color quaternary_accent_color rgba(255,246,159,1.0);
+@define-color secondary_accent_color #A15501;
+@define-color secondary_background_color rgba(53,20,9,1.0);
+@define-color tertiary_accent_color rgba(253,216,112,1.0);
+@define-color warning_color #FDD870;

@@ -1,8 +1,15 @@
-@define-color theme_background_color #121212;
-@define-color theme_foreground_color #EAEAEA;
-@define-color theme_accent_color #B91C1C;
-@define-color warning_color #FFC107;
-@define-color error_color #D35F5F;
-@define-color wm_icon_bg #333333;
+/* matte-black Waybar colors */
 
-@define-color theme_secondary_accent_color #d35f5f;
+@define-color accent_color #B91C1C;
+@define-color background_color #121212;
+@define-color entry_background_color rgba(138,138,141,0.3);
+@define-color extra_color_2 rgba(234,234,234,1.0);
+@define-color foreground_color #EAEAEA;
+@define-color icon_background_color #333333;
+@define-color quaternary_accent_color rgba(245,158,11,1.0);
+@define-color quinary_accent_color rgba(234,234,234,0.5);
+@define-color secondary_accent_color #D35F5F;
+@define-color secondary_background_color rgba(12,12,12,1.0);
+@define-color senary_accent_color #8A8A8D;
+@define-color tertiary_accent_color #F59E0B;
+@define-color warning_color #FFC107;

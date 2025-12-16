@@ -1,8 +1,24 @@
-@define-color theme_background_color #242424;
-@define-color theme_foreground_color #ffffff;
-@define-color theme_accent_color #78aeed;
-@define-color warning_color #ff7800;
-@define-color error_color #ed333b;
-@define-color wm_icon_bg #454545;
+/* adwaita-dark Waybar colors */
 
-@define-color theme_secondary_accent_color #62a0ea;
+@define-color accent_color #78AEED;
+@define-color background_color #242424;
+@define-color entry_background_color rgba(36,36,36,0.8);
+@define-color error_color #ED333B;
+@define-color extra_color_2 rgba(255,255,255,1.0);
+@define-color extra_color_4 #3584E4;
+@define-color extra_color_5 #1C71D8;
+@define-color extra_color_6 #DC8ADD;
+@define-color extra_color_7 #C061CB;
+@define-color extra_color_8 #9141AC;
+@define-color foreground_color #FFFFFF;
+@define-color icon_background_color #454545;
+@define-color info_color #99C1F1;
+@define-color quaternary_accent_color rgba(120,174,237,1.0);
+@define-color quinary_accent_color #FF7B63;
+@define-color secondary_accent_color #62A0EA;
+@define-color secondary_background_color rgba(36,36,36,1.0);
+@define-color selection_background_color #1E1E1E;
+@define-color senary_accent_color #C01C28;
+@define-color success_color #8FF0A4;
+@define-color tertiary_accent_color #F8E45C;
+@define-color warning_color #FF7800;

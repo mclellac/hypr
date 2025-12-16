@@ -1,8 +1,24 @@
-@define-color theme_background_color #faf4ed;
-@define-color theme_foreground_color #575279;
-@define-color theme_accent_color #88C0D0;
-@define-color warning_color #ea9d34;
-@define-color error_color #b4637a;
-@define-color wm_icon_bg #9893a5;
+/* rose-pine Waybar colors */
 
-@define-color theme_secondary_accent_color #907aa9;
+@define-color accent_color #88C0D0;
+@define-color background_color #FAF4ED;
+@define-color border_color #6E6A86;
+@define-color disabled_color #403D52;
+@define-color entry_background_color rgba(250, 244, 237,0.8);
+@define-color error_color #B4637A;
+@define-color extra_color_2 rgba(57,52,79,1.0);
+@define-color extra_color_4 #31748F;
+@define-color extra_color_5 #EB6F92;
+@define-color extra_color_6 #908CAA;
+@define-color foreground_color #575279;
+@define-color icon_background_color #9893A5;
+@define-color quaternary_accent_color rgba(136, 192, 208, 1.0);
+@define-color quinary_accent_color #EBBCBA;
+@define-color secondary_accent_color #907AA9;
+@define-color secondary_background_color rgba(250, 244, 237,1.0);
+@define-color selection_background_color #524F67;
+@define-color selection_foreground_color #F6C177;
+@define-color senary_accent_color #9CCFD8;
+@define-color success_color #C4A7E7;
+@define-color tertiary_accent_color #E0DEF4;
+@define-color warning_color #EA9D34;

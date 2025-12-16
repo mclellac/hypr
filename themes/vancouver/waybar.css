@@ -1,8 +1,16 @@
-@define-color theme_background_color #2a2a2a;
-@define-color theme_foreground_color #f0f0f0;
-@define-color theme_accent_color #a2d9ce;
-@define-color warning_color #f9e79f;
-@define-color error_color #f5b7b1;
-@define-color wm_icon_bg #aaaaaa;
+/* vancouver Waybar colors */
 
-@define-color theme_secondary_accent_color #a9cce3;
+@define-color accent_color #A2D9CE;
+@define-color background_color #2A2A2A;
+@define-color entry_background_color rgba(42, 42, 42, 0.8);
+@define-color error_color #F5B7B1;
+@define-color foreground_color #F0F0F0;
+@define-color icon_background_color #AAAAAA;
+@define-color quaternary_accent_color rgba(162, 217, 206, 1.0);
+@define-color quinary_accent_color #A3E4D7;
+@define-color secondary_accent_color #A9CCE3;
+@define-color secondary_background_color rgba(42, 42, 42, 1.0);
+@define-color selection_background_color #888888;
+@define-color senary_accent_color #F5CBA7;
+@define-color tertiary_accent_color rgba(240, 240, 240, 1.0);
+@define-color warning_color #F9E79F;

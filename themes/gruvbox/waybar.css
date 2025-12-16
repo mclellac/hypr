@@ -1,8 +1,30 @@
-@define-color theme_background_color #282828;
-@define-color theme_foreground_color #ebdbb2;
-@define-color theme_accent_color #fabd2f;
-@define-color warning_color #d8a657;
-@define-color error_color #ea6962;
-@define-color wm_icon_bg #655b53;
+/* gruvbox Waybar colors */
 
-@define-color theme_secondary_accent_color #7daea3;
+@define-color accent_color #FABD2F;
+@define-color background_color #282828;
+@define-color entry_background_color rgba(40,40,40,0.8);
+@define-color error_color #EA6962;
+@define-color extra_color_10 #A89984;
+@define-color extra_color_11 #4E5900;
+@define-color extra_color_12 #585858;
+@define-color extra_color_13 #D3869B;
+@define-color extra_color_14 #458588;
+@define-color extra_color_15 #B16286;
+@define-color extra_color_2 #701C45;
+@define-color extra_color_4 #FB4394;
+@define-color extra_color_5 #CC241D;
+@define-color extra_color_6 #6C71C4;
+@define-color extra_color_7 #98971A;
+@define-color extra_color_8 #A3A8F7;
+@define-color extra_color_9 #3D4070;
+@define-color foreground_color #EBDBB2;
+@define-color icon_background_color #655B53;
+@define-color info_color #83A598;
+@define-color quaternary_accent_color rgba(214, 153, 92, 1.0);
+@define-color quinary_accent_color rgba(212,190,152,1.0);
+@define-color secondary_accent_color #7DAEA3;
+@define-color secondary_background_color rgba(40,40,40,1.0);
+@define-color senary_accent_color #FB4934;
+@define-color success_color #B8BB26;
+@define-color tertiary_accent_color #D79921;
+@define-color warning_color #D8A657;

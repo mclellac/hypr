@@ -1,8 +1,27 @@
-@define-color theme_background_color #24273a;
-@define-color theme_foreground_color #c6d0f5;
-@define-color theme_accent_color #8caaee;
-@define-color warning_color #f9e2af;
-@define-color error_color #f38ba8;
-@define-color wm_icon_bg #585b70;
+/* catppuccin Waybar colors */
 
-@define-color theme_secondary_accent_color #89b4fa;
+@define-color accent_color #8CAAEE;
+@define-color background_color #24273A;
+@define-color border_color #737994;
+@define-color disabled_color #838BA7;
+@define-color entry_background_color rgba(24,24,36,0.8);
+@define-color error_color #F38BA8;
+@define-color extra_color_10 #F2D5CF;
+@define-color extra_color_2 #A6D189;
+@define-color extra_color_4 #EA999C;
+@define-color extra_color_5 #E5C890;
+@define-color extra_color_6 #99D1DB;
+@define-color extra_color_7 #85C1DC;
+@define-color extra_color_8 #E78284;
+@define-color extra_color_9 #CA9EE6;
+@define-color foreground_color #C6D0F5;
+@define-color icon_background_color #585B70;
+@define-color quaternary_accent_color rgba(205,214,244,1.0);
+@define-color quinary_accent_color #EF9F76;
+@define-color secondary_accent_color #89B4FA;
+@define-color secondary_background_color rgba(24,24,36,1.0);
+@define-color selection_background_color #51576D;
+@define-color senary_accent_color #BABBF1;
+@define-color success_color #81C8BE;
+@define-color tertiary_accent_color rgba(68, 157, 171, 1.0);
+@define-color warning_color #F9E2AF;

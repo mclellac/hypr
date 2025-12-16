@@ -1,8 +1,26 @@
-@define-color theme_background_color #1f1f28;
-@define-color theme_foreground_color #dcd7ba;
-@define-color theme_accent_color #dca561;
-@define-color warning_color #c0a36e;
-@define-color error_color #c34043;
-@define-color wm_icon_bg #727169;
+/* kanagawa Waybar colors */
 
-@define-color theme_secondary_accent_color #7e9cd8;
+@define-color accent_color #DCA561;
+@define-color background_color #1F1F28;
+@define-color entry_background_color rgba(31,31,40,0.8);
+@define-color error_color #C34043;
+@define-color extra_color_10 #957FBB;
+@define-color extra_color_2 #98BB6C;
+@define-color extra_color_4 #E6C384;
+@define-color extra_color_5 #7FB4CA;
+@define-color extra_color_6 #7E9CDB;
+@define-color extra_color_7 #658594;
+@define-color extra_color_8 #7AA89F;
+@define-color extra_color_9 #9CABCA;
+@define-color foreground_color #DCD7BA;
+@define-color icon_background_color #727169;
+@define-color info_color #FF9E3B;
+@define-color quaternary_accent_color rgba(220,215,186,1.0);
+@define-color quinary_accent_color #938AA9;
+@define-color secondary_accent_color #7E9CD8;
+@define-color secondary_background_color rgba(31,31,40,1.0);
+@define-color selection_background_color #223249;
+@define-color senary_accent_color #E82424;
+@define-color success_color #FF5D62;
+@define-color tertiary_accent_color rgba(126, 156, 216, 1.0);
+@define-color warning_color #C0A36E;

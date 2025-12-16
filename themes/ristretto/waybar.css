@@ -1,8 +1,26 @@
-@define-color theme_background_color #2c2525;
-@define-color theme_foreground_color #e6d9db;
-@define-color theme_accent_color #fabd2f;
-@define-color warning_color #f9cc6c;
-@define-color error_color #fd6883;
-@define-color wm_icon_bg #403e41;
+/* ristretto Waybar colors */
 
-@define-color theme_secondary_accent_color #f38d70;
+@define-color accent_color #FABD2F;
+@define-color background_color #2C2525;
+@define-color disabled_color #72696A;
+@define-color entry_background_color rgba(44,37,37,0.8);
+@define-color error_color #FD6883;
+@define-color extra_color_2 rgba(44,37,37,1.0);
+@define-color extra_color_4 #FCE2A3;
+@define-color extra_color_5 #85DACC;
+@define-color extra_color_6 #5B4A45;
+@define-color extra_color_7 #C5C6F0;
+@define-color extra_color_8 #A8A9EB;
+@define-color extra_color_9 #FEB5C7;
+@define-color foreground_color #E6D9DB;
+@define-color icon_background_color #403E41;
+@define-color info_color #B3E8DD;
+@define-color quaternary_accent_color rgba(230,217,219,1.0);
+@define-color quinary_accent_color #FD6A85;
+@define-color secondary_accent_color #F38D70;
+@define-color secondary_background_color #2C2421;
+@define-color selection_background_color #3D2F2A;
+@define-color senary_accent_color #ADDA78;
+@define-color success_color #C5E2A3;
+@define-color tertiary_accent_color rgba(253,104,131,1.0);
+@define-color warning_color #F9CC6C;
