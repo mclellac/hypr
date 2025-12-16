@@ -1,5 +1,5 @@
 @import url("file:///$HOME/.config/hypr/themes/hypr-default/style.css");
 
-@define-color window_bg_color alpha(#00060e, 0.95);
-@define-color accent_bg_color #39c4b6;
-@define-color theme_fg_color #fee801;
+@define-color window_bg_color alpha(#020202, 0.95);
+@define-color accent_bg_color #fce803;
+@define-color theme_fg_color #e0e0e0;
