@@ -1,0 +1,30 @@
+[colors]
+[colors.primary]
+background = '#1b2425'
+foreground = '#7ab9a9'
+
+# Normal colors
+[colors.normal]
+black = '#2D3748'
+red = '#F56565'
+green = '#3edf81'
+yellow = '#F6AD55'
+blue = '#63B3ED'
+magenta = '#4FD1C5'
+cyan = '#4FD1C5'
+white = '#E2E8F0'
+
+# Bright colors
+[colors.bright]
+black = '#4A5568'
+red = '#EF4444'
+green = '#38A169'
+yellow = '#F6AD55'
+blue = '#4299E1'
+magenta = '#4FD1C5'
+cyan = '#4FD1C5'
+white = '#F7FAFC'
+
+[colors.selection]
+background = '#2C5282'
+foreground = '#E2E8F0'

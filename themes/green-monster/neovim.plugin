@@ -1,0 +1,12 @@
+return {
+  "scottmckendry/cyberdream.nvim",
+  name = "amateur",
+  lazy = false,
+  priority = 1000,
+  config = function()
+    require("cyberdream").setup({
+      italic_comments = false,
+    })
+    vim.cmd("colorscheme cyberdream")
+  end,
+}
