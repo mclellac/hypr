@@ -1,8 +1,8 @@
-@define-color theme_background_color #282828;
-@define-color theme_foreground_color #ebdbb2;
-@define-color theme_accent_color #fabd2f;
-@define-color warning_color #d8a657;
-@define-color error_color #ea6962;
-@define-color wm_icon_bg #655b53;
-
-@define-color theme_secondary_accent_color #7daea3;
+/* Theme Colors */
+@define-color background_color #282828;
+@define-color foreground_color #EBDBB2;
+@define-color accent_color #FABD2F;
+@define-color warning_color #D8A657;
+@define-color error_color #EA6962;
+@define-color selection_background_color #655B53;
+@define-color secondary_accent_color #7DAEA3;
