@@ -15,22 +15,22 @@
 
 @keyframes blink-warning {
     70% {
-        color: @wm_icon_bg;
+        color: @selection_background_color;
     }
 
     to {
-        color: @wm_icon_bg;
+        color: @selection_background_color;
         background-color: @warning_color;
     }
 }
 
 @keyframes blink-critical {
     70% {
-        color: @wm_icon_bg;
+        color: @selection_background_color;
     }
 
     to {
-        color: @wm_icon_bg;
+        color: @selection_background_color;
         background-color: @error_color;
     }
 }
@@ -51,8 +51,8 @@
 
 /* The whole bar */
 window#waybar {
-    background: @theme_background_color;
-    color: @theme_foreground_color;
+    background: @background_color;
+    color: @foreground_color;
     font-size: 17px;
 }
 
@@ -84,7 +84,7 @@ window#waybar {
 #custom-playerctl,
 #privacy,
 #custom-power {
-    color: @theme_foreground_color;
+    color: @foreground_color;
     margin-left: 2px;
     margin-right: 2px;
     padding-left: 5px;
@@ -139,13 +139,13 @@ window#waybar {
 
 #custom-hyper,
 #workspaces button.active {
-    color: @theme_accent_color;
-    background-color: @theme_background_color;
+    color: @accent_color;
+    background-color: @background_color;
 }
 
 #clock {
-    color: @theme_background_color;
-    background-color: @theme_accent_color;
+    color: @background_color;
+    background-color: @accent_color;
     font-weight: bold;
     margin-left: 0;
     margin-right: 0;
@@ -155,8 +155,8 @@ window#waybar {
 }
 
 #custom-weather {
-    color: @theme_background_color;
-    background-color: @theme_secondary_accent_color;
+    color: @background_color;
+    background-color: @secondary_accent_color;
     font-weight: bold;
     margin-left: 0;
     margin-right: 0;
@@ -219,7 +219,7 @@ window#waybar {
 }
 
 #submap {
-    background: @theme_background_color;
+    background: @background_color;
 }
 
 #network.disconnected {
@@ -238,15 +238,15 @@ window#waybar {
     /* border-top: 2px solid transparent; */
     /* To compensate for the top border and still have vertical centering */
     margin-right: 5px;
-    color: @theme_foreground_color;
+    color: @foreground_color;
 }
 
 #workspaces button.active {
-    color: @theme_accent_color;
+    color: @accent_color;
 }
 
 #workspaces button.focused {
-    border-color: @theme_accent_color;
+    border-color: @accent_color;
 }
 
 #workspaces button.urgent {
@@ -255,7 +255,7 @@ window#waybar {
 }
 
 #workspaces button:hover {
-    color: @theme_accent_color;
+    color: @accent_color;
 }
 
 #bluetooth.disabled {
@@ -263,24 +263,24 @@ window#waybar {
 }
 
 #privacy {
-    color: @theme_accent_color;
+    color: @accent_color;
 }
 
 #idle_inhibitor.activated {
-    background-color: @theme_accent_color;
-    color: @theme_background_color;
+    background-color: @accent_color;
+    color: @background_color;
 }
 
 tooltip {
   border-radius: 12px;
   padding: 3px;
   margin: 3px;
-  border: 2px solid @theme_accent_color;
-  background-color: @theme_background_color;
+  border: 2px solid @accent_color;
+  background-color: @background_color;
 }
 
 tooltip label {
   padding: 10px;
   margin: 10px;
-  color: @theme_foreground_color;
+  color: @foreground_color;
 }
