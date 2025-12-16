@@ -1,45 +1,26 @@
-# Rosé Pine Palette
+# Rose-pine Palette
 
 | Name | Hex | Description |
 |---|---|---|
-| `base` | #faf4ed | Alacritty Background, btop Background, Waybar Background |
-| `surface` | #fffaf3 | Alacritty Hints Background |
-| `overlay` | #f2e9e1 | Alacritty Search Matches Background |
-| `muted` | #9893a5 | Alacritty Bright Black |
-| `subtle` | #797593 | Alacritty Dim Foreground |
-| `text` | #575279 | Alacritty Foreground, Hyprland Active Border, Waybar Foreground |
-| `love` | #b4637a | Alacritty Red |
-| `gold` | #ea9d34 | Alacritty Yellow |
-| `rose` | #d7827e | Alacritty Cyan |
-| `pine` | #286983 | Alacritty Green |
-| `foam` | #9ccfd8 | btop Graph Text |
-| `iris` | #907aa9 | Alacritty Magenta |
-| `highlight` | #88C0D0 | Walker Selected Text, Waybar Accent, Hyprlock Check Color |
-| `sky` | #56949f | Alacritty Blue |
-| `selection` | #dfdad9 | Alacritty Selection Background |
-| `cursor` | #cecacd | Alacritty Cursor |
-| `btop_subtle` | #908caa | btop Title |
-| `btop_hi_fg` | #e0def4 | btop Highlight |
-| `btop_selected_bg` | #524f67 | btop Selected Background |
-| `btop_selected_fg` | #f6c177 | btop Selected Foreground |
-| `btop_inactive_fg` | #403d52 | btop Inactive Foreground |
-| `btop_proc_misc` | #c4a7e7 | btop Proc Misc |
-| `btop_rose` | #ebbcba | btop Rose |
-| `btop_pine` | #31748f | btop Pine |
-| `btop_love` | #eb6f92 | btop Love |
-| `btop_muted` | #6e6a86 | btop Muted |
-| `kitty_bg` | #191724 | Kitty Background (dark theme) |
-| `kitty_fg` | #e0def4 | Kitty Foreground (dark theme) |
-| `kitty_selection_bg` | #403d52 | Kitty Selection Background (dark theme) |
-| `kitty_url` | #c4a7e7 | Kitty URL Color (dark theme) |
-| `kitty_cursor` | #524f67 | Kitty Cursor (dark theme) |
-| `kitty_black` | #26233a | Kitty Black (dark theme) |
-| `kitty_bright_black` | #6e6a86 | Kitty Bright Black (dark theme) |
-| `kitty_red` | #eb6f92 | Kitty Red (dark theme) |
-| `kitty_green` | #31748f | Kitty Green (dark theme) |
-| `kitty_yellow` | #f6c177 | Kitty Yellow (dark theme) |
-| `kitty_blue` | #9ccfd8 | Kitty Blue (dark theme) |
-| `kitty_magenta` | #c4a7e7 | Kitty Magenta (dark theme) |
-| `kitty_cyan` | #ebbcba | Kitty Cyan (dark theme) |
-| `hyprlock_outer` | rgba(57,52,79,1.0) | Hyprlock Outer Color |
-| `hyprlock_inner` | rgba(250, 244, 237,0.8) | Hyprlock Inner Color |
+| `accent_color` | #88C0D0 | Waybar Accent, Walker selected-text |
+| `background_color` | #FAF4ED | Waybar Background, btop main_bg, Walker base |
+| `btop_cpu_box` | #EBBCBA | btop cpu_box, btop temp_start, btop cpu_mid, btop used_start, btop used_mid, btop used_end, btop upload_start |
+| `btop_div_line` | #6E6A86 | btop div_line |
+| `btop_graph_text` | #9CCFD8 | btop graph_text, btop meter_bg, btop download_mid, btop download_end, btop process_mid, btop process_end |
+| `btop_hi_fg` | #E0DEF4 | btop hi_fg |
+| `btop_inactive_fg` | #403D52 | btop inactive_fg |
+| `btop_mem_box` | #31748F | btop mem_box, btop available_start, btop available_mid, btop available_end, btop download_start, btop process_start |
+| `btop_proc_box` | #EB6F92 | btop proc_box, btop temp_end, btop cpu_end, btop free_start, btop free_mid, btop free_end, btop upload_mid, btop upload_end |
+| `btop_proc_misc` | #C4A7E7 | btop proc_misc, btop net_box, btop cached_start, btop cached_mid, btop cached_end |
+| `btop_selected_bg` | #524F67 | btop selected_bg |
+| `btop_selected_fg` | #F6C177 | btop selected_fg, btop temp_mid, btop cpu_start |
+| `btop_title` | #908CAA | btop title |
+| `error_color` | #B4637A | Waybar |
+| `foreground_color` | #575279 | Waybar Foreground, btop main_fg, Walker text, Walker border |
+| `hyprlock_check_color` | rgba(136, 192, 208, 1.0) | Hyprlock check_color |
+| `hyprlock_color` | rgba(250, 244, 237,1.0) | Hyprlock color |
+| `hyprlock_inner_color` | rgba(250, 244, 237,0.8) | Hyprlock inner_color |
+| `hyprlock_outer_color` | rgba(57,52,79,1.0) | Hyprlock outer_color, Hyprlock font_color |
+| `secondary_accent_color` | #907AA9 | Waybar |
+| `warning_color` | #EA9D34 | Waybar |
+| `wm_icon_bg` | #9893A5 | Waybar |

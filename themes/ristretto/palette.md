@@ -2,36 +2,27 @@
 
 | Name | Hex | Description |
 |---|---|---|
-| `base` | #2c2525 | Alacritty Background, Kitty Background, Waybar Background |
-| `surface` | #2c2421 | btop Background |
-| `overlay` | #3d2f2a | btop Selected Background |
-| `muted` | #403e41 | Alacritty Selection Background |
-| `subtle` | #5b4a45 | btop Box Outline |
-| `text` | #e6d9db | Alacritty Foreground, Kitty Foreground, Waybar Foreground |
-| `love` | #fd6883 | Alacritty Red, Kitty Red, btop Highlight |
-| `gold` | #f9cc6c | Alacritty Yellow, Kitty Yellow |
-| `rose` | #ff8297 | Alacritty Bright Red, Kitty Bright Red |
-| `pine` | #adda78 | Alacritty Green, Kitty Green, btop Proc Misc |
-| `foam` | #c8e292 | Alacritty Bright Green, Kitty Bright Green |
-| `iris` | #f38d70 | Alacritty Blue, Kitty URL Color |
-| `highlight` | #fabd2f | Hyprland Active Border, Waybar Accent |
-| `sky` | #f8a788 | Alacritty Bright Blue, Kitty Bright Blue |
-| `cyan` | #85dacc | Alacritty Cyan, Kitty Cyan |
-| `aqua` | #9bf1e1 | Alacritty Bright Cyan, Kitty Bright Cyan |
-| `mauve` | #a8a9eb | Alacritty Magenta, Kitty Magenta |
-| `pink` | #bebffd | Alacritty Bright Magenta, Kitty Bright Magenta |
-| `bright_yellow` | #fcd675 | Alacritty Bright Yellow, Kitty Bright Yellow |
-| `bright_white` | #f1e5e7 | Alacritty Bright White, Kitty Bright White |
-| `white` | #e6d9db | Alacritty White, Kitty White |
-| `black` | #72696a | Alacritty Black, Kitty Black, btop Inactive Foreground |
-| `bright_black` | #948a8b | Alacritty Bright Black, Kitty Bright Black |
-| `cursor` | #c3b7b8 | Alacritty Cursor, SwayOSD Border |
-| `temp_end` | #fd6a85 | btop Temp End |
-| `free_end` | #c5e2a3 | btop Free End |
-| `cached_end` | #b3e8dd | btop Cached End |
-| `available_end` | #fce2a3 | btop Available End |
-| `used_end` | #feb5c7 | btop Used End |
-| `download_end` | #c5c6f0 | btop Download End |
-| `hyprlock_outer` | rgba(230,217,219,1.0) | Hyprlock Outer Color |
-| `hyprlock_check` | rgba(253,104,131,1.0) | Hyprlock Check Color |
-| `hyprlock_inner` | rgba(44,37,37,0.8) | Hyprlock Inner Color |
+| `accent_color` | #FABD2F | Waybar Accent, Walker selected-text |
+| `background_color` | #2C2525 | Waybar Background, Walker base |
+| `btop_available_end` | #FCE2A3 | btop available_end |
+| `btop_cached_end` | #B3E8DD | btop cached_end |
+| `btop_cached_mid` | #85DACC | btop cached_mid |
+| `btop_cpu_box` | #5B4A45 | btop cpu_box, btop mem_box, btop net_box, btop proc_box, btop free_start, btop cached_start, btop available_start, btop used_start |
+| `btop_download_end` | #C5C6F0 | btop download_end |
+| `btop_free_end` | #C5E2A3 | btop free_end |
+| `btop_inactive_fg` | #72696A | btop inactive_fg, btop div_line |
+| `btop_main_bg` | #2C2421 | btop main_bg |
+| `btop_proc_misc` | #ADDA78 | btop proc_misc, btop cpu_start, btop free_mid |
+| `btop_selected_bg` | #3D2F2A | btop selected_bg, btop download_start, btop upload_start |
+| `btop_temp_end` | #FD6A85 | btop temp_end, btop used_mid, btop upload_mid |
+| `btop_temp_start` | #A8A9EB | btop temp_start, btop download_mid |
+| `btop_used_end` | #FEB5C7 | btop used_end, btop upload_end |
+| `error_color` | #FD6883 | Waybar, btop hi_fg, btop cpu_end |
+| `foreground_color` | #E6D9DB | Waybar Foreground, btop main_fg, btop title, btop selected_fg, Walker text, Walker border |
+| `hyprlock_check_color` | rgba(253,104,131,1.0) | Hyprlock check_color |
+| `hyprlock_color` | rgba(44,37,37,1.0) | Hyprlock color |
+| `hyprlock_inner_color` | rgba(44,37,37,0.8) | Hyprlock inner_color |
+| `hyprlock_outer_color` | rgba(230,217,219,1.0) | Hyprlock outer_color, Hyprlock font_color |
+| `secondary_accent_color` | #F38D70 | Waybar, btop temp_mid |
+| `warning_color` | #F9CC6C | Waybar, btop cpu_mid, btop available_mid |
+| `wm_icon_bg` | #403E41 | Waybar |

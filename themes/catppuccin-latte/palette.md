@@ -1,35 +1,26 @@
-# Catppuccin Latte Palette
+# Catppuccin-latte Palette
 
 | Name | Hex | Description |
 |---|---|---|
-| `base` | #eff1f5 | Alacritty, btop, Kitty, Waybar Background |
-| `surface` | #bcc0cc | Alacritty Black, btop Selected Background |
-| `overlay` | #acb0be | Alacritty Bright Black, Kitty White |
-| `muted` | #9ca0b0 | btop Div Line |
-| `subtle` | #8c8fa1 | Alacritty Dim Foreground |
-| `text` | #4c4f69 | Alacritty, Waybar Foreground |
-| `love` | #d20f39 | Alacritty Red |
-| `gold` | #df8e1d | Alacritty Yellow |
-| `rose` | #dc8a78 | Kitty Selection Background |
-| `pine` | #40a02b | Alacritty Green |
-| `foam` | #40a02b | btop Green |
-| `iris` | #1e66f5 | Alacritty, Hyprland, Waybar Blue |
-| `highlight` | #1e66f5 | btop Highlight |
-| `sky` | #04a5e5 | btop Sky |
-| `cyan` | #179299 | Alacritty Cyan |
-| `aqua` | #179299 | btop Teal |
-| `mauve` | #ea76cb | Alacritty Magenta |
-| `pink` | #8839ef | btop Mauve |
-| `bright_yellow` | #df8e1d | Alacritty Bright Yellow |
-| `bright_white` | #6c6f85 | Alacritty Bright White |
-| `url` | #dc8a78 | Kitty URL Color |
-| `white` | #5c5f77 | Alacritty White, Kitty Black |
-| `peach` | #fe640b | Alacritty Indexed Color 16 |
-| `flamingo` | #dc8a78 | Alacritty Indexed Color 17 |
-| `cursor` | #7287fd | Alacritty VI Mode Cursor |
-| `maroon` | #e64553 | btop Maroon |
-| `sapphire` | #209fb5 | btop Sapphire |
-| `hyprlock_outer` | rgba(30,102,245,1.0) | Hyprlock Outer Color |
-| `hyprlock_check` | rgba(4,165,229,1.0) | Hyprlock Check Color |
-| `hyprlock_inner` | rgba(239,241,245,0.8) | Hyprlock Inner Color |
-| `hyprlock_font` | rgba(76,79,105,1.0) | Hyprlock Font Color |
+| `accent_color` | #1E66F5 | Waybar Accent, btop hi_fg, btop selected_fg, btop proc_box, btop free_end, btop cached_mid, Walker selected-text |
+| `background_color` | #EFF1F5 | Waybar Background, btop main_bg, Walker base |
+| `btop_available_start` | #FE640B | btop available_start, btop download_start |
+| `btop_cpu_box` | #8839EF | btop cpu_box, btop free_start, btop process_end |
+| `btop_cpu_end` | #7287FD | btop cpu_end, btop free_mid, btop cached_end, btop process_mid |
+| `btop_cpu_mid` | #209FB5 | btop cpu_mid, btop cached_start, btop process_start |
+| `btop_cpu_start` | #179299 | btop cpu_start, btop used_mid, btop upload_mid |
+| `btop_graph_text` | #DC8A78 | btop graph_text, btop proc_misc |
+| `btop_inactive_fg` | #8C8FA1 | btop inactive_fg |
+| `btop_net_box` | #E64553 | btop net_box, btop available_mid, btop download_mid |
+| `btop_selected_bg` | #BCC0CC | btop selected_bg, btop meter_bg |
+| `btop_used_end` | #04A5E5 | btop used_end, btop upload_end |
+| `error_color` | #D20F39 | Waybar, btop temp_end, btop available_end, btop download_end |
+| `foreground_color` | #4C4F69 | Waybar Foreground, btop main_fg, btop title, Walker text, Walker border |
+| `hyprlock_check_color` | rgba(4,165,229,1.0) | Hyprlock check_color |
+| `hyprlock_color` | rgba(239,241,245,1.0) | Hyprlock color |
+| `hyprlock_font_color` | rgba(76,79,105,1.0) | Hyprlock font_color |
+| `hyprlock_inner_color` | rgba(239,241,245,0.8) | Hyprlock inner_color |
+| `hyprlock_outer_color` | rgba(30,102,245,1.0) | Hyprlock outer_color |
+| `secondary_accent_color` | #40A02B | Waybar, btop mem_box, btop temp_start, btop used_start, btop upload_start |
+| `warning_color` | #DF8E1D | Waybar, btop temp_mid |
+| `wm_icon_bg` | #9CA0B0 | Waybar, btop div_line |
