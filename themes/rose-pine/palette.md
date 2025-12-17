@@ -21,21 +21,21 @@
 | `secondary_accent_color` | #907aa9 | Waybar |
 | `selection_background_color` | #9893a5 | Waybar |
 | `term_color0` | #26233a | Kitty |
-| `term_color1` | #eb6f92 | Kitty, btop cpu_end, btop free_end, btop free_mid, btop free_start, btop proc_box, btop temp_end, btop upload_end, btop upload_mid |
-| `term_color10` | #31748f | Kitty, btop available_end, btop available_mid, btop available_start, btop download_start, btop mem_box, btop process_start |
-| `term_color11` | #f6c177 | Kitty, btop cpu_start, btop selected_fg, btop temp_mid |
-| `term_color12` | #9ccfd8 | Kitty, btop download_end, btop download_mid, btop graph_text, btop meter_bg, btop process_end, btop process_mid |
-| `term_color13` | #c4a7e7 | Kitty, btop cached_end, btop cached_mid, btop cached_start, btop net_box, btop proc_misc |
-| `term_color14` | #ebbcba | Kitty, btop cpu_box, btop cpu_mid, btop temp_start, btop upload_start, btop used_end, btop used_mid, btop used_start |
+| `term_color1` | #eb6f92 | Kitty, btop cpu_end, btop free_end, btop free_m... |
+| `term_color10` | #31748f | Kitty, btop available_end, btop available_mid,... |
+| `term_color11` | #f6c177 | Kitty, btop cpu_start, btop selected_fg, btop ... |
+| `term_color12` | #9ccfd8 | Kitty, btop download_end, btop download_mid, b... |
+| `term_color13` | #c4a7e7 | Kitty, btop cached_end, btop cached_mid, btop ... |
+| `term_color14` | #ebbcba | Kitty, btop cpu_box, btop cpu_mid, btop temp_s... |
 | `term_color15` | #e0def4 | Kitty, btop hi_fg |
-| `term_color2` | #31748f | Kitty, btop available_end, btop available_mid, btop available_start, btop download_start, btop mem_box, btop process_start |
-| `term_color3` | #f6c177 | Kitty, btop cpu_start, btop selected_fg, btop temp_mid |
-| `term_color4` | #9ccfd8 | Kitty, btop download_end, btop download_mid, btop graph_text, btop meter_bg, btop process_end, btop process_mid |
-| `term_color5` | #c4a7e7 | Kitty, btop cached_end, btop cached_mid, btop cached_start, btop net_box, btop proc_misc |
-| `term_color6` | #ebbcba | Kitty, btop cpu_box, btop cpu_mid, btop temp_start, btop upload_start, btop used_end, btop used_mid, btop used_start |
+| `term_color2` | #31748f | Kitty, btop available_end, btop available_mid, ... |
+| `term_color3` | #f6c177 | Kitty, btop cpu_start, btop selected_fg, btop t... |
+| `term_color4` | #9ccfd8 | Kitty, btop download_end, btop download_mid, bt... |
+| `term_color5` | #c4a7e7 | Kitty, btop cached_end, btop cached_mid, btop c... |
+| `term_color6` | #ebbcba | Kitty, btop cpu_box, btop cpu_mid, btop temp_st... |
 | `term_color7` | #e0def4 | Kitty, btop hi_fg |
 | `term_color8` | #6e6a86 | Kitty, btop div_line |
-| `term_color9` | #eb6f92 | Kitty, btop cpu_end, btop free_end, btop free_mid, btop free_start, btop proc_box, btop temp_end, btop upload_end, btop upload_mid |
+| `term_color9` | #eb6f92 | Kitty, btop cpu_end, btop free_end, btop free_m... |
 | `terminal_background_color` | #191724 | Kitty |
 | `terminal_foreground_color` | #e0def4 | Kitty, btop hi_fg |
 | `title_color` | #908caa | btop title |
@@ -43,5 +43,5 @@
 | `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
 | `unknown_39344f` | #39344f | Detected in hyprlock.conf (from rgb/rgba) |
 | `unknown_faf4edcc` | #faf4edcc | Detected in hyprlock.conf (from rgb/rgba) |
-| `url_color` | #c4a7e7 | URL Color, btop cached_end, btop cached_mid, btop cached_start, btop net_box, btop proc_misc |
+| `url_color` | #c4a7e7 | URL Color, btop cached_end, btop cached_mid, btop... |
 | `warning_color` | #ea9d34 | Waybar |

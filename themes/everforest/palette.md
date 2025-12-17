@@ -2,28 +2,28 @@
 
 | Name | Hex | Description |
 |---|---|---|
-| `accent_color` | #dbbc7f | Waybar, btop available_mid, btop cpu_mid, btop free_mid, btop selected_fg, btop temp_mid, btop upload_start, btop used_mid |
+| `accent_color` | #dbbc7f | Waybar, btop available_mid, btop cpu_mid, btop... |
 | `background_color` | #2d353b | Waybar, btop inactive_fg, btop main_bg |
 | `cached_mid_color` | #83c092 | btop cached_mid, btop download_mid |
 | `cursor_color` | #d8caac | Cursor |
 | `cursor_text_color` | #323d43 | Cursor Text |
-| `error_color` | #e67e80 | Waybar, btop hi_fg, btop process_mid, btop upload_end |
-| `foreground_color` | #d3c6aa | Waybar, btop graph_text, btop main_fg, btop title |
+| `error_color` | #e67e80 | Waybar, btop hi_fg, btop process_mid, btop uplo... |
+| `foreground_color` | #d3c6aa | Waybar, btop graph_text, btop main_fg, bto... |
 | `magenta` | #d699b6 | Detected in alacritty.toml |
-| `secondary_accent_color` | #7fbbb3 | Waybar, btop cached_start, btop download_end |
-| `selected_bg_color` | #3d484d | btop cpu_box, btop div_line, btop mem_box, btop net_box, btop proc_box, btop selected_bg |
+| `secondary_accent_color` | #7fbbb3 | Waybar, btop cached_start, btop down... |
+| `selected_bg_color` | #3d484d | btop cpu_box, btop div_line, btop mem_box... |
 | `selection_background` | #505a60 | Detected in kitty.conf |
 | `selection_background_color` | #475258 | Waybar |
-| `temp_end_color` | #f85552 | btop available_start, btop cpu_end, btop free_start, btop process_end, btop temp_end, btop used_end |
+| `temp_end_color` | #f85552 | btop available_start, btop cpu_end, btop fre... |
 | `term_color0` | #3c474d | Kitty |
 | `term_color1` | #e68183 | Kitty |
-| `term_color10` | #a7c080 | Alacritty, Kitty, btop available_end, btop cached_end, btop cpu_start, btop download_start, btop free_end, btop proc_misc, btop process_start, btop temp_start, btop used_start |
+| `term_color10` | #a7c080 | Alacritty, Kitty, btop available_end, btop cac... |
 | `term_color11` | #d9bb80 | Kitty |
 | `term_color12` | #83b6af | Kitty |
 | `term_color13` | #d39bb6 | Kitty |
 | `term_color14` | #87c095 | Kitty |
 | `term_color15` | #868d80 | Kitty |
-| `term_color2` | #a7c080 | Alacritty, Kitty, btop available_end, btop cached_end, btop cpu_start, btop download_start, btop free_end, btop proc_misc, btop process_start, btop temp_start, btop used_start |
+| `term_color2` | #a7c080 | Alacritty, Kitty, btop available_end, btop cach... |
 | `term_color3` | #d9bb80 | Kitty |
 | `term_color4` | #83b6af | Kitty |
 | `term_color5` | #d39bb6 | Kitty |
@@ -37,4 +37,4 @@
 | `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
 | `unknown_2d353bcc` | #2d353bcc | Detected in hyprlock.conf (from rgb/rgba) |
 | `upload_mid_color` | #e69875 | btop upload_mid |
-| `warning_color` | #dbbc7f | Waybar, btop available_mid, btop cpu_mid, btop free_mid, btop selected_fg, btop temp_mid, btop upload_start, btop used_mid |
+| `warning_color` | #dbbc7f | Waybar, btop available_mid, btop cpu_mid, bto... |
