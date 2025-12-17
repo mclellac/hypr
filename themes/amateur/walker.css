@@ -1,33 +1,53 @@
+@define-color base #2c573e;
+@define-color text #E2E8F0;
+@define-color border #63edcd;
+@define-color selected-text #00ffb7;
+
+.box-wrapper {
+  box-shadow:
+    0 19px 38px rgba(0, 0, 0, 0.3),
+    0 15px 12px rgba(0, 0, 0, 0.22);
+  background: @base;
+  padding: 20px;
+  border-radius: 10px;
+  border: 3px solid #0ec073;
+}
+
+#window {
+  background: transparent;
+}
+
 #search {
-  border-radius: 12px;
-  background-color: #08433b;
-  color: #E2E8F0;
-  border-color: #63edcd;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+  border-bottom: 2px solid @border;
+  color: @text;
+  background: transparent;
 }
 
 #search.placeholder {
-  color: #4A5568;
-}
-
-#box {
-  background-color: #08433b;
+  color: alpha(@text, 0.5);
 }
 
 #entry {
-  color: #E2E8F0;
+  color: @text;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 #entry:selected {
-  background-color: #08433b;
-}
-
-#entry.activation {
-  background-color: #08433b;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: none;
+  border-radius: 5px;
+  color: @selected-text;
 }
 
 #password {
-  border-radius: 12px;
-  background-color: #08433b;
-  color: #E2E8F0;
-  border-color: #63edcd;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+  border-bottom: 2px solid @border;
+  color: @text;
+  background: transparent;
 }
