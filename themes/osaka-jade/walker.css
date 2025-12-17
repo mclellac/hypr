@@ -4,15 +4,3 @@
 @define-color border #214237;
 @define-color foreground #11221C;
 @define-color background #11221C;
-@define-color window_bg_color alpha(#11221C, 0.95);
-@define-color accent_bg_color #71CEAD;
-
-.box-wrapper {
-  box-shadow:
-    0 19px 38px rgba(0, 0, 0, 0.3),
-    0 15px 12px rgba(0, 0, 0, 0.22);
-  background: @window_bg_color;
-  padding: 20px;
-  border-radius: 10px;
-  border: 3px solid @border;
-}
