@@ -2,7 +2,7 @@
 
 | Name | Hex | Description |
 |---|---|---|
-| `accent_color` | #e1b55e | Waybar, btop temp_mid |
+| `accent_color` | #71cead | Hyprland active border (inferred) |
 | `active_border_color` | #71cead | Hyprland active border |
 | `background_color` | #11221c | Waybar |
 | `border-color` | #214237 | Detected in mako.ini, walker.css |
@@ -15,7 +15,7 @@
 | `cursor_text_color` | #000000 | Cursor Text |
 | `download_end_color` | #215866 | btop download_end, btop upload_start |
 | `download_mid_color` | #61949a | btop download_mid |
-| `error_color` | #ff5345 | Waybar |
+| `error_color` | #ff5345 | Waybar (Alacritty Red) |
 | `foreground_color` | #e6d8ba | Waybar |
 | `graph_text_color` | #e6d8ba | btop graph_text, btop proc_misc |
 | `green` | #143614 | Detected in alacritty.toml |
@@ -25,10 +25,10 @@
 | `main_fg_color` | #f7e8b2 | btop main_fg |
 | `process_mid_color` | #d0d494 | btop process_mid |
 | `process_start_color` | #72cfa3 | btop process_start |
-| `secondary_accent_color` | #509475 | Waybar |
+| `secondary_accent_color` | #509475 | Waybar (Alacritty Blue/Teal) |
 | `selected_bg_color` | #364538 | btop selected_bg |
 | `selected_fg_color` | #deb266 | btop selected_fg |
-| `selection_background_color` | #53685b | Waybar |
+| `selection_background_color` | #53685b | Waybar (Kitty color8) |
 | `temp_end_color` | #dbb05c | btop temp_end |
 | `temp_start_color` | #bfd99a | btop temp_start |
 | `term_color0` | #23372b | Alacritty, Kitty |
@@ -56,4 +56,4 @@
 | `unknown_83a298` | #83a298 | Detected in hyprlock.conf (from rgb/rgba) |
 | `unknown_a7ac84` | #a7ac84 | Detected in hyprlock.conf (from rgb/rgba) |
 | `upload_mid_color` | #91c080 | btop upload_mid |
-| `warning_color` | #e5c736 | Waybar |
+| `warning_color` | #e5c736 | Waybar (Alacritty Yellow) |
