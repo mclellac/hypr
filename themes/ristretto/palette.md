@@ -6,6 +6,7 @@
 | `available_end_color` | #fce2a3 | btop available_end |
 | `background_color` | #2c2525 | Waybar |
 | `cached_end_color` | #b3e8dd | btop cached_end |
+| `chromium_frame_color` | #25211e | Detected in chromium.theme |
 | `cpu_box_color` | #5b4a45 | btop available_start, btop cached_start, btop cpu_box, btop free_start, btop mem_box, btop net_box, btop proc_box, btop used_start |
 | `cursor_color` | #c3b7b8 | Cursor |
 | `cursor_text_color` | #2c2525 | Cursor Text |
@@ -36,6 +37,9 @@
 | `term_color9` | #ff8297 | Alacritty, Kitty |
 | `terminal_background_color` | #2c2525 | Alacritty, Kitty |
 | `terminal_foreground_color` | #e6d9db | Alacritty, Kitty, btop main_fg, btop selected_fg, btop title |
+| `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
+| `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_2c2525cc` | #2c2525cc | Detected in hyprlock.conf (from rgb/rgba) |
 | `url_color` | #f38d70 | URL Color, btop temp_mid |
 | `used_end_color` | #feb5c7 | btop upload_end, btop used_end |
 | `warning_color` | #f9cc6c | Waybar, btop available_mid, btop cpu_mid |

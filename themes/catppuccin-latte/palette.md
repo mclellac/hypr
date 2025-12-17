@@ -34,6 +34,9 @@
 | `term_color9` | #d20f39 | Alacritty, Kitty, btop available_end, btop download_end, btop temp_end |
 | `terminal_background_color` | #eff1f5 | Alacritty, Kitty, btop main_bg |
 | `terminal_foreground_color` | #4c4f69 | Alacritty, Kitty, btop main_fg, btop title |
+| `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
+| `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_eff1f5cc` | #eff1f5cc | Detected in hyprlock.conf (from rgb/rgba) |
 | `url_color` | #dc8a78 | URL Color, btop graph_text, btop proc_misc |
 | `used_end_color` | #04a5e5 | btop upload_end, btop used_end |
 | `warning_color` | #df8e1d | Waybar, btop temp_mid |

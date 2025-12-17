@@ -30,5 +30,8 @@
 | `terminal_background_color` | #2a2a2a | Alacritty, Kitty, btop download_end, btop main_bg |
 | `terminal_foreground_color` | #f0f0f0 | Alacritty, Kitty, btop available_end, btop free_end, btop main_fg, btop selected_fg, btop upload_end |
 | `title_color` | #f5cba7 | btop cached_mid, btop cpu_box, btop title, btop used_start |
+| `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
+| `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_2a2a2acc` | #2a2a2acc | Detected in hyprlock.conf (from rgb/rgba) |
 | `url_color` | #a9cce3 | URL Color, btop cached_start, btop download_start, btop upload_mid |
 | `warning_color` | #f9e79f | Waybar, btop available_mid, btop cached_end, btop cpu_mid, btop free_mid, btop mem_box, btop proc_misc, btop temp_mid |

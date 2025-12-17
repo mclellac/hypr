@@ -43,6 +43,13 @@
 | `terminal_background_color` | #272727 | Kitty |
 | `terminal_foreground_color` | #ebdbb2 | Kitty, btop title |
 | `text-color` | #d4be98 | Detected in mako.ini |
+| `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
+| `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_282828cc` | #282828cc | Detected in hyprlock.conf (from rgb/rgba) |
+| `unknown_3c3836` | #3c3836 | Detected in alacritty.toml |
+| `unknown_89b482` | #89b482 | Detected in alacritty.toml |
+| `unknown_a9b665` | #a9b665 | Detected in alacritty.toml |
+| `unknown_d6995c` | #d6995c | Detected in hyprlock.conf (from rgb/rgba) |
 | `unknown_ffffff` | #ffffff | Detected in btop.theme |
 | `upload_mid_color` | #b16286 | btop upload_mid |
 | `upload_start_color` | #701c45 | btop upload_start |

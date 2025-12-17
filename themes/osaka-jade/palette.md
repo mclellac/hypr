@@ -50,5 +50,10 @@
 | `terminal_background_color` | #111c18 | Alacritty, Kitty, btop main_bg |
 | `terminal_foreground_color` | #c1c497 | Alacritty, Kitty |
 | `title_color` | #d6d5bc | btop title |
+| `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
+| `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_072820` | #072820 | Detected in hyprlock.conf (from rgb/rgba) |
+| `unknown_83a298` | #83a298 | Detected in hyprlock.conf (from rgb/rgba) |
+| `unknown_a7ac84` | #a7ac84 | Detected in hyprlock.conf (from rgb/rgba) |
 | `upload_mid_color` | #91c080 | btop upload_mid |
 | `warning_color` | #e5c736 | Waybar |

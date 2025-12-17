@@ -33,6 +33,9 @@
 | `term_color9` | #f66151 | Kitty |
 | `terminal_background_color` | #1c1c1c | Kitty |
 | `terminal_foreground_color` | #deddda | Kitty |
+| `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
+| `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_242424cc` | #242424cc | Detected in hyprlock.conf (from rgb/rgba) |
 | `upload_mid_color` | #c061cb | btop upload_mid |
 | `url_color` | #64a6f4 | URL Color |
 | `used_start_color` | #c01c28 | btop used_start |

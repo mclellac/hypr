@@ -29,5 +29,8 @@
 | `term_color9` | #ff4081 | Kitty, btop used_end, btop used_start |
 | `terminal_background_color` | #0a1414 | Kitty, btop main_bg |
 | `terminal_foreground_color` | #00ffff | Kitty, btop download_end, btop main_fg, btop selected_fg, btop upload_end |
+| `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
+| `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_0a1414cc` | #0a1414cc | Detected in hyprlock.conf (from rgb/rgba) |
 | `url_color` | #00e5e5 | URL Color, btop cpu_box, btop mem_box, btop net_box, btop proc_box, btop title |
 | `warning_color` | #adff2f | Waybar, btop available_end, btop cached_end, btop cpu_end, btop free_end, btop temp_end |

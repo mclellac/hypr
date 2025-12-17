@@ -40,6 +40,10 @@
 | `term_color9` | #f7768e | Kitty, btop available_end, btop cached_end, btop cpu_end, btop download_end, btop free_end, btop temp_end, btop upload_end, btop used_end |
 | `terminal_background_color` | #1a1b26 | Alacritty, Kitty, btop main_bg |
 | `terminal_foreground_color` | #a9b1d6 | Alacritty, Kitty |
+| `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
+| `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_1a1b26cc` | #1a1b26cc | Detected in hyprlock.conf (from rgb/rgba) |
+| `unknown_cdd6f4` | #cdd6f4 | Detected in hyprlock.conf (from rgb/rgba) |
 | `url_color` | #9ece6a | URL Color, btop available_start, btop cached_start, btop cpu_start, btop download_start, btop free_start, btop temp_start, btop upload_start, btop used_start |
 | `warning_color` | #e0af68 | Waybar, btop available_mid, btop cached_mid, btop cpu_mid, btop download_mid, btop free_mid, btop temp_mid, btop upload_mid, btop used_mid |
 | `white` | #787c99 | Detected in alacritty.toml |

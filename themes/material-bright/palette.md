@@ -32,6 +32,10 @@
 | `term_color9` | #f07178 | Kitty, btop cpu_end, btop temp_end, btop upload_mid, btop used_start |
 | `terminal_background_color` | #263238 | Kitty, btop main_bg |
 | `terminal_foreground_color` | #b0bec5 | Kitty, btop cpu_box, btop graph_text, btop main_fg, btop mem_box, btop net_box, btop proc_box, btop title |
+| `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
+| `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_009688` | #009688 | Detected in hyprlock.conf (from rgb/rgba) |
+| `unknown_263238cc` | #263238cc | Detected in hyprlock.conf (from rgb/rgba) |
 | `url_color` | #82aaff | URL Color, btop cached_start, btop download_start, btop temp_start |
 | `used_end_color` | #f78c6c | btop upload_end, btop used_end |
 | `warning_color` | #ffcb6b | Waybar, btop available_end, btop available_start, btop cpu_mid |
