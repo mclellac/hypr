@@ -1,7 +1,7 @@
-@define-color background #1A202C;
-@define-color foreground #E2E8F0;
-@define-color border-color #63edcd;
-@define-color accent #0ec073;
+@define-color background #00272d;
+@define-color foreground #e2e8f0;
+@define-color border-color #63ed91;
+@define-color accent #04c755;
 
 window {
     background-color: @background;

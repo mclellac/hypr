@@ -1,6 +1,6 @@
-@define-color base #2c573e;
-@define-color text #E2E8F0;
-@define-color border #63edcd;
+@define-color base #012e21;
+@define-color text #e2e8f0;
+@define-color border #63ed91;
 @define-color selected-text #00ffb7;
 
 .box-wrapper {
@@ -10,7 +10,7 @@
   background: @base;
   padding: 20px;
   border-radius: 10px;
-  border: 3px solid #0ec073;
+  border: 3px solid #04c755;
 }
 
 #window {
