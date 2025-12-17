@@ -5,13 +5,13 @@
 | `accent_color` | #0ec073ff | Waybar, Hyprland active border gradient |
 | `active_border_color_1` | #42e1c6ff | Hyprland active border |
 | `active_border_color_2` | #0ec073ff | Hyprland active border gradient |
-| `background_color` | #131e29ff | Waybar |
+| `background_color` | #08433bff | Waybar |
 | `border_color` | #63edcd | Mako, SwayOSD |
 | `cursor_color` | #00ffb7ff | Cursor, btop available_end, btop free_end, btop main_fg, btop selected_fg, btop upload_end |
 | `cursor_text_color` | #1A202C | Cursor Text, btop main_bg |
-| `diff_add_color` | #1B4232 | Neovim DiffAdd |
-| `diff_change_color` | #2D3748 | Neovim DiffChange |
-| `diff_delete_color` | #5A2B2B | Neovim DiffDelete |
+| `diff_add_color` | #226449ff | Neovim DiffAdd |
+| `diff_change_color` | #696b3eff | Neovim DiffChange |
+| `diff_delete_color` | #7d2929ff | Neovim DiffDelete |
 | `diff_text_color` | #2C5282 | Neovim DiffText |
 | `div_line_color` | #2D3748 | btop div_line |
 | `error_color` | #fa7373ff | Waybar |
@@ -38,7 +38,7 @@
 | `term_color7` | #F7FAFC | Kitty |
 | `term_color8` | #6A7588 | Kitty |
 | `term_color9` | #FF8585 | Kitty |
-| `terminal_background_color` | #1A202C | Kitty, btop main_bg |
+| `terminal_background_color` | #2c573e | Kitty, btop main_bg |
 | `terminal_foreground_color` | #E2E8F0 | Alacritty, Kitty, btop available_end, btop free_end, btop main_fg, btop selected_fg, btop upload_end |
 | `url_color` | #63edcd | URL Color, btop cached_mid, btop cpu_start, btop download_start, btop proc_box, btop proc_misc, btop title |
 | `used_end_color` | #f67272ff | btop used_end |
