@@ -2,8 +2,8 @@
 
 | Name | Hex | Description |
 |---|---|---|
-| `accent_color` | #8caaee | Waybar, btop cached_mid, btop free_end, btop hi_fg, btop proc_box, btop selected_fg |
-| `available_start_color` | #ef9f76 | btop available_start, btop download_start |
+| `accent_color` | #8caaee | Waybar, btop cached_mid, btop free_end, btop h... |
+| `available_start_color` | #ef9f76 | btop available_start, btop download_s... |
 | `background` | #a5adcb | Detected in alacritty.toml |
 | `background` | #a6da95 | Detected in alacritty.toml |
 | `background` | #eed49f | Detected in alacritty.toml |
@@ -14,8 +14,8 @@
 | `chromium_frame_color` | #181824 | Detected in chromium.theme |
 | `color` | #f5a97f | Detected in alacritty.toml |
 | `cpu_box_color` | #ca9ee6 | btop cpu_box, btop free_start, btop process_end |
-| `cpu_end_color` | #babbf1 | btop cached_end, btop cpu_end, btop free_mid, btop process_mid |
-| `cpu_mid_color` | #85c1dc | btop cached_start, btop cpu_mid, btop process_start |
+| `cpu_end_color` | #babbf1 | btop cached_end, btop cpu_end, btop free_mid,... |
+| `cpu_mid_color` | #85c1dc | btop cached_start, btop cpu_mid, btop process... |
 | `cpu_start_color` | #81c8be | btop cpu_start, btop upload_mid, btop used_mid |
 | `cursor` | #f4dbd6 | Detected in alacritty.toml |
 | `cursor` | #b7bdf8 | Detected in alacritty.toml |
@@ -29,13 +29,13 @@
 | `graph_text_color` | #f2d5cf | btop graph_text, btop proc_misc |
 | `inactive_fg_color` | #838ba7 | btop inactive_fg |
 | `magenta` | #f5bde6 | Detected in alacritty.toml |
-| `mem_box_color` | #a6d189 | btop mem_box, btop temp_start, btop upload_start, btop used_start |
-| `net_box_color` | #ea999c | btop available_mid, btop download_mid, btop net_box |
+| `mem_box_color` | #a6d189 | btop mem_box, btop temp_start, btop upload_st... |
+| `net_box_color` | #ea999c | btop available_mid, btop download_mid, btop n... |
 | `red` | #ed8796 | Detected in alacritty.toml |
 | `secondary_accent_color` | #89b4fa | Waybar |
 | `selected_bg_color` | #51576d | btop meter_bg, btop selected_bg |
 | `selection_background_color` | #585b70 | Waybar |
-| `temp_end_color` | #e78284 | btop available_end, btop download_end, btop temp_end |
+| `temp_end_color` | #e78284 | btop available_end, btop download_end, btop ... |
 | `temp_mid_color` | #e5c890 | btop temp_mid |
 | `term_color0` | #45475a | Kitty |
 | `term_color1` | #f38ba8 | Kitty |

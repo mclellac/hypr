@@ -1,6 +1,7 @@
 # hypr
 
-No need to write bespoke configs for every essential tool just to get started or to be up on all the latest command-line tools.
+No need to write bespoke configs for every essential tool just to get started or
+to be up on all the latest command-line tools.
 
 This repository is a fork of [Omarchy](https://github.com/omarchy/omarchy).
 
@@ -9,7 +10,8 @@ This repository is a fork of [Omarchy](https://github.com/omarchy/omarchy).
 To install hypr, run the following command in your terminal:
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mclellac/hypr/main/install.sh)"
+/bin/bash -c "$(curl -fsSL \
+    https://raw.githubusercontent.com/mclellac/hypr/main/install.sh)"
 ```
 
 The installation script will:
@@ -22,24 +24,36 @@ The installation script will:
 
 ## Features
 
-- **Update Notifications:** Get notified of official Arch Linux and AUR package updates directly in Waybar.
-- **One-Click Updates:** Click the update icon to open a terminal and update all your packages.
-- **Comprehensive Theming:** Easily switch between themes for all your applications.
-- **Pre-configured Applications:** A wide range of applications are pre-configured for a seamless experience.
+- **Update Notifications:** Get notified of official Arch Linux and AUR package
+  updates directly in Waybar.
+- **One-Click Updates:** Click the update icon to open a terminal and update all
+  your packages.
+- **Comprehensive Theming:** Easily switch between themes for all your
+  applications.
+- **Pre-configured Applications:** A wide range of applications are
+  pre-configured for a seamless experience.
 
 ## Directory Structure
 
-The installation script copies the default configuration files directly into your `~/.config` directory, which is the standard location for application configurations in Linux. All the scripts for managing the environment are installed to `~/.local/bin`, and the themes are located in `~/.config/hypr/themes`.
+The installation script copies the default configuration files directly into
+your `~/.config` directory, which is the standard location for application
+configurations in Linux. All the scripts for managing the environment are
+installed to `~/.local/bin`, and the themes are located in
+`~/.config/hypr/themes`.
 
 Here's a brief overview of the key directories:
 
-- `~/.config`: Contains the configuration files for all the integrated applications.
-- `~/.local/bin`: Contains all the `hypr-*` scripts for managing the environment.
-- `~/.config/hypr/themes`: Contains the different themes for the desktop environment.
+- `~/.config`: Contains the configuration files for all the integrated
+  applications.
+- `~/.local/bin`: Contains all the `hypr-*` scripts for managing the
+  environment.
+- `~/.config/hypr/themes`: Contains the different themes for the desktop
+  environment.
 
 ## Keybindings
 
-The default keybindings are defined within the repository. You can customize them by editing the following file after installation:
+The default keybindings are defined within the repository. You can customize
+them by editing the following file after installation:
 
 - `~/.config/hypr/bindings.conf`: User-defined keybindings.
 
@@ -69,7 +83,8 @@ Here are some of the most important default keybindings:
 
 ## Theming
 
-The theming system is located in `~/.config/hypr/themes`. Each theme is a directory containing configuration files for various applications.
+The theming system is located in `~/.config/hypr/themes`. Each theme is a
+directory containing configuration files for various applications.
 
 To change the theme, you can use the `hypr-theme-set` script:
 
@@ -83,26 +98,42 @@ For example, to set the theme to `tokyo-night`, you would run:
 hypr-theme-set tokyo-night
 ```
 
-The `hypr-theme-set` script will update the symlinks for the current theme and restart the necessary components to apply the new theme.
+The `hypr-theme-set` script will update the symlinks for the current theme and
+restart the necessary components to apply the new theme.
 
 ### Neovim Theming
 
-The `hypr` theming system supports two methods for theming Neovim, ensuring both simplicity and flexibility.
+The `hypr` theming system supports two methods for theming Neovim, ensuring both
+simplicity and flexibility.
 
 1. **Plugin-Based Theming (Preferred Method):**
-    For complex themes that are distributed as full Neovim plugins (e.g., `folke/tokyonight.nvim`), a theme can include a `neovim.plugin` file. This file defines the theme as a LazyVim plugin. The `hypr-theme-set` script will copy this file to `~/.config/nvim/lua/plugins/theme.lua`, allowing `lazy.nvim` to manage it. This is the most robust method.
+    For complex themes that are distributed as full Neovim plugins (e.g.,
+    `folke/tokyonight.nvim`), a theme can include a `neovim.plugin` file. This
+    file defines the theme as a LazyVim plugin. The `hypr-theme-set` script will
+    copy this file to `~/.config/nvim/lua/plugins/theme.lua`, allowing
+    `lazy.nvim` to manage it. This is the most robust method.
 
 2. **Simple Colorscheme Theming (Legacy):**
-    For simpler themes that only require setting a colorscheme name, a theme can include a `neovim.colorscheme` file. This file contains only the name of the colorscheme (e.g., `catppuccin-latte`). The script will then generate a basic plugin file to set the colorscheme for LazyVim.
+    For simpler themes that only require setting a colorscheme name, a theme can
+    include a `neovim.colorscheme` file. This file contains only the name of the
+    colorscheme (e.g., `catppuccin-latte`). The script will then generate a
+    basic plugin file to set the colorscheme for LazyVim.
 
-This dual approach ensures that your personal Neovim configuration in `~/.config/nvim/lua/user/` is never overwritten when you switch themes.
+This dual approach ensures that your personal Neovim configuration in
+`~/.config/nvim/lua/user/` is never overwritten when you switch themes.
 
 ## Neovim Configuration
 
-Your personal Neovim configuration is located in `~/.config/nvim/lua/user/`. You can add your own plugins and settings here. The `hypr` setup uses LazyVim, so you should follow the LazyVim conventions for customization.
+Your personal Neovim configuration is located in `~/.config/nvim/lua/user/`. You
+can add your own plugins and settings here. The `hypr` setup uses LazyVim, so
+you should follow the LazyVim conventions for customization.
 
-The base `hypr` Neovim configuration is defined in the repository. During the initial installation, these files are copied to `~/.config/nvim/`. After that, your local configuration will not be overwritten by `hypr` updates unless you manually re-run the installation script.
+The base `hypr` Neovim configuration is defined in the repository. During the
+initial installation, these files are copied to `~/.config/nvim/`. After that,
+your local configuration will not be overwritten by `hypr` updates unless you
+manually re-run the installation script.
 
 ## License
 
-hypr configs are released under the [MIT License](https://opensource.org/licenses/MIT).
+hypr configs are released under the
+[MIT License](https://opensource.org/licenses/MIT).

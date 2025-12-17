@@ -246,7 +246,26 @@ def audit_theme(theme_name):
         f.write("| Name | Hex | Description |\n")
         f.write("|---|---|---|\n")
         for row in rows:
-            f.write(f"| `{row['name']}` | {row['hex']} | {row['desc']} |\n")
+            name_col = f"`{row['name']}`"
+            hex_col = row["hex"]
+            desc_col = row["desc"]
+
+            # Calculate available space for description
+            # Line structure: | {name_col} | {hex_col} | {desc_col} |
+            # Fixed chars: |  |  |  | (4 pipes + 6 spaces = 10 chars)
+            # Actually spaces are around the content: | name | hex | desc |
+
+            prefix_len = len(f"| {name_col} | {hex_col} | ")
+            suffix_len = len(" |")
+            available_len = 80 - prefix_len - suffix_len
+
+            if len(desc_col) > available_len:
+                if available_len > 3:
+                   desc_col = desc_col[:available_len-3] + "..."
+                else:
+                   desc_col = desc_col[:available_len] # Very tight, just cut
+
+            f.write(f"| {name_col} | {hex_col} | {desc_col} |\n")
 
     print(f"Updated {theme_name}")
 

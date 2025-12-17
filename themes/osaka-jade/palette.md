@@ -7,10 +7,10 @@
 | `background_color` | #11221c | Waybar |
 | `border-color` | #214237 | Detected in mako.ini |
 | `border-color` | #589a5f | Detected in swayosd.css |
-| `cpu_box_color` | #81b8a8 | btop cpu_box, btop div_line, btop mem_box, btop net_box, btop proc_box |
-| `cpu_end_color` | #76ad98 | btop available_end, btop cached_end, btop cpu_end, btop free_end, btop used_end |
-| `cpu_mid_color` | #629c89 | btop available_mid, btop cached_mid, btop cpu_mid, btop free_mid, btop used_mid |
-| `cpu_start_color` | #5f8c86 | btop available_start, btop cached_start, btop cpu_start, btop free_start, btop used_start |
+| `cpu_box_color` | #81b8a8 | btop cpu_box, btop div_line, btop mem_box, bt... |
+| `cpu_end_color` | #76ad98 | btop available_end, btop cached_end, btop cpu... |
+| `cpu_mid_color` | #629c89 | btop available_mid, btop cached_mid, btop cpu... |
+| `cpu_start_color` | #5f8c86 | btop available_start, btop cached_start, bt... |
 | `cursor_color` | #d7c995 | Cursor |
 | `cursor_text_color` | #000000 | Cursor Text |
 | `download_end_color` | #215866 | btop download_end, btop upload_start |

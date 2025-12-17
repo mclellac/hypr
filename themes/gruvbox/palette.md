@@ -3,7 +3,7 @@
 | Name | Hex | Description |
 |---|---|---|
 | `accent_color` | #fabd2f | Waybar, btop available_end, btop selected_fg |
-| `background_color` | #282828 | Waybar, btop inactive_fg, btop main_bg, btop selected_bg |
+| `background_color` | #282828 | Waybar, btop inactive_fg, btop main_bg, bt... |
 | `cached_end_color` | #83a598 | btop cached_end |
 | `cpu_end_color` | #fb4934 | btop cpu_end, btop used_end |
 | `cpu_start_color` | #b8bb26 | btop cpu_start |
@@ -17,7 +17,7 @@
 | `free_start_color` | #4e5900 | btop free_start |
 | `graph_text_color` | #585858 | btop graph_text |
 | `hi_fg_color` | #d79921 | btop available_start, btop cpu_mid, btop hi_fg |
-| `main_fg_color` | #a89984 | btop cpu_box, btop div_line, btop main_fg, btop mem_box, btop net_box, btop proc_box |
+| `main_fg_color` | #a89984 | btop cpu_box, btop div_line, btop main_fg, bt... |
 | `proc_misc_color` | #98971a | btop free_end, btop proc_misc |
 | `secondary_accent_color` | #7daea3 | Waybar |
 | `selection_background_color` | #655b53 | Waybar |
