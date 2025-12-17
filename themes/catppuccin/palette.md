@@ -2,45 +2,60 @@
 
 | Name | Hex | Description |
 |---|---|---|
-| `accent_color` | #8CAAEE | Waybar, btop cached_mid, btop free_end, btop hi_fg, btop proc_box, btop selected_fg |
-| `available_start_color` | #EF9F76 | btop available_start, btop download_start |
-| `background_color` | #24273A | Waybar, btop main_bg |
-| `cpu_box_color` | #CA9EE6 | btop cpu_box, btop free_start, btop process_end |
-| `cpu_end_color` | #BABBF1 | btop cached_end, btop cpu_end, btop free_mid, btop process_mid |
-| `cpu_mid_color` | #85C1DC | btop cached_start, btop cpu_mid, btop process_start |
-| `cpu_start_color` | #81C8BE | btop cpu_start, btop upload_mid, btop used_mid |
-| `cursor_color` | #F5E0DC | Cursor |
-| `cursor_text_color` | #1E1E2E | Cursor Text |
+| `accent_color` | #8caaee | Waybar, btop cached_mid, btop free_end, btop hi_fg, btop proc_box, btop selected_fg |
+| `available_start_color` | #ef9f76 | btop available_start, btop download_start |
+| `background` | #a5adcb | Detected in alacritty.toml |
+| `background` | #a6da95 | Detected in alacritty.toml |
+| `background` | #eed49f | Detected in alacritty.toml |
+| `background_color` | #24273a | Waybar, btop main_bg |
+| `black` | #494d64 | Detected in alacritty.toml |
+| `black` | #5b6078 | Detected in alacritty.toml |
+| `blue` | #8aadf4 | Detected in alacritty.toml |
+| `color` | #f5a97f | Detected in alacritty.toml |
+| `cpu_box_color` | #ca9ee6 | btop cpu_box, btop free_start, btop process_end |
+| `cpu_end_color` | #babbf1 | btop cached_end, btop cpu_end, btop free_mid, btop process_mid |
+| `cpu_mid_color` | #85c1dc | btop cached_start, btop cpu_mid, btop process_start |
+| `cpu_start_color` | #81c8be | btop cpu_start, btop upload_mid, btop used_mid |
+| `cursor` | #f4dbd6 | Detected in alacritty.toml |
+| `cursor` | #b7bdf8 | Detected in alacritty.toml |
+| `cursor_color` | #f5e0dc | Cursor |
+| `cursor_text_color` | #1e1e2e | Cursor Text |
+| `cyan` | #8bd5ca | Detected in alacritty.toml |
+| `dim_foreground` | #8087a2 | Detected in alacritty.toml |
 | `div_line_color` | #737994 | btop div_line |
-| `error_color` | #F38BA8 | Waybar |
-| `foreground_color` | #C6D0F5 | Waybar, btop main_fg, btop title |
-| `graph_text_color` | #F2D5CF | btop graph_text, btop proc_misc |
-| `inactive_fg_color` | #838BA7 | btop inactive_fg |
-| `mem_box_color` | #A6D189 | btop mem_box, btop temp_start, btop upload_start, btop used_start |
-| `net_box_color` | #EA999C | btop available_mid, btop download_mid, btop net_box |
-| `secondary_accent_color` | #89B4FA | Waybar |
-| `selected_bg_color` | #51576D | btop meter_bg, btop selected_bg |
-| `selection_background_color` | #585B70 | Waybar |
-| `temp_end_color` | #E78284 | btop available_end, btop download_end, btop temp_end |
-| `temp_mid_color` | #E5C890 | btop temp_mid |
-| `term_color0` | #45475A | Kitty |
-| `term_color1` | #F38BA8 | Kitty |
-| `term_color10` | #A6E3A1 | Kitty |
-| `term_color11` | #F9E2AF | Kitty |
-| `term_color12` | #89B4FA | Kitty |
-| `term_color13` | #F5C2E7 | Kitty |
-| `term_color14` | #94E2D5 | Kitty |
-| `term_color15` | #A6ADC8 | Kitty |
-| `term_color2` | #A6E3A1 | Kitty |
-| `term_color3` | #F9E2AF | Kitty |
-| `term_color4` | #89B4FA | Kitty |
-| `term_color5` | #F5C2E7 | Kitty |
-| `term_color6` | #94E2D5 | Kitty |
-| `term_color7` | #BAC2DE | Kitty |
-| `term_color8` | #585B70 | Kitty |
-| `term_color9` | #F38BA8 | Kitty |
-| `terminal_background_color` | #1E1E2E | Kitty |
-| `terminal_foreground_color` | #CDD6F4 | Kitty |
-| `url_color` | #F5E0DC | URL Color |
-| `used_end_color` | #99D1DB | btop upload_end, btop used_end |
-| `warning_color` | #F9E2AF | Waybar |
+| `error_color` | #f38ba8 | Waybar |
+| `foreground_color` | #c6d0f5 | Waybar, btop main_fg, btop title |
+| `graph_text_color` | #f2d5cf | btop graph_text, btop proc_misc |
+| `inactive_fg_color` | #838ba7 | btop inactive_fg |
+| `magenta` | #f5bde6 | Detected in alacritty.toml |
+| `mem_box_color` | #a6d189 | btop mem_box, btop temp_start, btop upload_start, btop used_start |
+| `net_box_color` | #ea999c | btop available_mid, btop download_mid, btop net_box |
+| `red` | #ed8796 | Detected in alacritty.toml |
+| `secondary_accent_color` | #89b4fa | Waybar |
+| `selected_bg_color` | #51576d | btop meter_bg, btop selected_bg |
+| `selection_background_color` | #585b70 | Waybar |
+| `temp_end_color` | #e78284 | btop available_end, btop download_end, btop temp_end |
+| `temp_mid_color` | #e5c890 | btop temp_mid |
+| `term_color0` | #45475a | Kitty |
+| `term_color1` | #f38ba8 | Kitty |
+| `term_color10` | #a6e3a1 | Kitty |
+| `term_color11` | #f9e2af | Kitty |
+| `term_color12` | #89b4fa | Kitty |
+| `term_color13` | #f5c2e7 | Kitty |
+| `term_color14` | #94e2d5 | Kitty |
+| `term_color15` | #a6adc8 | Kitty |
+| `term_color2` | #a6e3a1 | Kitty |
+| `term_color3` | #f9e2af | Kitty |
+| `term_color4` | #89b4fa | Kitty |
+| `term_color5` | #f5c2e7 | Kitty |
+| `term_color6` | #94e2d5 | Kitty |
+| `term_color7` | #bac2de | Kitty |
+| `term_color8` | #585b70 | Kitty |
+| `term_color9` | #f38ba8 | Kitty |
+| `terminal_background_color` | #1e1e2e | Kitty |
+| `terminal_foreground_color` | #cdd6f4 | Kitty |
+| `text-color` | #cad3f5 | Detected in mako.ini |
+| `url_color` | #f5e0dc | URL Color |
+| `used_end_color` | #99d1db | btop upload_end, btop used_end |
+| `warning_color` | #f9e2af | Waybar |
+| `white` | #b8c0e0 | Detected in alacritty.toml |
