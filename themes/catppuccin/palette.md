@@ -11,6 +11,7 @@
 | `black` | #494d64 | Detected in alacritty.toml |
 | `black` | #5b6078 | Detected in alacritty.toml |
 | `blue` | #8aadf4 | Detected in alacritty.toml |
+| `chromium_frame_color` | #181824 | Detected in chromium.theme |
 | `color` | #f5a97f | Detected in alacritty.toml |
 | `cpu_box_color` | #ca9ee6 | btop cpu_box, btop free_start, btop process_end |
 | `cpu_end_color` | #babbf1 | btop cached_end, btop cpu_end, btop free_mid, btop process_mid |
@@ -55,6 +56,10 @@
 | `terminal_background_color` | #1e1e2e | Kitty |
 | `terminal_foreground_color` | #cdd6f4 | Kitty |
 | `text-color` | #cad3f5 | Detected in mako.ini |
+| `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
+| `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_181824cc` | #181824cc | Detected in hyprlock.conf (from rgb/rgba) |
+| `unknown_449dab` | #449dab | Detected in hyprlock.conf (from rgb/rgba) |
 | `url_color` | #f5e0dc | URL Color |
 | `used_end_color` | #99d1db | btop upload_end, btop used_end |
 | `warning_color` | #f9e2af | Waybar |

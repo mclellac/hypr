@@ -41,9 +41,14 @@
 | `term_color9` | #ff8585 | Kitty |
 | `terminal_background_color` | #2c573e | Kitty, btop main_bg |
 | `terminal_foreground_color` | #e2e8f0 | Alacritty, Kitty, btop available_end, btop free_end, btop main_fg, btop selected_fg, btop upload_end |
+| `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
+| `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
 | `unknown_1b4232` | #1b4232 | Detected in amateur.lua |
+| `unknown_2d3748cc` | #2d3748cc | Detected in hyprlock.conf (from rgb/rgba) |
 | `unknown_303446` | #303446 | Detected in mako.ini |
 | `unknown_5a2b2b` | #5a2b2b | Detected in amateur.lua |
+| `unknown_63b3ed` | #63b3ed | Detected in hyprlock.conf (from rgb/rgba) |
+| `unknown_ffffff0c` | #ffffff0c | Detected in walker.css (from rgb/rgba) |
 | `url_color` | #63edcd | URL Color, btop cached_mid, btop cpu_start, btop download_start, btop proc_box, btop proc_misc, btop title |
 | `used_end_color` | #f67272ff | btop used_end |
 | `warning_color` | #ffaa00ff | Waybar |

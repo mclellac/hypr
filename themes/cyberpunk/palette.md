@@ -6,6 +6,7 @@
 | `active_border_color_1` | #f1ff5e | Hyprland active border |
 | `active_border_color_2` | #5ef1ff | Hyprland active border gradient |
 | `background_color` | #16181a | Waybar, btop main_bg |
+| `chromium_frame_color` | #00060e | Detected in chromium.theme |
 | `cursor_color` | #f1ff5e | Cursor, btop main_fg |
 | `cursor_text_color` | #16181a | Cursor Text, btop main_bg |
 | `diff_add_color` | #5eff6c | Diff Add |
@@ -36,5 +37,8 @@
 | `term_color9` | #ff6e5e | Bright Red |
 | `terminal_background_color` | #16181a | Terminal Background |
 | `terminal_foreground_color` | #ffffff | Terminal Foreground |
+| `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
+| `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_16181acc` | #16181acc | Detected in hyprlock.conf (from rgb/rgba) |
 | `url_color` | #5ef1ff | URL Color |
 | `warning_color` | #f1ff5e | Waybar Warning |

@@ -29,5 +29,10 @@
 | `term_color9` | #b91c1c | Alacritty, Kitty, btop available_end, btop cached_end, btop cpu_end, btop download_end, btop free_end, btop temp_end, btop upload_end, btop used_end |
 | `terminal_background_color` | #121212 | Alacritty, Kitty |
 | `terminal_foreground_color` | #bebebe | Alacritty, Kitty |
+| `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
+| `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_0c0c0c` | #0c0c0c | Detected in hyprlock.conf (from rgb/rgba) |
+| `unknown_8a8a8d4c` | #8a8a8d4c | Detected in hyprlock.conf (from rgb/rgba) |
+| `unknown_eaeaea7f` | #eaeaea7f | Detected in hyprlock.conf (from rgb/rgba) |
 | `url_color` | #e68e0d | URL Color |
 | `warning_color` | #ffc107 | Waybar |
