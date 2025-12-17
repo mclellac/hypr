@@ -1,37 +1,37 @@
-# Material Bright Palette
+# Material-bright Palette
 
 | Name | Hex | Description |
 |---|---|---|
-| `accent_color` | #00BDA5 | Waybar, btop hi_fg |
+| `accent_color` | #00bda5 | Waybar, btop hi_fg |
 | `background_color` | #263238 | Waybar, btop main_bg |
-| `cursor_color` | #B0BEC5 | Cursor, btop cpu_box, btop graph_text, btop main_fg, btop mem_box, btop net_box, btop proc_box, btop title |
+| `cursor_color` | #b0bec5 | Cursor, btop cpu_box, btop graph_text, btop main_fg, btop mem_box, btop net_box, btop proc_box, btop title |
 | `cursor_text_color` | #263238 | Cursor Text, btop main_bg |
-| `div_line_color` | #2A373E | btop div_line |
-| `error_color` | #F07178 | Waybar, btop cpu_end, btop temp_end, btop upload_mid, btop used_start |
-| `foreground_color` | #B0BEC5 | Waybar, btop cpu_box, btop graph_text, btop main_fg, btop mem_box, btop net_box, btop proc_box, btop title |
+| `div_line_color` | #2a373e | btop div_line |
+| `error_color` | #f07178 | Waybar, btop cpu_end, btop temp_end, btop upload_mid, btop used_start |
+| `foreground_color` | #b0bec5 | Waybar, btop cpu_box, btop graph_text, btop main_fg, btop mem_box, btop net_box, btop proc_box, btop title |
 | `inactive_fg_color` | #415967 | btop free_start, btop inactive_fg |
-| `secondary_accent_color` | #82AAFF | Waybar, btop cached_start, btop download_start, btop temp_start |
-| `selected_bg_color` | #546E7A | btop selected_bg |
-| `selected_fg_color` | #FFFFFF | btop selected_fg |
-| `selection_background_color` | #37474F | Waybar |
-| `term_color0` | #1E272C | Kitty |
-| `term_color1` | #F07178 | Kitty, btop cpu_end, btop temp_end, btop upload_mid, btop used_start |
-| `term_color10` | #C3E88D | Kitty, btop cpu_start, btop download_end, btop free_end, btop proc_misc |
-| `term_color11` | #FFCB6B | Kitty, btop available_end, btop available_start, btop cpu_mid |
-| `term_color12` | #82AAFF | Kitty, btop cached_start, btop download_start, btop temp_start |
-| `term_color13` | #C792EA | Kitty, btop temp_mid, btop upload_start |
-| `term_color14` | #A9FFFF | Kitty, btop cached_end, btop download_mid |
-| `term_color15` | #EEFFFF | Kitty |
-| `term_color2` | #C3E88D | Kitty, btop cpu_start, btop download_end, btop free_end, btop proc_misc |
-| `term_color3` | #FFCB6B | Kitty, btop available_end, btop available_start, btop cpu_mid |
-| `term_color4` | #82AAFF | Kitty, btop cached_start, btop download_start, btop temp_start |
-| `term_color5` | #C792EA | Kitty, btop temp_mid, btop upload_start |
-| `term_color6` | #A9FFFF | Kitty, btop cached_end, btop download_mid |
-| `term_color7` | #EEFFFF | Kitty |
-| `term_color8` | #1E272C | Kitty |
-| `term_color9` | #F07178 | Kitty, btop cpu_end, btop temp_end, btop upload_mid, btop used_start |
+| `secondary_accent_color` | #82aaff | Waybar, btop cached_start, btop download_start, btop temp_start |
+| `selected_bg_color` | #546e7a | btop selected_bg |
+| `selected_fg_color` | #ffffff | btop selected_fg |
+| `selection_background_color` | #37474f | Waybar |
+| `term_color0` | #1e272c | Kitty |
+| `term_color1` | #f07178 | Kitty, btop cpu_end, btop temp_end, btop upload_mid, btop used_start |
+| `term_color10` | #c3e88d | Kitty, btop cpu_start, btop download_end, btop free_end, btop proc_misc |
+| `term_color11` | #ffcb6b | Kitty, btop available_end, btop available_start, btop cpu_mid |
+| `term_color12` | #82aaff | Kitty, btop cached_start, btop download_start, btop temp_start |
+| `term_color13` | #c792ea | Kitty, btop temp_mid, btop upload_start |
+| `term_color14` | #a9ffff | Kitty, btop cached_end, btop download_mid |
+| `term_color15` | #eeffff | Kitty |
+| `term_color2` | #c3e88d | Kitty, btop cpu_start, btop download_end, btop free_end, btop proc_misc |
+| `term_color3` | #ffcb6b | Kitty, btop available_end, btop available_start, btop cpu_mid |
+| `term_color4` | #82aaff | Kitty, btop cached_start, btop download_start, btop temp_start |
+| `term_color5` | #c792ea | Kitty, btop temp_mid, btop upload_start |
+| `term_color6` | #a9ffff | Kitty, btop cached_end, btop download_mid |
+| `term_color7` | #eeffff | Kitty |
+| `term_color8` | #1e272c | Kitty |
+| `term_color9` | #f07178 | Kitty, btop cpu_end, btop temp_end, btop upload_mid, btop used_start |
 | `terminal_background_color` | #263238 | Kitty, btop main_bg |
-| `terminal_foreground_color` | #B0BEC5 | Kitty, btop cpu_box, btop graph_text, btop main_fg, btop mem_box, btop net_box, btop proc_box, btop title |
-| `url_color` | #82AAFF | URL Color, btop cached_start, btop download_start, btop temp_start |
-| `used_end_color` | #F78C6C | btop upload_end, btop used_end |
-| `warning_color` | #FFCB6B | Waybar, btop available_end, btop available_start, btop cpu_mid |
+| `terminal_foreground_color` | #b0bec5 | Kitty, btop cpu_box, btop graph_text, btop main_fg, btop mem_box, btop net_box, btop proc_box, btop title |
+| `url_color` | #82aaff | URL Color, btop cached_start, btop download_start, btop temp_start |
+| `used_end_color` | #f78c6c | btop upload_end, btop used_end |
+| `warning_color` | #ffcb6b | Waybar, btop available_end, btop available_start, btop cpu_mid |
