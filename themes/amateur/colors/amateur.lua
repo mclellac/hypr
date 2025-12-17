@@ -5,18 +5,18 @@ vim.g.colors_name = "amateur"
 
 -- Get the color palette
 local colors = {
-  bg = "#1A202C",
-  fg = "#E2E8F0",
-  gray = "#4A5568",
-  red = "#F56565",
-  green = "#48BB78",
-  yellow = "#F6AD55",
-  blue = "#63edcd",
-  magenta = "#4FD1C5",
-  cyan = "#4FD1C5",
-  white = "#F7FAFC",
-  orange = "#F6AD55",
-  dark_blue = "#2C5282",
+  bg = "#012e21",
+  fg = "#e2e8f0",
+  gray = "#4a5568",
+  red = "#f56565",
+  green = "#04c755",
+  yellow = "#ff9d26",
+  blue = "#63ed91",
+  magenta = "#4fd19d",
+  cyan = "#4fd181",
+  white = "#f7fafc",
+  orange = "#d68700",
+  dark_blue = "#2c5282",
 }
 
 -- Helper function to set highlights
@@ -40,7 +40,7 @@ s("CursorLineNr", { fg = colors.yellow, bold = true })
 s("Visual", { bg = colors.dark_blue })
 s("Search", { bg = colors.yellow, fg = colors.bg })
 s("IncSearch", { bg = colors.orange, fg = colors.bg })
-s("DiffAdd", { bg = "#1B4232" })
-s("DiffChange", { bg = "#2D3748" })
-s("DiffDelete", { bg = "#5A2B2B" })
-s("DiffText", { bg = "#2C5282" })
+s("DiffAdd", { bg = "#226449" })
+s("DiffChange", { bg = "#696b3e" })
+s("DiffDelete", { bg = "#7d2929" })
+s("DiffText", { bg = "#2c5282" })
