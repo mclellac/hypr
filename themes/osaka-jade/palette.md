@@ -5,7 +5,7 @@
 | `accent_color` | #e1b55e | Waybar, btop temp_mid |
 | `active_border_color` | #71cead | Hyprland active border |
 | `background_color` | #11221c | Waybar |
-| `border-color` | #214237 | Detected in mako.ini |
+| `border-color` | #214237 | Detected in mako.ini, walker.css |
 | `border-color` | #589a5f | Detected in swayosd.css |
 | `cpu_box_color` | #81b8a8 | btop cpu_box, btop div_line, btop mem_box, bt... |
 | `cpu_end_color` | #76ad98 | btop available_end, btop cached_end, btop cpu... |
@@ -16,7 +16,7 @@
 | `download_end_color` | #215866 | btop download_end, btop upload_start |
 | `download_mid_color` | #61949a | btop download_mid |
 | `error_color` | #ff5345 | Waybar |
-| `foreground_color` | #ebfff2 | Waybar |
+| `foreground_color` | #e6d8ba | Waybar |
 | `graph_text_color` | #e6d8ba | btop graph_text, btop proc_misc |
 | `green` | #143614 | Detected in alacritty.toml |
 | `hi_fg_color` | #e67d64 | btop hi_fg |
