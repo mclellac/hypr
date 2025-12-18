@@ -1,53 +1,39 @@
-# Improvements and Observations
+# Improvements and Optimizations
 
-This document lists potential improvements, issues, and observations regarding the current Hyprland configuration and codebase.
+This document outlines potential structural and functional improvements for the repository.
 
-## Critical / Bugs
+## Architecture & Maintenance
 
-1.  **Missing Default Configurations**:
-    *   The `config/hypr/hyprland.conf` file attempts to source files from `~/.local/share/hypr/default/hypr/` (e.g., `autostart.conf`, `bindings/media.conf`).
-    *   The installation scripts (`install.sh`, `install/config/config.sh`) do **not** appear to populate this directory.
-    *   **Impact**: Hyprland may fail to start or will lack essential default keybindings and settings unless these files exist from a previous install or a different package.
-    *   **Recommendation**: Either bundle these defaults in the repo and install them, or remove the dependency on `~/.local/share/hypr/default` and make `config/hypr/` self-contained.
+### 1. Unified Package Management
+**Current State:** Packages are installed via various scripts (e.g., `webapps.sh`), mixing logic with data.
+**Improvement:** Extract package lists into plain text files (e.g., `packages.txt`, `webapps.csv`). The install scripts should read from these files. This separation allows users to easily view, add, or remove dependencies without modifying the script logic.
 
-2.  **Walker Theme Dependency**:
-    *   `bin/hypr-theme-set` references `~/.local/share/hypr/default/walker/themes/hypr-default/style.css` when building the Walker theme.
-    *   Like the Hyprland defaults, this file does not seem to be created by the installer.
-    *   **Impact**: Walker theming might fail or look incorrect.
+### 2. Interactive Installer
+**Current State:** The `install.sh` script runs a predefined sequence of installation steps.
+**Improvement:** Implement an interactive mode or command-line flags (e.g., `--minimal`, `--no-gaming`, `--server`). This is particularly relevant for VM environments where users might want a lighter footprint (skipping Steam, Docker, or specific web apps).
 
-3.  **Hardcoded Paths**:
-    *   Scripts often rely on `~/.config/hypr/` or `~/.local/share/`. While standard, using environment variables consistently (like `$XDG_CONFIG_HOME`) would be more robust.
+### 3. Systemd User Services
+**Current State:** Background tasks are likely managed via `autostart.conf` or cron-like behavior.
+**Improvement:** Migrate persistent user services (like battery monitoring, weather fetching, or custom Waybar updaters) to **Systemd User Units**. This provides robust process management, automatic restarts on failure, and centralized logging via `journalctl --user`.
 
-## VM Optimizations
+### 4. Code Quality & Linting
+**Current State:** Scripts use `set -euo pipefail` which is good, but static analysis is manual.
+**Improvement:** Integrate `ShellCheck` into the development workflow (e.g., as a pre-commit hook or CI step). This will automatically catch common bash pitfalls, quoting issues, and portability problems across the many scripts in `bin/`.
 
-Since this configuration runs inside a VM:
+## Usability Enhancements
 
-1.  **Animation Overhead**:
-    *   Hyprland animations (blur, drop shadows, window movement) consume significant GPU resources, which might be limited in a VM.
-    *   **Recommendation**: Create a "VM Mode" or a specific config snippet that disables `decoration:blur`, `decoration:drop_shadow`, and simplifies animations.
+### 5. Theme Previews
+**Current State:** Themes are selected by name without visual feedback.
+**Improvement:** Implement a mechanism to generate or store screenshot previews for each theme. A selection tool (like a custom `rofi`/`walker` mode) could display these previews, making it easier to choose a theme.
 
-2.  **Cursor Issues**:
-    *   VMs often have issues with hardware cursors (e.g., cursor disappearing or lagging).
-    *   **Recommendation**: Ensure `cursor:no_hardware_cursors = true` is set in the Hyprland config.
+### 6. Secrets & API Key Management
+**Current State:** If any scripts (like weather or AI tools) require API keys, they might be hardcoded or require manual config editing.
+**Improvement:** Standardize a secrets management approach, such as reading from a specific secure file (e.g., `~/.config/hypr/secrets.env`) that is ignored by git, or using a password manager CLI integration.
 
-3.  **Refresh Rate**:
-    *   `monitors.conf` should be checked to ensure it doesn't force a refresh rate unsupported by the virtual display driver.
+### 7. Presentation Mode / Idle Inhibition
+**Current State:** `hypridle` is configured for automatic locking.
+**Improvement:** Add a "Presentation Mode" toggle in the UI (Waybar/Menu). This would temporarily inhibit `hypridle` (e.g., `hyprctl dispatch dpms on` persistence or stopping the idle service) to prevent screen locking during video playback or VM usage, which is a common annoyance.
 
-## Code Quality & Maintainability
-
-1.  **Script Redundancy**:
-    *   There are many scripts in `bin/` (e.g., `hypr-cmd-*`, `hypr-refresh-*`). Some might be obsolete or redundant. A cleanup pass is recommended.
-
-2.  **Error Handling in Scripts**:
-    *   While many scripts use `set -euo pipefail`, some might lack specific checks for dependencies (like `walker` or `jq`) before running.
-
-3.  **Documentation Sync**:
-    *   The reliance on `palette.md` is excellent, but manual updates are error-prone. The `audit_palettes_v2.py` script helps, but CI checks could ensure `palette.md` always matches the config files.
-
-## Feature Enhancements
-
-1.  **Dynamic scaling**:
-    *   For HiDPI VM displays, easy scaling toggles in the menu would be beneficial.
-
-2.  **Clipboard Manager Integration**:
-    *   Ensure `cliphist` or the clipboard provider in `walker` is correctly persisted and doesn't crash the VM (as noted in memory, there were conflicts with `elephant` service).
+### 8. XDG Base Directory Compliance
+**Current State:** Some scripts may rely on fixed paths like `~/.config` or `~/.local`.
+**Improvement:** rigoroulsy audit all scripts to use `$XDG_CONFIG_HOME`, `$XDG_DATA_HOME`, and `$XDG_CACHE_HOME` environment variables. This ensures the setup respects user preferences for directory structure and makes the system more portable.
