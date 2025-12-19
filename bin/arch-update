@@ -33,7 +33,7 @@ def main():
     if len(sys.argv) > 1 and sys.argv[1] == "update":
         subprocess.run(
             [
-                "hypr-launch-floating-terminal-with-presentation",
+                "hypr-exec",
                 "hypr-update",
             ]
         )

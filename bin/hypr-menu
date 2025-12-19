@@ -65,7 +65,7 @@ terminal() {
 #   None
 #######################################
 present_terminal() {
-  hypr-launch-floating-terminal-with-presentation "$1"
+  hypr-exec "$1"
 }
 
 #######################################

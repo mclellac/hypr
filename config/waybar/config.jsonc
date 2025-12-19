@@ -127,7 +127,7 @@
             "warning": 70,
             "critical": 90
         },
-        "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation btop\"",
+        "on-click": "hyprctl dispatch exec \"hypr-exec btop\"",
         "tooltip": true
     },
     "memory": {
@@ -137,7 +137,7 @@
             "warning": 70,
             "critical": 90
         },
-        "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation btop\"",
+        "on-click": "hyprctl dispatch exec \"hypr-exec btop\"",
         "tooltip": true
     },
     "disk": {
@@ -146,7 +146,7 @@
         "path": "/",
         "tooltip": true,
         "tooltip-format": "{used} used out of {total} on {path} ({percentage_used}%)",
-        "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation btop\""
+        "on-click": "hyprctl dispatch exec \"hypr-exec btop\""
     },
     "network": {
         "interval": 5,
@@ -166,7 +166,7 @@
         "tooltip-format-wifi": "{icon} {ifname} ({essid}): {ipaddr}",
         "tooltip-format-disconnected": "{icon} disconnected",
         "tooltip-format-disabled": "{icon} disabled",
-        "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation nmtui\""
+        "on-click": "hyprctl dispatch exec \"hypr-exec nmtui\""
     },
     "hyprland/submap": {
         "format": "<span style=\"italic\">{}</span>",
@@ -203,7 +203,7 @@
             ""
         ],
         "tooltip": true,
-        "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation 'watch sensors'\""
+        "on-click": "hyprctl dispatch exec \"hypr-exec 'watch sensors'\""
     },
     "tray": {
         "icon-size": 21,
@@ -212,7 +212,7 @@
     "bluetooth": {
         "format": "󰂯",
         "format-disabled": "󰂲",
-        "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation bluetuith\"",
+        "on-click": "hyprctl dispatch exec \"hypr-exec bluetuith\"",
         "on-click-right": "rfkill toggle bluetooth",
         "tooltip-format": "{}"
     },
@@ -245,7 +245,7 @@
     "custom/update": {
         "class": "update",
         "exec": "arch-update",
-        "on-click": "hyprctl dispatch exec \"hypr-launch-floating-terminal-with-presentation hypr-update\"",
+        "on-click": "hyprctl dispatch exec \"hypr-exec hypr-update\"",
         "return-type": "json",
         "interval": 1000
     },

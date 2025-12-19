@@ -23,8 +23,8 @@ main() {
 
   local cmd="$*"
   # `setsid` detaches the new terminal from the current one.
-  # The Alacritty window is given a specific class 'hypr' for potential window rules.
-  setsid alacritty --class hypr -e bash -c "hypr-show-logo; ${cmd}; hypr-show-done"
+  # The Alacritty window is given a specific class 'hypr-exec' for potential window rules.
+  setsid alacritty --class hypr-exec -e bash -c "hypr-show-logo; ${cmd}; hypr-show-done"
 }
 
 main "$@"
