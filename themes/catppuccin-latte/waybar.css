@@ -6,3 +6,9 @@
 @define-color error_color #D20F39;
 @define-color selection_background_color #9CA0B0;
 @define-color secondary_accent_color #40A02B;
+
+@define-color cpu_color @foreground_color;
+@define-color memory_color @foreground_color;
+@define-color disk_color @foreground_color;
+@define-color network_color @foreground_color;
+@define-color group_background_color rgba(10, 10, 10, 0.9);
