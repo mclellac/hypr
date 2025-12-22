@@ -9,7 +9,8 @@ MAX_AGE=1800 # Optional: Consider data "stale" after 30 mins (not enforced here 
 fetch_weather() {
     # 5s timeout to prevent Waybar hanging
     local raw_data
-    raw_data=$(curl -s --max-time 5 "https://wttr.in/${CITY}?format=j1") || return 1
+    # Added --retry 2 for better reliability
+    raw_data=$(curl -s --max-time 5 --retry 2 "https://wttr.in/${CITY}?format=j1") || return 1
 
     # Check if we actually got valid JSON back
     if [[ -z "$raw_data" ]] || ! echo "$raw_data" | jq -e . >/dev/null 2>&1; then
@@ -34,17 +35,20 @@ fetch_weather() {
 }
 
 main() {
+    local new_weather
+
     # Try to fetch new data
-    if new_weather=$(fetch_weather); then
+    # Capture output and exit status separately to handle errors robustly
+    if new_weather=$(fetch_weather) && [[ -n "$new_weather" ]] && echo "$new_weather" | jq -e . >/dev/null 2>&1; then
         # Success! Update cache and print
         echo "$new_weather" >"$CACHE_FILE"
         echo "$new_weather"
     else
-        # Failure! Fallback to cache if it exists
-        if [[ -f "$CACHE_FILE" ]]; then
+        # Failure! Fallback to cache if it exists and is valid
+        if [[ -f "$CACHE_FILE" ]] && jq -e . "$CACHE_FILE" >/dev/null 2>&1; then
             cat "$CACHE_FILE"
         else
-            # Absolute fallback if no cache exists yet
+            # Absolute fallback if no cache exists yet or it's invalid
             echo '{"text": "", "tooltip": "Weather data unavailable (No Cache)"}'
         fi
     fi
