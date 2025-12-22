@@ -1,20 +1,23 @@
 #!/bin/bash
 set -euo pipefail
 
-# Fetches weather for Toronto from wttr.in
-main() {
-    local city="Toronto"
-    # Use a 5s timeout to stop Waybar from hanging if wttr.in is slow
-    local weather
-    weather=$(curl -s --max-time 5 "https://wttr.in/${city}?format=j1") || true
+# Configuration
+CITY="Toronto"
+CACHE_FILE="/tmp/hypr-weather-cache.json"
+MAX_AGE=1800 # Optional: Consider data "stale" after 30 mins (not enforced here for reliability)
 
-    if [[ -z "${weather}" || "${weather}" == "null" ]]; then
-        echo '{"text": "", "tooltip": "Weather data unavailable"}'
-        exit 0
+fetch_weather() {
+    # 5s timeout to prevent Waybar hanging
+    local raw_data
+    raw_data=$(curl -s --max-time 5 "https://wttr.in/${CITY}?format=j1") || return 1
+
+    # Check if we actually got valid JSON back
+    if [[ -z "$raw_data" ]] || ! echo "$raw_data" | jq -e . >/dev/null 2>&1; then
+        return 1
     fi
 
-    # Robust JQ processing
-    echo "${weather}" | jq -r '
+    # Process into Waybar format
+    echo "$raw_data" | jq -r '
     .current_condition[0] as $c |
     ($c.weatherDesc[0].value // "Unknown") as $desc |
     (if ($desc | contains("Sunny")) or ($desc | contains("Clear")) then ""
@@ -28,6 +31,23 @@ main() {
       text: "\($icon) \($c.temp_C // "??")°C",
       tooltip: "\($desc)\nFeels like: \($c.FeelsLikeC // "??")°C\nHumidity: \($c.humidity // "??")%\nWind: \($c.windspeedKmph // "??")km/h \($c.winddir16Point // "")"
     }'
+}
+
+main() {
+    # Try to fetch new data
+    if new_weather=$(fetch_weather); then
+        # Success! Update cache and print
+        echo "$new_weather" >"$CACHE_FILE"
+        echo "$new_weather"
+    else
+        # Failure! Fallback to cache if it exists
+        if [[ -f "$CACHE_FILE" ]]; then
+            cat "$CACHE_FILE"
+        else
+            # Absolute fallback if no cache exists yet
+            echo '{"text": "", "tooltip": "Weather data unavailable (No Cache)"}'
+        fi
+    fi
 }
 
 main "$@"
