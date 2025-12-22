@@ -77,11 +77,7 @@
     "hyprland/workspaces": {
         "class": "workspaces",
         "on-click": "activate",
-        "format": "{icon}",
-        "format-icons": {
-            "default": "",
-            "active": "󱓻"
-        },
+        "format": "{name}",
         "persistent-workspaces": {
         "*": 3
         }

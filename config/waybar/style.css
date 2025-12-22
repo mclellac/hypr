@@ -74,10 +74,6 @@ window#waybar {
 #custom-clipboard,
 #bluetooth,
 #battery,
-#cpu,
-#memory,
-#disk,
-#network,
 #pulseaudio,
 #temperature,
 #backlight,
@@ -85,6 +81,42 @@ window#waybar {
 #privacy,
 #custom-power {
     color: @foreground_color;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 10px;
+}
+
+#cpu {
+    color: @cpu_color;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 10px;
+}
+
+#memory {
+    color: @memory_color;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 10px;
+}
+
+#disk {
+    color: @disk_color;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 10px;
+}
+
+#network {
+    color: @network_color;
     margin-left: 2px;
     margin-right: 2px;
     padding-left: 5px;
@@ -110,7 +142,7 @@ window#waybar {
 #hardware,
 #application,
 #media {
-    background-color: rgba(10,10,10,0.9);
+    background-color: @group_background_color;
     border: 2px solid rgba(80, 80, 80, 0.88);
     color: rgba(255,255,255,1);
     border-radius: 10px;
