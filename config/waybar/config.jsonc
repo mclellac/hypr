@@ -213,7 +213,7 @@
     },
     "custom/weather": {
         "class": "weather",
-        "exec": "hypr-weather",
+        "exec": "~/.local/share/hypr/bin/hypr-weather",
         "return-type": "json",
         "format": "{}",
         "interval": 900,
