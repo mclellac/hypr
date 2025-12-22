@@ -1,69 +1,33 @@
 #!/bin/bash
-
 set -euo pipefail
 
-# Fetches weather for Toronto from wttr.in and formats it for Waybar.
+# Fetches weather for Toronto from wttr.in
 main() {
-  local city="Toronto"
-  local url="https://wttr.in/${city}?format=j1"
-  local weather
-  weather=$(curl -s "${url}")
+    local city="Toronto"
+    # Use a 5s timeout to stop Waybar from hanging if wttr.in is slow
+    local weather
+    weather=$(curl -s --max-time 5 "https://wttr.in/${city}?format=j1") || true
 
-  if [[ -z "${weather}" ]]; then
-    echo '{"text": "", "tooltip": "Weather data unavailable"}'
-    exit 0
-  fi
+    if [[ -z "${weather}" || "${weather}" == "null" ]]; then
+        echo '{"text": "", "tooltip": "Weather data unavailable"}'
+        exit 0
+    fi
 
-  local condition
-  condition=$(echo "${weather}" | jq -r '.current_condition[0].weatherDesc[0].value')
-  local temp_c
-  temp_c=$(echo "${weather}" | jq -r '.current_condition[0].temp_C')
-  local feels_like_c
-  feels_like_c=$(echo "${weather}" | jq -r '.current_condition[0].FeelsLikeC')
-  local humidity
-  humidity=$(echo "${weather}" | jq -r '.current_condition[0].humidity')
-  local wind_speed
-  wind_speed=$(echo "${weather}" | jq -r '.current_condition[0].windspeedKmph')
-  local wind_dir
-  wind_dir=$(echo "${weather}" | jq -r '.current_condition[0].winddir16Point')
-  local pressure
-  pressure=$(echo "${weather}" | jq -r '.current_condition[0].pressure')
-  local visibility
-  visibility=$(echo "${weather}" | jq -r '.current_condition[0].visibility')
-
-  # Map weather condition to an icon
-  local icon
-  case "${condition}" in
-    *Sunny*|*Clear*)
-      icon=""
-      ;;
-    *Partly*Cloudy*)
-      icon=""
-      ;;
-    *Cloudy*|*Overcast*)
-      icon="☁"
-      ;;
-    *Mist*|*Fog*)
-      icon="🌫"
-      ;;
-    *Patchy*rain*|*Light*rain*|*rain*shower*)
-      icon="🌦"
-      ;;
-    *Thundery*outbreaks*)
-      icon="⛈"
-      ;;
-    *snow*|*blizzard*)
-      icon="🌨"
-      ;;
-    *)
-      icon=""
-      ;;
-  esac
-
-  local text="${icon} ${temp_c}°C"
-  local tooltip="${condition}\nFeels like ${feels_like_c}°C\nHumidity: ${humidity}%\nWind: ${wind_speed}km/h ${wind_dir}\nPressure: ${pressure}hPa\nVisibility: ${visibility}km"
-
-  printf '{"text": "%s", "tooltip": "%s"}\n' "${text}" "${tooltip}"
+    # Robust JQ processing
+    echo "${weather}" | jq -r '
+    .current_condition[0] as $c |
+    ($c.weatherDesc[0].value // "Unknown") as $desc |
+    (if ($desc | contains("Sunny")) or ($desc | contains("Clear")) then ""
+     elif ($desc | contains("Partly cloudy")) then ""
+     elif ($desc | contains("Cloudy")) or ($desc | contains("Overcast")) then "☁"
+     elif ($desc | contains("Rain")) or ($desc | contains("rain")) then "🌦"
+     elif ($desc | contains("Snow")) or ($desc | contains("snow")) then "🌨"
+     elif ($desc | contains("Mist")) or ($desc | contains("Fog")) then "🌫"
+     else "" end) as $icon |
+    {
+      text: "\($icon) \($c.temp_C // "??")°C",
+      tooltip: "\($desc)\nFeels like: \($c.FeelsLikeC // "??")°C\nHumidity: \($c.humidity // "??")%\nWind: \($c.windspeedKmph // "??")km/h \($c.winddir16Point // "")"
+    }'
 }
 
 main "$@"
