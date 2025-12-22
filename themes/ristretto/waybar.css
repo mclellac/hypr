@@ -7,8 +7,8 @@
 @define-color selection_background_color #403E41;
 @define-color secondary_accent_color #F38D70;
 
-@define-color cpu_color @foreground_color;
-@define-color memory_color @foreground_color;
-@define-color disk_color @foreground_color;
-@define-color network_color @foreground_color;
-@define-color group_background_color rgba(10, 10, 10, 0.9);
+@define-color cpu_color #fb4934;
+@define-color memory_color #fabd2f;
+@define-color disk_color #8ec07c;
+@define-color network_color #b8bb26;
+@define-color group_background_color rgba(40, 40, 40, 0.9);
