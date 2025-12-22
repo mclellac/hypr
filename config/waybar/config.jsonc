@@ -8,7 +8,7 @@
     "position": "top",
     "modules-left": [
         "custom/hypr",
-        "hyprland/workspaces",
+        "hyprland/workspaces"
     ],
     "modules-center": [
         "hyprland/submap",
@@ -64,7 +64,7 @@
         "on-click": "activate",
         "format": "{name}",
         "persistent-workspaces": {
-        "*": 3
+            "*": 3
         }
     },
     "battery": {
@@ -94,7 +94,7 @@
         "interval": 60,
         "format": "{:%e %b %Y %H:%M}",
         "tooltip": true,
-        "tooltip-format": "<big>{:%B %Y}</big>\n<tt>{calendar}</tt>"
+        "tooltip-format": "<tt>{calendar}</tt>"
     },
     "cpu": {
         "interval": 10,
@@ -165,7 +165,7 @@
         "scroll-step": 5,
         "format-muted": "󰝟",
         "format-icons": {
-        "default": ["", "", ""]
+            "default": ["", "", ""]
         }
     },
     "temperature": {
@@ -185,14 +185,20 @@
         "icon-size": 21,
         "spacing": 5
     },
-            "Paused": "󰐍"
-        },
-        "exec": "playerctl metadata --format '{\"alt\": \"{{status}}\", \"tooltip\": \"{{playerName}}:  {{markup_escape(title)}} - {{markup_escape(artist)}}\" }'",
+    "custom/playerctl": {
+        "format": "{icon} <span>{}</span>",
+        "return-type": "json",
+        "max-length": 50,
+        "exec": "playerctl metadata --format '{\"text\": \"{{artist}} - {{title}}\", \"alt\": \"{{status}}\", \"tooltip\": \"{{playerName}}: {{markup_escape(title)}} - {{markup_escape(artist)}}\"}'",
         "on-click": "playerctl play-pause",
         "on-click-right": "playerctl next",
         "on-scroll-up": "playerctl position 10+",
         "on-scroll-down": "playerctl position 10-",
-        "signal": 5
+        "signal": 5,
+        "format-icons": {
+            "Playing": "<span>󰎇</span>",
+            "Paused": "󰐍"
+        }
     },
     "custom/clipboard": {
         "format": "󰨸",
