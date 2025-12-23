@@ -5,7 +5,7 @@ vim.g.colors_name = "amateur"
 
 -- Get the color palette
 local colors = {
-  bg = "#05080d",
+  bg = "#112330",
   fg = "#cdd6f4",
   gray = "#3b4252",
   red = "#ff4444",
@@ -15,7 +15,7 @@ local colors = {
   magenta = "#d670d6",
   cyan = "#00e5ff",
   white = "#cdd6f4",
-  orange = "#ffaa00",
+  orange = "#ffaf0e",
   dark_blue = "#1e293b",
 }
 

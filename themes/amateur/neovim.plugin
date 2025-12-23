@@ -1,12 +1,11 @@
 return {
-  "scottmckendry/cyberdream.nvim",
   name = "amateur",
+  dir = vim.fn.expand("~/.config/hypr/current/theme"),
   lazy = false,
   priority = 1000,
   config = function()
-    require("cyberdream").setup({
-      italic_comments = false,
-    })
-    vim.cmd("colorscheme cyberdream")
+    -- Load the colorscheme file
+    dofile(vim.fn.expand("~/.config/hypr/current/theme/colors/amateur.lua"))
+    vim.cmd("colorscheme amateur")
   end,
 }
