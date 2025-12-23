@@ -4,8 +4,8 @@
 |---|---|---|
 | `accent_color` | #00e5ff | Waybar, Hyprland active border |
 | `active_border_color_1` | #00e5ff | Hyprland active border |
-| `active_border_color_2` | #1e293b | Hyprland active border gradient |
-| `background_color` | #05080d | Waybar, Main Background |
+| `active_border_color_2` | #223047 | Hyprland active border gradient |
+| `background_color` | #112330 | Waybar, Main Background |
 | `cursor_color` | #00e5ff | Cursor |
 | `cursor_text_color` | #05080d | Cursor Text |
 | `diff_add_color` | #00ffcc | Neovim DiffAdd |
@@ -36,9 +36,9 @@
 | `term_color7` | #cdd6f4 | Terminal White |
 | `term_color8` | #3b4252 | Terminal Bright Black |
 | `term_color9` | #ff6666 | Terminal Bright Red |
-| `terminal_background_color` | #05080d | Terminal Background |
+| `terminal_background_color` | #1c2528d2 | Terminal Background |
 | `terminal_foreground_color` | #cdd6f4 | Terminal Foreground |
 | `url_color` | #00e5ff | URL Color |
 | `walker_selection_tint` | #00e5ff19 | Walker Selection Tint |
-| `warning_color` | #ffaa00 | Waybar Warning |
-| `waybar_group_bg` | #05080de5 | Waybar Group BG |
+| `warning_color` | #ffaf0e | Waybar Warning |
+| `waybar_group_bg` | #2b3b43e0 | Waybar Group BG |

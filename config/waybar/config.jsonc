@@ -222,7 +222,7 @@
         "exec": "hypr-weather",
         "return-type": "json",
         "format": "{}",
-        "interval": 900,
+        "interval": 1200,
         "tooltip": true
     },
     "privacy": {
