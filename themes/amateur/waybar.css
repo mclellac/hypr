@@ -1,14 +1,14 @@
 /* Theme Colors */
-@define-color background_color #00272d;
-@define-color foreground_color #e2e8f0;
-@define-color accent_color #04c755;
+@define-color background_color #05080d;
+@define-color foreground_color #cdd6f4;
+@define-color accent_color #00e5ff;
 @define-color warning_color #ffaa00;
-@define-color error_color #fa7373;
-@define-color selection_background_color #505c68;
-@define-color secondary_accent_color #40c89d;
+@define-color error_color #ff4444;
+@define-color selection_background_color #1e293b;
+@define-color secondary_accent_color #1e293b;
 
-@define-color cpu_color @foreground_color;
-@define-color memory_color @foreground_color;
-@define-color disk_color @foreground_color;
-@define-color network_color @foreground_color;
-@define-color group_background_color rgba(10, 10, 10, 0.9);
+@define-color cpu_color #33ecff;
+@define-color memory_color #33bbff;
+@define-color disk_color #33ffdd;
+@define-color network_color #e085e0;
+@define-color group_background_color rgba(5, 8, 13, 0.9);
