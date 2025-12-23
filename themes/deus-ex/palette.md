@@ -30,6 +30,7 @@
 | `terminal_foreground_color` | #fff69f | Alacritty, Kitty, btop available_... |
 | `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
 | `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_0a0a0ae5` | #0a0a0ae5 | Detected in waybar.css (from rgb/rgba) |
 | `unknown_351409cc` | #351409cc | Detected in hyprlock.conf (from rgb/rgba) |
 | `url_color` | #d0902f | URL Color, btop available_start, btop cached_star... |
 | `warning_color` | #fdd870 | Waybar |

@@ -35,6 +35,7 @@
 | `terminal_foreground_color` | #d8caac | Kitty |
 | `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
 | `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_0a0a0ae5` | #0a0a0ae5 | Detected in waybar.css (from rgb/rgba) |
 | `unknown_2d353bcc` | #2d353bcc | Detected in hyprlock.conf (from rgb/rgba) |
 | `upload_mid_color` | #e69875 | btop upload_mid |
 | `warning_color` | #dbbc7f | Waybar, btop available_mid, btop cpu_mid, bto... |

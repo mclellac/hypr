@@ -58,6 +58,7 @@
 | `text-color` | #cad3f5 | Detected in mako.ini |
 | `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
 | `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_0a0a0ae5` | #0a0a0ae5 | Detected in waybar.css (from rgb/rgba) |
 | `unknown_181824cc` | #181824cc | Detected in hyprlock.conf (from rgb/rgba) |
 | `unknown_449dab` | #449dab | Detected in hyprlock.conf (from rgb/rgba) |
 | `url_color` | #f5e0dc | URL Color |
