@@ -58,10 +58,7 @@ window#waybar {
 
 /* Left and Center modules */
 #custom-hypr,
-#custom-help,
-#submap,
-#window,
-#mpris {
+#submap {
     margin-left: 5px;
     margin-right: 5px;
     padding-left: 10px;
@@ -70,9 +67,7 @@ window#waybar {
 }
 
 /* Right modules */
-#custom-pacman,
 #custom-clipboard,
-#bluetooth,
 #battery,
 #pulseaudio,
 #temperature,
@@ -139,9 +134,7 @@ window#waybar {
  * Group styles
  * -------------------------------------------------------------------------- */
 
-#hardware,
-#application,
-#media {
+#hardware {
     background-color: @group_background_color;
     border: 2px solid rgba(80, 80, 80, 0.88);
     color: rgba(255,255,255,1);
@@ -151,9 +144,7 @@ window#waybar {
     padding: 2px;
 }
 
-#hardware > *,
-#application > *,
-#media > * {
+#hardware > * {
     margin: 0;
     padding: 0 5px;
     background: transparent;
@@ -169,7 +160,7 @@ window#waybar {
  * Module styles
  * -------------------------------------------------------------------------- */
 
-#custom-hyper,
+#custom-hypr,
 #workspaces button.active {
     color: @accent_color;
     background-color: @background_color;
@@ -296,11 +287,6 @@ window#waybar {
 
 #privacy {
     color: @accent_color;
-}
-
-#idle_inhibitor.activated {
-    background-color: @accent_color;
-    color: @background_color;
 }
 
 tooltip {
