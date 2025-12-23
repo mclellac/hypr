@@ -14,13 +14,14 @@
 | `diff_text_color` | #00aaff | Neovim DiffText |
 | `error_color` | #ff4444 | Waybar Error |
 | `foreground_color` | #cdd6f4 | Waybar Foreground |
-| `inactive_border_color` | #1e293b | Hyprland inactive border |
-| `nogroup_border_color` | #1e293b | Hyprland nogroup border |
-| `secondary_accent_color` | #1e293b | Waybar Secondary |
-| `selection_background_color` | #1e293b | Waybar Selection |
+| `group_background_color` | #2b3b43 | Detected in waybar.css |
+| `inactive_border_color` | #254f54 | Hyprland inactive border |
+| `nogroup_border_color` | #254f54 | Hyprland nogroup border |
+| `secondary_accent_color` | #254f54 | Waybar Secondary |
+| `selection_background_color` | #254f54 | Waybar Selection |
 | `shadow_color_1` | #00000038 | Shadow (rgba 0.3) |
 | `shadow_color_2` | #0000004c | Shadow (rgba 0.22) |
-| `term_color0` | #1e293b | Terminal Black |
+| `term_color0` | #254f54 | Terminal Black |
 | `term_color1` | #ff4444 | Terminal Red |
 | `term_color10` | #33ffdd | Terminal Bright Green |
 | `term_color11` | #ffd633 | Terminal Bright Yellow |

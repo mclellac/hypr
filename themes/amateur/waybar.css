@@ -4,8 +4,8 @@
 @define-color accent_color #00e5ff;
 @define-color warning_color #ffaf0e;
 @define-color error_color #ff4444;
-@define-color selection_background_color #1e293b;
-@define-color secondary_accent_color #1e293b;
+@define-color selection_background_color #254f54;
+@define-color secondary_accent_color #254f54;
 
 @define-color cpu_color #33ecff;
 @define-color memory_color #33bbff;

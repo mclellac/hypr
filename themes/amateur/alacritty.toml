@@ -5,7 +5,7 @@ foreground = '#cdd6f4'
 
 # Normal colors
 [colors.normal]
-black = '#1e293b'
+black = '#254f54'
 red = '#ff4444'
 green = '#00ffcc'
 yellow = '#ffcc00'
@@ -27,4 +27,4 @@ white = '#ffffff'
 
 [colors.selection]
 text = '#cdd6f4'
-background = '#1e293b'
+background = '#254f54'

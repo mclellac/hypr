@@ -14,7 +14,7 @@ theme[title]="#00e5ff"
 theme[hi_fg]="#33ecff"
 
 # Background color of selected item in processes box
-theme[selected_bg]="#1e293b"
+theme[selected_bg]="#254f54"
 
 # Foreground color of selected item in processes box
 theme[selected_fg]="#00e5ff"
@@ -38,7 +38,7 @@ theme[net_box]="#e085e0"
 theme[proc_box]="#00e5ff"
 
 # Box divider line and small boxes line color
-theme[div_line]="#1e293b"
+theme[div_line]="#254f54"
 
 # Temperature graph colors
 theme[temp_start]="#33ffdd"
@@ -56,7 +56,7 @@ theme[free_mid]="#33ffdd"
 theme[free_end]="#cdd6f4"
 
 # Mem/Disk cached meter
-theme[cached_start]="#1e293b"
+theme[cached_start]="#254f54"
 theme[cached_mid]="#00e5ff"
 theme[cached_end]="#33ecff"
 
@@ -73,7 +73,7 @@ theme[used_end]="#ff4444"
 # Download graph colors
 theme[download_start]="#00e5ff"
 theme[download_mid]="#33ecff"
-theme[download_end]="#1e293b"
+theme[download_end]="#254f54"
 
 # Upload graph colors
 theme[upload_start]="#00ffcc"

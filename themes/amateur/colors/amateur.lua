@@ -16,7 +16,7 @@ local colors = {
   cyan = "#00e5ff",
   white = "#cdd6f4",
   orange = "#ffaf0e",
-  dark_blue = "#1e293b",
+  dark_blue = "#254f54",
 }
 
 -- Helper function to set highlights
