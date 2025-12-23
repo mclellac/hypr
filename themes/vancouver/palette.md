@@ -32,6 +32,7 @@
 | `title_color` | #f5cba7 | btop cached_mid, btop cpu_box, btop title, btop... |
 | `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
 | `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_0a0a0ae5` | #0a0a0ae5 | Detected in waybar.css (from rgb/rgba) |
 | `unknown_2a2a2acc` | #2a2a2acc | Detected in hyprlock.conf (from rgb/rgba) |
 | `url_color` | #a9cce3 | URL Color, btop cached_start, btop download_start... |
 | `warning_color` | #f9e79f | Waybar, btop available_mid, btop cached_end, ... |

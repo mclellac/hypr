@@ -1,7 +1,9 @@
 @define-color base #2d353b;
 @define-color text #d3c6aa;
-@define-color border #d3c6aa;
+@define-color border #dbbc7f;
 @define-color selected-text #dbbc7f;
+@define-color window_bg_color alpha(@base, 0.95);
+@define-color accent_bg_color @selected-text;
 
 .box-wrapper {
   box-shadow:

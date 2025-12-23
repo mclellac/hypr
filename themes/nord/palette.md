@@ -40,6 +40,7 @@
 | `terminal_foreground_color` | #d8dee9 | Alacritty, Kitty, btop main_fg |
 | `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
 | `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_0a0a0ae5` | #0a0a0ae5 | Detected in waybar.css (from rgb/rgba) |
 | `unknown_2e3440cc` | #2e3440cc | Detected in hyprlock.conf (from rgb/rgba) |
 | `unknown_ffffff` | #ffffff | Detected in btop.theme |
 | `url_color` | #0087bd | URL Color |

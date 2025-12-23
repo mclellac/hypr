@@ -34,6 +34,7 @@
 | `terminal_foreground_color` | #b0bec5 | Kitty, btop cpu_box, btop graph_t... |
 | `unknown_00000038` | #00000038 | Detected in walker.css (from rgb/rgba) |
 | `unknown_0000004c` | #0000004c | Detected in walker.css (from rgb/rgba) |
+| `unknown_0a0a0ae5` | #0a0a0ae5 | Detected in waybar.css (from rgb/rgba) |
 | `unknown_263238cc` | #263238cc | Detected in hyprlock.conf (from rgb/rgba) |
 | `url_color` | #82aaff | URL Color, btop cached_start, btop download_start... |
 | `used_end_color` | #f78c6c | btop upload_end, btop used_end |

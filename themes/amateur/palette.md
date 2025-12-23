@@ -38,7 +38,9 @@
 | `term_color9` | #ff6666 | Terminal Bright Red |
 | `terminal_background_color` | #1c2528d2 | Terminal Background |
 | `terminal_foreground_color` | #cdd6f4 | Terminal Foreground |
+| `unknown_05080de5` | #05080de5 | Detected in waybar.css (from rgb/rgba) |
 | `url_color` | #00e5ff | URL Color |
 | `walker_selection_tint` | #00e5ff19 | Walker Selection Tint |
 | `warning_color` | #ffaf0e | Waybar Warning |
+| `warning_color` | #ffaa00 | Detected in waybar.css |
 | `waybar_group_bg` | #2b3b43e0 | Waybar Group BG |

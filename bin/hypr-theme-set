@@ -78,21 +78,11 @@ update_gnome_settings() {
 #   None
 #######################################
 update_chromium_theme() {
-    if ! command -v chromium &>/dev/null; then
-        return
-    fi
-
-    local color_scheme="dark"
-    if [[ -f "${CURRENT_THEME_DIR}/light.mode" ]]; then
-        color_scheme="light"
-    fi
-    chromium --no-startup-window --set-color-scheme="${color_scheme}" &>/dev/null
-
-    local theme_color="28,32,39" # Default neutral grey
-    if [[ -f "${CURRENT_THEME_DIR}/chromium.theme" ]]; then
-        theme_color=$(<"${CURRENT_THEME_DIR}/chromium.theme")
-    fi
-    chromium --no-startup-window --set-theme-color="${theme_color}" &>/dev/null
+    # Standard Chromium does not support command-line theme switching.
+    # The 'omarchy' fork might have had patches for this, but standard builds do not.
+    # The flags --set-color-scheme and --set-theme-color are not valid.
+    # We rely on GTK theme integration (handled by update_gnome_settings) if enabled in browser.
+    return
 }
 
 #######################################
