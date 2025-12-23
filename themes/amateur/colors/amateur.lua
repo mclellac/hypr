@@ -5,18 +5,18 @@ vim.g.colors_name = "amateur"
 
 -- Get the color palette
 local colors = {
-  bg = "#012e21",
-  fg = "#e2e8f0",
-  gray = "#4a5568",
-  red = "#f56565",
-  green = "#04c755",
-  yellow = "#ff9d26",
-  blue = "#63ed91",
-  magenta = "#4fd19d",
-  cyan = "#4fd181",
-  white = "#f7fafc",
-  orange = "#d68700",
-  dark_blue = "#2c5282",
+  bg = "#05080d",
+  fg = "#cdd6f4",
+  gray = "#3b4252",
+  red = "#ff4444",
+  green = "#00ffcc",
+  yellow = "#ffcc00",
+  blue = "#00aaff",
+  magenta = "#d670d6",
+  cyan = "#00e5ff",
+  white = "#cdd6f4",
+  orange = "#ffaa00",
+  dark_blue = "#1e293b",
 }
 
 -- Helper function to set highlights
@@ -29,18 +29,18 @@ s("Normal", { fg = colors.fg, bg = colors.bg })
 s("Comment", { fg = colors.gray, italic = true })
 s("String", { fg = colors.green })
 s("Number", { fg = colors.orange })
-s("Keyword", { fg = colors.blue, italic = true })
-s("Function", { fg = colors.yellow })
-s("Type", { fg = colors.cyan })
-s("Statement", { fg = colors.blue })
+s("Keyword", { fg = colors.cyan, italic = true })
+s("Function", { fg = colors.blue })
+s("Type", { fg = colors.magenta })
+s("Statement", { fg = colors.cyan })
 s("Identifier", { fg = colors.fg })
 s("Title", { fg = colors.blue, bold = true })
 s("LineNr", { fg = colors.gray })
-s("CursorLineNr", { fg = colors.yellow, bold = true })
+s("CursorLineNr", { fg = colors.cyan, bold = true })
 s("Visual", { bg = colors.dark_blue })
 s("Search", { bg = colors.yellow, fg = colors.bg })
 s("IncSearch", { bg = colors.orange, fg = colors.bg })
-s("DiffAdd", { bg = "#226449" })
-s("DiffChange", { bg = "#696b3e" })
-s("DiffDelete", { bg = "#7d2929" })
-s("DiffText", { bg = "#2c5282" })
+s("DiffAdd", { bg = "#00ffcc", fg = colors.bg })
+s("DiffChange", { bg = "#ffcc00", fg = colors.bg })
+s("DiffDelete", { bg = "#ff4444", fg = colors.bg })
+s("DiffText", { bg = "#00aaff", fg = colors.bg })
