@@ -56,7 +56,7 @@
     "custom/hypr": {
         "class": "hypr",
         "format": "󰚌 ",
-        "on-click": "hyprctl dispatch exec hypr-menu",
+        "on-click": "hyprctl dispatch exec ~/.local/share/hypr/bin/hypr-menu",
         "tooltip-format": "Hypr Menu\n\nSuper + Alt + Space"
     },
     "hyprland/workspaces": {
@@ -103,7 +103,7 @@
             "warning": 70,
             "critical": 90
         },
-        "on-click": "hyprctl dispatch exec \"hypr-exec btop\"",
+        "on-click": "hyprctl dispatch exec \"~/.local/share/hypr/bin/hypr-exec btop\"",
         "tooltip": true
     },
     "memory": {
@@ -113,7 +113,7 @@
             "warning": 70,
             "critical": 90
         },
-        "on-click": "hyprctl dispatch exec \"hypr-exec btop\"",
+        "on-click": "hyprctl dispatch exec \"~/.local/share/hypr/bin/hypr-exec btop\"",
         "tooltip": true
     },
     "disk": {
@@ -122,7 +122,7 @@
         "path": "/",
         "tooltip": true,
         "tooltip-format": "{used} used out of {total} on {path} ({percentage_used}%)",
-        "on-click": "hyprctl dispatch exec \"hypr-exec btop\""
+        "on-click": "hyprctl dispatch exec \"~/.local/share/hypr/bin/hypr-exec btop\""
     },
     "network": {
         "interval": 5,
@@ -142,7 +142,7 @@
         "tooltip-format-wifi": "{icon} {ifname} ({essid}): {ipaddr}",
         "tooltip-format-disconnected": "{icon} disconnected",
         "tooltip-format-disabled": "{icon} disabled",
-        "on-click": "hyprctl dispatch exec \"hypr-exec nmtui\""
+        "on-click": "hyprctl dispatch exec \"~/.local/share/hypr/bin/hypr-exec nmtui\""
     },
     "hyprland/submap": {
         "format": "<span style=\"italic\">{}</span>",
@@ -179,7 +179,7 @@
             ""
         ],
         "tooltip": true,
-        "on-click": "hyprctl dispatch exec \"hypr-exec 'watch sensors'\""
+        "on-click": "hyprctl dispatch exec \"~/.local/share/hypr/bin/hypr-exec 'watch sensors'\""
     },
     "tray": {
         "icon-size": 21,
@@ -212,14 +212,14 @@
     },
     "custom/update": {
         "class": "update",
-        "exec": "arch-update",
-        "on-click": "hyprctl dispatch exec \"hypr-exec hypr-update\"",
+        "exec": "~/.local/share/hypr/bin/arch-update",
+        "on-click": "hyprctl dispatch exec \"~/.local/share/hypr/bin/hypr-exec ~/.local/share/hypr/bin/hypr-update\"",
         "return-type": "json",
         "interval": 1000
     },
     "custom/weather": {
         "class": "weather",
-        "exec": "hypr-weather",
+        "exec": "~/.local/share/hypr/bin/hypr-weather",
         "return-type": "json",
         "format": "{}",
         "interval": 1200,
@@ -244,7 +244,7 @@
     },
     "custom/power": {
         "format": "⏻",
-        "on-click": "hyprctl dispatch exec hypr-power-menu",
+        "on-click": "hyprctl dispatch exec ~/.local/share/hypr/bin/hypr-power-menu",
         "tooltip": true,
         "tooltip-format": "Power Menu"
     }
