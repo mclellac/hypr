@@ -2,7 +2,7 @@
 # By: Jules
 
 # Main bg
-theme[main_bg]="#05080d"
+theme[main_bg]="#112330"
 
 # Main text color
 theme[main_fg]="#cdd6f4"
