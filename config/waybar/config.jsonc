@@ -206,7 +206,7 @@
         "return-type": "json",
         "on-click": "hyprctl dispatch exec \"walker --provider clipboard\"",
         "on-click-middle": "rm -f ~/.cache/cliphist/db; pkill -RTMIN+9 waybar",
-        "exec": "printf '{\"tooltip\":\"%s\"}' $(cliphist list | wc -l)' item(s) in the clipboard\r(Mid click to clear)'",
+        "exec": "printf '{\"tooltip\":\"%s item(s) in the clipboard\\r(Mid click to clear)\"}' $(cliphist list | wc -l)",
         "exec-if": "[ -x \"$(command -v cliphist)\" ] && [ $(cliphist list | wc -l) -gt 0 ]",
         "signal": 9
     },
@@ -219,7 +219,7 @@
     },
     "custom/weather": {
         "class": "weather",
-        "exec": "~/.local/share/hypr/bin/hypr-weather",
+        "exec": "hypr-weather",
         "return-type": "json",
         "format": "{}",
         "interval": 900,
