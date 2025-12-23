@@ -1,6 +1,6 @@
 [colors]
 [colors.primary]
-background = '#05080d'
+background = '#112330'
 foreground = '#cdd6f4'
 
 # Normal colors
@@ -26,5 +26,5 @@ cyan = '#33ecff'
 white = '#ffffff'
 
 [colors.selection]
-text = '#05080d'
+text = '#cdd6f4'
 background = '#1e293b'
