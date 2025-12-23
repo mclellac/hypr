@@ -18,7 +18,7 @@ fetch_weather() {
     fi
 
     # Process into Waybar format
-    echo "$raw_data" | jq -r '
+    echo "$raw_data" | jq -c '
     .current_condition[0] as $c |
     ($c.weatherDesc[0].value // "Unknown") as $desc |
     (if ($desc | contains("Sunny")) or ($desc | contains("Clear")) then ""
@@ -46,7 +46,7 @@ main() {
     else
         # Failure! Fallback to cache if it exists and is valid
         if [[ -f "$CACHE_FILE" ]] && jq -e . "$CACHE_FILE" >/dev/null 2>&1; then
-            cat "$CACHE_FILE"
+            jq -c . "$CACHE_FILE"
         else
             # Absolute fallback if no cache exists yet or it's invalid
             echo '{"text": "", "tooltip": "Weather data unavailable (No Cache)"}'
