@@ -39,8 +39,8 @@ set_initial_hypr_theme() {
     echo "Setting initial hypr theme..."
     local -r current_dir="${HOME}/.config/hypr/current"
     mkdir -p "${current_dir}"
-    ln -snf "${HOME}/.config/hypr/themes/ristretto" "${current_dir}/theme"
-    ln -snf "${current_dir}/theme/backgrounds/1-ristretto.jpg" "${current_dir}/background"
+    ln -snf "${HOME}/.config/hypr/themes/amateur" "${current_dir}/theme"
+    ln -snf "${current_dir}/theme/backgrounds/1-amateur.jpg" "${current_dir}/background"
 }
 
 #######################################
@@ -65,7 +65,7 @@ link_application_configs() {
 #######################################
 apply_default_theme() {
     echo "Applying default theme..."
-    "${HYPR_PATH}/bin/hypr-theme-set" ristretto
+    "${HYPR_PATH}/bin/hypr-theme-set" amateur
 }
 
 #######################################
