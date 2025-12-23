@@ -1,14 +1,17 @@
 /* Theme Colors */
-@define-color background_color #00272d;
-@define-color foreground_color #e2e8f0;
-@define-color accent_color #04c755;
-@define-color warning_color #ffaa00;
-@define-color error_color #fa7373;
-@define-color selection_background_color #505c68;
-@define-color secondary_accent_color #40c89d;
+@define-color background_color #161616;
+@define-color foreground_color #e6e6e6;
+@define-color accent_color #4db6eb;
+@define-color warning_color #e67e22;
+@define-color error_color #d63031;
+@define-color selection_background_color #1f66c5;
+@define-color secondary_accent_color #1f66c5;
 
-@define-color cpu_color @foreground_color;
-@define-color memory_color @foreground_color;
-@define-color disk_color @foreground_color;
-@define-color network_color @foreground_color;
-@define-color group_background_color rgba(10, 10, 10, 0.9);
+/* Specific Module Colors */
+@define-color cpu_color @warning_color;
+@define-color memory_color @accent_color;
+@define-color disk_color @secondary_accent_color;
+@define-color network_color @accent_color;
+@define-color battery_color @accent_color;
+@define-color temperature_color @warning_color;
+@define-color group_background_color rgba(22, 22, 22, 0.9);
