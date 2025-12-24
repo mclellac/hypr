@@ -5,16 +5,20 @@ import collections
 
 THEMES_DIR = "themes"
 
-# Regexes
+# Regexes for finding colors
 HEX_COLOR_RE = re.compile(r"#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\b")
 HYPR_COLOR_RE = re.compile(r"0x([0-9a-fA-F]{8})\b")
 RGB_RE = re.compile(r"rgba?\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([0-9.]+))?\s*\)")
 
-# Variable definitions
+# Regexes for finding variable definitions
 WAYBAR_DEF_RE = re.compile(r"@define-color\s+([a-zA-Z0-9_-]+)\s+")
-KITTY_DEF_RE = re.compile(r"^([a-zA-Z0-9_-]+)\s+#")
-TOML_INI_DEF_RE = re.compile(r'([a-zA-Z0-9_-]+)\s*=\s*["\']?#')
-HYPR_DEF_RE = re.compile(r"\$([a-zA-Z0-9_-]+)\s*=\s*0x")
+KITTY_DEF_RE = re.compile(r"^([a-zA-Z0-9_-]+)\s+")
+TOML_INI_DEF_RE = re.compile(r'([a-zA-Z0-9_-]+)\s*=\s*')
+HYPR_DEF_RE = re.compile(r"\$([a-zA-Z0-9_-]+)\s*=\s*")
+BTOP_DEF_RE = re.compile(r'theme\[([a-zA-Z0-9_-]+)\]\s*=\s*')
+
+# INI/TOML Section Detection
+INI_SECTION_RE = re.compile(r"^\[(.+)\]$")
 
 def canonicalize_hex(h):
     h = h.lower()
@@ -54,7 +58,7 @@ def get_app_name(filename):
     return "Other"
 
 def analyze_file(filepath):
-    colors = [] # list of dicts: {hex, name, desc}
+    colors = [] # list of dicts: {hex, name}
     try:
         with open(filepath, 'r') as f:
             lines = f.readlines()
@@ -63,6 +67,7 @@ def analyze_file(filepath):
 
     fname = os.path.basename(filepath)
     app = get_app_name(fname)
+    current_section = None
 
     # Pre-scan for chromium
     if fname == "chromium.theme":
@@ -70,16 +75,22 @@ def analyze_file(filepath):
         if re.match(r"^\d+,\d+,\d+$", content):
             r, g, b = content.split(",")
             h = rgb_to_hex(r,g,b)
-            colors.append({'hex': h, 'name': 'chromium_frame', 'desc': 'Found in chromium.theme'})
+            colors.append({'hex': h, 'name': 'chromium_frame'})
             return app, colors
 
     for line in lines:
         line_s = line.strip()
-        # Skip comment-only lines, except for Kitty which might define colors without special syntax?
-        # Actually Kitty definitions are "name value", comments start with #.
+
+        # INI/TOML Section Detection
+        # Handle Alacritty (TOML) and Mako (INI) sections
+        if (app == "Mako" or app == "Alacritty") and line_s.startswith("[") and line_s.endswith("]"):
+            m = INI_SECTION_RE.match(line_s)
+            if m:
+                current_section = m.group(1)
+            continue
+
+        # Skip comment-only lines
         if line_s.startswith(("//", "#", ";")) and app != "Chromium":
-            # Check if it is really a comment or just a color?
-            # In some formats #RRGGBB could be start of line? Unlikely.
             continue
 
         found_hex = []
@@ -101,18 +112,30 @@ def analyze_file(filepath):
 
         # Extract variable name if definition
         var_name = None
-        if app == "Waybar" and "@define-color" in line:
+
+        if (app == "Waybar" or app == "Walker") and "@define-color" in line:
             m = WAYBAR_DEF_RE.search(line)
             if m: var_name = m.group(1)
+
         elif app == "Kitty":
              m = KITTY_DEF_RE.match(line)
              if m: var_name = m.group(1)
-        elif app == "Hyprland" and line.strip().startswith("$"):
+
+        elif (app == "Hyprland" or app == "Hyprlock") and line.strip().startswith("$"):
              m = HYPR_DEF_RE.search(line)
              if m: var_name = m.group(1)
-        elif app in ["Alacritty", "Mako", "Walker", "Btop"] and "=" in line:
+
+        elif app == "Btop":
+            m = BTOP_DEF_RE.search(line)
+            if m: var_name = m.group(1)
+
+        elif app in ["Alacritty", "Mako"] and "=" in line:
              m = TOML_INI_DEF_RE.search(line)
              if m: var_name = m.group(1)
+
+        # Append section to name for Mako/Alacritty to avoid duplicates
+        if var_name and current_section:
+            var_name = f"{var_name} ({current_section})"
 
         for val, type_ in found_hex:
             final_hex = ""
@@ -121,19 +144,16 @@ def analyze_file(filepath):
             elif type_ == "rgb": final_hex = canonicalize_hex(rgb_to_hex(*val))
 
             name = var_name if var_name else "unknown"
-            desc = f"Variable `{var_name}` in {fname}" if var_name else f"Raw value in {fname}"
-
-            colors.append({'hex': final_hex, 'name': name, 'desc': desc})
+            colors.append({'hex': final_hex, 'name': name})
 
     return app, colors
 
 def generate_table(app, colors):
     if not colors: return ""
 
-    # Header
     md = f"### {app}\n\n"
-    md += "| Name | Hex | Description |\n"
-    md += "|---|---|---|\n"
+    md += "| Name | Hex |\n"
+    md += "|---|---|\n"
 
     # Sort by name
     colors.sort(key=lambda x: (x['name'] == 'unknown', x['name']))
@@ -141,21 +161,16 @@ def generate_table(app, colors):
     for c in colors:
         name = c['name']
         hex_val = c['hex']
-        desc = c['desc']
 
         name_s = f"`{name}`"
+        # Ensure max length to fit 80 chars
+        # | `name` | #hex |
+        # 4 + len + 3 + len + 2
+        # Max name len = 80 - 4 - 3 - 2 - 7 = 64
+        if len(name_s) > 60:
+             name_s = name_s[:57] + "..."
 
-        # base length: |  |  |  | = 10 chars
-        # 10 + len(name_s) + len(hex_val) + len(desc) <= 80
-        remaining = 80 - 10 - len(name_s) - len(hex_val)
-
-        if remaining < 3:
-             # Just cut desc entirely if no space
-             desc = desc[:max(0, remaining)]
-        elif len(desc) > remaining:
-            desc = desc[:remaining-3] + "..."
-
-        md += f"| {name_s} | {hex_val} | {desc} |\n"
+        md += f"| {name_s} | {hex_val} |\n"
 
     md += "\n"
     return md
@@ -190,9 +205,9 @@ def main():
             for app in sorted(app_colors.keys()):
                 unique_colors = []
                 seen = set()
-                # Deduplicate based on name, hex, and source file
+                # Deduplicate based on name and hex
                 for c in app_colors[app]:
-                    key = (c['hex'], c['name'], c['desc'])
+                    key = (c['name'], c['hex'])
                     if key not in seen:
                         unique_colors.append(c)
                         seen.add(key)

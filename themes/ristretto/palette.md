@@ -2,143 +2,165 @@
 
 ### Alacritty
 
-| Name | Hex | Description |
-|---|---|---|
-| `background` | #2c2525 | Variable `background` in alacritty.toml |
-| `background` | #403e41 | Variable `background` in alacritty.toml |
-| `black` | #72696a | Variable `black` in alacritty.toml |
-| `black` | #948a8b | Variable `black` in alacritty.toml |
-| `blue` | #f38d70 | Variable `blue` in alacritty.toml |
-| `blue` | #f8a788 | Variable `blue` in alacritty.toml |
-| `cursor` | #c3b7b8 | Variable `cursor` in alacritty.toml |
-| `cyan` | #85dacc | Variable `cyan` in alacritty.toml |
-| `cyan` | #9bf1e1 | Variable `cyan` in alacritty.toml |
-| `foreground` | #e6d9db | Variable `foreground` in alacritty.toml |
-| `green` | #adda78 | Variable `green` in alacritty.toml |
-| `green` | #c8e292 | Variable `green` in alacritty.toml |
-| `magenta` | #a8a9eb | Variable `magenta` in alacritty.toml |
-| `magenta` | #bebffd | Variable `magenta` in alacritty.toml |
-| `red` | #fd6883 | Variable `red` in alacritty.toml |
-| `red` | #ff8297 | Variable `red` in alacritty.toml |
-| `text` | #c3b7b8 | Variable `text` in alacritty.toml |
-| `text` | #e6d9db | Variable `text` in alacritty.toml |
-| `white` | #e6d9db | Variable `white` in alacritty.toml |
-| `white` | #f1e5e7 | Variable `white` in alacritty.toml |
-| `yellow` | #f9cc6c | Variable `yellow` in alacritty.toml |
-| `yellow` | #fcd675 | Variable `yellow` in alacritty.toml |
+| Name | Hex |
+|---|---|
+| `background (colors.primary)` | #2c2525 |
+| `background (colors.selection)` | #403e41 |
+| `black (colors.bright)` | #948a8b |
+| `black (colors.normal)` | #72696a |
+| `blue (colors.bright)` | #f8a788 |
+| `blue (colors.normal)` | #f38d70 |
+| `cursor (colors.cursor)` | #c3b7b8 |
+| `cyan (colors.bright)` | #9bf1e1 |
+| `cyan (colors.normal)` | #85dacc |
+| `foreground (colors.primary)` | #e6d9db |
+| `green (colors.bright)` | #c8e292 |
+| `green (colors.normal)` | #adda78 |
+| `magenta (colors.bright)` | #bebffd |
+| `magenta (colors.normal)` | #a8a9eb |
+| `red (colors.bright)` | #ff8297 |
+| `red (colors.normal)` | #fd6883 |
+| `text (colors.cursor)` | #c3b7b8 |
+| `text (colors.selection)` | #e6d9db |
+| `white (colors.bright)` | #f1e5e7 |
+| `white (colors.normal)` | #e6d9db |
+| `yellow (colors.bright)` | #fcd675 |
+| `yellow (colors.normal)` | #f9cc6c |
 
 ### Btop
 
-| Name | Hex | Description |
-|---|---|---|
-| `unknown` | #2c2421 | Raw value in btop.theme |
-| `unknown` | #e6d9db | Raw value in btop.theme |
-| `unknown` | #fd6883 | Raw value in btop.theme |
-| `unknown` | #3d2f2a | Raw value in btop.theme |
-| `unknown` | #72696a | Raw value in btop.theme |
-| `unknown` | #adda78 | Raw value in btop.theme |
-| `unknown` | #5b4a45 | Raw value in btop.theme |
-| `unknown` | #a8a9eb | Raw value in btop.theme |
-| `unknown` | #f38d70 | Raw value in btop.theme |
-| `unknown` | #fd6a85 | Raw value in btop.theme |
-| `unknown` | #f9cc6c | Raw value in btop.theme |
-| `unknown` | #c5e2a3 | Raw value in btop.theme |
-| `unknown` | #85dacc | Raw value in btop.theme |
-| `unknown` | #b3e8dd | Raw value in btop.theme |
-| `unknown` | #fce2a3 | Raw value in btop.theme |
-| `unknown` | #feb5c7 | Raw value in btop.theme |
-| `unknown` | #c5c6f0 | Raw value in btop.theme |
+| Name | Hex |
+|---|---|
+| `available_end` | #fce2a3 |
+| `available_mid` | #f9cc6c |
+| `available_start` | #5b4a45 |
+| `cached_end` | #b3e8dd |
+| `cached_mid` | #85dacc |
+| `cached_start` | #5b4a45 |
+| `cpu_box` | #5b4a45 |
+| `cpu_end` | #fd6883 |
+| `cpu_mid` | #f9cc6c |
+| `cpu_start` | #adda78 |
+| `div_line` | #72696a |
+| `download_end` | #c5c6f0 |
+| `download_mid` | #a8a9eb |
+| `download_start` | #3d2f2a |
+| `free_end` | #c5e2a3 |
+| `free_mid` | #adda78 |
+| `free_start` | #5b4a45 |
+| `hi_fg` | #fd6883 |
+| `inactive_fg` | #72696a |
+| `main_bg` | #2c2421 |
+| `main_fg` | #e6d9db |
+| `mem_box` | #5b4a45 |
+| `net_box` | #5b4a45 |
+| `proc_box` | #5b4a45 |
+| `proc_misc` | #adda78 |
+| `selected_bg` | #3d2f2a |
+| `selected_fg` | #e6d9db |
+| `temp_end` | #fd6a85 |
+| `temp_mid` | #f38d70 |
+| `temp_start` | #a8a9eb |
+| `title` | #e6d9db |
+| `upload_end` | #feb5c7 |
+| `upload_mid` | #fd6a85 |
+| `upload_start` | #3d2f2a |
+| `used_end` | #feb5c7 |
+| `used_mid` | #fd6a85 |
+| `used_start` | #5b4a45 |
 
 ### Chromium
 
-| Name | Hex | Description |
-|---|---|---|
-| `chromium_frame` | #25211e | Found in chromium.theme |
+| Name | Hex |
+|---|---|
+| `chromium_frame` | #25211e |
 
 ### Hyprlock
 
-| Name | Hex | Description |
-|---|---|---|
-| `unknown` | #2c2525 | Raw value in hyprlock.conf |
-| `unknown` | #2c2525cc | Raw value in hyprlock.conf |
-| `unknown` | #e6d9db | Raw value in hyprlock.conf |
-| `unknown` | #fd6883 | Raw value in hyprlock.conf |
+| Name | Hex |
+|---|---|
+| `check_color` | #fd6883 |
+| `color` | #2c2525 |
+| `font_color` | #e6d9db |
+| `inner_color` | #2c2525cc |
+| `outer_color` | #e6d9db |
 
 ### Kitty
 
-| Name | Hex | Description |
-|---|---|---|
-| `background` | #2c2525 | Variable `background` in kitty.conf |
-| `color0` | #72696a | Variable `color0` in kitty.conf |
-| `color1` | #fd6883 | Variable `color1` in kitty.conf |
-| `color10` | #c8e292 | Variable `color10` in kitty.conf |
-| `color11` | #fcd675 | Variable `color11` in kitty.conf |
-| `color12` | #f8a788 | Variable `color12` in kitty.conf |
-| `color13` | #bebffd | Variable `color13` in kitty.conf |
-| `color14` | #9bf1e1 | Variable `color14` in kitty.conf |
-| `color15` | #f1e5e7 | Variable `color15` in kitty.conf |
-| `color2` | #adda78 | Variable `color2` in kitty.conf |
-| `color3` | #f9cc6c | Variable `color3` in kitty.conf |
-| `color4` | #f38d70 | Variable `color4` in kitty.conf |
-| `color5` | #a8a9eb | Variable `color5` in kitty.conf |
-| `color6` | #85dacc | Variable `color6` in kitty.conf |
-| `color7` | #e6d9db | Variable `color7` in kitty.conf |
-| `color8` | #948a8b | Variable `color8` in kitty.conf |
-| `color9` | #ff8297 | Variable `color9` in kitty.conf |
-| `cursor` | #c3b7b8 | Variable `cursor` in kitty.conf |
-| `cursor_text_color` | #2c2525 | Variable `cursor_text_color` in kitty.conf |
-| `foreground` | #e6d9db | Variable `foreground` in kitty.conf |
-| `selection_background` | #403e41 | Variable `selection_background` in kit... |
-| `selection_foreground` | #e6d9db | Variable `selection_foreground` in kit... |
-| `url_color` | #f38d70 | Variable `url_color` in kitty.conf |
+| Name | Hex |
+|---|---|
+| `background` | #2c2525 |
+| `color0` | #72696a |
+| `color1` | #fd6883 |
+| `color10` | #c8e292 |
+| `color11` | #fcd675 |
+| `color12` | #f8a788 |
+| `color13` | #bebffd |
+| `color14` | #9bf1e1 |
+| `color15` | #f1e5e7 |
+| `color2` | #adda78 |
+| `color3` | #f9cc6c |
+| `color4` | #f38d70 |
+| `color5` | #a8a9eb |
+| `color6` | #85dacc |
+| `color7` | #e6d9db |
+| `color8` | #948a8b |
+| `color9` | #ff8297 |
+| `cursor` | #c3b7b8 |
+| `cursor_text_color` | #2c2525 |
+| `foreground` | #e6d9db |
+| `selection_background` | #403e41 |
+| `selection_foreground` | #e6d9db |
+| `url_color` | #f38d70 |
 
 ### Mako
 
-| Name | Hex | Description |
-|---|---|---|
-| `background-color` | #2c2525 | Variable `background-color` in mako.ini |
-| `border-color` | #e6d9db | Variable `border-color` in mako.ini |
-| `border-color` | #f38d70 | Variable `border-color` in mako.ini |
-| `text-color` | #e6d9db | Variable `text-color` in mako.ini |
+| Name | Hex |
+|---|---|
+| `background-color` | #2c2525 |
+| `border-color` | #e6d9db |
+| `border-color (category=mpd)` | #f38d70 |
+| `text-color` | #e6d9db |
 
 ### Other
 
-| Name | Hex | Description |
-|---|---|---|
-| `unknown` | #2c2525 | Raw value in style.css |
-| `unknown` | #fabd2f | Raw value in style.css |
-| `unknown` | #e6d9db | Raw value in style.css |
+| Name | Hex |
+|---|---|
+| `unknown` | #2c2525 |
+| `unknown` | #fabd2f |
+| `unknown` | #e6d9db |
 
 ### SwayOSD
 
-| Name | Hex | Description |
-|---|---|---|
-| `unknown` | #2c2525 | Raw value in swayosd.css |
-| `unknown` | #c3b7b8 | Raw value in swayosd.css |
+| Name | Hex |
+|---|---|
+| `unknown` | #2c2525 |
+| `unknown` | #c3b7b8 |
 
 ### Walker
 
-| Name | Hex | Description |
-|---|---|---|
-| `unknown` | #2c2525 | Raw value in walker.css |
-| `unknown` | #e6d9db | Raw value in walker.css |
-| `unknown` | #fabd2f | Raw value in walker.css |
-| `unknown` | #0000004c | Raw value in walker.css |
-| `unknown` | #00000038 | Raw value in walker.css |
+| Name | Hex |
+|---|---|
+| `base` | #2c2525 |
+| `border` | #fabd2f |
+| `selected-text` | #fabd2f |
+| `text` | #e6d9db |
+| `unknown` | #0000004c |
+| `unknown` | #00000038 |
 
 ### Waybar
 
-| Name | Hex | Description |
-|---|---|---|
-| `accent_color` | #fabd2f | Variable `accent_color` in waybar.css |
-| `background_color` | #2c2525 | Variable `background_color` in waybar.css |
-| `cpu_color` | #fd6883 | Variable `cpu_color` in waybar.css |
-| `disk_color` | #f38d70 | Variable `disk_color` in waybar.css |
-| `error_color` | #fd6883 | Variable `error_color` in waybar.css |
-| `foreground_color` | #e6d9db | Variable `foreground_color` in waybar.css |
-| `group_background_color` | #0a0a0ae5 | Variable `group_background_color` ... |
-| `memory_color` | #a8a9eb | Variable `memory_color` in waybar.css |
-| `network_color` | #adda78 | Variable `network_color` in waybar.css |
-| `secondary_accent_color` | #f38d70 | Variable `secondary_accent_color` in... |
-| `selection_background_color` | #403e41 | Variable `selection_background_c... |
-| `warning_color` | #f9cc6c | Variable `warning_color` in waybar.css |
+| Name | Hex |
+|---|---|
+| `accent_color` | #fabd2f |
+| `background_color` | #2c2525 |
+| `cpu_color` | #fd6883 |
+| `disk_color` | #f38d70 |
+| `error_color` | #fd6883 |
+| `foreground_color` | #e6d9db |
+| `group_background_color` | #0a0a0ae5 |
+| `memory_color` | #a8a9eb |
+| `network_color` | #adda78 |
+| `secondary_accent_color` | #f38d70 |
+| `selection_background_color` | #403e41 |
+| `warning_color` | #f9cc6c |
