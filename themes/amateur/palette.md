@@ -1,47 +1,149 @@
 # Amateur Palette
 
+### Alacritty
+
 | Name | Hex | Description |
 |---|---|---|
-| `accent_color` | #00e5ff | Waybar, Hyprland active border |
-| `active_border_color_1` | #00e5ff | Hyprland active border |
-| `active_border_color_2` | #223047 | Hyprland active border gradient |
-| `background_color` | #112330 | Waybar, Main Background |
-| `cursor_color` | #00e5ff | Cursor |
-| `cursor_text_color` | #05080d | Cursor Text |
-| `diff_add_color` | #00ffcc | Neovim DiffAdd |
-| `diff_change_color` | #ffcc00 | Neovim DiffChange |
-| `diff_delete_color` | #ff4444 | Neovim DiffDelete |
-| `diff_text_color` | #00aaff | Neovim DiffText |
-| `error_color` | #ff4444 | Waybar Error |
-| `foreground_color` | #cdd6f4 | Waybar Foreground |
-| `group_background_color` | #2b3b43 | Detected in waybar.css |
-| `inactive_border_color` | #254f54 | Hyprland inactive border |
-| `nogroup_border_color` | #254f54 | Hyprland nogroup border |
-| `secondary_accent_color` | #254f54 | Waybar Secondary |
-| `selection_background_color` | #254f54 | Waybar Selection |
-| `shadow_color_1` | #00000038 | Shadow (rgba 0.3) |
-| `shadow_color_2` | #0000004c | Shadow (rgba 0.22) |
-| `term_color0` | #254f54 | Terminal Black |
-| `term_color1` | #ff4444 | Terminal Red |
-| `term_color10` | #33ffdd | Terminal Bright Green |
-| `term_color11` | #ffd633 | Terminal Bright Yellow |
-| `term_color12` | #33bbff | Terminal Bright Blue |
-| `term_color13` | #e085e0 | Terminal Bright Magenta |
-| `term_color14` | #33ecff | Terminal Bright Cyan |
-| `term_color15` | #ffffff | Terminal Bright White |
-| `term_color2` | #00ffcc | Terminal Green |
-| `term_color3` | #ffcc00 | Terminal Yellow |
-| `term_color4` | #00aaff | Terminal Blue |
-| `term_color5` | #d670d6 | Terminal Magenta |
-| `term_color6` | #00e5ff | Terminal Cyan |
-| `term_color7` | #cdd6f4 | Terminal White |
-| `term_color8` | #3b4252 | Terminal Bright Black |
-| `term_color9` | #ff6666 | Terminal Bright Red |
-| `terminal_background_color` | #1c2528d2 | Terminal Background |
-| `terminal_foreground_color` | #cdd6f4 | Terminal Foreground |
-| `unknown_05080de5` | #05080de5 | Detected in waybar.css (from rgb/rgba) |
-| `url_color` | #00e5ff | URL Color |
-| `walker_selection_tint` | #00e5ff19 | Walker Selection Tint |
-| `warning_color` | #ffaf0e | Waybar Warning |
-| `warning_color` | #ffaa00 | Detected in waybar.css |
-| `waybar_group_bg` | #2b3b43e0 | Waybar Group BG |
+| `background` | #112330 | Variable `background` in alacritty.toml |
+| `background` | #254f54 | Variable `background` in alacritty.toml |
+| `black` | #254f54 | Variable `black` in alacritty.toml |
+| `black` | #3b4252 | Variable `black` in alacritty.toml |
+| `blue` | #00aaff | Variable `blue` in alacritty.toml |
+| `blue` | #33bbff | Variable `blue` in alacritty.toml |
+| `cyan` | #00e5ff | Variable `cyan` in alacritty.toml |
+| `cyan` | #33ecff | Variable `cyan` in alacritty.toml |
+| `foreground` | #cdd6f4 | Variable `foreground` in alacritty.toml |
+| `green` | #00ffcc | Variable `green` in alacritty.toml |
+| `green` | #33ffdd | Variable `green` in alacritty.toml |
+| `magenta` | #d670d6 | Variable `magenta` in alacritty.toml |
+| `magenta` | #e085e0 | Variable `magenta` in alacritty.toml |
+| `red` | #ff4444 | Variable `red` in alacritty.toml |
+| `red` | #ff6666 | Variable `red` in alacritty.toml |
+| `text` | #cdd6f4 | Variable `text` in alacritty.toml |
+| `white` | #cdd6f4 | Variable `white` in alacritty.toml |
+| `white` | #ffffff | Variable `white` in alacritty.toml |
+| `yellow` | #ffcc00 | Variable `yellow` in alacritty.toml |
+| `yellow` | #ffd633 | Variable `yellow` in alacritty.toml |
+
+### Btop
+
+| Name | Hex | Description |
+|---|---|---|
+| `unknown` | #112330 | Raw value in btop.theme |
+| `unknown` | #cdd6f4 | Raw value in btop.theme |
+| `unknown` | #00e5ff | Raw value in btop.theme |
+| `unknown` | #33ecff | Raw value in btop.theme |
+| `unknown` | #254f54 | Raw value in btop.theme |
+| `unknown` | #3b4252 | Raw value in btop.theme |
+| `unknown` | #33bbff | Raw value in btop.theme |
+| `unknown` | #e085e0 | Raw value in btop.theme |
+| `unknown` | #33ffdd | Raw value in btop.theme |
+| `unknown` | #ffcc00 | Raw value in btop.theme |
+| `unknown` | #ff4444 | Raw value in btop.theme |
+| `unknown` | #00ffcc | Raw value in btop.theme |
+| `unknown` | #ff6666 | Raw value in btop.theme |
+
+### Chromium
+
+| Name | Hex | Description |
+|---|---|---|
+| `chromium_frame` | #112330 | Found in chromium.theme |
+
+### Kitty
+
+| Name | Hex | Description |
+|---|---|---|
+| `background` | #112330 | Variable `background` in kitty.conf |
+| `color0` | #254f54 | Variable `color0` in kitty.conf |
+| `color1` | #ff4444 | Variable `color1` in kitty.conf |
+| `color10` | #33ffdd | Variable `color10` in kitty.conf |
+| `color11` | #ffd633 | Variable `color11` in kitty.conf |
+| `color12` | #33bbff | Variable `color12` in kitty.conf |
+| `color13` | #e085e0 | Variable `color13` in kitty.conf |
+| `color14` | #33ecff | Variable `color14` in kitty.conf |
+| `color15` | #ffffff | Variable `color15` in kitty.conf |
+| `color2` | #00ffcc | Variable `color2` in kitty.conf |
+| `color3` | #ffcc00 | Variable `color3` in kitty.conf |
+| `color4` | #00aaff | Variable `color4` in kitty.conf |
+| `color5` | #d670d6 | Variable `color5` in kitty.conf |
+| `color6` | #00e5ff | Variable `color6` in kitty.conf |
+| `color7` | #cdd6f4 | Variable `color7` in kitty.conf |
+| `color8` | #3b4252 | Variable `color8` in kitty.conf |
+| `color9` | #ff6666 | Variable `color9` in kitty.conf |
+| `cursor` | #00e5ff | Variable `cursor` in kitty.conf |
+| `cursor_text_color` | #05080d | Variable `cursor_text_color` in kitty.conf |
+| `foreground` | #cdd6f4 | Variable `foreground` in kitty.conf |
+| `selection_background` | #254f54 | Variable `selection_background` in kit... |
+| `selection_foreground` | #cdd6f4 | Variable `selection_foreground` in kit... |
+
+### Mako
+
+| Name | Hex | Description |
+|---|---|---|
+| `background-color` | #112330 | Variable `background-color` in mako.ini |
+| `border-color` | #00e5ff | Variable `border-color` in mako.ini |
+| `border-color` | #254f54 | Variable `border-color` in mako.ini |
+| `border-color` | #ff4444 | Variable `border-color` in mako.ini |
+| `border-color` | #00aaff | Variable `border-color` in mako.ini |
+| `text-color` | #cdd6f4 | Variable `text-color` in mako.ini |
+| `unknown` | #254f54 | Raw value in mako.ini |
+
+### Neovim
+
+| Name | Hex | Description |
+|---|---|---|
+| `unknown` | #112330 | Raw value in amateur.lua |
+| `unknown` | #cdd6f4 | Raw value in amateur.lua |
+| `unknown` | #3b4252 | Raw value in amateur.lua |
+| `unknown` | #ff4444 | Raw value in amateur.lua |
+| `unknown` | #00ffcc | Raw value in amateur.lua |
+| `unknown` | #ffcc00 | Raw value in amateur.lua |
+| `unknown` | #00aaff | Raw value in amateur.lua |
+| `unknown` | #d670d6 | Raw value in amateur.lua |
+| `unknown` | #00e5ff | Raw value in amateur.lua |
+| `unknown` | #ffaf0e | Raw value in amateur.lua |
+| `unknown` | #254f54 | Raw value in amateur.lua |
+
+### Other
+
+| Name | Hex | Description |
+|---|---|---|
+| `unknown` | #112330 | Raw value in style.css |
+| `unknown` | #00e5ff | Raw value in style.css |
+| `unknown` | #cdd6f4 | Raw value in style.css |
+
+### SwayOSD
+
+| Name | Hex | Description |
+|---|---|---|
+| `unknown` | #112330 | Raw value in swayosd.css |
+| `unknown` | #cdd6f4 | Raw value in swayosd.css |
+| `unknown` | #00e5ff | Raw value in swayosd.css |
+
+### Walker
+
+| Name | Hex | Description |
+|---|---|---|
+| `unknown` | #112330 | Raw value in walker.css |
+| `unknown` | #cdd6f4 | Raw value in walker.css |
+| `unknown` | #00e5ff | Raw value in walker.css |
+| `unknown` | #0000004c | Raw value in walker.css |
+| `unknown` | #00000038 | Raw value in walker.css |
+| `unknown` | #00e5ff19 | Raw value in walker.css |
+
+### Waybar
+
+| Name | Hex | Description |
+|---|---|---|
+| `accent_color` | #00e5ff | Variable `accent_color` in waybar.css |
+| `background_color` | #112330 | Variable `background_color` in waybar.css |
+| `cpu_color` | #33ecff | Variable `cpu_color` in waybar.css |
+| `disk_color` | #33ffdd | Variable `disk_color` in waybar.css |
+| `error_color` | #ff4444 | Variable `error_color` in waybar.css |
+| `foreground_color` | #cdd6f4 | Variable `foreground_color` in waybar.css |
+| `group_background_color` | #2b3b43 | Variable `group_background_color` in... |
+| `memory_color` | #33bbff | Variable `memory_color` in waybar.css |
+| `network_color` | #e085e0 | Variable `network_color` in waybar.css |
+| `secondary_accent_color` | #254f54 | Variable `secondary_accent_color` in... |
+| `selection_background_color` | #254f54 | Variable `selection_background_c... |
+| `warning_color` | #ffaf0e | Variable `warning_color` in waybar.css |
