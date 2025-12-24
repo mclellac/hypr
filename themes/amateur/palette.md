@@ -1,6 +1,6 @@
 # Amateur Palette
 
-### Alacritty
+## Alacritty
 
 | Name | Hex | Description |
 |---|---|---|
