@@ -169,7 +169,6 @@ window#waybar {
 #clock {
     color: @background_color;
     background-color: @accent_color;
-    font-weight: bold;
     margin-left: 0;
     margin-right: 0;
     padding-left: 10px;
@@ -180,7 +179,6 @@ window#waybar {
 #custom-weather {
     color: @foreground_color;
     background-color: @secondary_accent_color;
-    font-weight: bold;
     margin-left: 0;
     margin-right: 0;
     padding-left: 10px;
