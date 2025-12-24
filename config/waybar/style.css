@@ -178,7 +178,7 @@ window#waybar {
 }
 
 #custom-weather {
-    color: @background_color;
+    color: @foreground_color;
     background-color: @secondary_accent_color;
     font-weight: bold;
     margin-left: 0;
