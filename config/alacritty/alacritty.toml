@@ -13,6 +13,8 @@ size = 14
 padding.x = 24
 padding.y = 24
 decorations = "None"
+opacity = 0.95
+blur = true
 
 #[bell]
 #animation             = "EaseOutExpo"
