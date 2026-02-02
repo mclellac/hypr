@@ -14,6 +14,13 @@ copy_main_config() {
   echo "Installing hypr configurations into ~/.config..."
   mkdir -p "${HOME}/.config"
   cp -R "${HYPR_PATH}"/config/* "${HOME}/.config/"
+
+  if command -v systemd-detect-virt >/dev/null 2>&1; then
+    if systemd-detect-virt >/dev/null; then
+      echo "Virtualization detected. Applying VM specific environment settings..."
+      cp "${HOME}/.config/hypr/envs.conf.vms" "${HOME}/.config/hypr/envs.conf"
+    fi
+  fi
 }
 
 #######################################
