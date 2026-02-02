@@ -1,7 +1,7 @@
 # Repository Improvements
 
 ## Critical
-- [ ] Fix invalid `windowrule {}` block syntax in `default/hypr/windows.conf` and `default/hypr/apps/*.conf`. Convert to standard `windowrulev2` syntax.
+- [ ] Convert legacy single-line `windowrule` and `windowrulev2` syntax (e.g., in `themes/kanagawa/hyprland.conf` and `default/hypr/apps/browser.conf`) to the standard `windowrule {}` block syntax required by Hyprland v0.53+.
 - [ ] Add `hypr_PATH` validation to all `bin/` scripts to ensure they are run from the correct context.
 - [ ] Remove hardcoded user paths (e.g., `/home/dhh/`) from configuration files (e.g., `config/xournalpp/settings.xml`).
 
