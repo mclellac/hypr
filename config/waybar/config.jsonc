@@ -200,7 +200,7 @@
         "format": "󰨸",
         "interval": "once",
         "return-type": "json",
-        "on-click": "hyprctl dispatch exec \"walker --provider clipboard\"",
+        "on-click": "hyprctl dispatch exec \"cliphist list | walker --dmenu | cliphist decode | wl-copy\"",
         "on-click-middle": "rm -f ~/.cache/cliphist/db; pkill -RTMIN+9 waybar",
         "exec": "printf '{\"tooltip\":\"%s item(s) in the clipboard\\r(Mid click to clear)\"}' $(cliphist list | wc -l)",
         "exec-if": "[ -x \"$(command -v cliphist)\" ] && [ $(cliphist list | wc -l) -gt 0 ]",
