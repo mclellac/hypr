@@ -1,8 +1,9 @@
+# THIS FILE IS FOR HYPRLAND RUNNING IN VIRTUAL MACHINES
 # Extra env variables
 # Note: You must relaunch Hyprland after changing envs (use Super+Esc, then Relaunch)
 # env = MY_GLOBAL_ENV,setting
-#env = MESA_LOADER_DRIVER_OVERRIDE,vmwgfx
-#env = LIBGL_ALWAYS_SOFTWARE,1
+env = MESA_LOADER_DRIVER_OVERRIDE,vmwgfx
+env = LIBGL_ALWAYS_SOFTWARE,1
 
 # Cursor size
 env = XCURSOR_SIZE,24
@@ -20,20 +21,20 @@ env = OZONE_PLATFORM,wayland
 
 # ######### Input method ##########
 # See https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland
-#env = QT_IM_MODULE, fcitx
-#env = XMODIFIERS, @im=fcitx
-#env = SDL_IM_MODULE, fcitx
-#env = GLFW_IM_MODULE, ibus
-#env = INPUT_METHOD, fcitx
+env = QT_IM_MODULE, fcitx
+env = XMODIFIERS, @im=fcitx
+env = SDL_IM_MODULE, fcitx
+env = GLFW_IM_MODULE, ibus
+env = INPUT_METHOD, fcitx
 
 env = QT_QPA_PLATFORMTHEME, kde
 env = XDG_MENU_PREFIX, plasma-
 
 # ######## Wayland #########
 # Tearing
-#env = WLR_DRM_NO_ATOMIC, 1
+env = WLR_DRM_NO_ATOMIC, 1
 # ?
-#env = WLR_NO_HARDWARE_CURSORS, 1
+env = WLR_NO_HARDWARE_CURSORS, 1
 
 # ######## Virtual envrionment #########
 
