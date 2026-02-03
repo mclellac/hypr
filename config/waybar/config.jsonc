@@ -1,10 +1,6 @@
 {
-    // -------------------------------------------------------------------------
-    // Global configuration
-    // -------------------------------------------------------------------------
     "layer": "top",
-    // If height property would be not present, it'd be calculated dynamically
-    "height": 30,
+    "height": 46,
     "position": "top",
     "modules-left": [
         "custom/hypr",
@@ -15,22 +11,15 @@
         "group/datetime"
     ],
     "modules-right": [
-        // informational
         "custom/update",
         "custom/clipboard",
         "privacy",
-        // hardware group
         "group/hardware",
-        // media
         "custom/playerctl",
         "backlight",
-        // system
         "tray",
         "custom/power"
     ],
-    // -------------------------------------------------------------------------
-    // Grouping
-    // -------------------------------------------------------------------------
     "group/hardware": {
         "orientation": "horizontal",
         "modules": [
@@ -50,9 +39,6 @@
             "custom/weather"
         ]
     },
-    // -------------------------------------------------------------------------
-    // Modules
-    // -------------------------------------------------------------------------
     "custom/hypr": {
         "class": "hypr",
         "format": "󰚌 ",
@@ -142,7 +128,9 @@
         "tooltip-format-wifi": "{icon} {ifname} ({essid}): {ipaddr}",
         "tooltip-format-disconnected": "{icon} disconnected",
         "tooltip-format-disabled": "{icon} disabled",
-        "on-click": "hyprctl dispatch exec \"$HOME/.local/share/hypr/bin/hypr-exec nmtui\""
+        "on-click": "hyprctl dispatch exec \"$HOME/.local/share/hypr/bin/hypr-exec nmtui\"",
+        "on-scroll-up": "",
+        "on-scroll-down": ""
     },
     "hyprland/submap": {
         "format": "<span style=\"italic\">{}</span>",
@@ -190,8 +178,8 @@
         "return-type": "json",
         "format": "{icon}",
         "format-icons": {
-            "Playing": "<span>󰎆</span>", // Or your preferred icon (e.g., 󰐊, )
-            "Paused": "" 
+            "Playing": "<span>󰎆</span>",
+            "Paused": ""
         },
         "on-click": "playerctl play-pause",
         "max-length": 10
@@ -202,7 +190,7 @@
         "return-type": "json",
         "on-click": "hyprctl dispatch exec \"cliphist list | walker --dmenu | cliphist decode | wl-copy\"",
         "on-click-middle": "rm -f ~/.cache/cliphist/db; pkill -RTMIN+9 waybar",
-        "exec": "printf '{\"tooltip\":\"%s item(s) in the clipboard\\r(Mid click to clear)\"}' $(cliphist list | wc -l)",
+        "exec": "echo \"{\\\"tooltip\\\":\\\"$(cliphist list | wc -l) item(s) in the clipboard\\\\n(Mid click to clear)\\\"}\"",
         "exec-if": "[ -x \"$(command -v cliphist)\" ] && [ $(cliphist list | wc -l) -gt 0 ]",
         "signal": 9
     },
@@ -225,18 +213,10 @@
         "icon-spacing": 4,
         "icon-size": 21,
         "transition-duration": 250,
-        "modules": [
-            {
-                "type": "screenshare",
-                "tooltip": true,
-                "tooltip-icon-size": 24
-            },
-            {
-                "type": "audio-in",
-                "tooltip": true,
-                "tooltip-icon-size": 24
-            }
-        ]
+        "modules-icons": {
+            "screenshare": "󰹑",
+            "audio-in": "󰍬"
+        }
     },
     "custom/power": {
         "format": "⏻",
