@@ -30,11 +30,6 @@ set_black_background() {
 # Outputs:
 #   None
 #######################################
-set_new_background() {
-  pkill -x swaybg || true
-  setsid uwsm app -- swaybg -i "${CURRENT_BACKGROUND_LINK}" -m fill >/dev/null 2>&1 &
-}
-
 #######################################
 # Main function to cycle to the next background.
 # Globals:
@@ -81,8 +76,7 @@ main() {
   fi
 
   local new_background="${backgrounds[${next_index}]}"
-  ln -nsf "${new_background}" "${CURRENT_BACKGROUND_LINK}"
-  set_new_background
+  hypr-wallpaper-set "${new_background}"
 }
 
 main

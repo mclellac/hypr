@@ -1,0 +1,45 @@
+#!/bin/bash
+#
+# Sets the wallpaper and ensures persistence by updating the current background symlink.
+# Usage: hypr-wallpaper-set <path-to-image>
+
+set -euo pipefail
+
+readonly CURRENT_BACKGROUND_LINK="${HOME}/.config/hypr/current/background"
+
+#######################################
+# Sets the wallpaper.
+# Arguments:
+#   $1 - Path to the wallpaper image.
+# Outputs:
+#   None
+#######################################
+main() {
+  local new_background="${1:-}"
+
+  if [[ -z "${new_background}" ]]; then
+    echo "Usage: $(basename "$0") <path-to-image>" >&2
+    exit 1
+  fi
+
+  # Resolve absolute path if necessary
+  if [[ "${new_background}" != /* ]]; then
+    new_background="$(pwd)/${new_background}"
+  fi
+
+  if [[ ! -f "${new_background}" ]]; then
+    echo "Error: File not found: ${new_background}" >&2
+    exit 1
+  fi
+
+  # Update the symlink for persistence
+  ln -sf "${new_background}" "${CURRENT_BACKGROUND_LINK}"
+
+  # Restart swaybg
+  pkill -x swaybg || true
+  setsid uwsm app -- swaybg -i "${CURRENT_BACKGROUND_LINK}" -m fill >/dev/null 2>&1 &
+
+  echo "Wallpaper set to: ${new_background}"
+}
+
+main "$@"
