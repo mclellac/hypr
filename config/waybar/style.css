@@ -279,10 +279,6 @@ window#waybar {
     color: @accent_color;
 }
 
-#bluetooth.disabled {
-    color: @warning_color;
-}
-
 #privacy {
     color: @accent_color;
 }

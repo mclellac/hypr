@@ -21,10 +21,14 @@ main() {
     exit 1
   fi
 
-  local cmd="$*"
-  # `setsid` detaches the new terminal from the current one.
-  # The Alacritty window is given a specific class 'hypr-exec' for potential window rules.
-  setsid alacritty --class hypr-exec -e bash -c "hypr-show-logo; ${cmd}; hypr-show-done"
+  # We use `setsid` to detach the new terminal.
+  # We construct the bash command to run the sequence:
+  # 1. hypr-show-logo
+  # 2. The user's command (passed as arguments to the inner bash)
+  # 3. hypr-show-done
+  # We use `"$@"` to safely expand the arguments in the inner bash.
+
+  setsid alacritty --class hypr-exec -e bash -c 'hypr-show-logo; "$@"; ret=$?; hypr-show-done; exit $ret' -- "$@"
 }
 
 main "$@"
