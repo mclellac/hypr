@@ -15,6 +15,15 @@ copy_main_config() {
   mkdir -p "${HOME}/.config"
   cp -R "${HYPR_PATH}"/config/* "${HOME}/.config/"
 
+  # Copy .desktop files if they exist and sanitize paths
+  if [[ -d "${HYPR_PATH}/applications" ]]; then
+    echo "Installing application shortcuts..."
+    mkdir -p "${HOME}/.local/share/applications"
+    cp "${HYPR_PATH}"/applications/*.desktop "${HOME}/.local/share/applications/"
+    # Replace placeholder with actual home directory
+    sed -i "s|/HOME_PLACEHOLDER/|${HOME}/|g" "${HOME}/.local/share/applications/"*.desktop
+  fi
+
   if command -v systemd-detect-virt >/dev/null 2>&1; then
     if systemd-detect-virt >/dev/null; then
       echo "Virtualization detected. Applying VM specific environment settings..."

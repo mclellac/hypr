@@ -13,6 +13,18 @@ main() {
   readonly HYPR_INSTALL="${HYPR_PATH}/install"
   export PATH="${HYPR_PATH}/bin:${PATH}"
 
+  # Ensure the repository is linked to the expected location
+  local target_dir="${HOME}/.local/share/hypr"
+  if [[ "${HYPR_PATH}" != "${target_dir}" ]]; then
+    echo "Ensuring repository is available at ${target_dir}..."
+    mkdir -p "$(dirname "${target_dir}")"
+    if [[ -d "${target_dir}" || -L "${target_dir}" ]]; then
+      echo "Backing up existing directory at ${target_dir}..."
+      mv "${target_dir}" "${target_dir}.bak.$(date +%s)"
+    fi
+    ln -sf "${HYPR_PATH}" "${target_dir}"
+  fi
+
   # Packaging
   # source "${HYPR_INSTALL}/packages.sh"
   source "${HYPR_INSTALL}/packaging/fonts.sh"

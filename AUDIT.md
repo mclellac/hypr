@@ -15,14 +15,14 @@ Hyprland v0.53+ mandates the block syntax (`windowrule { ... }`). Single-line `w
     *   `windowrule = match:tag chromium-based-browser, opacity 1.0 1.0`
     *   `windowrule = match:class ^(crx_.*)$, opacity 1.0 1.0`
     *   `windowrule = match:tag firefox-based-browser, opacity 1.0 1.0`
-*   **Recommendation:** Convert these to the `windowrule { ... }` block format immediately.
+*   **Status:** [x] Converted to block syntax.
 
 ### 1.2 Deprecated `col.shadow`
 **Severity: High**
 The `col.shadow` variable is deprecated in favor of the `shadow { ... }` configuration block.
 
 *   **Files:** `themes/material/hyprland.conf`, `themes/material-bright/hyprland.conf` (commented out)
-*   **Recommendation:** Ensure all active theme configurations use the `shadow { enabled = ...; color = ... }` block syntax.
+*   **Status:** [x] Updated `themes/material/hyprland.conf` and `themes/material-bright/hyprland.conf` to use `shadow { ... }` block syntax.
 
 ### 1.3 `windowrulev2` Usage
 **Severity: Policy Violation**
@@ -40,7 +40,7 @@ These issues affect the installation reliability and system integration.
 The configuration extensively references `~/.local/share/hypr/` for sourcing default configurations, scripts, and assets. However, the `install.sh` script does not enforce installing the repository to this location. If a user clones the repo elsewhere, the configuration will break.
 
 *   **Files:** `config/hypr/hyprland.conf`, `default/hypr/bindings.conf`, `bin/*` scripts.
-*   **Recommendation:** Update `install.sh` to either move the repo to `~/.local/share/hypr` or symlink it there. Alternatively, make paths relative or dynamic based on the installation directory.
+*   **Status:** [x] Updated `install.sh` to symlink the repository to `~/.local/share/hypr` if not already there.
 
 ### 2.2 Inconsistent `$mainMod` Definition
 **Severity: Major**
@@ -49,7 +49,7 @@ There is a conflict in the modifier key definition, which leads to confusing key
 *   **Conflict:**
     *   `config/hypr/hyprland.conf` defines `$mainMod = ALT`.
     *   `default/hypr/bindings.conf` uses hardcoded `SUPER` for many bindings (e.g., `bindd = SUPER, return, ...`).
-*   **Recommendation:** Standardize on `$mainMod` variable usage across all binding files. Replace hardcoded `SUPER` with `$mainMod` in `default/hypr/bindings.conf` to respect the user's global choice.
+*   **Status:** [x] Replaced hardcoded `SUPER` with `$mainMod` in `default/hypr/bindings.conf` and updated binding definitions to `bindd`.
 
 ### 2.3 `UWSM` (Universal Wayland Session Manager) Integration
 **Severity: Moderate**
@@ -59,7 +59,7 @@ While `uwsm` is used for most autostart entries, some remain legacy `exec-once` 
 *   **Issues:**
     *   `exec-once = /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1`
     *   `exec-once = hypr-cmd-first-run`
-*   **Recommendation:** Wrap these in `uwsm app --` for consistent systemd scope management and environment inheritance.
+*   **Status:** [x] Wrapped all `exec-once` commands in `uwsm app --` in `default/hypr/autostart.conf`.
 
 ## 3. Minor: Cleanliness & Maintenance
 
@@ -72,14 +72,14 @@ Several configuration files contain hardcoded paths to specific user home direct
 *   **Files:**
     *   `config/xournalpp/settings.xml`: `/home/dhh/`
     *   `applications/*.desktop`: `/home/mclellac/`
-*   **Recommendation:** Replace specific usernames with `$HOME` or generic paths. For `.xml` files, this might require a setup script to inject the correct path during installation.
+*   **Status:** [x] Removed hardcoded paths in `config/xournalpp/settings.xml` and replaced hardcoded paths in `.desktop` files with placeholders that are dynamically resolved during installation in `install/config/config.sh`.
 
 ### 3.2 Keybinding Documentation (`bind` vs `bindd`)
 **Severity: Minor**
 Hyprland supports `bindd` to provide descriptions for the help menu. Some files still use plain `bind`.
 
 *   **File:** `config/hypr/bindings.conf` (Workspace switching), `default/hypr/bindings.conf` (`SUPER, V`).
-*   **Recommendation:** Convert all `bind` calls to `bindd` and add meaningful descriptions to populate the help menu (`hypr-menu-keybindings`).
+*   **Status:** [x] Converted remaining `bind` calls to `bindd` in `config/hypr/bindings.conf` and `default/hypr/bindings.conf`.
 
 ## 4. Summary of Recommended Actions
 
