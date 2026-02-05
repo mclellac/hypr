@@ -1,0 +1,228 @@
+#!/usr/bin/env python3
+"""
+Hyprland Wallpaper Manager
+A GUI utility to browse and set wallpapers, managing persistence via hypr-wallpaper-set.
+"""
+
+import sys
+import os
+import shutil
+import subprocess
+import threading
+from pathlib import Path
+
+# Graceful failure if dependencies are missing
+try:
+    import gi
+    gi.require_version('Gtk', '4.0')
+    gi.require_version('Gdk', '4.0')
+    gi.require_version('GdkPixbuf', '2.0')
+    from gi.repository import Gtk, Gdk, GdkPixbuf, Gio, GLib, GObject
+except ImportError as e:
+    print(f"Error: Missing dependencies. {e}", file=sys.stderr)
+    print("Please ensure python-gobject and gtk4 are installed.", file=sys.stderr)
+    sys.exit(1)
+except ValueError as e:
+    print(f"Error: {e}", file=sys.stderr)
+    sys.exit(1)
+
+# Configuration
+THEME_BG_DIR = Path.home() / ".config/hypr/current/theme/backgrounds"
+USER_BG_DIR = Path.home() / ".local/share/hypr/wallpapers"
+THUMBNAIL_SIZE = 200
+
+class WallpaperManager(Gtk.Application):
+    def __init__(self):
+        super().__init__(application_id="com.hypr.wallpaper.manager", flags=Gio.ApplicationFlags.FLAGS_NONE)
+        self.window = None
+        self.flowbox = None
+        self.wallpapers = []
+
+        # Ensure user directory exists
+        USER_BG_DIR.mkdir(parents=True, exist_ok=True)
+
+    def do_activate(self):
+        if self.window:
+            self.window.present()
+            return
+
+        self.window = Gtk.ApplicationWindow(application=self, title="Wallpaper Manager")
+        self.window.set_default_size(800, 600)
+
+        # Main Layout
+        main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        self.window.set_child(main_box)
+
+        # Header Bar
+        header = Gtk.HeaderBar()
+        self.window.set_titlebar(header)
+
+        # Add Button
+        add_btn = Gtk.Button(label="Add Wallpaper")
+        add_btn.connect("clicked", self.on_add_clicked)
+        header.pack_start(add_btn)
+
+        # Refresh Button
+        refresh_btn = Gtk.Button(icon_name="view-refresh-symbolic")
+        refresh_btn.connect("clicked", lambda x: self.load_wallpapers())
+        header.pack_end(refresh_btn)
+
+        # Scroll Window
+        scrolled = Gtk.ScrolledWindow()
+        scrolled.set_vexpand(True)
+        scrolled.set_hexpand(True)
+        main_box.append(scrolled)
+
+        # FlowBox for Grid
+        self.flowbox = Gtk.FlowBox()
+        self.flowbox.set_valign(Gtk.Align.START)
+        self.flowbox.set_max_children_per_line(30) # Auto-flow
+        self.flowbox.set_selection_mode(Gtk.SelectionMode.NONE)
+        self.flowbox.set_column_spacing(10)
+        self.flowbox.set_row_spacing(10)
+        self.flowbox.set_margin_top(10)
+        self.flowbox.set_margin_bottom(10)
+        self.flowbox.set_margin_start(10)
+        self.flowbox.set_margin_end(10)
+        scrolled.set_child(self.flowbox)
+
+        self.load_wallpapers()
+        self.window.present()
+
+    def load_wallpapers(self):
+        # Clear existing
+        child = self.flowbox.get_first_child()
+        while child:
+            next_child = child.get_next_sibling()
+            self.flowbox.remove(child)
+            child = next_child
+
+        # Find images
+        extensions = {'.jpg', '.jpeg', '.png', '.webp', '.bmp'}
+        paths = []
+
+        # Helper to scan dir
+        def scan_dir(d):
+            if d.exists():
+                for f in d.iterdir():
+                    if f.is_file() and f.suffix.lower() in extensions:
+                        paths.append(f)
+
+        scan_dir(THEME_BG_DIR)
+        scan_dir(USER_BG_DIR)
+
+        # Deduplicate by path
+        paths = sorted(list(set(paths)))
+
+        if not paths:
+            label = Gtk.Label(label="No wallpapers found.")
+            self.flowbox.append(label)
+            return
+
+        # Load thumbnails asynchronously
+        threading.Thread(target=self.load_thumbnails_thread, args=(paths,), daemon=True).start()
+
+    def load_thumbnails_thread(self, paths):
+        for path in paths:
+            try:
+                # Load Pixbuf at scale
+                pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+                    str(path), THUMBNAIL_SIZE, THUMBNAIL_SIZE, True
+                )
+
+                # Schedule UI update
+                GLib.idle_add(self.add_thumbnail, path, pixbuf)
+            except Exception as e:
+                print(f"Failed to load {path}: {e}", file=sys.stderr)
+
+    def add_thumbnail(self, path, pixbuf):
+        # Create UI elements
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
+
+        # Image
+        img = Gtk.Image.new_from_pixbuf(pixbuf)
+        img.set_pixel_size(THUMBNAIL_SIZE)
+
+        # Button wrapper for clickability
+        btn = Gtk.Button()
+        btn.set_child(img)
+        btn.connect("clicked", self.on_wallpaper_clicked, path)
+        btn.add_css_class("flat") # Minimal styling
+
+        vbox.append(btn)
+
+        # Label (Filename)
+        lbl = Gtk.Label(label=path.name)
+        lbl.set_ellipsize(3) # Pango.EllipsizeMode.END (3)
+        lbl.set_max_width_chars(20)
+        lbl.set_wrap(False)
+        vbox.append(lbl)
+
+        self.flowbox.append(vbox)
+        return False # Stop idle function
+
+    def on_wallpaper_clicked(self, btn, path):
+        print(f"Setting wallpaper: {path}")
+        try:
+            # Call the hypr-wallpaper-set script
+            subprocess.run(["hypr-wallpaper-set", str(path)], check=True)
+
+            # Optional: visual feedback
+            self.show_toast(f"Set: {path.name}")
+        except subprocess.CalledProcessError as e:
+            self.show_error(f"Failed to set wallpaper: {e}")
+        except FileNotFoundError:
+             self.show_error("hypr-wallpaper-set script not found in PATH.")
+
+    def on_add_clicked(self, btn):
+        dialog = Gtk.FileDialog()
+        dialog.set_title("Select Wallpaper")
+
+        # Filters
+        filter_list = Gio.ListStore.new(Gtk.FileFilter)
+        img_filter = Gtk.FileFilter()
+        img_filter.set_name("Images")
+        for mime in ["image/jpeg", "image/png", "image/webp", "image/bmp"]:
+            img_filter.add_mime_type(mime)
+        filter_list.append(img_filter)
+        dialog.set_filters(filter_list)
+        dialog.set_default_filter(img_filter)
+
+        dialog.open(self.window, None, self.on_file_selected)
+
+    def on_file_selected(self, dialog, result):
+        try:
+            file = dialog.open_finish(result)
+            src_path = Path(file.get_path())
+            dest_path = USER_BG_DIR / src_path.name
+
+            if dest_path.exists():
+                # Simple conflict resolution: overwrite or skip?
+                # Let's simple overwrite for now or maybe rename.
+                pass
+
+            shutil.copy2(src_path, dest_path)
+            self.show_toast(f"Added: {src_path.name}")
+            self.load_wallpapers() # Refresh
+
+        except Exception as e:
+            # Start/Open cancelled or failed
+            pass
+
+    def show_toast(self, message):
+        overlay = Gtk.Overlay()
+        # Toasts in GTK4 are typically done via Adwaita (libadwaita),
+        # but here we are using raw GTK4.
+        # We'll just print to stdout for now as a simple feedback mechanism
+        # or implement a simple overlay if needed.
+        print(message)
+
+    def show_error(self, message):
+        print(f"Error: {message}", file=sys.stderr)
+        dlg = Gtk.AlertDialog()
+        dlg.set_message(message)
+        dlg.show(self.window)
+
+if __name__ == "__main__":
+    app = WallpaperManager()
+    app.run(sys.argv)
