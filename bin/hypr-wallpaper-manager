@@ -24,6 +24,19 @@ except ValueError as e:
     print(f"Error: {e}", file=sys.stderr)
     sys.exit(1)
 
+# Suppress Adwaita warning about GtkSettings
+# This warning is triggered by system configuration and cannot be fixed from the app side otherwise.
+def adwaita_log_handler(domain, level, message, user_data):
+    if "Using GtkSettings:gtk-application-prefer-dark-theme with libadwaita is unsupported" in message:
+        return
+    # Log other messages to stderr
+    print(f"{domain}: {message}", file=sys.stderr)
+
+try:
+    GLib.log_set_handler("Adwaita", GLib.LogLevelFlags.LEVEL_WARNING | GLib.LogLevelFlags.FLAG_FATAL | GLib.LogLevelFlags.FLAG_RECURSION, adwaita_log_handler, None)
+except Exception:
+    pass
+
 # Configuration
 THEME_BG_DIR = Path.home() / ".config/hypr/current/theme/backgrounds"
 USER_BG_DIR = Path.home() / ".local/share/hypr/wallpapers"
