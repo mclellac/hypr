@@ -15,7 +15,7 @@ try:
     import gi
     gi.require_version('Gtk', '4.0')
     gi.require_version('Adw', '1')
-    from gi.repository import Gtk, Adw, Gio, GLib, GdkPixbuf, GObject
+    from gi.repository import Gtk, Gdk, Adw, Gio, GLib, GdkPixbuf, GObject
 except ImportError as e:
     print(f"Error: Missing dependencies. {e}", file=sys.stderr)
     print("Please ensure python-gobject, gtk4, and libadwaita are installed.", file=sys.stderr)
