@@ -9,6 +9,7 @@ import os
 import shutil
 import subprocess
 import threading
+import json
 from pathlib import Path
 
 # Graceful failure if dependencies are missing
@@ -29,17 +30,40 @@ except ValueError as e:
 # Configuration
 THEME_BG_DIR = Path.home() / ".config/hypr/current/theme/backgrounds"
 USER_BG_DIR = Path.home() / ".local/share/hypr/wallpapers"
-THUMBNAIL_SIZE = 200
+CONFIG_FILE = Path.home() / ".config/hypr/wallpaper-manager.json"
+
+DEFAULT_CONFIG = {
+    "extra_directories": [],
+    "thumbnail_size": 200
+}
 
 class WallpaperManager(Gtk.Application):
     def __init__(self):
         super().__init__(application_id="com.hypr.wallpaper.manager", flags=Gio.ApplicationFlags.FLAGS_NONE)
         self.window = None
         self.flowbox = None
-        self.wallpapers = []
+        self.config = self.load_config()
 
         # Ensure user directory exists
         USER_BG_DIR.mkdir(parents=True, exist_ok=True)
+
+    def load_config(self):
+        if not CONFIG_FILE.exists():
+            return DEFAULT_CONFIG.copy()
+        try:
+            with open(CONFIG_FILE, 'r') as f:
+                return {**DEFAULT_CONFIG, **json.load(f)}
+        except Exception as e:
+            print(f"Failed to load config: {e}", file=sys.stderr)
+            return DEFAULT_CONFIG.copy()
+
+    def save_config(self):
+        try:
+            CONFIG_FILE.parent.mkdir(parents=True, exist_ok=True)
+            with open(CONFIG_FILE, 'w') as f:
+                json.dump(self.config, f, indent=4)
+        except Exception as e:
+            print(f"Failed to save config: {e}", file=sys.stderr)
 
     def do_activate(self):
         if self.window:
@@ -47,10 +71,10 @@ class WallpaperManager(Gtk.Application):
             return
 
         self.window = Gtk.ApplicationWindow(application=self, title="Wallpaper Manager")
-        self.window.set_default_size(800, 600)
+        self.window.set_default_size(900, 700)
 
         # Main Layout
-        main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.window.set_child(main_box)
 
         # Header Bar
@@ -62,10 +86,21 @@ class WallpaperManager(Gtk.Application):
         add_btn.connect("clicked", self.on_add_clicked)
         header.pack_start(add_btn)
 
+        # Right side box for buttons
+        right_box = Gtk.Box(spacing=5)
+        header.pack_end(right_box)
+
+        # Preferences Button
+        pref_btn = Gtk.Button(icon_name="emblem-system-symbolic")
+        pref_btn.set_tooltip_text("Preferences")
+        pref_btn.connect("clicked", self.on_preferences_clicked)
+        right_box.append(pref_btn)
+
         # Refresh Button
         refresh_btn = Gtk.Button(icon_name="view-refresh-symbolic")
+        refresh_btn.set_tooltip_text("Refresh")
         refresh_btn.connect("clicked", lambda x: self.load_wallpapers())
-        header.pack_end(refresh_btn)
+        right_box.append(refresh_btn)
 
         # Scroll Window
         scrolled = Gtk.ScrolledWindow()
@@ -78,12 +113,12 @@ class WallpaperManager(Gtk.Application):
         self.flowbox.set_valign(Gtk.Align.START)
         self.flowbox.set_max_children_per_line(30) # Auto-flow
         self.flowbox.set_selection_mode(Gtk.SelectionMode.NONE)
-        self.flowbox.set_column_spacing(10)
-        self.flowbox.set_row_spacing(10)
-        self.flowbox.set_margin_top(10)
-        self.flowbox.set_margin_bottom(10)
-        self.flowbox.set_margin_start(10)
-        self.flowbox.set_margin_end(10)
+        self.flowbox.set_column_spacing(15)
+        self.flowbox.set_row_spacing(15)
+        self.flowbox.set_margin_top(15)
+        self.flowbox.set_margin_bottom(15)
+        self.flowbox.set_margin_start(15)
+        self.flowbox.set_margin_end(15)
         scrolled.set_child(self.flowbox)
 
         self.load_wallpapers()
@@ -101,6 +136,11 @@ class WallpaperManager(Gtk.Application):
         extensions = {'.jpg', '.jpeg', '.png', '.webp', '.bmp'}
         paths = []
 
+        # Directories to scan
+        directories = [THEME_BG_DIR, USER_BG_DIR]
+        for extra in self.config.get("extra_directories", []):
+            directories.append(Path(extra))
+
         # Helper to scan dir
         def scan_dir(d):
             if d.exists():
@@ -108,8 +148,8 @@ class WallpaperManager(Gtk.Application):
                     if f.is_file() and f.suffix.lower() in extensions:
                         paths.append(f)
 
-        scan_dir(THEME_BG_DIR)
-        scan_dir(USER_BG_DIR)
+        for d in directories:
+            scan_dir(d)
 
         # Deduplicate by path
         paths = sorted(list(set(paths)))
@@ -123,51 +163,52 @@ class WallpaperManager(Gtk.Application):
         threading.Thread(target=self.load_thumbnails_thread, args=(paths,), daemon=True).start()
 
     def load_thumbnails_thread(self, paths):
+        size = self.config.get("thumbnail_size", 200)
         for path in paths:
             try:
                 # Load Pixbuf at scale
                 pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-                    str(path), THUMBNAIL_SIZE, THUMBNAIL_SIZE, True
+                    str(path), size, size, True
                 )
 
                 # Schedule UI update
                 GLib.idle_add(self.add_thumbnail, path, pixbuf)
             except Exception as e:
-                print(f"Failed to load {path}: {e}", file=sys.stderr)
+                # Silently ignore load errors for smoother UX
+                pass
 
     def add_thumbnail(self, path, pixbuf):
-        # Create UI elements
+        size = self.config.get("thumbnail_size", 200)
+
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
 
         # Image
         img = Gtk.Image.new_from_pixbuf(pixbuf)
-        img.set_pixel_size(THUMBNAIL_SIZE)
+        img.set_pixel_size(size)
 
-        # Button wrapper for clickability
+        # Button wrapper
         btn = Gtk.Button()
         btn.set_child(img)
         btn.connect("clicked", self.on_wallpaper_clicked, path)
-        btn.add_css_class("flat") # Minimal styling
+        btn.add_css_class("flat")
+        btn.set_cursor(Gdk.Cursor.new_from_name("pointer", None))
 
         vbox.append(btn)
 
         # Label (Filename)
         lbl = Gtk.Label(label=path.name)
-        lbl.set_ellipsize(3) # Pango.EllipsizeMode.END (3)
-        lbl.set_max_width_chars(20)
+        lbl.set_ellipsize(3) # Pango.EllipsizeMode.END
+        lbl.set_max_width_chars(int(size / 10)) # Rough estimate
         lbl.set_wrap(False)
         vbox.append(lbl)
 
         self.flowbox.append(vbox)
-        return False # Stop idle function
+        return False
 
     def on_wallpaper_clicked(self, btn, path):
         print(f"Setting wallpaper: {path}")
         try:
-            # Call the hypr-wallpaper-set script
             subprocess.run(["hypr-wallpaper-set", str(path)], check=True)
-
-            # Optional: visual feedback
             self.show_toast(f"Set: {path.name}")
         except subprocess.CalledProcessError as e:
             self.show_error(f"Failed to set wallpaper: {e}")
@@ -178,7 +219,6 @@ class WallpaperManager(Gtk.Application):
         dialog = Gtk.FileDialog()
         dialog.set_title("Select Wallpaper")
 
-        # Filters
         filter_list = Gio.ListStore.new(Gtk.FileFilter)
         img_filter = Gtk.FileFilter()
         img_filter.set_name("Images")
@@ -197,24 +237,22 @@ class WallpaperManager(Gtk.Application):
             dest_path = USER_BG_DIR / src_path.name
 
             if dest_path.exists():
-                # Simple conflict resolution: overwrite or skip?
-                # Let's simple overwrite for now or maybe rename.
                 pass
 
             shutil.copy2(src_path, dest_path)
             self.show_toast(f"Added: {src_path.name}")
-            self.load_wallpapers() # Refresh
+            self.load_wallpapers()
 
         except Exception as e:
-            # Start/Open cancelled or failed
             pass
 
+    def on_preferences_clicked(self, btn):
+        dialog = PreferencesDialog(self.window, self.config, self.save_config)
+        dialog.present()
+        # When dialog closes, reload to apply changes
+        dialog.connect("close-request", lambda d: self.load_wallpapers())
+
     def show_toast(self, message):
-        overlay = Gtk.Overlay()
-        # Toasts in GTK4 are typically done via Adwaita (libadwaita),
-        # but here we are using raw GTK4.
-        # We'll just print to stdout for now as a simple feedback mechanism
-        # or implement a simple overlay if needed.
         print(message)
 
     def show_error(self, message):
@@ -222,6 +260,115 @@ class WallpaperManager(Gtk.Application):
         dlg = Gtk.AlertDialog()
         dlg.set_message(message)
         dlg.show(self.window)
+
+class PreferencesDialog(Gtk.Window):
+    def __init__(self, parent, config, save_callback):
+        super().__init__(title="Preferences", modal=True, transient_for=parent)
+        self.set_default_size(500, 400)
+        self.config = config
+        self.save_callback = save_callback
+
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20)
+        box.set_margin_top(20)
+        box.set_margin_bottom(20)
+        box.set_margin_start(20)
+        box.set_margin_end(20)
+        self.set_child(box)
+
+        # Thumbnail Size
+        size_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        box.append(size_box)
+
+        lbl_size = Gtk.Label(label="Thumbnail Size", xalign=0)
+        lbl_size.add_css_class("heading")
+        size_box.append(lbl_size)
+
+        self.scale = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 100, 400, 10)
+        self.scale.set_value(self.config.get("thumbnail_size", 200))
+        self.scale.set_draw_value(True)
+        self.scale.connect("value-changed", self.on_size_changed)
+        size_box.append(self.scale)
+
+        # Extra Directories
+        dir_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        dir_box.set_vexpand(True)
+        box.append(dir_box)
+
+        lbl_dir = Gtk.Label(label="Extra Directories", xalign=0)
+        lbl_dir.add_css_class("heading")
+        dir_box.append(lbl_dir)
+
+        # List of directories
+        scrolled = Gtk.ScrolledWindow()
+        scrolled.set_vexpand(True)
+        scrolled.add_css_class("frame")
+        dir_box.append(scrolled)
+
+        self.dir_list_box = Gtk.ListBox()
+        self.dir_list_box.set_selection_mode(Gtk.SelectionMode.NONE)
+        scrolled.set_child(self.dir_list_box)
+
+        self.refresh_dir_list()
+
+        # Add Directory Button
+        btn_add_dir = Gtk.Button(label="Add Directory")
+        btn_add_dir.connect("clicked", self.on_add_dir_clicked)
+        dir_box.append(btn_add_dir)
+
+    def on_size_changed(self, scale):
+        self.config["thumbnail_size"] = int(scale.get_value())
+        self.save_callback()
+
+    def refresh_dir_list(self):
+        # Clear list
+        child = self.dir_list_box.get_first_child()
+        while child:
+            next_child = child.get_next_sibling()
+            self.dir_list_box.remove(child)
+            child = next_child
+
+        for path_str in self.config.get("extra_directories", []):
+            row = Gtk.ListBoxRow()
+
+            hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+            row.set_child(hbox)
+
+            lbl = Gtk.Label(label=path_str, xalign=0)
+            lbl.set_hexpand(True)
+            lbl.set_ellipsize(3) # End
+            hbox.append(lbl)
+
+            btn_del = Gtk.Button(icon_name="user-trash-symbolic")
+            btn_del.add_css_class("flat")
+            btn_del.connect("clicked", self.on_remove_dir, path_str)
+            hbox.append(btn_del)
+
+            self.dir_list_box.append(row)
+
+    def on_remove_dir(self, btn, path_str):
+        if path_str in self.config["extra_directories"]:
+            self.config["extra_directories"].remove(path_str)
+            self.save_callback()
+            self.refresh_dir_list()
+
+    def on_add_dir_clicked(self, btn):
+        dialog = Gtk.FileDialog()
+        dialog.set_title("Select Directory")
+        dialog.select_folder(self, None, self.on_folder_selected)
+
+    def on_folder_selected(self, dialog, result):
+        try:
+            folder = dialog.select_folder_finish(result)
+            path = folder.get_path()
+            if path:
+                if "extra_directories" not in self.config:
+                    self.config["extra_directories"] = []
+                if path not in self.config["extra_directories"]:
+                    self.config["extra_directories"].append(path)
+                    self.save_callback()
+                    self.refresh_dir_list()
+        except Exception:
+            pass
 
 if __name__ == "__main__":
     app = WallpaperManager()
