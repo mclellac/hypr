@@ -9,6 +9,7 @@ import json
 import shutil
 import subprocess
 import threading
+import warnings
 from pathlib import Path
 
 try:
@@ -42,6 +43,17 @@ class WallpaperManager(Adw.Application):
         # Set dark theme preference properly for Libadwaita
         manager = Adw.StyleManager.get_default()
         manager.set_color_scheme(Adw.ColorScheme.PREFER_DARK)
+
+        # Try to suppress the global GtkSetting warning if possible
+        try:
+            settings = Gtk.Settings.get_default()
+            if settings:
+                 # Setting this property usually triggers the warning if Libadwaita sees it,
+                 # but we can't unset it easily.
+                 # We can force it to None or False if it was True, but that might not help.
+                 pass
+        except:
+            pass
 
         # Ensure user directory exists
         USER_BG_DIR.mkdir(parents=True, exist_ok=True)
@@ -183,7 +195,10 @@ class MainWindow(Adw.ApplicationWindow):
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
 
         # Use Gdk.Texture for GTK4 compliance
-        texture = Gdk.Texture.new_for_pixbuf(pixbuf)
+        # Suppress deprecation warning for new_for_pixbuf as new_from_bytes is complex
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            texture = Gdk.Texture.new_for_pixbuf(pixbuf)
         img = Gtk.Image.new_from_paintable(texture)
         img.set_pixel_size(size)
         img.add_css_class("card") # Libadwaita style
@@ -256,11 +271,17 @@ class PreferencesWindow(Adw.PreferencesWindow):
         self.on_change = on_change
 
         page = Adw.PreferencesPage()
-        self.add_page(page)
+        if hasattr(self, "add_page"):
+            self.add_page(page)
+        else:
+            self.add(page)
 
         # Appearance Group
         grp_app = Adw.PreferencesGroup(title="Appearance")
-        page.add_group(grp_app)
+        if hasattr(page, "add_group"):
+            page.add_group(grp_app)
+        else:
+            page.add(grp_app)
 
         row_size = Adw.ActionRow(title="Thumbnail Size", subtitle="Adjust grid size (100-400px)")
         scale = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 100, 400, 10)
@@ -274,7 +295,10 @@ class PreferencesWindow(Adw.PreferencesWindow):
 
         # Library Group
         grp_lib = Adw.PreferencesGroup(title="Library Directories", description="Extra paths to scan for wallpapers.")
-        page.add_group(grp_lib)
+        if hasattr(page, "add_group"):
+            page.add_group(grp_lib)
+        else:
+            page.add(grp_lib)
         self.grp_lib = grp_lib
 
         # Add Directory Button Row
