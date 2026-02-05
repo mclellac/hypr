@@ -35,8 +35,23 @@ main() {
   # Update the symlink for persistence
   ln -sf "${new_background}" "${CURRENT_BACKGROUND_LINK}"
 
-  # Restart swaybg
+  # Stop any running swaybg systemd units (e.g., managed by uwsm) to prevent auto-restarts.
+  # This is cleaner than pkill and avoids race conditions where the service manager
+  # restarts the old instance before the new one starts.
+  if command -v systemctl &>/dev/null; then
+    # Find active units containing 'swaybg' (typically app-swaybg-....scope)
+    # Use -r with xargs to avoid running if input is empty
+    systemctl --user list-units --state=running --no-legend --plain \
+      | grep "swaybg" \
+      | cut -d' ' -f1 \
+      | xargs -r systemctl --user stop
+  fi
+
+  # Kill any remaining instances that might not be managed by systemd
   pkill -x swaybg || true
+
+  # Start swaybg using uwsm
+  # We use setsid to detach it from this shell
   setsid uwsm app -- swaybg -i "${CURRENT_BACKGROUND_LINK}" -m fill >/dev/null 2>&1 &
 
   echo "Wallpaper set to: ${new_background}"
