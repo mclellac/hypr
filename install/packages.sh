@@ -75,6 +75,7 @@ main() {
         "jq"
         "kdenlive"
         "kvantum-qt5"
+        "libadwaita"
         "lazydocker"
         "lazygit"
         "less"
