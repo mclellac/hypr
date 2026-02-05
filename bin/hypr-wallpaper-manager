@@ -43,14 +43,6 @@ class WallpaperManager(Adw.Application):
         manager = Adw.StyleManager.get_default()
         manager.set_color_scheme(Adw.ColorScheme.PREFER_DARK)
 
-        # Try to suppress the global GtkSetting warning by explicitly disabling the legacy property
-        try:
-            settings = Gtk.Settings.get_default()
-            if settings:
-                 settings.set_property("gtk-application-prefer-dark-theme", False)
-        except:
-            pass
-
         # Ensure user directory exists
         USER_BG_DIR.mkdir(parents=True, exist_ok=True)
 
