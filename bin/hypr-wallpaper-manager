@@ -39,6 +39,10 @@ class WallpaperManager(Adw.Application):
         super().__init__(application_id="com.hypr.wallpaper.manager", flags=Gio.ApplicationFlags.FLAGS_NONE)
         self.config = self.load_config()
 
+        # Set dark theme preference properly for Libadwaita
+        manager = Adw.StyleManager.get_default()
+        manager.set_color_scheme(Adw.ColorScheme.PREFER_DARK)
+
         # Ensure user directory exists
         USER_BG_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -178,12 +182,15 @@ class MainWindow(Adw.ApplicationWindow):
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
 
-        img = Gtk.Image.new_from_pixbuf(pixbuf)
+        # Use Gdk.Texture for GTK4 compliance
+        texture = Gdk.Texture.new_for_pixbuf(pixbuf)
+        img = Gtk.Image.new_from_paintable(texture)
         img.set_pixel_size(size)
         img.add_css_class("card") # Libadwaita style
 
         btn = Gtk.Button()
         btn.set_child(img)
+        # Avoid double-firing or focus issues by ensuring we only react to explicit activation
         btn.connect("clicked", self.on_wallpaper_clicked, path)
         btn.add_css_class("flat")
 
@@ -249,11 +256,11 @@ class PreferencesWindow(Adw.PreferencesWindow):
         self.on_change = on_change
 
         page = Adw.PreferencesPage()
-        self.add(page)
+        self.add_page(page)
 
         # Appearance Group
         grp_app = Adw.PreferencesGroup(title="Appearance")
-        page.add(grp_app)
+        page.add_group(grp_app)
 
         row_size = Adw.ActionRow(title="Thumbnail Size", subtitle="Adjust grid size (100-400px)")
         scale = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 100, 400, 10)
@@ -267,16 +274,16 @@ class PreferencesWindow(Adw.PreferencesWindow):
 
         # Library Group
         grp_lib = Adw.PreferencesGroup(title="Library Directories", description="Extra paths to scan for wallpapers.")
-        page.add(grp_lib)
+        page.add_group(grp_lib)
         self.grp_lib = grp_lib
 
         # Add Directory Button Row
-        row_add = Adw.ActionRow(title="Add Directory")
+        self.row_add = Adw.ActionRow(title="Add New Directory")
         btn_add = Gtk.Button(icon_name="list-add-symbolic")
         btn_add.set_valign(Gtk.Align.CENTER)
         btn_add.connect("clicked", self.on_add_dir)
-        row_add.add_suffix(btn_add)
-        grp_lib.add(row_add)
+        self.row_add.add_suffix(btn_add)
+        grp_lib.add(self.row_add)
 
         self.refresh_dirs()
 
@@ -286,23 +293,23 @@ class PreferencesWindow(Adw.PreferencesWindow):
         self.on_change()
 
     def refresh_dirs(self):
-        # Remove existing directory rows (keep the first 'Add' row?)
-        # Since GTK4 removing children while iterating is tricky, we'll maintain the first row
-        # or just rebuild.
-        # Adw.PreferencesGroup doesn't expose a simple list model.
-        # Strategy: Remove all rows that are NOT the "Add Directory" row.
+        # Clear existing rows except the "Add" row if possible, or just clear all
+        # AdwPreferencesGroup inherits from GtkWidget, so we can iterate children
+        child = self.grp_lib.get_first_child()
+        while child:
+            next_child = child.get_next_sibling()
+            # Don't remove the persistent "Add" row if we can identify it,
+            # but it's easier to remove everything and re-add.
+            # However, self.row_add is created in __init__.
+            if child != self.row_add:
+                 self.grp_lib.remove(child)
+            child = next_child
 
-        # Actually, simpler: Just keep "Add" row at the bottom or top.
-        # Let's remove all and rebuild.
+        # Re-add directory rows BEFORE the add button
+        # But AdwPreferencesGroup adds to the end.
+        # So we must remove the add row, add dirs, then add it back.
 
-        i = 0
-        while True:
-            row = self.grp_lib.get_row_at_index(i)
-            if not row:
-                break
-            # Skip the "Add Directory" row if we can identify it.
-            # Or just clear all and re-add "Add Directory" row every time.
-            self.grp_lib.remove(row)
+        self.grp_lib.remove(self.row_add)
 
         # Add existing dirs
         for path_str in self.config.get("extra_directories", []):
@@ -314,13 +321,7 @@ class PreferencesWindow(Adw.PreferencesWindow):
             row.add_suffix(btn_del)
             self.grp_lib.add(row)
 
-        # Add "Add Directory" row at the end
-        row_add = Adw.ActionRow(title="Add New Directory")
-        btn_add = Gtk.Button(icon_name="list-add-symbolic")
-        btn_add.set_valign(Gtk.Align.CENTER)
-        btn_add.connect("clicked", self.on_add_dir)
-        row_add.add_suffix(btn_add)
-        self.grp_lib.add(row_add)
+        self.grp_lib.add(self.row_add)
 
     def on_remove_dir(self, btn, path_str):
         if path_str in self.config["extra_directories"]:
