@@ -8,14 +8,14 @@ set -euo pipefail
 #######################################
 # Gets the latest git tag from the remote repository.
 # Globals:
-#   hypr_PATH - The path to the hypr git repository.
+#   HYPR_PATH - The path to the hypr git repository.
 # Arguments:
 #   None
 # Outputs:
 #   The latest remote tag.
 #######################################
 get_latest_remote_tag() {
-  git -C "${hypr_PATH}" ls-remote --tags origin |
+  git -C "${HYPR_PATH}" ls-remote --tags origin |
     grep -v "{}" |
     awk '{print $2}' |
     sed 's#refs/tags/##' |
@@ -26,28 +26,28 @@ get_latest_remote_tag() {
 #######################################
 # Gets the most recent git tag on the local repository.
 # Globals:
-#   hypr_PATH - The path to the hypr git repository.
+#   HYPR_PATH - The path to the hypr git repository.
 # Arguments:
 #   None
 # Outputs:
 #   The latest local tag.
 #######################################
 get_current_local_tag() {
-  git -C "${hypr_PATH}" describe --tags "$(git -C "${hypr_PATH}" rev-list --tags --max-count=1)"
+  git -C "${HYPR_PATH}" describe --tags "$(git -C "${HYPR_PATH}" rev-list --tags --max-count=1)"
 }
 
 #######################################
 # Main function to check for updates.
 # Globals:
-#   hypr_PATH - The path to the hypr git repository.
+#   HYPR_PATH - The path to the hypr git repository.
 # Arguments:
 #   None
 # Outputs:
 #   Exits with status 0 if an update is available, 1 otherwise.
 #######################################
 main() {
-  if [[ -z "${hypr_PATH:-}" || ! -d "${hypr_PATH}/.git" ]]; then
-    echo "Error: hypr_PATH is not set or is not a git repository." >&2
+  if [[ -z "${HYPR_PATH:-}" || ! -d "${HYPR_PATH}/.git" ]]; then
+    echo "Error: HYPR_PATH is not set or is not a git repository." >&2
     exit 1
   fi
 

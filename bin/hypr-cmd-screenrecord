@@ -11,7 +11,7 @@ if [[ -f "${HOME}/.config/user-dirs.dirs" ]]; then
   # shellcheck source=/dev/null
   source "${HOME}/.config/user-dirs.dirs"
 fi
-readonly OUTPUT_DIR="${hypr_SCREENRECORD_DIR:-${XDG_VIDEOS_DIR:-${HOME}/Videos}}"
+readonly OUTPUT_DIR="${HYPR_SCREENRECORD_DIR:-${XDG_VIDEOS_DIR:-${HOME}/Videos}}"
 
 #######################################
 # Checks if any screen recording process is currently running.

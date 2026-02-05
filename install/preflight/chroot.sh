@@ -13,11 +13,11 @@ set -euo pipefail
 # Arguments:
 #   The name of the systemd service to enable.
 # Globals:
-#   hypr_CHROOT_INSTALL (read-only)
+#   HYPR_CHROOT_INSTALL (read-only)
 #######################################
 enable_systemctl_service() {
   local service_name="$1"
-  if [[ -n "${hypr_CHROOT_INSTALL:-}" ]]; then
+  if [[ -n "${HYPR_CHROOT_INSTALL:-}" ]]; then
     sudo systemctl enable "${service_name}"
   else
     sudo systemctl enable --now "${service_name}"

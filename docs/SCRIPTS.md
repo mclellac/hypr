@@ -36,4 +36,4 @@ This document provides an overview of the custom scripts located in the `bin/` d
 
 ## Notes
 
-Many scripts rely on the `hypr_PATH` environment variable or assume a specific directory structure. They often use `set -euo pipefail` for robustness.
+Many scripts rely on the `HYPR_PATH` environment variable or assume a specific directory structure. They often use `set -euo pipefail` for robustness.

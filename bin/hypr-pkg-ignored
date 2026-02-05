@@ -8,19 +8,19 @@ set -euo pipefail
 #######################################
 # Main function to read and format the ignored packages list.
 # Globals:
-#   hypr_PATH - The root path of the hypr configuration.
+#   HYPR_PATH - The root path of the hypr configuration.
 # Arguments:
 #   None
 # Outputs:
 #   A comma-separated string of ignored package names.
 #######################################
 main() {
-  if [[ -z "${hypr_PATH:-}" ]]; then
-    echo "Error: hypr_PATH environment variable is not set." >&2
+  if [[ -z "${HYPR_PATH:-}" ]]; then
+    echo "Error: HYPR_PATH environment variable is not set." >&2
     exit 1
   fi
 
-  local ignored_packages_file="${hypr_PATH}/install/packages.ignored"
+  local ignored_packages_file="${HYPR_PATH}/install/packages.ignored"
 
   if [[ -f "${ignored_packages_file}" ]]; then
     # `tr` replaces newlines with commas, and `sed` removes the trailing comma.

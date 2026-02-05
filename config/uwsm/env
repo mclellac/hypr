@@ -1,5 +1,5 @@
-export hypr_PATH=$HOME/.local/share/hypr
-export PATH=$hypr_PATH/bin/:$PATH
+export HYPR_PATH=$HOME/.local/share/hypr
+export PATH=$HYPR_PATH/bin/:$PATH
 export TERMINAL=alacritty
 
 if command -v mise &> /dev/null; then

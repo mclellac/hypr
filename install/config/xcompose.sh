@@ -9,8 +9,8 @@ set -euo pipefail
 # Creates the ~/.XCompose file with default and user-specific bindings.
 # Globals:
 #   HYPR_PATH (read-only)
-#   hypr_USER_NAME (read-only)
-#   hypr_USER_EMAIL (read-only)
+#   HYPR_USER_NAME (read-only)
+#   HYPR_USER_EMAIL (read-only)
 #######################################
 main() {
   local -r xcompose_file="${HOME}/.XCompose"
@@ -23,8 +23,8 @@ main() {
 include "${HYPR_PATH}/default/xcompose"
 
 # Custom user identification bindings, triggered with <CapsLock> <space> <key>.
-<Multi_key> <space> <n> : "${hypr_USER_NAME}"
-<Multi_key> <space> <e> : "${hypr_USER_EMAIL}"
+<Multi_key> <space> <n> : "${HYPR_USER_NAME}"
+<Multi_key> <space> <e> : "${HYPR_USER_EMAIL}"
 EOF
 
   echo ".XCompose file created."
