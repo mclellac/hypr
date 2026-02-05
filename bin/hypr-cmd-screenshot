@@ -10,7 +10,7 @@ if [[ -f "${HOME}/.config/user-dirs.dirs" ]]; then
   # shellcheck source=/dev/null
   source "${HOME}/.config/user-dirs.dirs"
 fi
-readonly OUTPUT_DIR="${hypr_SCREENSHOT_DIR:-${XDG_PICTURES_DIR:-${HOME}/Pictures}}"
+readonly OUTPUT_DIR="${HYPR_SCREENSHOT_DIR:-${XDG_PICTURES_DIR:-${HOME}/Pictures}}"
 
 #######################################
 # Main function to handle the screenshot process.

@@ -77,11 +77,11 @@ EOF
 #######################################
 # Creates Snapper configurations if they don't exist.
 # Globals:
-#   hypr_CHROOT_INSTALL (read-only)
+#   HYPR_CHROOT_INSTALL (read-only)
 #######################################
 create_snapper_configs() {
   # Only run this if not in the initial chroot install from the ISO.
-  if [[ -z "${hypr_CHROOT_INSTALL:-}" ]]; then
+  if [[ -z "${HYPR_CHROOT_INSTALL:-}" ]]; then
     echo "Setting up Snapper configurations..."
     if ! sudo snapper list-configs 2>/dev/null | grep -q "root"; then
       sudo snapper -c root create-config /

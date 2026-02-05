@@ -8,7 +8,7 @@ set -euo pipefail
 #######################################
 # Main function to refresh the application database.
 # Globals:
-#   hypr_PATH - The root path of the hypr configuration.
+#   HYPR_PATH - The root path of the hypr configuration.
 #   HOME - The user's home directory.
 # Arguments:
 #   None
@@ -16,16 +16,16 @@ set -euo pipefail
 #   None
 #######################################
 main() {
-  if [[ -z "${hypr_PATH:-}" ]]; then
-    echo "Error: hypr_PATH environment variable is not set." >&2
+  if [[ -z "${HYPR_PATH:-}" ]]; then
+    echo "Error: HYPR_PATH environment variable is not set." >&2
     exit 1
   fi
 
   local local_icons_dir="${HOME}/.local/share/icons/hicolor/48x48/apps"
   local local_apps_dir="${HOME}/.local/share/applications"
-  local source_icons_dir="${hypr_PATH}/applications/icons"
-  local source_apps_dir="${hypr_PATH}/applications"
-  local source_hidden_apps_dir="${hypr_PATH}/applications/hidden"
+  local source_icons_dir="${HYPR_PATH}/applications/icons"
+  local source_apps_dir="${HYPR_PATH}/applications"
+  local source_hidden_apps_dir="${HYPR_PATH}/applications/hidden"
 
   # Copy and sync icon files.
   echo "Syncing application icons..."

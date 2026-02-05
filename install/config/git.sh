@@ -21,18 +21,18 @@ set_git_aliases() {
 #######################################
 # Configures the global user name and email from environment variables.
 # Globals:
-#   hypr_USER_NAME (read-only)
-#   hypr_USER_EMAIL (read-only)
+#   HYPR_USER_NAME (read-only)
+#   HYPR_USER_EMAIL (read-only)
 #######################################
 set_user_identity() {
   echo "Configuring Git user identity..."
   # The parameter expansion `${VAR//[[:space:]]/}` removes all whitespace.
-  if [[ -n "${hypr_USER_NAME//[[:space:]]/}" ]]; then
-    git config --global user.name "${hypr_USER_NAME}"
+  if [[ -n "${HYPR_USER_NAME//[[:space:]]/}" ]]; then
+    git config --global user.name "${HYPR_USER_NAME}"
   fi
 
-  if [[ -n "${hypr_USER_EMAIL//[[:space:]]/}" ]]; then
-    git config --global user.email "${hypr_USER_EMAIL}"
+  if [[ -n "${HYPR_USER_EMAIL//[[:space:]]/}" ]]; then
+    git config --global user.email "${HYPR_USER_EMAIL}"
   fi
 }
 

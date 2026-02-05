@@ -10,7 +10,7 @@ set -euo pipefail
 #######################################
 main() {
   echo "Installation ENV:"
-  env | grep -E "^(hypr_CHROOT_INSTALL|hypr_USER_NAME|hypr_USER_EMAIL|USER|HOME|hypr_REPO|hypr_REF)="
+  env | grep -E "^(HYPR_CHROOT_INSTALL|HYPR_USER_NAME|HYPR_USER_EMAIL|USER|HOME|HYPR_REPO|HYPR_REF)="
 }
 
 main "$@"
