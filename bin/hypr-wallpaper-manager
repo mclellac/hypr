@@ -6,7 +6,6 @@ A modern Libadwaita application to browse and set wallpapers.
 
 import sys
 import json
-import shutil
 import subprocess
 import threading
 import warnings
@@ -44,14 +43,11 @@ class WallpaperManager(Adw.Application):
         manager = Adw.StyleManager.get_default()
         manager.set_color_scheme(Adw.ColorScheme.PREFER_DARK)
 
-        # Try to suppress the global GtkSetting warning if possible
+        # Try to suppress the global GtkSetting warning by explicitly disabling the legacy property
         try:
             settings = Gtk.Settings.get_default()
             if settings:
-                 # Setting this property usually triggers the warning if Libadwaita sees it,
-                 # but we can't unset it easily.
-                 # We can force it to None or False if it was True, but that might not help.
-                 pass
+                 settings.set_property("gtk-application-prefer-dark-theme", False)
         except:
             pass
 
@@ -247,13 +243,23 @@ class MainWindow(Adw.ApplicationWindow):
         try:
             file = dialog.open_finish(result)
             src_path = Path(file.get_path())
-            dest_path = USER_BG_DIR / src_path.name
+            parent_dir = src_path.parent
 
-            shutil.copy2(src_path, dest_path)
-            self.show_toast(f"Added: {src_path.name}")
+            # Instead of copying, we add the directory to our source list if not present
+            path_str = str(parent_dir)
+            if "extra_directories" not in self.config:
+                self.config["extra_directories"] = []
+
+            if path_str not in self.config["extra_directories"]:
+                self.config["extra_directories"].append(path_str)
+                self.save_config()
+                self.show_toast(f"Added directory: {parent_dir.name}")
+            else:
+                self.show_toast(f"Directory already added: {parent_dir.name}")
+
             self.load_wallpapers()
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"Error adding file source: {e}", file=sys.stderr)
 
     def show_toast(self, message):
         toast = Adw.Toast(title=message)
