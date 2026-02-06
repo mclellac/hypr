@@ -1,0 +1,23 @@
+#!/bin/bash
+# Get public IP with caching
+CACHE="/tmp/hypr-pubip.cache"
+
+if [ -f "$CACHE" ] && [ $(($(date +%s) - $(stat -c %Y "$CACHE"))) -lt 3600 ]; then
+    cat "$CACHE"
+    exit 0
+fi
+
+# Fetch new IP
+IP=$(curl -s --max-time 5 https://api.ipify.org)
+
+if [ -n "$IP" ]; then
+    echo "$IP" > "$CACHE"
+    echo "$IP"
+else
+    # If fetch failed, try to return stale cache
+    if [ -f "$CACHE" ]; then
+        cat "$CACHE"
+    else
+        echo "Offline"
+    fi
+fi
