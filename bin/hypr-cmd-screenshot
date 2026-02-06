@@ -25,13 +25,13 @@ readonly OUTPUT_DIR="${HYPR_SCREENSHOT_DIR:-${XDG_PICTURES_DIR:-${HOME}/Pictures
 main() {
   for cmd in hyprshot satty wl-copy; do
     if ! command -v "${cmd}" &>/dev/null; then
-      notify-send "Error: Required command not found" "${cmd}" -u critical
+      notify-send "Error: Required command not found" "${cmd}" -u critical -t 5000
       exit 1
     fi
   done
 
   if [[ ! -d "${OUTPUT_DIR}" ]]; then
-    notify-send "Error: Screenshot directory does not exist" "${OUTPUT_DIR}" -u critical
+    notify-send "Error: Screenshot directory does not exist" "${OUTPUT_DIR}" -u critical -t 5000
     exit 1
   fi
 

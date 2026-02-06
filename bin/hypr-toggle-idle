@@ -16,10 +16,10 @@ set -euo pipefail
 main() {
   if pgrep -x hypridle >/dev/null; then
     pkill -x hypridle
-    notify-send "Idle Lock Disabled" "The screen will no longer lock automatically."
+    notify-send "Idle Lock Disabled" "The screen will no longer lock automatically." -t 5000
   else
     setsid uwsm app -- hypridle >/dev/null 2>&1 &
-    notify-send "Idle Lock Enabled" "The screen will lock automatically when idle."
+    notify-send "Idle Lock Enabled" "The screen will lock automatically when idle." -t 5000
   fi
 }
 

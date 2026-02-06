@@ -27,7 +27,7 @@ main() {
 
   echo "Updating timezone based on location..."
   if ! sudo tzupdate; then
-    notify-send "Error: tzupdate failed." "Could not determine or set timezone." -u critical
+    notify-send "Error: tzupdate failed." "Could not determine or set timezone." -u critical -t 5000
     exit 1
   fi
 
@@ -38,7 +38,7 @@ main() {
   echo "Timezone updated to ${new_timezone}. Restarting Waybar..."
   hypr-restart-waybar
 
-  notify-send "Timezone Updated" "System time synced and timezone set to ${new_timezone}"
+  notify-send "Timezone Updated" "System time synced and timezone set to ${new_timezone}" -t 5000
 }
 
 main
