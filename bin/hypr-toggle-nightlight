@@ -46,10 +46,10 @@ main() {
 
   if [[ "${current_temp}" == "${OFF_TEMP}" ]]; then
     hyprctl hyprsunset temperature "${ON_TEMP}"
-    notify-send "  Nightlight On"
+    notify-send "  Nightlight On" -t 5000
   else
     hyprctl hyprsunset temperature "${OFF_TEMP}"
-    notify-send "   Nightlight Off"
+    notify-send "   Nightlight Off" -t 5000
   fi
 
   restart_waybar_if_needed

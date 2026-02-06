@@ -71,7 +71,7 @@ get_battery_state() {
 #######################################
 send_notification() {
   local battery_level="$1"
-  notify-send -u critical "󱐋 Time to recharge!" "Battery is down to ${battery_level}%" -i battery-caution -t 30000
+  notify-send -u critical "󱐋 Time to recharge!" "Battery is down to ${battery_level}%" -i battery-caution -t 5000
 }
 
 #######################################

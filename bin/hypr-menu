@@ -78,7 +78,7 @@ present_terminal() {
 #   None
 #######################################
 edit_in_nvim() {
-  notify-send "Editing config file" "$1"
+  notify-send "Editing config file" "$1" -t 5000
   alacritty -e nvim "$1"
 }
 

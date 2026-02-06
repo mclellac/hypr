@@ -61,13 +61,13 @@ start_recording() {
   # Choose the recorder based on the GPU. wf-recorder is preferred for NVIDIA/Intel.
   if lspci | grep -Eqi 'nvidia|intel.*graphics'; then
     if ! command -v wf-recorder &>/dev/null; then
-      notify-send "Error: wf-recorder not found." -u critical
+      notify-send "Error: wf-recorder not found." -u critical -t 5000
       exit 1
     fi
     wf-recorder -f "${filename}" -c libx264 -p crf=23 -p preset=medium -p movflags=+faststart "$@"
   else
     if ! command -v wl-screenrec &>/dev/null; then
-      notify-send "Error: wl-screenrec not found." -u critical
+      notify-send "Error: wl-screenrec not found." -u critical -t 5000
       exit 1
     fi
     wl-screenrec -f "${filename}" --ffmpeg-encoder-options="-c:v libx264 -crf 23 -preset medium -movflags +faststart" "$@"
@@ -85,7 +85,7 @@ start_recording() {
 #######################################
 main() {
   if [[ ! -d "${OUTPUT_DIR}" ]]; then
-    notify-send "Error: Screen recording directory does not exist" "${OUTPUT_DIR}" -u critical
+    notify-send "Error: Screen recording directory does not exist" "${OUTPUT_DIR}" -u critical -t 5000
     exit 1
   fi
 
@@ -100,7 +100,7 @@ main() {
   else
     # Use slurp to select a region for recording.
     if ! command -v slurp &>/dev/null; then
-      notify-send "Error: slurp not found, cannot select region." -u critical
+      notify-send "Error: slurp not found, cannot select region." -u critical -t 5000
       exit 1
     fi
     local region
