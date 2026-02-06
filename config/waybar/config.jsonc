@@ -46,8 +46,8 @@
     "custom/pubip": {
         "exec": "$HOME/.local/share/hypr/bin/hypr-pubip",
         "interval": 3600,
-        "format": "{}  ",
-        "tooltip": false
+        "format": "{}",
+        "return-type": "json"
     },
     "group/datetime": {
         "orientation": "horizontal",
@@ -129,8 +129,8 @@
     },
     "network": {
         "interval": 5,
-        "format-wifi": "{icon} {bandwidthDownBytes}  {bandwidthUpBytes}  {essid} {ipaddr}",
-        "format-ethernet": "󰈀 {bandwidthDownBytes}  {bandwidthUpBytes}  {ipaddr}",
+        "format-wifi": "{icon}",
+        "format-ethernet": "󰈀",
         "format-disconnected": "󰖪",
         "format-disabled": "󰀝",
         "format-icons": [
@@ -141,8 +141,8 @@
             "󰤨"
         ],
         "tooltip-format": "{icon} {ifname}: {ipaddr}",
-        "tooltip-format-ethernet": "{icon} {ifname}: {ipaddr}",
-        "tooltip-format-wifi": "{icon} {ifname} ({essid}): {ipaddr}",
+        "tooltip-format-ethernet": "{icon} {ifname}: {ipaddr}\n {bandwidthDownBytes}  {bandwidthUpBytes}",
+        "tooltip-format-wifi": "{icon} {ifname} ({essid}): {ipaddr}\n {bandwidthDownBytes}  {bandwidthUpBytes}",
         "tooltip-format-disconnected": "{icon} disconnected",
         "tooltip-format-disabled": "{icon} disabled",
         "on-click": "hyprctl dispatch exec \"$HOME/.local/share/hypr/bin/hypr-exec nmtui\"",
