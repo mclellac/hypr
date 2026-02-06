@@ -1,9 +1,17 @@
 #!/bin/bash
-# Get public IP with caching
+# Get public IP with caching and output JSON for Waybar
 CACHE="/tmp/hypr-pubip.cache"
 
+# Function to output JSON
+output_json() {
+    local ip="$1"
+    # echo "{\"text\": \"󰩠\", \"tooltip\": \"Public IP: $ip\"}"
+    # Use printf for safer string handling
+    printf '{"text": "󰩠", "tooltip": "Public IP: %s"}\n' "$ip"
+}
+
 if [ -f "$CACHE" ] && [ $(($(date +%s) - $(stat -c %Y "$CACHE"))) -lt 3600 ]; then
-    cat "$CACHE"
+    output_json "$(cat "$CACHE")"
     exit 0
 fi
 
@@ -12,12 +20,12 @@ IP=$(curl -s --max-time 5 https://api.ipify.org)
 
 if [ -n "$IP" ]; then
     echo "$IP" > "$CACHE"
-    echo "$IP"
+    output_json "$IP"
 else
     # If fetch failed, try to return stale cache
     if [ -f "$CACHE" ]; then
-        cat "$CACHE"
+        output_json "$(cat "$CACHE")"
     else
-        echo "Offline"
+        output_json "Offline"
     fi
 fi
