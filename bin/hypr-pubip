@@ -5,9 +5,8 @@ CACHE="/tmp/hypr-pubip.cache"
 # Function to output JSON
 output_json() {
     local ip="$1"
-    # echo "{\"text\": \"󰩠\", \"tooltip\": \"Public IP: $ip\"}"
-    # Use printf for safer string handling
-    printf '{"text": "󰩠", "tooltip": "Public IP: %s"}\n' "$ip"
+    # Ensure proper JSON escaping if needed (though IP usually doesn't need it)
+    printf '{"text": "󰩠", "tooltip": "Public IP: %s", "class": "custom-pubip"}\n' "$ip"
 }
 
 if [ -f "$CACHE" ] && [ $(($(date +%s) - $(stat -c %Y "$CACHE"))) -lt 3600 ]; then
