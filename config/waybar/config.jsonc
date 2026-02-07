@@ -16,7 +16,6 @@
         "privacy",
         "group/hardware",
         "custom/playerctl",
-        "backlight",
         "tray",
         "custom/power"
     ],
@@ -27,7 +26,6 @@
             "memory",
             "disk",
             "temperature",
-            "battery",
             "pulseaudio",
             "network",
             "bluetooth",
