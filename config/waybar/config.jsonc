@@ -67,6 +67,7 @@
     "hyprland/workspaces": {
         "class": "workspaces",
         "format": "{name}",
+        "on-click": "activate",
         "persistent-workspaces": {
             "*": 3
         }
