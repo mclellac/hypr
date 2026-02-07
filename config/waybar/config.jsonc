@@ -232,6 +232,10 @@
         "icon-spacing": 4,
         "icon-size": 21,
         "transition-duration": 250,
+        "modules": [
+            "screenshare",
+            "audio-in"
+        ],
         "modules-icons": {
             "screenshare": "󰹑",
             "audio-in": "󰍬"
