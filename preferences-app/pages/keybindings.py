@@ -5,6 +5,7 @@ Keybindings settings page for the Hyprland Preferences Application.
 import os
 import sys
 
+# pylint: disable=wrong-import-position
 from gi.repository import Adw, GLib, Gtk
 
 # Adjust path to find utils
