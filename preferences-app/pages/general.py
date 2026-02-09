@@ -55,10 +55,23 @@ class GeneralPage(Adw.PreferencesPage):
         if item:
             selected = item.get_string()
             if selected != "No fonts found":
-                # This might freeze UI slightly as it runs subprocess.
-                # Ideally run in thread, but for simplicity we run blocking.
-                success = utils.set_font(selected)
-                if success:
-                    print(f"Set Font to {selected}")
-                else:
-                    print(f"Failed to set font to {selected}")
+                try:
+                    success = utils.set_font(selected)
+                    if success:
+                        print(f"Set Font to {selected}")
+                    else:
+                        print(f"Failed to set font to {selected}")
+
+                        # Show error dialog, assuming page is attached
+                        root = self.get_root()
+                        if root:
+                            dialog = Adw.MessageDialog(
+                                heading="Font Error",
+                                body=f"Failed to set font '{selected}'. It might be missing or the helper script failed."
+                            )
+                            dialog.add_response("ok", "OK")
+                            dialog.set_transient_for(root)
+                            dialog.present()
+
+                except Exception as e:
+                    print(f"Exception setting font: {e}")
