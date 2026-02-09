@@ -1,0 +1,6 @@
+PyGObject
+# System dependencies required:
+# libgirepository1.0-dev
+# libcairo2-dev
+# libadwaita-1-dev
+# python3-gi
