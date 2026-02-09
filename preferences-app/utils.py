@@ -17,6 +17,7 @@ LOOKNFEEL_CONF = LOCAL_SHARE_DIR / "default/hypr/looknfeel.conf"
 
 # The active hyprland config is in the user's config directory
 HYPRLAND_CONF = USER_CONFIG_DIR / "hyprland.conf"
+INPUT_CONF = USER_CONFIG_DIR / "input.conf"
 
 # Bindings are typically in the shared location, but we also check user overrides
 BINDINGS_DIR = LOCAL_SHARE_DIR / "default/hypr/bindings"
@@ -82,17 +83,16 @@ def write_file(filepath, lines):
         f.writelines(lines)
 
 
-def get_looknfeel_value(key_path):
+def get_config_value(filepath, key_path, fallback_path=None):
     """
-    Reads a value from looknfeel.conf.
-    key_path: list of keys, e.g., ["general", "gaps_in"] or ["decoration", "shadow", "enabled"]
+    Reads a value from a Hyprland config file.
+    filepath: Path object
+    key_path: list of keys
+    fallback_path: Path object (optional)
     """
-    lines = read_file(LOOKNFEEL_CONF)
-    if not lines:
-        # Fallback for dev environment
-        dev_looknfeel = Path(__file__).parent.parent / "default/hypr/looknfeel.conf"
-        if dev_looknfeel.exists():
-            lines = read_file(dev_looknfeel)
+    lines = read_file(filepath)
+    if not lines and fallback_path and fallback_path.exists():
+        lines = read_file(fallback_path)
 
     context = []
 
@@ -122,19 +122,20 @@ def get_looknfeel_value(key_path):
     return None
 
 
-def set_looknfeel_value(key_path, value):
+def set_config_value(filepath, key_path, value, fallback_path=None):
     """
-    Updates a value in looknfeel.conf.
-    key_path: list of keys, e.g., ["general", "gaps_in"]
-    value: str (will be written as is)
+    Updates a value in a Hyprland config file.
+    filepath: Path object
+    key_path: list of keys
+    value: str
+    fallback_path: Path object (optional)
     """
-    target_file = LOOKNFEEL_CONF
-    if not target_file.exists():
-        dev_looknfeel = Path(__file__).parent.parent / "default/hypr/looknfeel.conf"
-        if dev_looknfeel.exists():
-            target_file = dev_looknfeel
+    lines = []
+    if filepath.exists():
+        lines = read_file(filepath)
+    elif fallback_path and fallback_path.exists():
+        lines = read_file(fallback_path)
 
-    lines = read_file(target_file)
     new_lines = []
     context = []
     modified = False
@@ -168,9 +169,39 @@ def set_looknfeel_value(key_path, value):
         new_lines.append(line)
 
     if modified:
-        write_file(target_file, new_lines)
+        if not filepath.parent.exists():
+            try:
+                filepath.parent.mkdir(parents=True, exist_ok=True)
+            except OSError as e:
+                print(f"Error creating directory {filepath.parent}: {e}")
+                return False
+        write_file(filepath, new_lines)
         return True
     return False
+
+
+def get_looknfeel_value(key_path):
+    """Reads a value from looknfeel.conf."""
+    dev_looknfeel = Path(__file__).parent.parent / "default/hypr/looknfeel.conf"
+    return get_config_value(LOOKNFEEL_CONF, key_path, dev_looknfeel)
+
+
+def set_looknfeel_value(key_path, value):
+    """Updates a value in looknfeel.conf."""
+    dev_looknfeel = Path(__file__).parent.parent / "default/hypr/looknfeel.conf"
+    return set_config_value(LOOKNFEEL_CONF, key_path, value, dev_looknfeel)
+
+
+def get_input_value(key_path):
+    """Reads a value from input.conf."""
+    dev_input = Path(__file__).parent.parent / "default/hypr/input.conf"
+    return get_config_value(INPUT_CONF, key_path, dev_input)
+
+
+def set_input_value(key_path, value):
+    """Updates a value in input.conf."""
+    dev_input = Path(__file__).parent.parent / "default/hypr/input.conf"
+    return set_config_value(INPUT_CONF, key_path, value, dev_input)
 
 
 def get_main_mod():

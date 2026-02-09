@@ -7,6 +7,7 @@ from gi.repository import Adw, Gtk
 from pages.general import GeneralPage
 from pages.appearance import AppearancePage
 from pages.keybindings import KeybindingsPage
+from pages.input import InputPage
 
 
 class MainWindow(Adw.PreferencesWindow):
@@ -20,6 +21,7 @@ class MainWindow(Adw.PreferencesWindow):
 
         self.add(GeneralPage())
         self.add(AppearancePage())
+        self.add(InputPage())
         self.add(KeybindingsPage())
 
         # Attempt to inject the primary menu button into the header bar

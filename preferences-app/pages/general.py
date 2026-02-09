@@ -37,6 +37,28 @@ class GeneralPage(Adw.PreferencesPage):
         self.mod_row.connect("notify::selected-item", self.on_mod_changed)
         group.add(self.mod_row)
 
+        # Layout Group
+        layout_group = Adw.PreferencesGroup(title="Layout")
+        self.add(layout_group)
+
+        # Pseudotile
+        self.pseudotile = Adw.SwitchRow(title="Pseudotile")
+        self.pseudotile.set_subtitle("Enable pseudotiling for dwindle layout")
+        val = utils.get_looknfeel_value(["dwindle", "pseudotile"])
+        if val:
+            self.pseudotile.set_active(val.lower() == "true")
+        self.pseudotile.connect("notify::active", self.on_pseudotile_changed)
+        layout_group.add(self.pseudotile)
+
+        # Preserve Split
+        self.preserve_split = Adw.SwitchRow(title="Preserve Split")
+        self.preserve_split.set_subtitle("Preserve split direction in dwindle layout")
+        val = utils.get_looknfeel_value(["dwindle", "preserve_split"])
+        if val:
+            self.preserve_split.set_active(val.lower() == "true")
+        self.preserve_split.connect("notify::active", self.on_preserve_split_changed)
+        layout_group.add(self.preserve_split)
+
     def on_mod_changed(self, row, _):
         """Callback for Mod key changes."""
         item = row.get_selected_item()
@@ -47,3 +69,21 @@ class GeneralPage(Adw.PreferencesPage):
             win = self.get_native()
             if win:
                 win.add_toast(Adw.Toast.new(f"Set Mod Key to {selected}"))
+
+    def on_pseudotile_changed(self, row, _):
+        """Callback for pseudotile toggle."""
+        val = str(row.get_active()).lower()
+        utils.set_looknfeel_value(["dwindle", "pseudotile"], val)
+        status = "enabled" if row.get_active() else "disabled"
+        win = self.get_native()
+        if win:
+            win.add_toast(Adw.Toast.new(f"Pseudotile {status}"))
+
+    def on_preserve_split_changed(self, row, _):
+        """Callback for preserve_split toggle."""
+        val = str(row.get_active()).lower()
+        utils.set_looknfeel_value(["dwindle", "preserve_split"], val)
+        status = "enabled" if row.get_active() else "disabled"
+        win = self.get_native()
+        if win:
+            win.add_toast(Adw.Toast.new(f"Preserve Split {status}"))
