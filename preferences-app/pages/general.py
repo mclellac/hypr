@@ -1,12 +1,18 @@
-from gi.repository import Adw, Gtk, GObject
+"""
+General settings page for the Hyprland Preferences Application.
+"""
+
 import sys
 import os
+from gi.repository import Adw, Gtk
 
 # Adjust path to find utils
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import utils
 
 class GeneralPage(Adw.PreferencesPage):
+    """Page for configuring general system settings like Mod key."""
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.set_title("General")
@@ -28,7 +34,8 @@ class GeneralPage(Adw.PreferencesPage):
         self.mod_row.connect("notify::selected-item", self.on_mod_changed)
         group.add(self.mod_row)
 
-    def on_mod_changed(self, row, param):
+    def on_mod_changed(self, row, _):
+        """Callback for Mod key changes."""
         item = row.get_selected_item()
         if item:
             selected = item.get_string()

@@ -1,4 +1,8 @@
-import os
+"""
+Utilities for the Hyprland Preferences Application.
+This module provides functions to interact with configuration files and system settings.
+"""
+
 import re
 import subprocess
 from pathlib import Path
@@ -31,10 +35,10 @@ def list_fonts():
     try:
         # Check if script exists, if not, try falling back to local relative path for dev (optional)
         if not script.exists():
-             # Fallback for dev environment where install might not be perfect
-             dev_script = Path(__file__).parent.parent / "bin/hypr-font-list"
-             if dev_script.exists():
-                 script = dev_script
+            # Fallback for dev environment where install might not be perfect
+            dev_script = Path(__file__).parent.parent / "bin/hypr-font-list"
+            if dev_script.exists():
+                script = dev_script
 
         result = subprocess.run([str(script)], capture_output=True, text=True, check=True)
         return [line.strip() for line in result.stdout.splitlines() if line.strip()]
@@ -47,9 +51,9 @@ def set_font(font_name):
     script = BIN_DIR / "hypr-font-set"
     try:
         if not script.exists():
-             dev_script = Path(__file__).parent.parent / "bin/hypr-font-set"
-             if dev_script.exists():
-                 script = dev_script
+            dev_script = Path(__file__).parent.parent / "bin/hypr-font-set"
+            if dev_script.exists():
+                script = dev_script
 
         subprocess.run([str(script), font_name], check=True)
         return True
@@ -60,7 +64,7 @@ def set_font(font_name):
 def read_file(filepath):
     """Reads file content."""
     try:
-        with open(filepath, 'r') as f:
+        with open(filepath, 'r', encoding='utf-8') as f:
             return f.readlines()
     except FileNotFoundError:
         return []
@@ -69,7 +73,7 @@ def write_file(filepath, lines):
     """Writes content to file."""
     # Ensure directory exists if writing to user config for first time?
     # Usually it exists.
-    with open(filepath, 'w') as f:
+    with open(filepath, 'w', encoding='utf-8') as f:
         f.writelines(lines)
 
 def get_looknfeel_value(key_path):
@@ -84,7 +88,6 @@ def get_looknfeel_value(key_path):
         if dev_looknfeel.exists():
             lines = read_file(dev_looknfeel)
 
-    current_block = []
     context = []
 
     for line in lines:
@@ -104,8 +107,8 @@ def get_looknfeel_value(key_path):
 
                 if len(key_path) == len(context) + 1:
                     match = True
-                    for i in range(len(context)):
-                        if context[i] != key_path[i]:
+                    for i, ctx in enumerate(context):
+                        if ctx != key_path[i]:
                             match = False
                             break
                     if match and key == key_path[-1]:
@@ -120,9 +123,9 @@ def set_looknfeel_value(key_path, value):
     """
     target_file = LOOKNFEEL_CONF
     if not target_file.exists():
-         dev_looknfeel = Path(__file__).parent.parent / "default/hypr/looknfeel.conf"
-         if dev_looknfeel.exists():
-             target_file = dev_looknfeel
+        dev_looknfeel = Path(__file__).parent.parent / "default/hypr/looknfeel.conf"
+        if dev_looknfeel.exists():
+            target_file = dev_looknfeel
 
     lines = read_file(target_file)
     new_lines = []
@@ -132,31 +135,34 @@ def set_looknfeel_value(key_path, value):
     for line in lines:
         stripped = line.strip()
 
-        if not modified:
-            if stripped.endswith('{') and not stripped.startswith('#'):
-                block_name = stripped[:-1].strip()
-                context.append(block_name)
-                new_lines.append(line)
-                continue
-            elif stripped == '}' and not stripped.startswith('#'):
-                if context:
-                    context.pop()
-                new_lines.append(line)
-                continue
-            elif '=' in stripped and not stripped.startswith('#'):
-                key, val = [x.strip() for x in stripped.split('=', 1)]
+        if modified:
+            new_lines.append(line)
+            continue
 
-                if len(key_path) == len(context) + 1:
-                    match = True
-                    for i in range(len(context)):
-                        if context[i] != key_path[i]:
-                            match = False
-                            break
-                    if match and key == key_path[-1]:
-                        indent = line[:line.find(key)]
-                        new_lines.append(f"{indent}{key} = {value}\n")
-                        modified = True
-                        continue
+        if stripped.endswith('{') and not stripped.startswith('#'):
+            block_name = stripped[:-1].strip()
+            context.append(block_name)
+            new_lines.append(line)
+            continue
+        if stripped == '}' and not stripped.startswith('#'):
+            if context:
+                context.pop()
+            new_lines.append(line)
+            continue
+        if '=' in stripped and not stripped.startswith('#'):
+            key, _ = [x.strip() for x in stripped.split('=', 1)]
+
+            if len(key_path) == len(context) + 1:
+                match = True
+                for i, ctx in enumerate(context):
+                    if ctx != key_path[i]:
+                        match = False
+                        break
+                if match and key == key_path[-1]:
+                    indent = line[:line.find(key)]
+                    new_lines.append(f"{indent}{key} = {value}\n")
+                    modified = True
+                    continue
 
         new_lines.append(line)
 
@@ -194,7 +200,7 @@ def set_main_mod(new_mod):
     for line in lines:
         stripped = line.strip()
         if stripped.startswith('$mainMod') and '=' in stripped:
-             new_lines.append(f"$mainMod = {new_mod}\n")
+            new_lines.append(f"$mainMod = {new_mod}\n")
         else:
             new_lines.append(line)
     write_file(target_file, new_lines)
@@ -222,7 +228,7 @@ def get_keybindings():
     # Also verify if config/hypr/bindings.conf exists (repo default bindings.conf)
     repo_bindings = USER_CONFIG_DIR / "bindings.conf"
     if not repo_bindings.exists():
-         repo_bindings = Path(__file__).parent.parent / "config/hypr/bindings.conf"
+        repo_bindings = Path(__file__).parent.parent / "config/hypr/bindings.conf"
 
     if repo_bindings.exists() and repo_bindings not in files_to_scan:
         files_to_scan.append(repo_bindings)

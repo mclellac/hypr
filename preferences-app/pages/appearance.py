@@ -1,23 +1,35 @@
-from gi.repository import Adw, Gtk, GObject
+"""
+Appearance settings page for the Hyprland Preferences Application.
+"""
+
 import sys
 import os
+from gi.repository import Adw, Gtk
 
 # Adjust path to find utils
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import utils
 
 class AppearancePage(Adw.PreferencesPage):
+    """Page for configuring appearance settings like gaps, borders, and shadows."""
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.set_title("Appearance")
         self.set_icon_name("preferences-desktop-theme-symbolic")
 
-        # Gaps & Borders
-        gaps_group = Adw.PreferencesGroup(title="Gaps &amp; Borders")
-        self.add(gaps_group)
+        self.add(self._init_gaps_group())
+        self.add(self._init_shadows_group())
 
+    def _init_gaps_group(self):
+        """Initializes the Gaps & Borders settings group."""
+        gaps_group = Adw.PreferencesGroup(title="Gaps &amp; Borders")
+
+        # Gaps In
         self.gaps_in = Adw.SpinRow(title="Gaps In")
-        self.gaps_in.set_adjustment(Gtk.Adjustment(value=0, lower=0, upper=100, step_increment=1))
+        self.gaps_in.set_adjustment(
+            Gtk.Adjustment(value=0, lower=0, upper=100, step_increment=1)
+        )
         val = utils.get_looknfeel_value(["general", "gaps_in"])
         if val:
             try:
@@ -27,8 +39,11 @@ class AppearancePage(Adw.PreferencesPage):
         self.gaps_in.connect("notify::value", self.on_gaps_in_changed)
         gaps_group.add(self.gaps_in)
 
+        # Gaps Out
         self.gaps_out = Adw.SpinRow(title="Gaps Out")
-        self.gaps_out.set_adjustment(Gtk.Adjustment(value=0, lower=0, upper=100, step_increment=1))
+        self.gaps_out.set_adjustment(
+            Gtk.Adjustment(value=0, lower=0, upper=100, step_increment=1)
+        )
         val = utils.get_looknfeel_value(["general", "gaps_out"])
         if val:
             try:
@@ -38,8 +53,11 @@ class AppearancePage(Adw.PreferencesPage):
         self.gaps_out.connect("notify::value", self.on_gaps_out_changed)
         gaps_group.add(self.gaps_out)
 
+        # Rounding
         self.rounding = Adw.SpinRow(title="Rounding")
-        self.rounding.set_adjustment(Gtk.Adjustment(value=0, lower=0, upper=50, step_increment=1))
+        self.rounding.set_adjustment(
+            Gtk.Adjustment(value=0, lower=0, upper=50, step_increment=1)
+        )
         val = utils.get_looknfeel_value(["decoration", "rounding"])
         if val:
             try:
@@ -49,18 +67,25 @@ class AppearancePage(Adw.PreferencesPage):
         self.rounding.connect("notify::value", self.on_rounding_changed)
         gaps_group.add(self.rounding)
 
-        # Shadows
-        shadow_group = Adw.PreferencesGroup(title="Shadows")
-        self.add(shadow_group)
+        return gaps_group
 
+    def _init_shadows_group(self):
+        """Initializes the Shadows settings group."""
+        shadow_group = Adw.PreferencesGroup(title="Shadows")
+
+        # Enabled
         self.shadow_enabled = Adw.SwitchRow(title="Enabled")
         val = utils.get_looknfeel_value(["decoration", "shadow", "enabled"])
-        if val: self.shadow_enabled.set_active(val.lower() == "true")
+        if val:
+            self.shadow_enabled.set_active(val.lower() == "true")
         self.shadow_enabled.connect("notify::active", self.on_shadow_enabled_changed)
         shadow_group.add(self.shadow_enabled)
 
+        # Range
         self.shadow_range = Adw.SpinRow(title="Range")
-        self.shadow_range.set_adjustment(Gtk.Adjustment(value=0, lower=0, upper=100, step_increment=1))
+        self.shadow_range.set_adjustment(
+            Gtk.Adjustment(value=0, lower=0, upper=100, step_increment=1)
+        )
         val = utils.get_looknfeel_value(["decoration", "shadow", "range"])
         if val:
             try:
@@ -70,8 +95,11 @@ class AppearancePage(Adw.PreferencesPage):
         self.shadow_range.connect("notify::value", self.on_shadow_range_changed)
         shadow_group.add(self.shadow_range)
 
+        # Render Power
         self.shadow_power = Adw.SpinRow(title="Render Power")
-        self.shadow_power.set_adjustment(Gtk.Adjustment(value=0, lower=0, upper=10, step_increment=1))
+        self.shadow_power.set_adjustment(
+            Gtk.Adjustment(value=0, lower=0, upper=10, step_increment=1)
+        )
         val = utils.get_looknfeel_value(["decoration", "shadow", "render_power"])
         if val:
             try:
@@ -81,34 +109,48 @@ class AppearancePage(Adw.PreferencesPage):
         self.shadow_power.connect("notify::value", self.on_shadow_power_changed)
         shadow_group.add(self.shadow_power)
 
+        # Color
         self.shadow_color = Adw.EntryRow(title="Color")
         val = utils.get_looknfeel_value(["decoration", "shadow", "color"])
-        if val: self.shadow_color.set_text(val)
-        self.shadow_color.connect("apply", self.on_shadow_color_changed) # Apply on enter
+        if val:
+            self.shadow_color.set_text(val)
+        self.shadow_color.connect("apply", self.on_shadow_color_changed)
         self.shadow_color.connect("entry-activated", self.on_shadow_color_changed)
-        # Or notify::text but that's every keystroke. Apply is better or focus-out?
-        # Adw.EntryRow doesn't have focus-out signal easily accessible without controller.
-        # "apply" signal is emitted when user presses enter.
 
         shadow_group.add(self.shadow_color)
 
-    def on_gaps_in_changed(self, row, param):
+        return shadow_group
+
+    def on_gaps_in_changed(self, row, _):
+        """Callback for gaps_in changes."""
         utils.set_looknfeel_value(["general", "gaps_in"], str(int(row.get_value())))
 
-    def on_gaps_out_changed(self, row, param):
+    def on_gaps_out_changed(self, row, _):
+        """Callback for gaps_out changes."""
         utils.set_looknfeel_value(["general", "gaps_out"], str(int(row.get_value())))
 
-    def on_rounding_changed(self, row, param):
+    def on_rounding_changed(self, row, _):
+        """Callback for rounding changes."""
         utils.set_looknfeel_value(["decoration", "rounding"], str(int(row.get_value())))
 
-    def on_shadow_enabled_changed(self, row, param):
-        utils.set_looknfeel_value(["decoration", "shadow", "enabled"], str(row.get_active()).lower())
+    def on_shadow_enabled_changed(self, row, _):
+        """Callback for shadow enabled toggle."""
+        utils.set_looknfeel_value(
+            ["decoration", "shadow", "enabled"], str(row.get_active()).lower()
+        )
 
-    def on_shadow_range_changed(self, row, param):
-        utils.set_looknfeel_value(["decoration", "shadow", "range"], str(int(row.get_value())))
+    def on_shadow_range_changed(self, row, _):
+        """Callback for shadow range changes."""
+        utils.set_looknfeel_value(
+            ["decoration", "shadow", "range"], str(int(row.get_value()))
+        )
 
-    def on_shadow_power_changed(self, row, param):
-        utils.set_looknfeel_value(["decoration", "shadow", "render_power"], str(int(row.get_value())))
+    def on_shadow_power_changed(self, row, _):
+        """Callback for shadow render power changes."""
+        utils.set_looknfeel_value(
+            ["decoration", "shadow", "render_power"], str(int(row.get_value()))
+        )
 
     def on_shadow_color_changed(self, row):
+        """Callback for shadow color changes."""
         utils.set_looknfeel_value(["decoration", "shadow", "color"], row.get_text())
