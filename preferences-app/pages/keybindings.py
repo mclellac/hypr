@@ -1,7 +1,12 @@
-from gi.repository import Adw, Gtk, GObject, GLib
+"""
+Keybindings settings page for the Hyprland Preferences Application.
+"""
+
 import sys
 import os
+from gi.repository import Adw, Gtk, GLib
 
+# Adjust path to find utils
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import utils
 
@@ -18,22 +23,28 @@ def get_gtk_accelerator(mods, key):
     # GTK mods: <Super>, <Alt>, <Ctrl>, <Shift>
 
     accel = ""
-
     mod_list = mods.upper().replace(',', ' ').split()
 
-    if "SUPER" in mod_list: accel += "<Super>"
-    if "ALT" in mod_list: accel += "<Alt>"
-    if "CTRL" in mod_list: accel += "<Ctrl>"
-    if "CONTROL" in mod_list: accel += "<Ctrl>"
-    if "SHIFT" in mod_list: accel += "<Shift>"
+    if "SUPER" in mod_list:
+        accel += "<Super>"
+    if "ALT" in mod_list:
+        accel += "<Alt>"
+    if "CTRL" in mod_list:
+        accel += "<Ctrl>"
+    if "CONTROL" in mod_list:
+        accel += "<Ctrl>"
+    if "SHIFT" in mod_list:
+        accel += "<Shift>"
+
+    k = key
+    key_lower = k.lower()
 
     # Handle special keys that are not valid accelerators
-    if key.lower().startswith("code:") or key.lower().startswith("mouse:") or key.lower().startswith("mouse_"):
+    if key_lower.startswith(("code:", "mouse:", "mouse_")):
         # Not a valid accelerator
         return None, key
 
     # Mapping Hyprland key names to GTK key names
-    # Hyprland often uses UPPERCASE or specific names.
     key_map = {
         "SPACE": "space",
         "RETURN": "Return",
@@ -69,68 +80,51 @@ def get_gtk_accelerator(mods, key):
         "NUM_LOCK": "Num_Lock",
         "CAPS_LOCK": "Caps_Lock",
         "SCROLL_LOCK": "Scroll_Lock",
-        # F-keys are usually F1, F2... which are valid
     }
 
-    k = key
+    # Common XF86 keys
+    known_xf86 = {
+        "XF86AUDIORAISEVOLUME": "XF86AudioRaiseVolume",
+        "XF86AUDIOLOWERVOLUME": "XF86AudioLowerVolume",
+        "XF86AUDIOMUTE": "XF86AudioMute",
+        "XF86AUDIOMICMUTE": "XF86AudioMicMute",
+        "XF86MONBRIGHTNESSUP": "XF86MonBrightnessUp",
+        "XF86MONBRIGHTNESSDOWN": "XF86MonBrightnessDown",
+        "XF86AUDIONEXT": "XF86AudioNext",
+        "XF86AUDIOPREV": "XF86AudioPrev",
+        "XF86AUDIOPLAY": "XF86AudioPlay",
+        "XF86AUDIOPAUSE": "XF86AudioPause",
+        "XF86AUDIOSTOP": "XF86AudioStop",
+        "XF86POWEROFF": "XF86PowerOff",
+        "XF86CALCULATOR": "XF86Calculator",
+        "XF86MAIL": "XF86Mail",
+        "XF86HOMEPAGE": "XF86HomePage",
+        "XF86SEARCH": "XF86Search",
+        "XF86FAVORITES": "XF86Favorites",
+    }
 
-    # Check map first
-    if k.upper() in key_map:
-        accel += key_map[k.upper()]
-    elif k.upper().startswith("XF86"):
-        # Hyprland XF86 keys might be mixed case or upper case.
-        # GTK usually accepts the standard X11 names which are typically PascalCase-ish.
-        # e.g. XF86AudioRaiseVolume.
-        # If we receive XF86AUDIORAISEVOLUME, we might need to fix it.
-        # Since there are many, let's try to map known ones or just pass it through if it looks okay.
+    key_upper = k.upper()
 
-        known_xf86 = {
-            "XF86AUDIORAISEVOLUME": "XF86AudioRaiseVolume",
-            "XF86AUDIOLOWERVOLUME": "XF86AudioLowerVolume",
-            "XF86AUDIOMUTE": "XF86AudioMute",
-            "XF86AUDIOMICMUTE": "XF86AudioMicMute",
-            "XF86MONBRIGHTNESSUP": "XF86MonBrightnessUp",
-            "XF86MONBRIGHTNESSDOWN": "XF86MonBrightnessDown",
-            "XF86AUDIONEXT": "XF86AudioNext",
-            "XF86AUDIOPREV": "XF86AudioPrev",
-            "XF86AUDIOPLAY": "XF86AudioPlay",
-            "XF86AUDIOPAUSE": "XF86AudioPause",
-            "XF86AUDIOSTOP": "XF86AudioStop",
-            "XF86POWEROFF": "XF86PowerOff",
-            "XF86CALCULATOR": "XF86Calculator",
-            "XF86MAIL": "XF86Mail",
-            "XF86HOMEPAGE": "XF86HomePage",
-            "XF86SEARCH": "XF86Search",
-            "XF86FAVORITES": "XF86Favorites",
-        }
-
-        if k.upper() in known_xf86:
-            accel += known_xf86[k.upper()]
+    if key_upper in key_map:
+        accel += key_map[key_upper]
+    elif key_upper.startswith("XF86"):
+        if key_upper in known_xf86:
+            accel += known_xf86[key_upper]
         else:
-            # Pass as is, hope for best
             accel += k
-
     elif len(k) == 1:
-        # Single char.
-        # If we have modifiers like Ctrl/Alt, usually lowercase 'a' is expected for <Ctrl>a.
-        # But if Shift is present, it might be implicit?
-        # <Shift>a is Shift+A. <Shift>A is also Shift+A.
-        # <Ctrl>A is Ctrl+Shift+A usually in GTK parsing logic?
-        # Let's stick to lowercase for single letters to be safe for accelerators.
         if k.isalpha():
-             accel += k.lower()
+            accel += k.lower()
         else:
-             accel += k
+            accel += k
     else:
-        # Unknown key, maybe Title case it?
-        # e.g. "Return" -> "Return".
-        # If "RETURN" came in and wasn't in map (it is), we'd be here.
-        # Try passing as is.
         accel += k
 
     return accel, None
 
 class KeybindingsPage(Adw.PreferencesPage):
+    """Page for viewing and editing keybindings."""
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.set_title("Keybindings")
@@ -145,6 +139,7 @@ class KeybindingsPage(Adw.PreferencesPage):
         self.refresh_bindings()
 
     def refresh_bindings(self):
+        """Refreshes the list of keybindings."""
         self.remove(self.group)
         self.group = Adw.PreferencesGroup(title="Defined Keybindings")
         self.add(self.group)
@@ -184,32 +179,34 @@ class KeybindingsPage(Adw.PreferencesPage):
 
             self.group.add(row)
 
-    def on_row_activated(self, row, binding):
+    def on_row_activated(self, _row, binding):
+        """Callback for when a keybinding row is activated."""
         dialog = EditBindingDialog(self.get_root(), binding, self.main_mod)
         dialog.connect("response", self.on_dialog_response)
         dialog.present()
 
     def on_dialog_response(self, dialog, response):
+        """Callback for dialog response."""
         if response == "save":
             new_mods = dialog.mods_entry.get_text()
             new_key = dialog.key_entry.get_text()
 
-            success = utils.update_keybinding(dialog.binding['file'], dialog.binding['line'], new_mods, new_key)
+            success = utils.update_keybinding(
+                dialog.binding['file'], dialog.binding['line'], new_mods, new_key
+            )
             if success:
-                # Update local binding object so we don't need full re-read?
-                # Better to re-read to confirm file state.
                 self.refresh_bindings()
             else:
                 print("Failed to update binding")
         dialog.close()
 
 class EditBindingDialog(Adw.MessageDialog):
-    def __init__(self, parent, binding, main_mod):
+    """Dialog for editing a keybinding."""
+
+    def __init__(self, parent, binding, _main_mod):
         heading_text = f"Edit binding for {binding['desc'] or binding['dispatcher']}"
         super().__init__(heading=heading_text, body="")
 
-        # In Adw 1.5+, use set_transient_for if available, or just pass parent to init?
-        # Adw.MessageDialog usually takes no parent in init but has set_transient_for.
         if parent:
             self.set_transient_for(parent)
 

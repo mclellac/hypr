@@ -1,9 +1,15 @@
-from gi.repository import Adw, Gtk
+"""
+Main window implementation for the Hyprland Preferences Application.
+"""
+
+from gi.repository import Adw
 from pages.general import GeneralPage
 from pages.appearance import AppearancePage
 from pages.keybindings import KeybindingsPage
 
 class MainWindow(Adw.PreferencesWindow):
+    """The main window containing preference pages."""
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
