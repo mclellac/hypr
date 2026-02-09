@@ -22,7 +22,8 @@ class PreferencesApp(Adw.Application):
 
     def do_startup(self):
         """Initializes the application actions and menu."""
-        super().do_startup()
+        # Call parent startup
+        Adw.Application.do_startup(self)
 
         # Define actions
         about_action = Gio.SimpleAction.new("about", None)
@@ -43,8 +44,6 @@ class PreferencesApp(Adw.Application):
         menu.append("About Hypr Preferences", "app.about")
 
         # We need to expose this menu so the window can use it.
-        # Since Adw.PreferencesWindow doesn't pick it up automatically from self.set_menubar() usually
-        # (unless on macOS or GNOME Shell top bar), we will store it or set it as menubar anyway.
         self.set_menubar(menu)
 
     def do_activate(self):

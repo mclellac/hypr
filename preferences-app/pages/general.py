@@ -4,6 +4,8 @@ General settings page for the Hyprland Preferences Application.
 
 import sys
 import os
+
+# pylint: disable=wrong-import-position
 from gi.repository import Adw, Gtk
 
 # Adjust path to find utils
