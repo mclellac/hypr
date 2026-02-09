@@ -12,6 +12,7 @@
     ],
     "modules-right": [
         "custom/update",
+        "custom/notifications",
         "custom/clipboard",
         "privacy",
         "group/hardware",
@@ -210,6 +211,11 @@
         "exec": "echo \"{\\\"tooltip\\\":\\\"$(cliphist list | wc -l) item(s) in the clipboard\\\\n(Mid click to clear)\\\"}\"",
         "exec-if": "[ -x \"$(command -v cliphist)\" ] && [ $(cliphist list | wc -l) -gt 0 ]",
         "signal": 9
+    },
+    "custom/notifications": {
+        "format": "",
+        "on-click": "hyprctl dispatch exec $HOME/.local/share/hypr/bin/hypr-notification-history",
+        "tooltip": false
     },
     "custom/update": {
         "class": "update",

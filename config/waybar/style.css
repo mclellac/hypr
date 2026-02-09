@@ -67,6 +67,7 @@ window#waybar {
 }
 
 /* Right modules */
+#custom-notifications,
 #custom-clipboard,
 #battery,
 #pulseaudio,

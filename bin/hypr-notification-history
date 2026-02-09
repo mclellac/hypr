@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+import json
+import os
+import subprocess
+import time
+from datetime import datetime
+
+LOG_FILE = os.path.expanduser("~/.local/share/hypr/notifications.json")
+
+def main():
+    if not os.path.exists(LOG_FILE):
+        # Create empty if not exists so walker shows empty
+        logs = []
+    else:
+        try:
+            with open(LOG_FILE, 'r') as f:
+                logs = json.load(f)
+        except json.JSONDecodeError:
+            logs = []
+
+    # Format entries for walker
+    entries = []
+    entry_map = {}
+
+    for notif in logs:
+        ts = datetime.fromtimestamp(notif.get("timestamp", 0)).strftime("%H:%M")
+        app = notif.get("app_name", "Unknown")
+        summary = notif.get("summary", "")
+        # Remove newlines for single line display
+        body = notif.get("body", "").replace('\n', ' ')
+
+        # Truncate body if too long for display
+        if len(body) > 60:
+            body_display = body[:60] + "..."
+        else:
+            body_display = body
+
+        display_str = f"[{ts}] {app}: {summary} - {body_display}"
+        entries.append(display_str)
+        entry_map[display_str] = notif
+
+    if not entries:
+        entries.append("No notifications")
+        entry_map["No notifications"] = None
+
+    # walker --dmenu expects newline separated entries
+    dmenu_input = "\n".join(entries)
+
+    cmd = ["walker", "--dmenu", "-p", "Notifications"]
+    try:
+        result = subprocess.run(cmd, input=dmenu_input, capture_output=True, text=True)
+        selected = result.stdout.strip()
+
+        if selected in entry_map and entry_map[selected]:
+            notif = entry_map[selected]
+            body = notif.get("body", "")
+            summary = notif.get("summary", "")
+
+            # Copy full body to clipboard
+            if body:
+                subprocess.run(["wl-copy"], input=body, text=True)
+                subprocess.run(["notify-send", "-t", "2000", "Copied", "Notification body copied to clipboard"])
+
+    except FileNotFoundError:
+        subprocess.run(["notify-send", "Error", "walker not found"])
+
+if __name__ == "__main__":
+    main()
