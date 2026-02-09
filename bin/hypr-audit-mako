@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+import os
+import glob
+import re
+
+THEMES_DIR = "themes"
+
+def audit_mako(filepath):
+    with open(filepath, 'r') as f:
+        lines = f.readlines()
+
+    new_lines = []
+    in_section = False
+    has_global_timeout = False
+
+    for line in lines:
+        stripped = line.strip()
+
+        # Check for section header
+        if stripped.startswith('[') and stripped.endswith(']'):
+            in_section = True
+
+        if stripped.startswith('default-timeout='):
+            if not in_section:
+                has_global_timeout = True
+
+            key, value = stripped.split('=', 1)
+            try:
+                val = int(value)
+                if val == 0:
+                    # Replace 0 (infinite) with 5000ms (5s)
+                    new_lines.append("default-timeout=5000\n")
+                else:
+                    new_lines.append(line)
+            except ValueError:
+                new_lines.append(line)
+            continue
+
+        new_lines.append(line)
+
+    # If no global timeout found, add it at the top (after comments maybe?)
+    if not has_global_timeout:
+        # Find first non-comment line or just prepend
+        # Prepending is safer but might put it before comments.
+        # Let's find first line that is not a comment and not empty
+        insert_idx = 0
+        for i, line in enumerate(new_lines):
+            if line.strip() and not line.strip().startswith('#'):
+                insert_idx = i
+                break
+
+        # If the file starts with comments, we insert after them?
+        # Usually global config is at the top.
+        # If we insert at 0, it might be before a file header comment.
+        # But that's fine for INI.
+        # Let's insert at the very beginning to be safe, or just after the first block of comments.
+        new_lines.insert(insert_idx, "default-timeout=5000\n")
+
+    with open(filepath, 'w') as f:
+        f.writelines(new_lines)
+
+def main():
+    if not os.path.exists(THEMES_DIR):
+        print(f"Themes directory {THEMES_DIR} not found.")
+        return
+
+    mako_files = glob.glob(os.path.join(THEMES_DIR, "*", "mako.ini"))
+    for f in mako_files:
+        print(f"Auditing {f}...")
+        audit_mako(f)
+
+if __name__ == "__main__":
+    main()

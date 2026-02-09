@@ -1,0 +1,117 @@
+#!/usr/bin/env python3
+import subprocess
+import json
+import os
+import time
+import re
+import sys
+
+LOG_FILE = os.path.expanduser("~/.local/share/hypr/notifications.json")
+MAX_LOGS = 50
+
+def log_notification(notification):
+    try:
+        if os.path.exists(LOG_FILE):
+            with open(LOG_FILE, 'r') as f:
+                logs = json.load(f)
+        else:
+            logs = []
+    except (json.JSONDecodeError, FileNotFoundError):
+        logs = []
+
+    # Prepend new notification
+    logs.insert(0, notification)
+    logs = logs[:MAX_LOGS]
+
+    with open(LOG_FILE, 'w') as f:
+        json.dump(logs, f, indent=2)
+
+def main():
+    # Ensure log directory exists
+    os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
+
+    # Start dbus-monitor
+    # We filter for the Notify method on the interface
+    cmd = ["dbus-monitor", "interface='org.freedesktop.Notifications',member='Notify'"]
+
+    # Use unbuffered output to get logs immediately
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, bufsize=1)
+
+    capturing = False
+    args_count = 0
+    current_notification = {}
+
+    # Regexes
+    re_string = re.compile(r'^\s*string "(.*)"$')
+    re_uint32 = re.compile(r'^\s*uint32 (\d+)$')
+
+    print(f"Listening for notifications... Logging to {LOG_FILE}")
+
+    while True:
+        line = process.stdout.readline()
+        if not line:
+            break
+
+        line = line.strip()
+
+        if line.startswith("method call"):
+            # Start of a new notification
+            capturing = True
+            args_count = 0
+            current_notification = {"timestamp": time.time()}
+            continue
+
+        if not capturing:
+            continue
+
+        # Parse arguments based on position in signature (susss...)
+
+        # Arg 0: app_name (string)
+        if args_count == 0:
+            m = re_string.match(line)
+            if m:
+                current_notification["app_name"] = m.group(1).replace('\\"', '"')
+                args_count += 1
+            continue
+
+        # Arg 1: replaces_id (uint32)
+        if args_count == 1:
+            m = re_uint32.match(line)
+            if m:
+                current_notification["replaces_id"] = int(m.group(1))
+                args_count += 1
+            continue
+
+        # Arg 2: app_icon (string)
+        if args_count == 2:
+            m = re_string.match(line)
+            if m:
+                current_notification["icon"] = m.group(1).replace('\\"', '"')
+                args_count += 1
+            continue
+
+        # Arg 3: summary (string)
+        if args_count == 3:
+            m = re_string.match(line)
+            if m:
+                current_notification["summary"] = m.group(1).replace('\\"', '"')
+                args_count += 1
+            continue
+
+        # Arg 4: body (string)
+        if args_count == 4:
+            m = re_string.match(line)
+            if m:
+                current_notification["body"] = m.group(1).replace('\\"', '"').replace('\\n', '\n')
+                args_count += 1
+
+                # Log it
+                log_notification(current_notification)
+
+                # Reset capture
+                capturing = False
+                current_notification = {}
+            continue
+
+if __name__ == "__main__":
+    main()
