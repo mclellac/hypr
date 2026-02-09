@@ -25,9 +25,11 @@ USER_BINDINGS_CONF = USER_CONFIG_DIR / "bindings.conf"
 # Scripts are in the shared location
 BIN_DIR = LOCAL_SHARE_DIR / "bin"
 
+
 def get_repo_path():
     """Returns the path to the local share directory (the 'repo' location)."""
     return LOCAL_SHARE_DIR
+
 
 def list_fonts():
     """Lists available monospace fonts using bin/hypr-font-list."""
@@ -46,6 +48,7 @@ def list_fonts():
         print(f"Error listing fonts: {e}")
         return []
 
+
 def set_font(font_name):
     """Sets the system font using bin/hypr-font-set."""
     script = BIN_DIR / "hypr-font-set"
@@ -61,6 +64,7 @@ def set_font(font_name):
         print(f"Error setting font: {e}")
         return False
 
+
 def read_file(filepath):
     """Reads file content."""
     try:
@@ -69,12 +73,14 @@ def read_file(filepath):
     except FileNotFoundError:
         return []
 
+
 def write_file(filepath, lines):
     """Writes content to file."""
     # Ensure directory exists if writing to user config for first time?
     # Usually it exists.
     with open(filepath, 'w', encoding='utf-8') as f:
         f.writelines(lines)
+
 
 def get_looknfeel_value(key_path):
     """
@@ -115,6 +121,7 @@ def get_looknfeel_value(key_path):
                         return val
     return None
 
+
 def set_looknfeel_value(key_path, value):
     """
     Updates a value in looknfeel.conf.
@@ -150,19 +157,13 @@ def set_looknfeel_value(key_path, value):
             new_lines.append(line)
             continue
         if '=' in stripped and not stripped.startswith('#'):
-            key, _ = [x.strip() for x in stripped.split('=', 1)]
-
-            if len(key_path) == len(context) + 1:
-                match = True
-                for i, ctx in enumerate(context):
-                    if ctx != key_path[i]:
-                        match = False
-                        break
-                if match and key == key_path[-1]:
-                    indent = line[:line.find(key)]
-                    new_lines.append(f"{indent}{key} = {value}\n")
-                    modified = True
-                    continue
+            key_part = stripped.split('=', 1)[0].strip()
+            # Check if current context matches key path parent
+            if context == key_path[:-1] and key_part == key_path[-1]:
+                indent = line[:line.find(key_part)]
+                new_lines.append(f"{indent}{key_part} = {value}\n")
+                modified = True
+                continue
 
         new_lines.append(line)
 
@@ -170,6 +171,7 @@ def set_looknfeel_value(key_path, value):
         write_file(target_file, new_lines)
         return True
     return False
+
 
 def get_main_mod():
     """Reads $mainMod from hyprland.conf"""
@@ -186,6 +188,7 @@ def get_main_mod():
         if stripped.startswith('$mainMod') and '=' in stripped:
             return stripped.split('=', 1)[1].strip()
     return "SUPER"
+
 
 def set_main_mod(new_mod):
     """Updates $mainMod in hyprland.conf"""
@@ -204,6 +207,48 @@ def set_main_mod(new_mod):
         else:
             new_lines.append(line)
     write_file(target_file, new_lines)
+
+
+def _parse_binding_line(line, filepath, i):
+    """Parses a single keybinding line."""
+    stripped = line.strip()
+    if not stripped.startswith('bind'):
+        return None
+
+    parts = [p.strip() for p in stripped.split(',')]
+    try:
+        cmd = parts[0].split('=')[0].strip()
+        first_part_val = parts[0].split('=', 1)[1].strip()
+    except IndexError:
+        return None
+
+    mods = first_part_val
+    key = parts[1] if len(parts) > 1 else ""
+
+    desc = ""
+    dispatcher = ""
+    arg = ""
+
+    if cmd == 'bindd':
+        desc = parts[2] if len(parts) > 2 else ""
+        dispatcher = parts[3] if len(parts) > 3 else ""
+        arg = ",".join(parts[4:]) if len(parts) > 4 else ""
+    else:
+        dispatcher = parts[2] if len(parts) > 2 else ""
+        arg = ",".join(parts[3:]) if len(parts) > 3 else ""
+
+    return {
+        "file": str(filepath),
+        "line": i,
+        "original": line,
+        "cmd": cmd,
+        "mods": mods,
+        "key": key,
+        "desc": desc,
+        "dispatcher": dispatcher,
+        "arg": arg
+    }
+
 
 def get_keybindings():
     """
@@ -236,43 +281,11 @@ def get_keybindings():
     for filepath in files_to_scan:
         lines = read_file(filepath)
         for i, line in enumerate(lines):
-            stripped = line.strip()
-            if stripped.startswith('bind'):
-                parts = [p.strip() for p in stripped.split(',')]
-                cmd = parts[0].split('=')[0].strip()
-
-                try:
-                    first_part_val = parts[0].split('=', 1)[1].strip()
-                except IndexError:
-                    continue
-
-                mods = first_part_val
-                key = parts[1] if len(parts) > 1 else ""
-
-                desc = ""
-                dispatcher = ""
-                arg = ""
-
-                if cmd == 'bindd':
-                    desc = parts[2] if len(parts) > 2 else ""
-                    dispatcher = parts[3] if len(parts) > 3 else ""
-                    arg = ",".join(parts[4:]) if len(parts) > 4 else ""
-                else:
-                    dispatcher = parts[2] if len(parts) > 2 else ""
-                    arg = ",".join(parts[3:]) if len(parts) > 3 else ""
-
-                bindings.append({
-                    "file": str(filepath),
-                    "line": i,
-                    "original": line,
-                    "cmd": cmd,
-                    "mods": mods,
-                    "key": key,
-                    "desc": desc,
-                    "dispatcher": dispatcher,
-                    "arg": arg
-                })
+            binding = _parse_binding_line(line, filepath, i)
+            if binding:
+                bindings.append(binding)
     return bindings
+
 
 def update_keybinding(filepath, line_idx, new_mods, new_key):
     """
