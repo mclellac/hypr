@@ -6,6 +6,7 @@ from gi.repository import Adw
 from pages.general import GeneralPage
 from pages.appearance import AppearancePage
 from pages.keybindings import KeybindingsPage
+from pages.about import AboutPage
 
 class MainWindow(Adw.PreferencesWindow):
     """The main window containing preference pages."""
@@ -19,3 +20,4 @@ class MainWindow(Adw.PreferencesWindow):
         self.add(GeneralPage())
         self.add(AppearancePage())
         self.add(KeybindingsPage())
+        self.add(AboutPage())

@@ -152,6 +152,7 @@ class KeybindingsPage(Adw.PreferencesPage):
             title = GLib.markup_escape_text(raw_title)
 
             row = Adw.ActionRow(title=title)
+            row.set_tooltip_text("Click to edit this keybinding.")
 
             # Escape subtitle
             raw_subtitle = f"{b['dispatcher']} {b['arg']}"
@@ -187,6 +188,7 @@ class KeybindingsPage(Adw.PreferencesPage):
 
     def on_dialog_response(self, dialog, response):
         """Callback for dialog response."""
+        win = self.get_native()
         if response == "save":
             new_mods = dialog.mods_entry.get_text()
             new_key = dialog.key_entry.get_text()
@@ -196,8 +198,11 @@ class KeybindingsPage(Adw.PreferencesPage):
             )
             if success:
                 self.refresh_bindings()
+                if win:
+                    win.add_toast(Adw.Toast.new("Keybinding updated successfully"))
             else:
-                print("Failed to update binding")
+                if win:
+                    win.add_toast(Adw.Toast.new("Failed to update binding"))
         dialog.close()
 
 class EditBindingDialog(Adw.MessageDialog):
@@ -220,10 +225,14 @@ class EditBindingDialog(Adw.MessageDialog):
 
         self.mods_entry = Adw.EntryRow(title="Modifiers")
         self.mods_entry.set_text(binding['mods'])
+        self.mods_entry.set_tooltip_text(
+            "Modifiers (e.g. SUPER, SHIFT, CTRL, ALT). Separate with space or comma."
+        )
         content.add(self.mods_entry)
 
         self.key_entry = Adw.EntryRow(title="Key")
         self.key_entry.set_text(binding['key'])
+        self.key_entry.set_tooltip_text("Key (e.g. A, SPACE, RETURN, code:10).")
         content.add(self.key_entry)
 
         self.set_extra_child(content)

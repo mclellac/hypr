@@ -23,6 +23,7 @@ class GeneralPage(Adw.PreferencesPage):
 
         # Mod Key
         self.mod_row = Adw.ComboRow(title="Mod Key")
+        self.mod_row.set_tooltip_text("Select the main modifier key for Hyprland bindings.")
         self.mod_row.set_model(Gtk.StringList.new(["SUPER", "ALT"]))
 
         current_mod = utils.get_main_mod()
@@ -40,4 +41,7 @@ class GeneralPage(Adw.PreferencesPage):
         if item:
             selected = item.get_string()
             utils.set_main_mod(selected)
-            print(f"Set Mod Key to {selected}")
+
+            win = self.get_native()
+            if win:
+                win.add_toast(Adw.Toast.new(f"Set Mod Key to {selected}"))
