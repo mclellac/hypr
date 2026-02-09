@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+: "${HYPR_PATH:=$HOME/.local/share/hypr}"
+
+# Execute the application
+cd "${HYPR_PATH}/preferences-app"
+python3 main.py "$@"

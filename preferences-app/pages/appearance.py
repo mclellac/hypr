@@ -13,7 +13,7 @@ class AppearancePage(Adw.PreferencesPage):
         self.set_icon_name("preferences-desktop-theme-symbolic")
 
         # Gaps & Borders
-        gaps_group = Adw.PreferencesGroup(title="Gaps & Borders")
+        gaps_group = Adw.PreferencesGroup(title="Gaps &amp; Borders")
         self.add(gaps_group)
 
         self.gaps_in = Adw.SpinRow(title="Gaps In")
