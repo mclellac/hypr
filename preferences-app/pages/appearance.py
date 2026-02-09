@@ -27,6 +27,8 @@ class AppearancePage(Adw.PreferencesPage):
 
         # Gaps In
         self.gaps_in = Adw.SpinRow(title="Gaps In")
+        self.gaps_in.set_subtitle("Space between windows")
+        self.gaps_in.set_tooltip_text("Sets the inner gap between windows in pixels.")
         self.gaps_in.set_adjustment(
             Gtk.Adjustment(value=0, lower=0, upper=100, step_increment=1)
         )
@@ -41,6 +43,10 @@ class AppearancePage(Adw.PreferencesPage):
 
         # Gaps Out
         self.gaps_out = Adw.SpinRow(title="Gaps Out")
+        self.gaps_out.set_subtitle("Space between windows and screen edge")
+        self.gaps_out.set_tooltip_text(
+            "Sets the outer gap between windows and the monitor edge in pixels."
+        )
         self.gaps_out.set_adjustment(
             Gtk.Adjustment(value=0, lower=0, upper=100, step_increment=1)
         )
@@ -55,6 +61,8 @@ class AppearancePage(Adw.PreferencesPage):
 
         # Rounding
         self.rounding = Adw.SpinRow(title="Rounding")
+        self.rounding.set_subtitle("Corner radius")
+        self.rounding.set_tooltip_text("Sets the window corner rounding radius in pixels.")
         self.rounding.set_adjustment(
             Gtk.Adjustment(value=0, lower=0, upper=50, step_increment=1)
         )
@@ -75,6 +83,8 @@ class AppearancePage(Adw.PreferencesPage):
 
         # Enabled
         self.shadow_enabled = Adw.SwitchRow(title="Enabled")
+        self.shadow_enabled.set_subtitle("Enable window shadows")
+        self.shadow_enabled.set_tooltip_text("Toggle window shadows on or off.")
         val = utils.get_looknfeel_value(["decoration", "shadow", "enabled"])
         if val:
             self.shadow_enabled.set_active(val.lower() == "true")
@@ -83,6 +93,8 @@ class AppearancePage(Adw.PreferencesPage):
 
         # Range
         self.shadow_range = Adw.SpinRow(title="Range")
+        self.shadow_range.set_subtitle("Shadow size")
+        self.shadow_range.set_tooltip_text("Sets the size (range) of the shadow in pixels.")
         self.shadow_range.set_adjustment(
             Gtk.Adjustment(value=0, lower=0, upper=100, step_increment=1)
         )
@@ -97,6 +109,10 @@ class AppearancePage(Adw.PreferencesPage):
 
         # Render Power
         self.shadow_power = Adw.SpinRow(title="Render Power")
+        self.shadow_power.set_subtitle("Shadow sharpness (1-4)")
+        self.shadow_power.set_tooltip_text(
+            "Sets the render power (falloff) of the shadow. Higher values mean sharper shadows."
+        )
         self.shadow_power.set_adjustment(
             Gtk.Adjustment(value=0, lower=0, upper=10, step_increment=1)
         )
@@ -111,6 +127,8 @@ class AppearancePage(Adw.PreferencesPage):
 
         # Color
         self.shadow_color = Adw.EntryRow(title="Color")
+        self.shadow_color.set_title("Shadow Color")
+        self.shadow_color.set_tooltip_text("Sets the shadow color in hex format (e.g., #00000066).")
         val = utils.get_looknfeel_value(["decoration", "shadow", "color"])
         if val:
             self.shadow_color.set_text(val)
@@ -121,36 +139,51 @@ class AppearancePage(Adw.PreferencesPage):
 
         return shadow_group
 
+    def _show_toast(self, message):
+        """Helper to show a toast message."""
+        win = self.get_native()
+        if win:
+            win.add_toast(Adw.Toast.new(message))
+
     def on_gaps_in_changed(self, row, _):
         """Callback for gaps_in changes."""
-        utils.set_looknfeel_value(["general", "gaps_in"], str(int(row.get_value())))
+        val = str(int(row.get_value()))
+        utils.set_looknfeel_value(["general", "gaps_in"], val)
+        self._show_toast(f"Gaps In set to {val}")
 
     def on_gaps_out_changed(self, row, _):
         """Callback for gaps_out changes."""
-        utils.set_looknfeel_value(["general", "gaps_out"], str(int(row.get_value())))
+        val = str(int(row.get_value()))
+        utils.set_looknfeel_value(["general", "gaps_out"], val)
+        self._show_toast(f"Gaps Out set to {val}")
 
     def on_rounding_changed(self, row, _):
         """Callback for rounding changes."""
-        utils.set_looknfeel_value(["decoration", "rounding"], str(int(row.get_value())))
+        val = str(int(row.get_value()))
+        utils.set_looknfeel_value(["decoration", "rounding"], val)
+        self._show_toast(f"Rounding set to {val}")
 
     def on_shadow_enabled_changed(self, row, _):
         """Callback for shadow enabled toggle."""
-        utils.set_looknfeel_value(
-            ["decoration", "shadow", "enabled"], str(row.get_active()).lower()
-        )
+        val = str(row.get_active()).lower()
+        utils.set_looknfeel_value(["decoration", "shadow", "enabled"], val)
+        status = "enabled" if row.get_active() else "disabled"
+        self._show_toast(f"Shadows {status}")
 
     def on_shadow_range_changed(self, row, _):
         """Callback for shadow range changes."""
-        utils.set_looknfeel_value(
-            ["decoration", "shadow", "range"], str(int(row.get_value()))
-        )
+        val = str(int(row.get_value()))
+        utils.set_looknfeel_value(["decoration", "shadow", "range"], val)
+        self._show_toast(f"Shadow range set to {val}")
 
     def on_shadow_power_changed(self, row, _):
         """Callback for shadow render power changes."""
-        utils.set_looknfeel_value(
-            ["decoration", "shadow", "render_power"], str(int(row.get_value()))
-        )
+        val = str(int(row.get_value()))
+        utils.set_looknfeel_value(["decoration", "shadow", "render_power"], val)
+        self._show_toast(f"Shadow power set to {val}")
 
     def on_shadow_color_changed(self, row):
         """Callback for shadow color changes."""
-        utils.set_looknfeel_value(["decoration", "shadow", "color"], row.get_text())
+        val = row.get_text()
+        utils.set_looknfeel_value(["decoration", "shadow", "color"], val)
+        self._show_toast(f"Shadow color set to {val}")
