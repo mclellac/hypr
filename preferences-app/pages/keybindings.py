@@ -2,13 +2,75 @@
 Keybindings settings page for the Hyprland Preferences Application.
 """
 
-import sys
 import os
-from gi.repository import Adw, Gtk, GLib
+import sys
+
+from gi.repository import Adw, GLib, Gtk
 
 # Adjust path to find utils
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import utils
+
+
+# Mapping Hyprland key names to GTK key names
+KEY_MAP = {
+    "SPACE": "space",
+    "RETURN": "Return",
+    "ENTER": "Return",
+    "ESCAPE": "Escape",
+    "ESC": "Escape",
+    "TAB": "Tab",
+    "BACKSPACE": "BackSpace",
+    "DELETE": "Delete",
+    "DEL": "Delete",
+    "HOME": "Home",
+    "END": "End",
+    "PAGE_UP": "Page_Up",
+    "PAGE_DOWN": "Page_Down",
+    "LEFT": "Left",
+    "RIGHT": "Right",
+    "UP": "Up",
+    "DOWN": "Down",
+    "COMMA": "comma",
+    "PERIOD": "period",
+    "DOT": "period",
+    "SLASH": "slash",
+    "MINUS": "minus",
+    "EQUAL": "equal",
+    "BRACKETLEFT": "bracketleft",
+    "BRACKETRIGHT": "bracketright",
+    "BACKSLASH": "backslash",
+    "GRAVE": "grave",
+    "PRINT": "Print",
+    "PAUSE": "Pause",
+    "INSERT": "Insert",
+    "MENU": "Menu",
+    "NUM_LOCK": "Num_Lock",
+    "CAPS_LOCK": "Caps_Lock",
+    "SCROLL_LOCK": "Scroll_Lock",
+}
+
+# Common XF86 keys
+KNOWN_XF86 = {
+    "XF86AUDIORAISEVOLUME": "XF86AudioRaiseVolume",
+    "XF86AUDIOLOWERVOLUME": "XF86AudioLowerVolume",
+    "XF86AUDIOMUTE": "XF86AudioMute",
+    "XF86AUDIOMICMUTE": "XF86AudioMicMute",
+    "XF86MONBRIGHTNESSUP": "XF86MonBrightnessUp",
+    "XF86MONBRIGHTNESSDOWN": "XF86MonBrightnessDown",
+    "XF86AUDIONEXT": "XF86AudioNext",
+    "XF86AUDIOPREV": "XF86AudioPrev",
+    "XF86AUDIOPLAY": "XF86AudioPlay",
+    "XF86AUDIOPAUSE": "XF86AudioPause",
+    "XF86AUDIOSTOP": "XF86AudioStop",
+    "XF86POWEROFF": "XF86PowerOff",
+    "XF86CALCULATOR": "XF86Calculator",
+    "XF86MAIL": "XF86Mail",
+    "XF86HOMEPAGE": "XF86HomePage",
+    "XF86SEARCH": "XF86Search",
+    "XF86FAVORITES": "XF86Favorites",
+}
+
 
 def get_gtk_accelerator(mods, key):
     """
@@ -44,72 +106,13 @@ def get_gtk_accelerator(mods, key):
         # Not a valid accelerator
         return None, key
 
-    # Mapping Hyprland key names to GTK key names
-    key_map = {
-        "SPACE": "space",
-        "RETURN": "Return",
-        "ENTER": "Return",
-        "ESCAPE": "Escape",
-        "ESC": "Escape",
-        "TAB": "Tab",
-        "BACKSPACE": "BackSpace",
-        "DELETE": "Delete",
-        "DEL": "Delete",
-        "HOME": "Home",
-        "END": "End",
-        "PAGE_UP": "Page_Up",
-        "PAGE_DOWN": "Page_Down",
-        "LEFT": "Left",
-        "RIGHT": "Right",
-        "UP": "Up",
-        "DOWN": "Down",
-        "COMMA": "comma",
-        "PERIOD": "period",
-        "DOT": "period",
-        "SLASH": "slash",
-        "MINUS": "minus",
-        "EQUAL": "equal",
-        "BRACKETLEFT": "bracketleft",
-        "BRACKETRIGHT": "bracketright",
-        "BACKSLASH": "backslash",
-        "GRAVE": "grave",
-        "PRINT": "Print",
-        "PAUSE": "Pause",
-        "INSERT": "Insert",
-        "MENU": "Menu",
-        "NUM_LOCK": "Num_Lock",
-        "CAPS_LOCK": "Caps_Lock",
-        "SCROLL_LOCK": "Scroll_Lock",
-    }
-
-    # Common XF86 keys
-    known_xf86 = {
-        "XF86AUDIORAISEVOLUME": "XF86AudioRaiseVolume",
-        "XF86AUDIOLOWERVOLUME": "XF86AudioLowerVolume",
-        "XF86AUDIOMUTE": "XF86AudioMute",
-        "XF86AUDIOMICMUTE": "XF86AudioMicMute",
-        "XF86MONBRIGHTNESSUP": "XF86MonBrightnessUp",
-        "XF86MONBRIGHTNESSDOWN": "XF86MonBrightnessDown",
-        "XF86AUDIONEXT": "XF86AudioNext",
-        "XF86AUDIOPREV": "XF86AudioPrev",
-        "XF86AUDIOPLAY": "XF86AudioPlay",
-        "XF86AUDIOPAUSE": "XF86AudioPause",
-        "XF86AUDIOSTOP": "XF86AudioStop",
-        "XF86POWEROFF": "XF86PowerOff",
-        "XF86CALCULATOR": "XF86Calculator",
-        "XF86MAIL": "XF86Mail",
-        "XF86HOMEPAGE": "XF86HomePage",
-        "XF86SEARCH": "XF86Search",
-        "XF86FAVORITES": "XF86Favorites",
-    }
-
     key_upper = k.upper()
 
-    if key_upper in key_map:
-        accel += key_map[key_upper]
+    if key_upper in KEY_MAP:
+        accel += KEY_MAP[key_upper]
     elif key_upper.startswith("XF86"):
-        if key_upper in known_xf86:
-            accel += known_xf86[key_upper]
+        if key_upper in KNOWN_XF86:
+            accel += KNOWN_XF86[key_upper]
         else:
             accel += k
     elif len(k) == 1:
@@ -122,6 +125,7 @@ def get_gtk_accelerator(mods, key):
 
     return accel, None
 
+
 class KeybindingsPage(Adw.PreferencesPage):
     """Page for viewing and editing keybindings."""
 
@@ -131,54 +135,55 @@ class KeybindingsPage(Adw.PreferencesPage):
         self.set_icon_name("input-keyboard-symbolic")
 
         self.main_mod = utils.get_main_mod()
-
-        # Initialize group
-        self.group = Adw.PreferencesGroup(title="Defined Keybindings")
-        self.add(self.group)
-
+        self.group = None
         self.refresh_bindings()
 
     def refresh_bindings(self):
         """Refreshes the list of keybindings."""
-        self.remove(self.group)
+        if self.group:
+            self.remove(self.group)
+
         self.group = Adw.PreferencesGroup(title="Defined Keybindings")
         self.add(self.group)
 
         bindings = utils.get_keybindings()
 
         for b in bindings:
-            # Escape title for markup safety
-            raw_title = b['desc'] if b['desc'] else b['dispatcher']
-            title = GLib.markup_escape_text(raw_title)
-
-            row = Adw.ActionRow(title=title)
-            row.set_tooltip_text("Click to edit this keybinding.")
-
-            # Escape subtitle
-            raw_subtitle = f"{b['dispatcher']} {b['arg']}"
-            subtitle = GLib.markup_escape_text(raw_subtitle)
-            row.set_subtitle(subtitle)
-
-            # Form accelerator
-            mods = b['mods'].replace("$mainMod", self.main_mod)
-            key = b['key']
-
-            accel_str, label_text = get_gtk_accelerator(mods, key)
-
-            if accel_str:
-                shortcut = Gtk.ShortcutLabel(accelerator=accel_str)
-                row.add_suffix(shortcut)
-            else:
-                # Fallback for special keys
-                lbl = Gtk.Label(label=label_text)
-                lbl.add_css_class("dim-label")
-                row.add_suffix(lbl)
-
-            row.set_activatable(True)
-            # Connect using closure to capture binding
-            row.connect("activated", self.on_row_activated, b)
-
+            row = self._create_binding_row(b)
             self.group.add(row)
+
+    def _create_binding_row(self, b):
+        # Escape title for markup safety
+        raw_title = b['desc'] if b['desc'] else b['dispatcher']
+        title = GLib.markup_escape_text(raw_title)
+
+        row = Adw.ActionRow(title=title)
+        row.set_tooltip_text("Click to edit this keybinding.")
+
+        # Escape subtitle
+        raw_subtitle = f"{b['dispatcher']} {b['arg']}"
+        subtitle = GLib.markup_escape_text(raw_subtitle)
+        row.set_subtitle(subtitle)
+
+        # Form accelerator
+        mods = b['mods'].replace("$mainMod", self.main_mod)
+        key = b['key']
+
+        accel_str, label_text = get_gtk_accelerator(mods, key)
+
+        if accel_str:
+            shortcut = Gtk.ShortcutLabel(accelerator=accel_str)
+            row.add_suffix(shortcut)
+        else:
+            # Fallback for special keys
+            lbl = Gtk.Label(label=label_text)
+            lbl.add_css_class("dim-label")
+            row.add_suffix(lbl)
+
+        row.set_activatable(True)
+        # Connect using closure to capture binding
+        row.connect("activated", self.on_row_activated, b)
+        return row
 
     def on_row_activated(self, _row, binding):
         """Callback for when a keybinding row is activated."""
@@ -204,6 +209,7 @@ class KeybindingsPage(Adw.PreferencesPage):
                 if win:
                     win.add_toast(Adw.Toast.new("Failed to update binding"))
         dialog.close()
+
 
 class EditBindingDialog(Adw.MessageDialog):
     """Dialog for editing a keybinding."""
