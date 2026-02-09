@@ -4,6 +4,7 @@ About page for the Hyprland Preferences Application.
 
 from gi.repository import Adw, Gtk, Gio, GLib
 
+
 class AboutPage(Adw.PreferencesPage):
     """Page for displaying application information and help."""
 
@@ -41,7 +42,7 @@ class AboutPage(Adw.PreferencesPage):
         # Open URL using Gtk.show_uri or simpler method if available
         # Gtk.show_uri(parent, uri, timestamp)
         # Using a dummy URL for now, or maybe the repo URL if known
-        url = "https://github.com/hyprland/hyprland" # Placeholder
+        url = "https://github.com/hyprland/hyprland"  # Placeholder
         try:
             # Gio.AppInfo.launch_default_for_uri(url, None) is standard
             Gio.AppInfo.launch_default_for_uri(url, None)
@@ -54,12 +55,12 @@ class AboutPage(Adw.PreferencesPage):
     def on_about_activated(self, _row):
         """Opens the About dialog."""
         dialog = Adw.AboutDialog(
-            application_name="Hyprland Preferences",
-            developer_name="Jules",
+            application_name="Hypr Preferences",
+            developer_name="xorcsm",
             version="1.0.0",
-            copyright="© 2024 Jules",
+            copyright="© 2026 xorcsm",
             license_type=Gtk.License.MIT_X11,
-            website="https://github.com/hyprland/hyprland",
-            issue_url="https://github.com/hyprland/hyprland/issues"
+            website="https://github.com/mclellac/hyprl",
+            issue_url="https://github.com/mclellac/hypr/issues",
         )
         dialog.present(self.get_native())
