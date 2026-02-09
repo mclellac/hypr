@@ -22,6 +22,7 @@ class AppearancePage(Adw.PreferencesPage):
 
         self.add(self._init_gaps_group())
         self.add(self._init_shadows_group())
+        self.add(self._init_blur_group())
 
     def _init_gaps_group(self):
         """Initializes the Gaps & Borders settings group."""
@@ -141,6 +142,67 @@ class AppearancePage(Adw.PreferencesPage):
 
         return shadow_group
 
+    def _init_blur_group(self):
+        """Initializes the Blur settings group."""
+        blur_group = Adw.PreferencesGroup(title="Blur")
+
+        # Enabled
+        self.blur_enabled = Adw.SwitchRow(title="Enabled")
+        self.blur_enabled.set_subtitle("Enable background blur")
+        val = utils.get_looknfeel_value(["decoration", "blur", "enabled"])
+        if val:
+            self.blur_enabled.set_active(val.lower() == "true")
+        self.blur_enabled.connect("notify::active", self.on_blur_enabled_changed)
+        blur_group.add(self.blur_enabled)
+
+        # Size
+        self.blur_size = Adw.SpinRow(title="Size")
+        self.blur_size.set_subtitle("Blur size")
+        self.blur_size.set_adjustment(
+            Gtk.Adjustment(value=0, lower=0, upper=20, step_increment=1)
+        )
+        val = utils.get_looknfeel_value(["decoration", "blur", "size"])
+        if val:
+            try:
+                self.blur_size.set_value(float(val))
+            except ValueError:
+                pass
+        self.blur_size.connect("notify::value", self.on_blur_size_changed)
+        blur_group.add(self.blur_size)
+
+        # Passes
+        self.blur_passes = Adw.SpinRow(title="Passes")
+        self.blur_passes.set_subtitle("Number of passes")
+        self.blur_passes.set_adjustment(
+            Gtk.Adjustment(value=0, lower=0, upper=10, step_increment=1)
+        )
+        val = utils.get_looknfeel_value(["decoration", "blur", "passes"])
+        if val:
+            try:
+                self.blur_passes.set_value(float(val))
+            except ValueError:
+                pass
+        self.blur_passes.connect("notify::value", self.on_blur_passes_changed)
+        blur_group.add(self.blur_passes)
+
+        # Vibrancy
+        self.blur_vibrancy = Adw.SpinRow(title="Vibrancy")
+        self.blur_vibrancy.set_subtitle("Vibrancy of the blur")
+        self.blur_vibrancy.set_digits(4)
+        self.blur_vibrancy.set_adjustment(
+            Gtk.Adjustment(value=0.0, lower=0.0, upper=1.0, step_increment=0.01)
+        )
+        val = utils.get_looknfeel_value(["decoration", "blur", "vibrancy"])
+        if val:
+            try:
+                self.blur_vibrancy.set_value(float(val))
+            except ValueError:
+                pass
+        self.blur_vibrancy.connect("notify::value", self.on_blur_vibrancy_changed)
+        blur_group.add(self.blur_vibrancy)
+
+        return blur_group
+
     def _show_toast(self, message):
         """Helper to show a toast message."""
         win = self.get_native()
@@ -189,3 +251,28 @@ class AppearancePage(Adw.PreferencesPage):
         val = row.get_text()
         utils.set_looknfeel_value(["decoration", "shadow", "color"], val)
         self._show_toast(f"Shadow color set to {val}")
+
+    def on_blur_enabled_changed(self, row, _):
+        """Callback for blur enabled toggle."""
+        val = str(row.get_active()).lower()
+        utils.set_looknfeel_value(["decoration", "blur", "enabled"], val)
+        status = "enabled" if row.get_active() else "disabled"
+        self._show_toast(f"Blur {status}")
+
+    def on_blur_size_changed(self, row, _):
+        """Callback for blur size changes."""
+        val = str(int(row.get_value()))
+        utils.set_looknfeel_value(["decoration", "blur", "size"], val)
+        self._show_toast(f"Blur size set to {val}")
+
+    def on_blur_passes_changed(self, row, _):
+        """Callback for blur passes changes."""
+        val = str(int(row.get_value()))
+        utils.set_looknfeel_value(["decoration", "blur", "passes"], val)
+        self._show_toast(f"Blur passes set to {val}")
+
+    def on_blur_vibrancy_changed(self, row, _):
+        """Callback for blur vibrancy changes."""
+        val = f"{row.get_value():.4f}"
+        utils.set_looknfeel_value(["decoration", "blur", "vibrancy"], val)
+        self._show_toast(f"Blur vibrancy set to {val}")
