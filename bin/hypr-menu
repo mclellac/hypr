@@ -228,13 +228,14 @@ show_resources_menu() {
 #   None
 #######################################
 show_style_menu() {
-  local options="󰸌  Theme\n  Font\n  Background\n  Wallpaper Manager\n󱄄  Screensaver\n  About"
+  local options="󰸌  Theme\n  Font\n  Preferences\n  Background\n  Wallpaper Manager\n󱄄  Screensaver\n  About"
   local choice
   choice=$(menu "Style" "${options}")
 
   case "${choice}" in
     *"Theme"*) show_theme_menu ;;
     *"Font"*) show_font_menu ;;
+    *"Preferences"*) hypr-preferences-app ;;
     *"Wallpaper Manager"*) hypr-wallpaper-manager ;;
     *"Background"*) hypr-theme-bg-next ;;
     *"Screensaver"*) edit_in_nvim ~/.config/hypr/branding/screensaver.txt ;;
