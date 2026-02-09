@@ -213,9 +213,14 @@
         "signal": 9
     },
     "custom/notifications": {
-        "format": "",
+        "format": "{}",
+        "exec": "$HOME/.local/share/hypr/bin/hypr-notification-status",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 10,
         "on-click": "hyprctl dispatch exec $HOME/.local/share/hypr/bin/hypr-notification-history",
-        "tooltip": false
+        "on-click-middle": "hyprctl dispatch exec $HOME/.local/share/hypr/bin/hypr-notification-clear",
+        "tooltip": true
     },
     "custom/update": {
         "class": "update",

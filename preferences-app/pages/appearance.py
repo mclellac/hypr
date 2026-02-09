@@ -12,8 +12,8 @@ class AppearancePage(Adw.PreferencesPage):
         self.set_title("Appearance")
         self.set_icon_name("preferences-desktop-theme-symbolic")
 
-        # Gaps & Borders -> Gaps and Borders (avoid markup issue)
-        gaps_group = Adw.PreferencesGroup(title="Gaps and Borders")
+        # Gaps & Borders
+        gaps_group = Adw.PreferencesGroup(title="Gaps & Borders")
         self.add(gaps_group)
 
         self.gaps_in = Adw.SpinRow(title="Gaps In")
@@ -84,8 +84,11 @@ class AppearancePage(Adw.PreferencesPage):
         self.shadow_color = Adw.EntryRow(title="Color")
         val = utils.get_looknfeel_value(["decoration", "shadow", "color"])
         if val: self.shadow_color.set_text(val)
-        self.shadow_color.connect("apply", self.on_shadow_color_changed)
+        self.shadow_color.connect("apply", self.on_shadow_color_changed) # Apply on enter
         self.shadow_color.connect("entry-activated", self.on_shadow_color_changed)
+        # Or notify::text but that's every keystroke. Apply is better or focus-out?
+        # Adw.EntryRow doesn't have focus-out signal easily accessible without controller.
+        # "apply" signal is emitted when user presses enter.
 
         shadow_group.add(self.shadow_color)
 

@@ -1,4 +1,4 @@
-from gi.repository import Adw, Gtk, GObject, GLib
+from gi.repository import Adw, Gtk, GObject
 import sys
 import os
 
@@ -27,107 +27,34 @@ class KeybindingsPage(Adw.PreferencesPage):
         bindings = utils.get_keybindings()
 
         for b in bindings:
-            # Escape text for XML markup safety (title/subtitle use Pango markup)
-            raw_title = b['desc'] if b['desc'] else b['dispatcher']
-            safe_title = GLib.markup_escape_text(raw_title)
-
-            raw_subtitle = f"{b['dispatcher']} {b['arg']}"
-            safe_subtitle = GLib.markup_escape_text(raw_subtitle)
-
-            row = Adw.ActionRow(title=safe_title)
-            row.set_subtitle(safe_subtitle)
+            title = b['desc'] if b['desc'] else b['dispatcher']
+            row = Adw.ActionRow(title=title)
+            subtitle = f"{b['dispatcher']} {b['arg']}"
+            row.set_subtitle(subtitle)
 
             # Form accelerator
             mods = b['mods'].replace("$mainMod", self.main_mod)
             key = b['key']
 
-            accel = self.format_accelerator(mods, key)
+            accel = ""
+            if "SUPER" in mods: accel += "<Super>"
+            if "ALT" in mods: accel += "<Alt>"
+            if "CTRL" in mods: accel += "<Ctrl>"
+            if "SHIFT" in mods: accel += "<Shift>"
 
-            if accel:
-                shortcut = Gtk.ShortcutLabel(accelerator=accel)
-                row.add_suffix(shortcut)
+            if "code:" in key:
+                accel += key
             else:
-                # Fallback: Just display as text if parsing fails or is complex
-                fallback_text = f"{mods} + {key}"
-                label = Gtk.Label(label=fallback_text)
-                label.add_css_class("dim-label")
-                row.add_suffix(label)
+                accel += key.upper()
+
+            shortcut = Gtk.ShortcutLabel(accelerator=accel)
+            row.add_suffix(shortcut)
 
             row.set_activatable(True)
             # Connect using closure to capture binding
             row.connect("activated", self.on_row_activated, b)
 
             self.group.add(row)
-
-    def format_accelerator(self, mods, key):
-        """Formats Hyprland mod+key string into Gtk Accelerator string."""
-        accel = ""
-
-        # Gtk accelerators use <Control>, <Shift>, <Alt>, <Super>
-        # Check mods string - Hyprland uses "SUPER", "ALT", "CTRL", "SHIFT"
-        # We need to map them.
-
-        # Avoid double adding if mods are repeated or combined strangely
-        has_super = "SUPER" in mods or "$mainMod" in mods # mainMod is usually SUPER or ALT, handled by caller replacement?
-        # Caller replaced $mainMod with actual value (e.g. SUPER or ALT) before calling this function.
-
-        # Ensure order is consistent and handle potential overlaps if mods string is messy
-        # But simple `in` checks are fine if mods string is canonical.
-
-        # NOTE: Hyprland config uses "SUPER", "ALT", "CTRL", "SHIFT".
-
-        if "SUPER" in mods: accel += "<Super>"
-        if "ALT" in mods: accel += "<Alt>"
-        if "CTRL" in mods: accel += "<Control>"
-        if "SHIFT" in mods: accel += "<Shift>"
-
-        k = key.strip()
-
-        # Special keys handling
-        if k.startswith("code:") or k.startswith("mouse:"):
-            return None
-
-        # Common replacements for GTK accelerator compatibility
-        key_map = {
-            "COMMA": "comma",
-            "PERIOD": "period",
-            "SLASH": "slash",
-            "BACKSLASH": "backslash",
-            "MINUS": "minus",
-            "EQUAL": "equal",
-            "SPACE": "space",
-            "TAB": "Tab",
-            "RETURN": "Return",
-            "ENTER": "Return",
-            "ESCAPE": "Escape",
-            "BACKSPACE": "BackSpace",
-            "DELETE": "Delete",
-            "HOME": "Home",
-            "END": "End",
-            "PAGE_UP": "Page_Up",
-            "PAGE_DOWN": "Page_Down",
-            "LEFT": "Left",
-            "RIGHT": "Right",
-            "UP": "Up",
-            "DOWN": "Down",
-            "PRINT": "Print",
-            "PAUSE": "Pause",
-            "INSERT": "Insert",
-        }
-
-        # Check XF86 keys - GTK might support some if mapped correctly, but often safer to fallback
-        if k.startswith("XF86"):
-             # Try mapping common media keys if possible, or return None to use text label
-             # GDK_KEY_AudioRaiseVolume exist, but string representation might be specific
-             return None
-
-        if k in key_map:
-            k = key_map[k]
-        elif len(k) == 1:
-            k = k.lower()
-
-        accel += k
-        return accel
 
     def on_row_activated(self, row, binding):
         dialog = EditBindingDialog(self.get_root(), binding, self.main_mod)
@@ -150,12 +77,10 @@ class KeybindingsPage(Adw.PreferencesPage):
 
 class EditBindingDialog(Adw.MessageDialog):
     def __init__(self, parent, binding, main_mod):
-        # Escape body text too
-        desc = binding['desc'] or binding['dispatcher']
-        safe_desc = GLib.markup_escape_text(desc)
+        super().__init__(heading="Edit Keybinding", body=f"Edit binding for {binding['desc'] or binding['dispatcher']}")
 
-        super().__init__(heading="Edit Keybinding", body=f"Edit binding for {safe_desc}")
-
+        # In Adw 1.5+, use set_transient_for if available, or just pass parent to init?
+        # Adw.MessageDialog usually takes no parent in init but has set_transient_for.
         self.set_transient_for(parent)
 
         self.add_response("cancel", "Cancel")
