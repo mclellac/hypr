@@ -42,7 +42,7 @@ class AboutPage(Adw.PreferencesPage):
         # Open URL using Gtk.show_uri or simpler method if available
         # Gtk.show_uri(parent, uri, timestamp)
         # Using a dummy URL for now, or maybe the repo URL if known
-        url = "https://github.com/hyprland/hyprland"  # Placeholder
+        url = "https://github.com/mclellac/hypr"  # Placeholder
         try:
             # Gio.AppInfo.launch_default_for_uri(url, None) is standard
             Gio.AppInfo.launch_default_for_uri(url, None)
