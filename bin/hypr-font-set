@@ -21,7 +21,12 @@ readonly FONTCONFIG_CONFIG="${HOME}/.config/fontconfig/fonts.conf"
 #######################################
 is_font_available() {
   local font_name="$1"
-  fc-list | grep -iqF "${font_name}"
+  # Try fuzzy match first
+  if fc-list | grep -iqF "${font_name}"; then
+    return 0
+  fi
+  # Fallback: check if it's listed in fc-list output specifically as a family
+  fc-list : family | grep -iqF "${font_name}"
 }
 
 #######################################
