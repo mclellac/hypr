@@ -4,38 +4,57 @@ import os
 import sys
 
 LOG_FILE = os.path.expanduser("~/.local/share/hypr/notifications.json")
+STATE_FILE = os.path.expanduser("~/.local/share/hypr/notifications.state")
 
 def main():
     count = 0
     tooltip = "No notifications"
+    logs = []
 
     if os.path.exists(LOG_FILE):
         try:
             with open(LOG_FILE, 'r') as f:
                 logs = json.load(f)
-                count = len(logs)
-                if count > 0:
-                    tooltip = f"{count} notification(s)\n(Mid click to clear)"
-                    # Show the latest few in tooltip
-                    latest = logs[:5]
-                    tooltip += "\n\n"
-                    for notif in latest:
-                        app = notif.get("app_name", "Unknown")
-                        summary = notif.get("summary", "")
-                        tooltip += f"• {app}: {summary}\n"
+                if isinstance(logs, list):
+                    count = len(logs)
+                    if count > 0:
+                        tooltip = f"{count} notification(s)\n(Mid click to clear)"
+                        # Show the latest few in tooltip
+                        latest = logs[:5]
+                        tooltip += "\n\n"
+                        for notif in latest:
+                            app = notif.get("app_name", "Unknown")
+                            summary = notif.get("summary", "")
+                            tooltip += f"• {app}: {summary}\n"
         except Exception:
             pass
 
-    # Output JSON for waybar
-    output = {
-        "text": "", # Always show icon, or maybe count like " 5"
-        "tooltip": tooltip,
-        "class": "notifications" if count > 0 else "empty"
-    }
+    # Read state
+    last_read_count = 0
+    if os.path.exists(STATE_FILE):
+        try:
+            with open(STATE_FILE, 'r') as f:
+                state = json.load(f)
+                last_read_count = state.get("last_read_count", 0)
+        except Exception:
+            pass
 
-    # If we want to show count in the bar:
+    # Determine class and text
+    css_class = "empty"
+    text = ""
+
     if count > 0:
-        output["text"] = f" {count}"
+        if count > last_read_count:
+            css_class = "new"
+        else:
+            css_class = "read"
+        text = f" {count}"
+
+    output = {
+        "text": text,
+        "tooltip": tooltip,
+        "class": css_class
+    }
 
     print(json.dumps(output))
 
