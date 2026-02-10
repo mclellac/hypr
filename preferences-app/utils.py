@@ -90,35 +90,43 @@ def get_config_value(filepath, key_path, fallback_path=None):
     key_path: list of keys
     fallback_path: Path object (optional)
     """
-    lines = read_file(filepath)
-    if not lines and fallback_path and fallback_path.exists():
-        lines = read_file(fallback_path)
+    # Helper to parse lines
+    def find_in_lines(lines):
+        context = []
+        for line in lines:
+            stripped = line.strip()
+            if not stripped or stripped.startswith('#'):
+                continue
 
-    context = []
+            if stripped.endswith('{'):
+                block_name = stripped[:-1].strip()
+                context.append(block_name)
+            elif stripped == '}':
+                if context:
+                    context.pop()
+            else:
+                if '=' in stripped:
+                    key, val = [x.strip() for x in stripped.split('=', 1)]
 
-    for line in lines:
-        stripped = line.strip()
-        if not stripped or stripped.startswith('#'):
-            continue
+                    if len(key_path) == len(context) + 1:
+                        match = True
+                        for i, ctx in enumerate(context):
+                            if ctx != key_path[i]:
+                                match = False
+                                break
+                        if match and key == key_path[-1]:
+                            return val
+        return None
 
-        if stripped.endswith('{'):
-            block_name = stripped[:-1].strip()
-            context.append(block_name)
-        elif stripped == '}':
-            if context:
-                context.pop()
-        else:
-            if '=' in stripped:
-                key, val = [x.strip() for x in stripped.split('=', 1)]
+    # Try primary file
+    val = find_in_lines(read_file(filepath))
+    if val is not None:
+        return val
 
-                if len(key_path) == len(context) + 1:
-                    match = True
-                    for i, ctx in enumerate(context):
-                        if ctx != key_path[i]:
-                            match = False
-                            break
-                    if match and key == key_path[-1]:
-                        return val
+    # Try fallback
+    if fallback_path and fallback_path.exists():
+        return find_in_lines(read_file(fallback_path))
+
     return None
 
 
