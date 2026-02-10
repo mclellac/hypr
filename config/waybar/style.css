@@ -297,31 +297,3 @@ tooltip label {
   margin: 10px;
   color: @foreground_color;
 }
-
-/* -----------------------------------------------------------------------------
- * Custom Notification and Bluetooth styles
- * -------------------------------------------------------------------------- */
-
-#custom-notifications.new {
-    color: @accent_color;
-}
-
-#custom-notifications.read {
-    color: @foreground_color;
-}
-
-#custom-notifications.empty {
-    color: transparent;
-}
-
-#bluetooth {
-    color: @accent_color;
-}
-
-#bluetooth.off, #bluetooth.disabled {
-    color: #808080;
-}
-
-#bluetooth.connected {
-    color: @accent_color;
-}
