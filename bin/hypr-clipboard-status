@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+import json
+import subprocess
+import shutil
+
+def main():
+    count = 0
+    if shutil.which("cliphist"):
+        try:
+            # Use shell=True for pipe, or properly pipe processes
+            # cliphist list | wc -l
+            p1 = subprocess.Popen(["cliphist", "list"], stdout=subprocess.PIPE, text=True)
+            p2 = subprocess.Popen(["wc", "-l"], stdin=p1.stdout, stdout=subprocess.PIPE, text=True)
+            p1.stdout.close()
+            output = p2.communicate()[0].strip()
+            if output:
+                count = int(output)
+        except Exception:
+            pass
+
+    tooltip = f"{count} item(s) in the clipboard\n(Mid click to clear)"
+
+    # Text icon for clipboard
+    text = "󰨸"
+
+    output = {
+        "text": text,
+        "tooltip": tooltip,
+        "class": "clipboard",
+        "alt": "clipboard"
+    }
+
+    print(json.dumps(output))
+
+if __name__ == "__main__":
+    main()

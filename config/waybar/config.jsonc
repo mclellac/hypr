@@ -187,12 +187,12 @@
         "max-length": 10
     },
     "custom/clipboard": {
-        "format": "󰨸",
+        "format": "{}",
         "interval": "once",
         "return-type": "json",
         "on-click": "hyprctl dispatch exec \"cliphist list | walker --dmenu | cliphist decode | wl-copy\"",
         "on-click-middle": "rm -f ~/.cache/cliphist/db; pkill -RTMIN+9 waybar",
-        "exec": "echo \"{\\\"tooltip\\\":\\\"$(cliphist list | wc -l) item(s) in the clipboard\\\\n(Mid click to clear)\\\"}\"",
+        "exec": "$HOME/.local/share/hypr/bin/hypr-clipboard-status",
         "exec-if": "[ -x \"$(command -v cliphist)\" ] && [ $(cliphist list | wc -l) -gt 0 ]",
         "signal": 9
     },
