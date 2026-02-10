@@ -70,7 +70,7 @@ window#waybar {
 #custom-notifications,
 #custom-clipboard,
 #battery,
-#pulseaudio,
+#custom-audio,
 #temperature,
 #backlight,
 #custom-playerctl,
@@ -111,7 +111,7 @@ window#waybar {
     border-radius: 10px;
 }
 
-#network {
+#custom-network {
     color: @network_color;
     margin-left: 2px;
     margin-right: 2px;
@@ -244,12 +244,24 @@ window#waybar {
     background: @background_color;
 }
 
-#network.disconnected {
+#custom-network.disconnected {
     color: @warning_color;
 }
 
-#pulseaudio.muted {
-    color: @warning_color;
+#custom-audio.muted {
+    color: #808080; /* Grey/dim as requested */
+}
+
+#custom-audio.low {
+    color: @foreground_color; /* Standard color */
+}
+
+#custom-audio.high {
+    color: @accent_color; /* Brighter color */
+}
+
+#temperature {
+    color: @foreground_color;
 }
 
 #temperature.critical {

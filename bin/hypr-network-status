@@ -1,0 +1,112 @@
+#!/usr/bin/env python3
+import json
+import subprocess
+import os
+import time
+
+CACHE_FILE = "/tmp/hypr-pubip.cache"
+
+def get_public_ip():
+    # Check cache first
+    if os.path.exists(CACHE_FILE):
+        try:
+            mtime = os.path.getmtime(CACHE_FILE)
+            if time.time() - mtime < 3600:
+                with open(CACHE_FILE, 'r') as f:
+                    return f.read().strip()
+        except Exception:
+            pass
+
+    # Fetch new IP
+    try:
+        result = subprocess.run(["curl", "-s", "--max-time", "5", "https://api.ipify.org"], capture_output=True, text=True)
+        ip = result.stdout.strip()
+        if ip:
+            with open(CACHE_FILE, 'w') as f:
+                f.write(ip)
+            return ip
+    except Exception:
+        pass
+
+    return "Unknown"
+
+def get_network_info():
+    # Use ip link to find default interface or similar
+    try:
+        # Get active interface via route
+        route = subprocess.run(["ip", "route", "get", "1.1.1.1"], capture_output=True, text=True).stdout
+        if "dev" not in route:
+            return {"status": "disconnected", "icon": "󰖪", "tooltip": "Disconnected"}
+
+        interface = route.split("dev")[1].split()[0]
+
+        # Get IP address
+        ip_addr = "Unknown"
+        ip_cmd = subprocess.run(["ip", "-4", "addr", "show", interface], capture_output=True, text=True).stdout
+        for line in ip_cmd.split('\n'):
+            if "inet" in line:
+                ip_addr = line.split()[1].split('/')[0]
+                break
+
+        # Check if wireless
+        is_wireless = os.path.exists(f"/sys/class/net/{interface}/wireless")
+
+        if is_wireless:
+            try:
+                iw = subprocess.run(["iwgetid", "-r"], capture_output=True, text=True).stdout.strip()
+                ssid = iw if iw else "Unknown"
+
+                # Signal strength
+                with open(f"/proc/net/wireless", 'r') as f:
+                    lines = f.readlines()
+                    for line in lines:
+                        if interface in line:
+                            # Parse quality
+                            parts = line.split()
+                            # usually 3rd field is link quality
+                            quality = float(parts[2].replace('.', ''))
+                            break
+                    else:
+                        quality = 0
+
+                # Map quality to icon
+                if quality > 80: icon = "󰤨"
+                elif quality > 60: icon = "󰤥"
+                elif quality > 40: icon = "󰤢"
+                elif quality > 20: icon = "󰤟"
+                else: icon = "󰤯"
+
+                status = "wifi"
+                tooltip = f"Interface: {interface}\nSSID: {ssid}\nIP: {ip_addr}\nSignal: {quality}%"
+            except Exception:
+                status = "wifi"
+                icon = "󰤨"
+                tooltip = f"Interface: {interface}\nIP: {ip_addr}"
+        else:
+            status = "ethernet"
+            icon = "󰈀"
+            tooltip = f"Interface: {interface}\nIP: {ip_addr}"
+
+        return {"status": status, "icon": icon, "tooltip": tooltip}
+
+    except Exception as e:
+        return {"status": "disconnected", "icon": "󰖪", "tooltip": f"Error: {e}"}
+
+def main():
+    net_info = get_network_info()
+    pub_ip = get_public_ip()
+
+    if net_info["status"] != "disconnected":
+        net_info["tooltip"] += f"\n\nPublic IP: {pub_ip}"
+
+    output = {
+        "text": net_info["icon"],
+        "tooltip": net_info["tooltip"],
+        "class": net_info["status"],
+        "alt": net_info["status"]
+    }
+
+    print(json.dumps(output))
+
+if __name__ == "__main__":
+    main()
