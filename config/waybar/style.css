@@ -314,6 +314,10 @@ tooltip label {
  * Custom Notification and Bluetooth styles
  * -------------------------------------------------------------------------- */
 
+#custom-notifications {
+    color: @foreground_color;
+}
+
 #custom-notifications.new {
     color: @accent_color;
 }
