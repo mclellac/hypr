@@ -27,10 +27,9 @@
             "memory",
             "disk",
             "temperature",
-            "pulseaudio",
-            "network",
-            "bluetooth",
-            "custom/pubip"
+            "custom/audio",
+            "custom/network",
+            "bluetooth"
         ]
     },
     "bluetooth": {
@@ -128,27 +127,13 @@
         "tooltip-format": "{used} used out of {total} on {path} ({percentage_used}%)",
         "on-click": "hyprctl dispatch exec \"$HOME/.local/share/hypr/bin/hypr-exec btop\""
     },
-    "network": {
+    "custom/network": {
+        "exec": "$HOME/.local/share/hypr/bin/hypr-network-status",
+        "return-type": "json",
+        "format": "{}",
         "interval": 5,
-        "format-wifi": "{icon}",
-        "format-ethernet": "󰈀",
-        "format-disconnected": "󰖪",
-        "format-disabled": "󰀝",
-        "format-icons": [
-            "󰤯",
-            "󰤟",
-            "󰤢",
-            "󰤥",
-            "󰤨"
-        ],
-        "tooltip-format": "{icon} {ifname}: {ipaddr}",
-        "tooltip-format-ethernet": "{icon} {ifname}: {ipaddr}\n {bandwidthDownBytes}  {bandwidthUpBytes}",
-        "tooltip-format-wifi": "{icon} {ifname} ({essid}): {ipaddr}\n {bandwidthDownBytes}  {bandwidthUpBytes}",
-        "tooltip-format-disconnected": "{icon} disconnected",
-        "tooltip-format-disabled": "{icon} disabled",
-        "on-click": "hyprctl dispatch exec \"$HOME/.local/share/hypr/bin/hypr-exec nmtui\"",
-        "on-scroll-up": "",
-        "on-scroll-down": ""
+        "tooltip": true,
+        "on-click": "hyprctl dispatch exec \"$HOME/.local/share/hypr/bin/hypr-exec nmtui\""
     },
     "hyprland/submap": {
         "format": "<span style=\"italic\">{}</span>",
@@ -162,17 +147,16 @@
             "󰃠"
         ]
     },
-    "pulseaudio": {
-        "class": "pulseaudio",
-        "format": "{icon}",
+    "custom/audio": {
+        "exec": "$HOME/.local/share/hypr/bin/hypr-audio-status",
+        "return-type": "json",
+        "format": "{}",
+        "interval": 1,
         "on-click": "hyprctl dispatch exec \"alacritty --class=Wiremix -e wiremix\"",
         "on-click-right": "pamixer -t",
-        "tooltip-format": "Playing at {volume}%",
-        "scroll-step": 5,
-        "format-muted": "󰝟",
-        "format-icons": {
-            "default": ["", "", ""]
-        }
+        "on-scroll-up": "pamixer -i 5",
+        "on-scroll-down": "pamixer -d 5",
+        "tooltip": true
     },
     "temperature": {
         "critical-threshold": 90,
