@@ -6,8 +6,10 @@ import time
 from datetime import datetime
 
 LOG_FILE = os.path.expanduser("~/.local/share/hypr/notifications.json")
+STATE_FILE = os.path.expanduser("~/.local/share/hypr/notifications.state")
 
 def main():
+    logs = []
     if not os.path.exists(LOG_FILE):
         # Create empty if not exists so walker shows empty
         logs = []
@@ -17,6 +19,17 @@ def main():
                 logs = json.load(f)
         except json.JSONDecodeError:
             logs = []
+
+    # Update read state
+    try:
+        current_count = len(logs)
+        with open(STATE_FILE, 'w') as f:
+            json.dump({"last_read_count": current_count}, f)
+        # Refresh waybar to remove "new" status
+        subprocess.run(["pkill", "-RTMIN+10", "waybar"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception as e:
+        # Don't crash if state update fails
+        pass
 
     # Format entries for walker
     entries = []
@@ -62,7 +75,7 @@ def main():
                 subprocess.run(["notify-send", "-t", "2000", "Copied", "Notification body copied to clipboard"])
 
     except FileNotFoundError:
-        subprocess.run(["notify-send", "Error", "walker not found"])
+        subprocess.run(["notify-send", "-t", "5000", "Error", "walker not found"])
 
 if __name__ == "__main__":
     main()
