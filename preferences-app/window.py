@@ -8,6 +8,7 @@ from pages.general import GeneralPage
 from pages.appearance import AppearancePage
 from pages.keybindings import KeybindingsPage
 from pages.input import InputPage
+from pages.theme import ThemePage
 
 
 class MainWindow(Adw.PreferencesWindow):
@@ -23,6 +24,7 @@ class MainWindow(Adw.PreferencesWindow):
         self.add(AppearancePage())
         self.add(InputPage())
         self.add(KeybindingsPage())
+        self.add(ThemePage())
 
         # Attempt to inject the primary menu button into the header bar
         self._setup_menu_button()

@@ -80,21 +80,27 @@ class InputPage(Adw.PreferencesPage):
     def on_sensitivity_changed(self, row, _):
         """Callback for sensitivity changes."""
         val = f"{row.get_value():.2f}"
-        utils.set_input_value(["input", "sensitivity"], val)
-        self._show_toast(f"Sensitivity set to {val}")
+        if utils.set_input_value(["input", "sensitivity"], val):
+            self._show_toast(f"Sensitivity set to {val}")
+        else:
+            self._show_toast("Failed to update sensitivity")
 
     def on_follow_mouse_changed(self, row, _):
         """Callback for follow_mouse changes."""
         selected = row.get_selected()
-        utils.set_input_value(["input", "follow_mouse"], str(selected))
-        self._show_toast(f"Follow Mouse set to {selected}")
+        if utils.set_input_value(["input", "follow_mouse"], str(selected)):
+            self._show_toast(f"Follow Mouse set to {selected}")
+        else:
+            self._show_toast("Failed to update Follow Mouse")
 
     def on_natural_scroll_changed(self, row, _):
         """Callback for natural_scroll toggle."""
         val = str(row.get_active()).lower()
-        utils.set_input_value(["input", "touchpad", "natural_scroll"], val)
-        status = "enabled" if row.get_active() else "disabled"
-        self._show_toast(f"Natural Scroll {status}")
+        if utils.set_input_value(["input", "touchpad", "natural_scroll"], val):
+            status = "enabled" if row.get_active() else "disabled"
+            self._show_toast(f"Natural Scroll {status}")
+        else:
+            self._show_toast("Failed to update Natural Scroll")
 
     def _show_toast(self, message):
         """Helper to show a toast message."""
