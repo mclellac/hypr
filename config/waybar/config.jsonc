@@ -12,12 +12,12 @@
     ],
     "modules-right": [
         "custom/update",
+        "custom/notifications",
+        "custom/clipboard",
         "privacy",
         "group/hardware",
         "custom/playerctl",
         "tray",
-        "custom/notifications",
-        "custom/clipboard",
         "custom/power"
     ],
     "group/hardware": {
@@ -33,9 +33,9 @@
         ]
     },
     "bluetooth": {
-        "format": "",
-        "format-disabled": "",
-        "format-off": "",
+        "format": " {status}",
+        "format-disabled": "",
+        "format-off": "",
         "format-connected": " {device_alias}",
         "format-connected-battery": " {device_alias} {device_battery_percentage}%",
         "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",

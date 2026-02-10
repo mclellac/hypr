@@ -4,17 +4,12 @@ import os
 import json
 
 LOG_FILE = os.path.expanduser("~/.local/share/hypr/notifications.json")
-STATE_FILE = os.path.expanduser("~/.local/share/hypr/notifications.state")
 
 def main():
     try:
         # Clear the file by writing an empty list
         with open(LOG_FILE, 'w') as f:
             json.dump([], f)
-
-        # Reset state file
-        with open(STATE_FILE, 'w') as f:
-            json.dump({"last_read_count": 0}, f)
 
         # Send SIGRTMIN+10 to waybar to refresh the module
         subprocess.run(["pkill", "-RTMIN+10", "waybar"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
