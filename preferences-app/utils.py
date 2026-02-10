@@ -133,7 +133,11 @@ def set_config_value(filepath, key_path, value, fallback_path=None):
     lines = []
     if filepath.exists():
         lines = read_file(filepath)
-    elif fallback_path and fallback_path.exists():
+
+    # If file exists but is empty, try fallback
+    if not lines and fallback_path and fallback_path.exists():
+        lines = read_file(fallback_path)
+    elif not filepath.exists() and fallback_path and fallback_path.exists():
         lines = read_file(fallback_path)
 
     new_lines = []
@@ -341,3 +345,67 @@ def update_keybinding(filepath, line_idx, new_mods, new_key):
         write_file(filepath, lines)
         return True
     return False
+
+
+def get_theme_list():
+    """Lists available themes."""
+    script = BIN_DIR / "hypr-theme-list"
+    try:
+        if not script.exists():
+            dev_script = Path(__file__).parent.parent / "bin/hypr-theme-list"
+            if dev_script.exists():
+                script = dev_script
+
+        result = subprocess.run([str(script)], capture_output=True, text=True, check=True)
+        return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+    except subprocess.CalledProcessError as e:
+        print(f"Error listing themes: {e}")
+        return []
+
+
+def get_current_theme():
+    """Gets the currently active theme."""
+    script = BIN_DIR / "hypr-theme-current"
+    try:
+        if not script.exists():
+            dev_script = Path(__file__).parent.parent / "bin/hypr-theme-current"
+            if dev_script.exists():
+                script = dev_script
+
+        result = subprocess.run([str(script)], capture_output=True, text=True, check=True)
+        return result.stdout.strip()
+    except subprocess.CalledProcessError as e:
+        print(f"Error getting current theme: {e}")
+        return "Unknown"
+
+
+def set_theme(theme_name):
+    """Sets the active theme."""
+    script = BIN_DIR / "hypr-theme-set"
+    try:
+        if not script.exists():
+            dev_script = Path(__file__).parent.parent / "bin/hypr-theme-set"
+            if dev_script.exists():
+                script = dev_script
+
+        subprocess.run([str(script), theme_name], check=True)
+        return True
+    except subprocess.CalledProcessError as e:
+        print(f"Error setting theme: {e}")
+        return False
+
+
+def get_current_font():
+    """Gets the currently active font."""
+    script = BIN_DIR / "hypr-font-current"
+    try:
+        if not script.exists():
+            dev_script = Path(__file__).parent.parent / "bin/hypr-font-current"
+            if dev_script.exists():
+                script = dev_script
+
+        result = subprocess.run([str(script)], capture_output=True, text=True, check=True)
+        return result.stdout.strip()
+    except subprocess.CalledProcessError as e:
+        print(f"Error getting current font: {e}")
+        return ""
