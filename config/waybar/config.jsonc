@@ -123,6 +123,10 @@
         "interval": 30,
         "format": "󰋊 {percentage_used}%",
         "path": "/",
+        "states": {
+            "warning": 70,
+            "critical": 90
+        },
         "tooltip": true,
         "tooltip-format": "{used} used out of {total} on {path} ({percentage_used}%)",
         "on-click": "hyprctl dispatch exec \"$HOME/.local/share/hypr/bin/hypr-exec btop\""
