@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+"""Disk usage module for Waybar."""
+import json
+import subprocess
+
+# pylint: disable=invalid-name,broad-except
+
+def main():
+    """Main function to get disk usage and info."""
+    try:
+        cmd_disk_info = "df -h / | awk 'NR==2 {print $5}' | sed 's/%//'"
+        cmd_disk_total = "df -h / | awk 'NR==2 {print $2}'"
+        cmd_disk_used = "df -h / | awk 'NR==2 {print $3}'"
+
+        disk_info_str = subprocess.check_output(cmd_disk_info, shell=True, text=True).strip()
+        disk_info = float(disk_info_str)
+        disk_total = subprocess.check_output(cmd_disk_total, shell=True, text=True).strip()
+        disk_used = subprocess.check_output(cmd_disk_used, shell=True, text=True).strip()
+    except Exception:
+        disk_info = 0.0
+        disk_total = "0G"
+        disk_used = "0G"
+
+    tooltip = f"Disk Usage: {disk_info:.0f}% ({disk_used} / {disk_total})"
+
+    css_class = "normal"
+    if disk_info >= 90:
+        css_class = "critical"
+    elif disk_info >= 70:
+        css_class = "warning"
+
+    print(json.dumps({
+        "text": f"󰋊 {disk_info:.0f}%",
+        "tooltip": tooltip,
+        "class": css_class
+    }))
+
+if __name__ == "__main__":
+    main()

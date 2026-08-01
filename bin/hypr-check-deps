@@ -1,0 +1,118 @@
+#!/bin/bash
+#
+# Checks all required core system dependencies, desktop components, and utilities
+# for the Hyprland environment.
+
+set -euo pipefail
+
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Checks for required core dependencies and tools across all system categories.
+
+Options:
+  -v, --verbose    Show details for all present dependencies
+  -h, --help       Show this help message and exit
+EOF
+}
+
+check_category() {
+    local category_name="$1"
+    shift
+    local -a cmds=("$@")
+    local category_missing=0
+
+    echo -e "\e[1;34m=== ${category_name} ===\e[0m"
+
+    for cmd in "${cmds[@]}"; do
+        if command -v "${cmd}" &>/dev/null; then
+            if [[ "${VERBOSE:-false}" == "true" ]]; then
+                echo -e "  \e[32m[OK]\e[0m ${cmd} ($(command -v "${cmd}"))"
+            fi
+        else
+            echo -e "  \e[31m[MISSING]\e[0m ${cmd}"
+            category_missing=$((category_missing + 1))
+        fi
+    done
+
+    if [[ ${category_missing} -eq 0 && "${VERBOSE:-false}" != "true" ]]; then
+        echo -e "  \e[32m[OK]\e[0m All ${#cmds[@]} components present."
+    fi
+
+    return ${category_missing}
+}
+
+main() {
+    local verbose=false
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -v|--verbose)
+                verbose=true
+                shift
+                ;;
+            -h|--help)
+                usage
+                exit 0
+                ;;
+            *)
+                log_error "Unknown option: $1"
+                usage >&2
+                exit 1
+                ;;
+        esac
+    done
+
+    export VERBOSE="${verbose}"
+    local total_missing=0
+
+    log_info "Running comprehensive dependency check..."
+    echo
+
+    # Desktop Environment & Core Compositor
+    check_category "Compositor & Session" \
+        hyprland hyprctl uwsm systemctl || total_missing=$((total_missing + $?))
+
+    # Desktop UI Components
+    check_category "UI Components & Widgets" \
+        waybar mako walker swayosd-client hyprlock hypridle hyprsunset || total_missing=$((total_missing + $?))
+
+    # Environment Rust Applications & Utilities
+    check_category "Hypr Utilities & Apps" \
+        hypr-preferences-app hypr-keybindings-editor hypr-theme-set hypr-theme-get hypr-theme-templater hypr-state || total_missing=$((total_missing + $?))
+
+    # Terminal Emulators
+    check_category "Terminal Emulators" \
+        kitty alacritty ghostty || total_missing=$((total_missing + $?))
+
+    # Screen Capture & Clipboard
+    check_category "Capture & Clipboard" \
+        grim slurp satty wl-copy cliphist wf-recorder || total_missing=$((total_missing + $?))
+
+    # Audio, Backlight & Hardware
+    check_category "Hardware & Media Control" \
+        brightnessctl pamixer pavucontrol playerctl upower gsettings || total_missing=$((total_missing + $?))
+
+    # Core Runtime & Shell Utilities
+    check_category "CLI & System Utilities" \
+        jq python3 git curl bat eza fzf rg fastfetch starship btop || total_missing=$((total_missing + $?))
+
+    echo
+    if [[ ${total_missing} -gt 0 ]]; then
+        log_warn "Dependency check completed with ${total_missing} missing tool(s)."
+        exit 1
+    else
+        log_success "All core dependencies and tools are present!"
+        exit 0
+    fi
+}
+
+main "$@"

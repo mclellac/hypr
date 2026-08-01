@@ -1,82 +1,90 @@
 #!/bin/bash
-#
-# Cycles through the background images available for the current theme.
-
 set -euo pipefail
+#
+# Cycles to the next wallpaper available in the current theme's backgrounds/ directory.
 
-readonly BACKGROUNDS_DIR="${HOME}/.config/hypr/current/theme/backgrounds/"
-readonly CURRENT_BACKGROUND_LINK="${HOME}/.config/hypr/current/background"
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
-#######################################
-# Sets a solid black background.
-# Globals:
-#   None
-# Arguments:
-#   None
-# Outputs:
-#   None
-#######################################
-set_black_background() {
-  pkill -x swaybg || true
-  setsid uwsm app -- swaybg --color '#000000' >/dev/null 2>&1 &
-}
+readonly CURRENT_BACKGROUND_LINK="${HOME}/.config/hypr/current_background"
+readonly THEME_STATE="${HOME}/.config/hypr/current_theme_path"
 
-#######################################
-# Sets the background to the image specified by the symlink.
-# Globals:
-#   CURRENT_BACKGROUND_LINK
-# Arguments:
-#   None
-# Outputs:
-#   None
-#######################################
-#######################################
-# Main function to cycle to the next background.
-# Globals:
-#   BACKGROUNDS_DIR
-#   CURRENT_BACKGROUND_LINK
-# Arguments:
-#   None
-# Outputs:
-#   None
-#######################################
 main() {
-  if [[ ! -d "${BACKGROUNDS_DIR}" ]]; then
-    notify-send "No background directory found for the current theme" -t 2000
-    set_black_background
-    exit 0
-  fi
+    check_help "$@"
 
-  local -a backgrounds
-  mapfile -d '' -t backgrounds < <(find "${BACKGROUNDS_DIR}" -type f -print0 | sort -z)
-  local total=${#backgrounds[@]}
-
-  if [[ ${total} -eq 0 ]]; then
-    notify-send "No background images found in the current theme" -t 2000
-    set_black_background
-    exit 0
-  fi
-
-  local current_background=""
-  if [[ -L "${CURRENT_BACKGROUND_LINK}" ]]; then
-    current_background=$(readlink "${CURRENT_BACKGROUND_LINK}")
-  fi
-
-  local current_index=-1
-  for i in "${!backgrounds[@]}"; do
-    if [[ "${backgrounds[$i]}" == "${current_background}" ]]; then
-      current_index=$i
-      break
+    if [[ ! -f "${THEME_STATE}" ]]; then
+        log_error "No active theme state found at ${THEME_STATE}."
+        exit 1
     fi
-  done
 
-  local next_index=0
-  if [[ ${current_index} -ne -1 ]]; then
-    next_index=$(((current_index + 1) % total))
-  fi
+    local theme_path
+    theme_path=$(<"${THEME_STATE}")
 
-  local new_background="${backgrounds[${next_index}]}"
-  hypr-wallpaper-set "${new_background}"
+    if [[ ! -d "${theme_path}" ]]; then
+        # Try fallback if system/local paths are different
+        if [[ -d "${HYPR_PATH:-${HOME}/.local/share/hypr}/themes/$(basename "${theme_path}")" ]]; then
+            theme_path="${HYPR_PATH:-${HOME}/.local/share/hypr}/themes/$(basename "${theme_path}")"
+        else
+            log_error "Theme path ${theme_path} does not exist."
+            exit 1
+        fi
+    fi
+
+    local bg_dir="${theme_path}/backgrounds"
+    if [[ ! -d "${bg_dir}" ]]; then
+        log_info "No backgrounds directory found in theme ${theme_path}."
+        exit 0
+    fi
+
+    # Find all image files in bg_dir
+    local files=()
+    while IFS= read -r line; do
+        if [[ -n "$line" ]]; then
+            files+=("$line")
+        fi
+    done < <(find "${bg_dir}" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) | sort)
+
+    if [[ ${#files[@]} -eq 0 ]]; then
+        log_info "No wallpapers found in ${bg_dir}."
+        exit 0
+    fi
+
+    # Determine current wallpaper
+    local current_wallpaper=""
+    if [[ -L "${CURRENT_BACKGROUND_LINK}" ]]; then
+        current_wallpaper=$(readlink -f "${CURRENT_BACKGROUND_LINK}")
+    fi
+
+    local next_wallpaper=""
+    if [[ -z "${current_wallpaper}" ]]; then
+        # Default to first if none currently active
+        next_wallpaper="${files[0]}"
+    else
+        # Find current in files by matching filename
+        local current_idx=-1
+        for i in "${!files[@]}"; do
+            if [[ "$(basename "${files[$i]}")" == "$(basename "${current_wallpaper}")" ]]; then
+                current_idx=$i
+                break
+            fi
+        done
+
+        if [[ $current_idx -eq -1 ]]; then
+            next_wallpaper="${files[0]}"
+        else
+            local next_idx
+            next_idx=$(( (current_idx + 1) % ${#files[@]} ))
+            next_wallpaper="${files[$next_idx]}"
+        fi
+    fi
+
+    log_info "Cycling wallpaper to: $(basename "${next_wallpaper}")"
+    "$(dirname "$0")/hypr-wallpaper-set" "${next_wallpaper}"
 }
 
-main
+main "$@"

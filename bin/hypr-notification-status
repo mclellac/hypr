@@ -1,62 +1,51 @@
 #!/usr/bin/env python3
+"""Returns the current notification status for waybar."""
 import json
 import os
-import sys
 
-LOG_FILE = os.path.expanduser("~/.local/share/hypr/notifications.json")
-STATE_FILE = os.path.expanduser("~/.local/share/hypr/notifications.state")
+# pylint: disable=invalid-name
+
+HYPR_PATH = os.environ.get("HYPR_PATH", os.path.expanduser("~/.local/share/hypr"))
+LOG_FILE = os.path.join(HYPR_PATH, "notifications.json")
+
 
 def main():
+    """Main function."""
     count = 0
     tooltip = "No notifications"
-    logs = []
 
     if os.path.exists(LOG_FILE):
         try:
-            with open(LOG_FILE, 'r') as f:
+            with open(LOG_FILE, 'r', encoding='utf-8') as f:
                 logs = json.load(f)
-                if isinstance(logs, list):
-                    count = len(logs)
-                    if count > 0:
-                        tooltip = f"{count} notification(s)\n(Mid click to clear)"
-                        # Show the latest few in tooltip
-                        latest = logs[:5]
-                        tooltip += "\n\n"
-                        for notif in latest:
-                            app = notif.get("app_name", "Unknown")
-                            summary = notif.get("summary", "")
-                            tooltip += f"• {app}: {summary}\n"
-        except Exception:
+                count = len(logs)
+                if count > 0:
+                    tooltip = f"{count} notification(s)\n(Mid click to clear)"
+                    # Show the latest few in tooltip
+                    latest = logs[:5]
+                    tooltip += "\n\n"
+                    for notif in latest:
+                        app = notif.get("app_name", "Unknown")
+                        summary = notif.get("summary", "")
+                        tooltip += f"• {app}: {summary}\n"
+        except Exception:  # pylint: disable=broad-except
             pass
 
-    # Read state
-    last_read_count = 0
-    if os.path.exists(STATE_FILE):
-        try:
-            with open(STATE_FILE, 'r') as f:
-                state = json.load(f)
-                last_read_count = state.get("last_read_count", 0)
-        except Exception:
-            pass
-
-    # Determine class and text
-    css_class = "empty"
-    text = ""
-
-    if count > 0:
-        if count > last_read_count:
-            css_class = "new"
-        else:
-            css_class = "read"
-        text = f" {count}"
-
+    # Output JSON for waybar
     output = {
-        "text": text,
+        "text": "",  # Default icon
         "tooltip": tooltip,
-        "class": css_class
+        "class": "notifications" if count > 0 else "empty"
     }
 
+    # If we want to show count in the bar:
+    if count > 0:
+        output["text"] = f" {count}"
+    else:
+        output["text"] = ""  # Hide if empty
+
     print(json.dumps(output))
+
 
 if __name__ == "__main__":
     main()

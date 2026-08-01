@@ -6,6 +6,19 @@
 # specified commands are present.
 
 set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    echo "Usage: $(basename "$0") <command1> [command2]..."
+    echo
+    echo "Exits with status 0 if any command is missing."
+    echo "Exits with status 1 if all commands are present."
+}
 
 #######################################
 # Main function to check for missing commands.
@@ -19,23 +32,25 @@ set -euo pipefail
 #   Exits with status 2 if no arguments are provided.
 #######################################
 main() {
-  if [[ $# -eq 0 ]]; then
-    echo "Usage: $(basename "$0") <command1> [command2]..." >&2
-    exit 2
-  fi
+    check_help "$@"
 
-  for cmd in "$@"; do
-    # 'command -v' is a reliable way to check if a command exists in the PATH.
-    # Output is redirected to /dev/null to suppress command path output.
-    if ! command -v "${cmd}" &>/dev/null; then
-      # If a command is not found, exit with success (0) as per the script's purpose.
-      exit 0
+    if [[ $# -eq 0 ]]; then
+        usage
+        exit 2
     fi
-  done
 
-  # If the loop completes, it means all specified commands were found.
-  # Exit with failure (1) to indicate that none were missing.
-  exit 1
+    for cmd in "$@"; do
+        # 'command -v' is a reliable way to check if a command exists in the PATH.
+        # Output is redirected to /dev/null to suppress command path output.
+        if ! command -v "${cmd}" &>/dev/null; then
+            # If a command is not found, exit with success (0) as per the script's purpose.
+            exit 0
+        fi
+    done
+
+    # If the loop completes, it means all specified commands were found.
+    # Exit with failure (1) to indicate that none were missing.
+    exit 1
 }
 
 main "$@"

@@ -1,8 +1,16 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Prints the current git branch of the local hypr repository.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Main function to get and print the repository branch.
@@ -14,12 +22,20 @@ set -euo pipefail
 #   The git branch name to stdout.
 #######################################
 main() {
-  if [[ -z "${HYPR_PATH:-}" || ! -d "${HYPR_PATH}/.git" ]]; then
-    echo "Error: HYPR_PATH is not set or is not a git repository." >&2
-    exit 1
-  fi
+    check_help "$@"
+    local repo_path_file="${HOME}/.config/hypr/hypr_repo_path"
+    local git_repo_path=""
 
-  git -C "${HYPR_PATH}" rev-parse --abbrev-ref HEAD
+    if [[ -f "${repo_path_file}" ]]; then
+        git_repo_path=$(cat "${repo_path_file}")
+    fi
+
+    if [[ -z "${git_repo_path}" || ! -d "${git_repo_path}/.git" ]]; then
+        echo "Error: Could not find hypr git repository. Please ensure it's cloned and install.sh has been run." >&2
+        exit 1
+    fi
+
+    git -C "${git_repo_path}" rev-parse --abbrev-ref HEAD
 }
 
-main
+main "$@"

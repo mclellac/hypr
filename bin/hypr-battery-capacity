@@ -1,0 +1,40 @@
+#!/bin/bash
+#
+# Returns the battery full capacity in Wh (rounded to whole number).
+# Used by hypr-battery-status for displaying battery capacity.
+
+set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    echo "Usage: $(basename "$0")"
+    echo
+    echo "Returns the battery full capacity in Wh (rounded to whole number)."
+}
+
+main() {
+    check_help "$@"
+
+    local battery_device
+    battery_device=$(upower -e | grep BAT | head -n 1 || true)
+
+    if [[ -z "${battery_device}" ]]; then
+        log_error "No battery device found"
+        exit 1
+    fi
+
+    local battery_info
+    battery_info=$(upower -i "${battery_device}")
+
+    echo "$battery_info" | awk '/energy-full:/ {
+        printf "%d", $2
+        exit
+    }'
+}
+
+main "$@"

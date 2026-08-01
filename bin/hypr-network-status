@@ -1,28 +1,36 @@
 #!/usr/bin/env python3
+"""Network status module for Waybar."""
 import json
-import subprocess
 import os
+import subprocess
 import time
 
 CACHE_FILE = "/tmp/hypr-pubip.cache"
 
+# pylint: disable=broad-except,invalid-name
+
+
 def get_public_ip():
+    """Fetches the public IP address, caching it for 1 hour."""
     # Check cache first
     if os.path.exists(CACHE_FILE):
         try:
             mtime = os.path.getmtime(CACHE_FILE)
             if time.time() - mtime < 3600:
-                with open(CACHE_FILE, 'r') as f:
+                with open(CACHE_FILE, 'r', encoding='utf-8') as f:
                     return f.read().strip()
         except Exception:
             pass
 
     # Fetch new IP
     try:
-        result = subprocess.run(["curl", "-s", "--max-time", "5", "https://api.ipify.org"], capture_output=True, text=True)
+        result = subprocess.run(
+            ["curl", "-s", "--max-time", "5", "https://api.ipify.org"],
+            capture_output=True, text=True, check=False
+        )
         ip = result.stdout.strip()
         if ip:
-            with open(CACHE_FILE, 'w') as f:
+            with open(CACHE_FILE, 'w', encoding='utf-8') as f:
                 f.write(ip)
             return ip
     except Exception:
@@ -30,20 +38,28 @@ def get_public_ip():
 
     return "Unknown"
 
+
+# pylint: disable=too-many-branches
 def get_network_info():
+    """Gets local network info (interface, IP, wifi strength)."""
     # Use ip link to find default interface or similar
     try:
         # Get active interface via route
-        route = subprocess.run(["ip", "route", "get", "1.1.1.1"], capture_output=True, text=True).stdout
-        if "dev" not in route:
+        route_cmd = subprocess.run(
+            ["ip", "route", "get", "1.1.1.1"], capture_output=True, text=True, check=False
+        )
+        if "dev" not in route_cmd.stdout:
             return {"status": "disconnected", "icon": "󰖪", "tooltip": "Disconnected"}
 
-        interface = route.split("dev")[1].split()[0]
+        interface = route_cmd.stdout.split("dev")[1].split()[0]
 
         # Get IP address
         ip_addr = "Unknown"
-        ip_cmd = subprocess.run(["ip", "-4", "addr", "show", interface], capture_output=True, text=True).stdout
-        for line in ip_cmd.split('\n'):
+        ip_cmd = subprocess.run(
+            ["ip", "-4", "addr", "show", interface],
+            capture_output=True, text=True, check=False
+        )
+        for line in ip_cmd.stdout.split('\n'):
             if "inet" in line:
                 ip_addr = line.split()[1].split('/')[0]
                 break
@@ -53,11 +69,14 @@ def get_network_info():
 
         if is_wireless:
             try:
-                iw = subprocess.run(["iwgetid", "-r"], capture_output=True, text=True).stdout.strip()
+                iw = subprocess.run(
+                    ["iwgetid", "-r"], capture_output=True, text=True, check=False
+                ).stdout.strip()
                 ssid = iw if iw else "Unknown"
+                quality = 0
 
                 # Signal strength
-                with open(f"/proc/net/wireless", 'r') as f:
+                with open("/proc/net/wireless", 'r', encoding='utf-8') as f:
                     lines = f.readlines()
                     for line in lines:
                         if interface in line:
@@ -66,18 +85,26 @@ def get_network_info():
                             # usually 3rd field is link quality
                             quality = float(parts[2].replace('.', ''))
                             break
-                    else:
-                        quality = 0
 
                 # Map quality to icon
-                if quality > 80: icon = "󰤨"
-                elif quality > 60: icon = "󰤥"
-                elif quality > 40: icon = "󰤢"
-                elif quality > 20: icon = "󰤟"
-                else: icon = "󰤯"
+                if quality > 80:
+                    icon = "󰤨"
+                elif quality > 60:
+                    icon = "󰤥"
+                elif quality > 40:
+                    icon = "󰤢"
+                elif quality > 20:
+                    icon = "󰤟"
+                else:
+                    icon = "󰤯"
 
                 status = "wifi"
-                tooltip = f"Interface: {interface}\nSSID: {ssid}\nIP: {ip_addr}\nSignal: {quality}%"
+                tooltip = (
+                    f"Interface: {interface}\n"
+                    f"SSID: {ssid}\n"
+                    f"IP: {ip_addr}\n"
+                    f"Signal: {quality}%"
+                )
             except Exception:
                 status = "wifi"
                 icon = "󰤨"
@@ -92,7 +119,9 @@ def get_network_info():
     except Exception as e:
         return {"status": "disconnected", "icon": "󰖪", "tooltip": f"Error: {e}"}
 
+
 def main():
+    """Main function."""
     net_info = get_network_info()
     pub_ip = get_public_ip()
 
@@ -107,6 +136,7 @@ def main():
     }
 
     print(json.dumps(output))
+
 
 if __name__ == "__main__":
     main()

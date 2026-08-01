@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Hyprland Theme Configuration",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "author": { "type": "string" },
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "gtk": {
+      "type": "object"
+    },
+    "cursor": {
+      "type": "object"
+    },
+    "input": {
+      "type": "object"
+    },
+    "general": {
+      "type": "object"
+    },
+    "decoration": {
+      "type": "object"
+    },
+    "animations": {
+      "type": "object"
+    },
+    "layout": {
+      "type": "object"
+    },
+    "fonts": {
+      "type": "object"
+    },
+    "hypr": {
+      "type": "object"
+    },
+    "colors": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "keybindings": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "monitors": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "alacritty": { "type": "object" },
+    "kitty": { "type": "object" },
+    "ghostty": { "type": "object" },
+    "mako": { "type": "object" },
+    "swayosd": { "type": "object" },
+    "walker": { "type": "object" },
+    "voxtype": { "type": "object" },
+    "plugins": {
+      "type": "object",
+      "properties": {
+        "hyprglass": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "repository": { "type": "string" },
+            "glass_opacity": { "type": "number" },
+            "blur_strength": { "type": "number" },
+            "blur_iterations": { "type": "integer" },
+            "refraction_strength": { "type": "number" },
+            "chromatic_aberration": { "type": "number" },
+            "fresnel_strength": { "type": "number" },
+            "specular_strength": { "type": "number" },
+            "edge_thickness": { "type": "number" },
+            "tint_color": { "type": "string" },
+            "brightness": { "type": "number" },
+            "contrast": { "type": "number" },
+            "manage_window_blur": { "type": "boolean" },
+            "layer_waybar": { "type": "boolean" },
+            "layer_walker": { "type": "boolean" },
+            "layer_mako": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "modules": { "type": "object" }
+  },
+  "additionalProperties": true
+}

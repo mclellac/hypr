@@ -1,0 +1,9 @@
+@define-color background-color #24333a;
+@define-color label #b3fff9;
+@define-color border-color #2af7dc;
+@define-color progress #2af7dc;
+@define-color image #2af7dc;
+
+window {
+    border-radius: {{ theme.layout.rounding }}px;
+}

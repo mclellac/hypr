@@ -1,0 +1,270 @@
+{
+    // "include": ["~/.config/waybar/user.jsonc"],
+    "layer": "top",
+    "height": {{ theme.modules.waybar.height | default(30) }},
+    "position": "{{ theme.modules.waybar.position | default("top") }}",
+    "margin-top": {{ theme.modules.waybar.margin_top | default(0) }},
+    "margin-bottom": {{ theme.modules.waybar.margin_bottom | default(0) }},
+    "margin-left": {{ theme.modules.waybar.margin_left | default(0) }},
+    "margin-right": {{ theme.modules.waybar.margin_right | default(0) }},
+    "spacing": {{ theme.modules.waybar.spacing | default(0) }},
+    "modules-left": {{ theme.modules.waybar.left | default(["custom/hypr", "hyprland/workspaces"]) | tojson }},
+    "modules-center": {{ theme.modules.waybar.center | default(["hyprland/submap", "group/datetime"]) | tojson }},
+    "modules-right": {{ theme.modules.waybar.right | default(["custom/update", "privacy", "group/hardware", "custom/playerctl", "tray", "custom/clipboard", "custom/notifications", "custom/power"]) | tojson }},
+
+    // --- Hardware Group ---
+    "group/hardware": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/cpu",
+            "custom/memory",
+            "custom/disk",
+            {%- if not is_vm %}
+            "custom/temperature",
+            {%- endif %}
+            {%- if has_backlight %}
+            "backlight",
+            {%- endif %}
+            "custom/audio",
+            {%- if has_battery %}
+            "battery",
+            {%- endif %}
+            "custom/voxtype",
+            "custom/network"
+            {%- if not is_vm %}
+            ,"bluetooth"
+            {%- endif %}
+        ]
+    },
+    // --- Standard Modules ---
+    {%- if not is_vm %}
+    "bluetooth": {
+        "format": " {status}",
+        "format-disabled": "",
+        "format-off": "",
+        "format-connected": " {device_alias}",
+        "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "on-click": "blueman-manager"
+    },
+    {% endif %}
+    // --- Custom Modules ---
+    "custom/voxtype": {
+        "exec": "{{ bin('hypr-voxtype-status') }}",
+        "return-type": "json",
+        "format": "{}",
+        "tooltip": true,
+        "on-click": "voxtype record toggle",
+        "on-click-right": "{{ bin('hypr-voxtype-config') }}",
+        "on-click-middle": "{{ bin('hypr-voxtype-model') }}"
+    },
+    "custom/pubip": {
+        "exec": "{{ bin('hypr-pubip') }}",
+        "interval": 3600,
+        "format": "{}",
+        "return-type": "json"
+    },
+    // --- Date/Time Group ---
+    "group/datetime": {
+        "orientation": "horizontal",
+        "modules": [
+            "clock",
+            "custom/weather"
+        ]
+    },
+    "custom/hypr": {
+        "class": "hypr",
+        "format": "󰚌 ",
+        "on-click": "{{ bin('hypr-menu') }}",
+        "tooltip-format": "Hypr Menu\n\nSuper + Alt + Space"
+    },
+    "hyprland/workspaces": {
+        "active-only": {{ theme.modules.waybar.workspaces.active_only | default(false) | tojson }},
+        "all-outputs": {{ theme.modules.waybar.workspaces.all_outputs | default(true) | tojson }},
+        "format": "{{ theme.modules.waybar.workspaces.format | default('{icon}') }}",
+        "on-scroll-up": "hyprctl dispatch workspace m+1",
+        "on-scroll-down": "hyprctl dispatch workspace m-1",
+        "show-special": {{ theme.modules.waybar.workspaces.show_special | default(false) | tojson }},
+        "sort-by-number": true,
+        "format-icons": {{ theme.modules.waybar.workspaces.icons | default({
+            "1": "󰅬 SHELL",
+            "2": " NET",
+            "3": " CODE",
+            "4": " COMMS",
+            "5": "󰊖 PLAY",
+            "6": "󰎞 NOTES",
+            "7": " FILES",
+            "8": "󰒃 SEC",
+            "9": " MEDIA"
+        }) | tojson }},
+        "persistent-workspaces": {{ theme.modules.waybar.workspaces.persistent | default({
+            "*": 6
+        }) | tojson }}
+    },
+    "battery": {
+        "interval": 30,
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format-charging": "󰂄 {capacity}%",
+        "format": "{icon} {capacity}%",
+        "format-icons": [
+            "󱃍",
+            "󰁺",
+            "󰁼",
+            "󰁽",
+            "󰁾",
+            "󰁿",
+            "󰂀",
+            "󰂁",
+            "󰂂",
+            "󰁹"
+        ],
+        "tooltip": true,
+        "tooltip-format": "{timeTo}\nPower: {power}W"
+    },
+    "clock": {
+        "interval": 60,
+        "format": "{:%d %b %Y %I:%M %p}",
+        "tooltip": true,
+        "tooltip-format": "<tt>{calendar}</tt>"
+    },
+    "custom/cpu": {
+        "exec": "{{ bin('hypr-waybar-cpu') }}",
+        "return-type": "json",
+        "interval": 10,
+        "on-click": "{{ bin('hypr-exec') }} btop"
+    },
+    "custom/memory": {
+        "exec": "{{ bin('hypr-waybar-memory') }}",
+        "return-type": "json",
+        "interval": 10,
+        "on-click": "{{ bin('hypr-exec') }} btop"
+    },
+    "custom/disk": {
+        "exec": "{{ bin('hypr-waybar-disk') }}",
+        "return-type": "json",
+        "interval": 30,
+        "on-click": "{{ bin('hypr-exec') }} btop"
+    },
+    "custom/network": {
+        "exec": "{{ bin('hypr-network-status') }}",
+        "return-type": "json",
+        "format": "{}",
+        "interval": 5,
+        "tooltip": true,
+        "on-click": "{{ bin('hypr-exec') }} nmtui"
+    },
+    "hyprland/submap": {
+        "format": "<span style=\"italic\">{}</span>",
+        "tooltip": false
+    },
+    "backlight": {
+        "format": "{icon} {percent}%",
+        "format-icons": [
+            "󰃞",
+            "󰃟",
+            "󰃠"
+        ]
+    },
+    "custom/audio": {
+        "exec": "{{ bin('hypr-audio-status') }}",
+        "return-type": "json",
+        "format": "{}",
+        "interval": 1,
+        "on-click": "alacritty --class=Wiremix -e wiremix",
+        "on-click-right": "pamixer -t",
+        "on-scroll-up": "pamixer -i 5",
+        "on-scroll-down": "pamixer -d 5",
+        "tooltip": true,
+    },
+    {%- if not is_vm %}
+    "custom/temperature": {
+        "exec": "{{ bin('hypr-waybar-temperature') }}",
+        "return-type": "json",
+        "interval": 5,
+        "on-click": "{{ bin('hypr-exec') }} watch sensors"
+    },
+    {%- endif %}
+    "tray": {
+        "icon-size": 15,
+        "spacing": 5
+    },
+    "custom/playerctl": {
+        "exec": "playerctl -a metadata --format '{\"text\": \"{% raw %}{{status}}{% endraw %}\", \"alt\": \"{% raw %}{{status}}{% endraw %}\", \"class\": \"{% raw %}{{status}}{% endraw %}\"}' --follow",
+        "return-type": "json",
+        "format": "{icon}",
+        "format-icons": {
+            "Playing": "<span>󰎆</span>",
+            "Paused": ""
+        },
+        "on-click": "playerctl play-pause",
+        "max-length": 10
+    },
+    "custom/clipboard": {
+        "format": "{}",
+        "interval": 5,
+        "return-type": "json",
+        "on-click": "hypr-launch-walker -m clipboard",
+        "on-click-middle": "{{ bin('hypr-clipboard-clear') }}",
+        "exec": "{{ bin('hypr-clipboard-status') }}",
+        "exec-if": "[ -x \"$(command -v cliphist)\" ] && [ $(cliphist list | wc -l) -gt 0 ]",
+        "signal": 9
+    },
+    "custom/notifications": {
+        "format": "{}",
+        "exec": "{{ bin('hypr-notification-status') }}",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 10,
+        "on-click": "{{ bin('hypr-notification-history') }}",
+        "on-click-middle": "{{ bin('hypr-notification-clear') }}",
+        "tooltip": true,
+    },
+    "custom/update": {
+        "hide-empty-text": true,
+        "class": "update",
+        "exec": "{{ bin('arch-update') }}",
+        "format": "{}",
+        "on-click": "{{ bin('hypr-exec') }} {{ bin('hypr-update-system-pkgs') }}",
+        "return-type": "json",
+        "signal": 8,
+        "interval": 3600
+    },
+    "custom/weather": {
+        "class": "weather",
+        "exec": "{{ bin('hypr-weather') }}",
+        "return-type": "json",
+        "format": "{}",
+        "interval": 1200,
+        "tooltip": true,
+    },
+    "privacy": {
+        "icon-spacing": 4,
+        "icon-size": 21,
+        "transition-duration": 250,
+        "modules": [
+            "screenshare",
+            "audio-in"
+        ],
+        "modules-icons": {
+            "screenshare": "󰹑",
+            "audio-in": "󰍬"
+        }
+    },
+    "custom/power": {
+        "format": "⏻",
+        "on-click": "{{ bin('hypr-power-menu') }}",
+        "tooltip": true,
+        "tooltip-format": "Power Menu"
+    }
+    {%- if theme.modules.waybar.config %}
+    ,
+    {%- for name, config in theme.modules.waybar.config.items() %}
+    "{{ name }}": {{ config | tojson }}{% if not loop.last %},{% endif %}
+    {%- endfor %}
+    {%- endif %}
+}

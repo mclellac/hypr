@@ -1,0 +1,31 @@
+#!/bin/bash
+set -euo pipefail
+# Toggles the window gaps globally between no gaps and the default.
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    if hypr-state clear no_gaps; then
+        notify-send -t 2000 "Window Gaps" "Restored\nRe-enabled layout gaps and borders."
+    else
+        hypr-state set no_gaps
+        notify-send -t 2000 "Window Gaps" "Disabled\nHidden all gaps and borders."
+    fi
+
+    # Regenerate configuration to apply the new state
+    if command -v hypr-theme-templater >/dev/null 2>&1; then
+        hypr-theme-templater
+    else
+        "$(dirname "$0")/hypr-theme-templater"
+    fi
+}
+
+main "$@"

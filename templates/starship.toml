@@ -1,0 +1,209 @@
+{% from "partials/colors.j2" import get_color %}
+# Starship config file
+# Dependencies:
+# - 'kubectl' or 'oc' CLI must be installed and configured
+# - 'jq' is required for JSON parsing of kubeconfig user info
+
+"$schema" = "https://starship.rs/config-schema.json"
+
+right_format = ""
+continuation_prompt = "[∙](bright-black) "
+scan_timeout = 30
+command_timeout = 3000
+follow_symlinks = true
+
+# The $custom variable will include any enabled custom modules (like openshift if configured and enabled)
+format = """$directory$python$golang$lua$java$julia$nodejs$nim$rust$scala$c$git_branch$git_status$docker_context$aws$env_var$gcloud$azure$helm$custom$line_break$character"""
+
+[character]
+format = "$symbol "
+success_symbol = "[❯](bold {{ get_color('primary', '#b0bf1a')  }})"
+error_symbol = "[❯](bold {{ get_color('alert', '#ae4256')  }})"
+vimcmd_symbol = "[❮](bold {{ get_color('primary', '#b0bf1a')  }})"
+vimcmd_visual_symbol = "[❮](bold {{ get_color('warning', '#ffea00')  }})"
+vimcmd_replace_symbol = "[❮](bold {{ get_color('color13', '#ae4256')  }})"
+vimcmd_replace_one_symbol = "[❮](bold {{ get_color('color13', '#ae4256')  }})"
+
+[username]
+disabled = true
+
+[directory]
+format = "[$path]($style) "
+style = "bold {{ get_color('color4', '#00bfff')  }}"
+truncation_length = 12
+truncation_symbol = "…/"
+read_only = " 󰌾"
+
+[directory.substitutions]
+Documents = "󰈙 "
+Downloads = " "
+Music = "󰝚 "
+Pictures = " "
+"~/Projects/src/github.com" = " "
+"~/Projects/src/gitlab.nm.cbc.ca" = ""
+"~/Projects/src/bitbucket.org" = ""
+
+[fill]
+style = "{{ get_color('selection_bg', '#066c94')  }}"
+symbol = " "
+
+[git_branch]
+format = "on [$symbol$branch(:$remote_branch)]($style) "
+symbol = " "
+style = "bold {{ get_color('color13', '#bd5eff')  }}"
+
+[git_status]
+style = "bold {{ get_color('alert', '#ae4256')  }}"
+format = "([$all_status$ahead_behind]($style) )"
+disabled = true
+
+[custom.openshift]
+disabled = true
+description = "OpenShift cluster friendly name and username"
+command = """
+CONTEXT=$(kubectl config current-context 2>/dev/null)
+if [ -z "$CONTEXT" ]; then exit 0; fi
+USER=$(kubectl config view --minify -o json 2>/dev/null | jq -r '.users[0].name // empty' | cut -d/ -f1)
+if [ -z "$USER" ]; then exit 0; fi
+FRIENDLY=""
+case "$CONTEXT" in
+  *api-ocp-int-nm-cbc-ca:6443*) FRIENDLY="OpenShift Internal" ;;
+  *api-ocp-nm-cbc-ca:6443*)      FRIENDLY="OpenShift Prod" ;;
+  *)                             FRIENDLY="$CONTEXT" ;;
+esac
+echo "$FRIENDLY ($USER)"
+"""
+when = "command -v oc &>/dev/null && test -f ~/.kube/config && grep -q 'token: ' ~/.kube/config"
+format = '[$symbol$output]($style) '
+symbol = " "
+style = "bold {{ get_color('primary', '#b0bf1a')  }}"
+
+[kubernetes]
+disabled = true
+
+[c]
+style = "bold {{ get_color('color14', '#00FF7F')  }}"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[golang]
+style = "bold {{ get_color('color14', '#00FF7F')  }}"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[lua]
+format = "via [$symbol($version )]($style)"
+symbol = " "
+style = "bold {{ get_color('color13', '#bd5eff')  }}"
+
+[java]
+style = "bold {{ get_color('color9', '#ff5c57')  }}"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[julia]
+style = "bold {{ get_color('color13', '#bd5eff')  }}"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[nodejs]
+style = "bold {{ get_color('color10', '#B0BF1A')  }}"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[nim]
+style = "bold {{ get_color('color10', '#B0BF1A')  }}"
+format = "[$symbol$version]($style) "
+symbol = "󰆥 "
+
+[rust]
+style = "bold {{ get_color('color9', '#ff5c57')  }}"
+format = "[$symbol$version]($style) "
+symbol = "󱘗 "
+
+[scala]
+style = "bold {{ get_color('color1', '#AE4256')  }}"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[python]
+style = "bold {{ get_color('color10', '#B0BF1A')  }}"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[docker_context]
+format = "[$symbol $context]($style)"
+symbol = " "
+style = "bold {{ get_color('color12', '#00bfff')  }}"
+
+[aws]
+format = 'on [$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
+symbol = "  "
+style = "bold {{ get_color('warning', '#ffea00')  }}"
+disabled = false
+expiration_symbol = "X"
+force_display = false
+
+[gcloud]
+format = 'on [$symbol$account(@$domain)(\($region\))]($style) '
+symbol = "󱇶 Google Cloud"
+style = "bold {{ get_color('color9', '#ff5c57')  }}"
+disabled = false
+detect_env_vars = ["CLOUDSDK_ACTIVE_CONFIG_NAME"]
+
+[azure]
+format = "on [$symbol($subscription)]($style) "
+symbol = " "
+style = "bold {{ get_color('color12', '#00bfff')  }}"
+disabled = false
+
+[helm]
+format = "[$symbol $release]($style)"
+symbol = "⎈ "
+style = "bold {{ get_color('alert', '#ae4256')  }}"
+disabled = false
+
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+AlmaLinux = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Kali = " "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+RockyLinux = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Void = " "
+Windows = "󰍲 "

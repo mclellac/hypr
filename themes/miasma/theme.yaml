@@ -1,0 +1,61 @@
+name: Miasma
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#222222'
+  foreground: '#c2c2b0'
+  cursor: '#c7c7c7'
+  cursor_text: '#222222'
+  selection_bg: '#78824b'
+  selection_fg: '#c2c2b0'
+  primary: '#78824b'
+  secondary: '#78824b'
+  alert: '#685742'
+  warning: '#b36d43'
+  success: '#5f875f'
+  color0: '#000000'
+  color1: '#685742'
+  color2: '#5f875f'
+  color3: '#b36d43'
+  color4: '#78824b'
+  color5: '#bb7744'
+  color6: '#c9a554'
+  color7: '#d7c483'
+  color8: '#666666'
+  color9: '#685742'
+  color10: '#5f875f'
+  color11: '#b36d43'
+  color12: '#78824b'
+  color13: '#bb7744'
+  color14: '#c9a554'
+  color15: '#d7c483'
+  accent: '#78824b'
+layout:
+  active_border: '#78824bff'
+  inactive_border: '#000000ff'
+  groupbar_text_color: '#c2c2b0'
+  group_border_active: '#78824b'
+  group_border_inactive: '#000000'
+  group_border_locked_active: '#bb7744'
+  group_border_locked_inactive: '#666666'
+  groupbar_col_active: '#78824b'
+  groupbar_col_inactive: '#000000'
+  groupbar_col_locked_active: '#bb7744'
+  groupbar_col_locked_inactive: '#666666'
+  nogroup_border: '#000000'
+  nogroup_border_active: '#78824b'
+  glow_color: '#78824bee'
+  shadow_color: '#2222227b'
+  animation_style: classic
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: green
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(0, 0, 0, 0.53)
+  style:
+    size: 16

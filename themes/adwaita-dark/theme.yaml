@@ -1,0 +1,64 @@
+name: Adwaita Dark
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#1c1c1c'
+  foreground: '#deddda'
+  cursor: '#deddda'
+  cursor_text: '#1c1c1c'
+  selection_bg: '#454545'
+  selection_fg: '#deddda'
+  primary: '#00e5ff'
+  secondary: '#00e5ff'
+  alert: '#ff4444'
+  warning: '#ffcc00'
+  success: '#00ffcc'
+  color0: '#464646'
+  color1: '#ed333b'
+  color2: '#57e389'
+  color3: '#ff7800'
+  color4: '#62a0ea'
+  color5: '#9141ac'
+  color6: '#5bc8af'
+  color7: '#deddda'
+  color8: '#9a9996'
+  color9: '#f66151'
+  color10: '#8ff0a4'
+  color11: '#ffa348'
+  color12: '#99c1f1'
+  color13: '#dc8add'
+  color14: '#93ddc2'
+  color15: '#f6f5f4'
+  accent: '#78aeed'
+  url_color: '#64a6f4'
+layout:
+  active_border: rgba(78aeedff)
+  inactive_border: rgba(1e293bff)
+  groupbar_text_color: '#deddda'
+  group_border_active: '#62a0ea'
+  group_border_inactive: '#464646'
+  group_border_locked_active: '#9141ac'
+  group_border_locked_inactive: '#9a9996'
+  groupbar_col_active: '#62a0ea'
+  groupbar_col_inactive: '#464646'
+  groupbar_col_locked_active: '#9141ac'
+  groupbar_col_locked_inactive: '#9a9996'
+  nogroup_border: rgba(ffffaaff)
+  nogroup_border_active: rgba(ffff00ff)
+  glow_color: rgba(62a0eaee)
+  shadow_color: rgba(1a1a1aee)
+  animation_style: classic
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(80, 80, 80, 0.88)
+  style:
+    size: 16
+nvim:
+  colorscheme: adwaita

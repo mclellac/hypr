@@ -1,8 +1,16 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Creates a .desktop file for launching a web application, including a custom icon.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Gathers web application details from the user via interactive prompts.
@@ -14,13 +22,13 @@ set -euo pipefail
 #   Exports the gathered details as global variables.
 #######################################
 get_webapp_details_interactive() {
-  echo -e "\e[32mLet's create a new web app you can start with the app launcher.\n\e[0m"
-  export APP_NAME
-  APP_NAME=$(gum input --prompt "Name> " --placeholder "My favorite web app")
-  export APP_URL
-  APP_URL=$(gum input --prompt "URL> " --placeholder "https://example.com")
-  export ICON_URL
-  ICON_URL=$(gum input --prompt "Icon URL> " --placeholder "See https://dashboardicons.com (must use PNG!)")
+    echo -e "\e[32mLet's create a new web app you can start with the app launcher.\n\e[0m"
+    export APP_NAME
+    APP_NAME=$(gum input --prompt "Name> " --placeholder "My favorite web app")
+    export APP_URL
+    APP_URL=$(gum input --prompt "URL> " --placeholder "https://example.com")
+    export ICON_URL
+    ICON_URL=$(gum input --prompt "Icon URL> " --placeholder "See https://dashboardicons.com (must use PNG!)")
 }
 
 #######################################
@@ -35,49 +43,58 @@ get_webapp_details_interactive() {
 #   Exits with an error if required information is missing or icon download fails.
 #######################################
 main() {
-  if [[ "$#" -ne 3 ]]; then
-    get_webapp_details_interactive
-  else
-    APP_NAME="$1"
-    APP_URL="$2"
-    ICON_URL="$3"
-  fi
+    check_help "$@"
+    local silent=false
+    if [[ "$#" -ne 3 ]]; then
+        get_webapp_details_interactive
+    else
+        APP_NAME="$1"
+        APP_URL="$2"
+        ICON_URL="$3"
+        silent=true
+    fi
 
-  if [[ -z "${APP_NAME}" || -z "${APP_URL}" || -z "${ICON_URL}" ]]; then
-    echo "Error: Application name, URL, and icon URL are required." >&2
-    exit 1
-  fi
+    if [[ -z "${APP_NAME}" || -z "${APP_URL}" || -z "${ICON_URL}" ]]; then
+        echo "Error: Application name, URL, and icon URL are required." >&2
+        exit 1
+    fi
 
-  local icon_dir="${HOME}/.local/share/applications/icons"
-  local desktop_file="${HOME}/.local/share/applications/${APP_NAME}.desktop"
-  local icon_path="${icon_dir}/${APP_NAME}.png"
+    local safe_name
+    safe_name=$(echo "${APP_NAME}" | tr ' ' '-' | tr '[:upper:]' '[:lower:]')
+    local icon_dir="${HOME}/.local/share/applications/icons"
+    local desktop_file="${HOME}/.local/share/applications/${safe_name}.desktop"
+    local icon_path="${icon_dir}/${safe_name}.png"
 
-  mkdir -p "${icon_dir}"
+    mkdir -p "${icon_dir}"
 
-  echo "Downloading icon..."
-  if ! curl -sL -o "${icon_path}" "${ICON_URL}"; then
-    echo "Error: Failed to download icon from ${ICON_URL}" >&2
-    return 1
-  fi
+    if [[ "${silent}" == "false" ]]; then
+        log_info "Downloading icon..."
+    fi
+    if ! curl -sL -o "${icon_path}" "${ICON_URL}"; then
+        echo "Error: Failed to download icon from ${ICON_URL}" >&2
+        return 1
+    fi
 
-  echo "Creating .desktop file..."
-  cat >"${desktop_file}" <<EOF
+    if [[ "${silent}" == "false" ]]; then
+        log_info "Creating .desktop file..."
+    fi
+    cat >"${desktop_file}" <<EOF
 [Desktop Entry]
 Version=1.0
 Name=${APP_NAME}
 Comment=${APP_NAME}
-Exec=hypr-launch-webapp ${APP_URL}
+Exec=${HYPR_PATH}/bin/hypr-launch-webapp ${APP_URL}
 Terminal=false
 Type=Application
 Icon=${icon_path}
 StartupNotify=true
 EOF
 
-  chmod +x "${desktop_file}"
+    chmod +x "${desktop_file}"
 
-  if [[ "$#" -ne 3 ]]; then
-    echo -e "\nYou can now find ${APP_NAME} using the app launcher (SUPER + SPACE)\n"
-  fi
+    if [[ "$#" -ne 3 ]]; then
+        echo -e "\nYou can now find ${APP_NAME} using the app launcher (SUPER + SPACE)\n"
+    fi
 }
 
 main "$@"

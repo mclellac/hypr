@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="AdwPreferencesGroup" id="kb_group">
+    <property name="title">Keyboard</property>
+    <child>
+      <object class="AdwComboRow" id="main_mod">
+        <property name="title">Main Modifier</property>
+        <property name="subtitle">Key used for most shortcuts</property>
+        <property name="model">
+          <object class="GtkStringList">
+            <items>
+              <item>SUPER</item>
+              <item>ALT</item>
+            </items>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwEntryRow" id="kb_layout">
+        <property name="title">Layout (e.g., us, de)</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwEntryRow" id="kb_variant">
+        <property name="title">Variant (e.g., dvorak)</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwEntryRow" id="kb_model">
+        <property name="title">Model (e.g., pc105)</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwEntryRow" id="kb_options">
+        <property name="title">Options (e.g., compose:caps)</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwEntryRow" id="kb_rules">
+        <property name="title">Rules (e.g., evdev)</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSwitchRow" id="solaar_enabled_row">
+        <property name="title">Enable Solaar</property>
+        <property name="subtitle">Launch Solaar (Logitech manager) on start</property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="mouse_group">
+    <property name="title">Mouse</property>
+    <child>
+      <object class="AdwComboRow" id="accel_profile">
+        <property name="title">Acceleration Profile</property>
+        <property name="model">
+          <object class="GtkStringList">
+            <items>
+              <item>adaptive</item>
+              <item>flat</item>
+            </items>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="sensitivity">
+        <property name="title">Sensitivity</property>
+        <property name="subtitle">Mouse cursor sensitivity</property>
+        <property name="digits">2</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">-1.0</property>
+            <property name="upper">1.0</property>
+            <property name="step-increment">0.1</property>
+            <property name="value">0.0</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="scroll_factor">
+        <property name="title">Scroll Factor</property>
+        <property name="subtitle">Mouse scroll speed multiplier</property>
+        <property name="digits">2</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">0.1</property>
+            <property name="upper">10.0</property>
+            <property name="step-increment">0.1</property>
+            <property name="value">1.0</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwComboRow" id="follow_mouse">
+        <property name="title">Follow Mouse</property>
+        <property name="subtitle">Window focus behavior</property>
+        <property name="model">
+          <object class="GtkStringList">
+            <items>
+              <item>0 (None)</item>
+              <item>1 (Strict)</item>
+              <item>2 (Loose)</item>
+              <item>3 (Loose w/ Click)</item>
+            </items>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="touchpad_group">
+    <property name="title">Touchpad</property>
+    <child>
+      <object class="AdwSwitchRow" id="touchpad_enabled">
+        <property name="title">Touchpad Enabled</property>
+        <property name="subtitle">Quickly enable or disable the touchpad</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSwitchRow" id="natural_scroll">
+        <property name="title">Natural Scroll</property>
+        <property name="subtitle">Invert scroll direction</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="touchpad_scroll_factor">
+        <property name="title">Scroll Factor</property>
+        <property name="subtitle">Touchpad scroll speed multiplier</property>
+        <property name="digits">2</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">0.1</property>
+            <property name="upper">10.0</property>
+            <property name="step-increment">0.1</property>
+            <property name="value">1.0</property>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="tools_group">
+    <property name="title">Tools</property>
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">Keybinding Editor</property>
+        <property name="subtitle">Manage Hyprland shortcuts</property>
+        <property name="activatable-widget">kb_editor_btn</property>
+        <child>
+          <object class="GtkButton" id="kb_editor_btn">
+            <property name="label">Open</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">XCompose Editor</property>
+        <property name="subtitle">Manage custom multi-key sequences</property>
+        <property name="activatable-widget">xcompose_btn</property>
+        <child>
+          <object class="GtkButton" id="xcompose_btn">
+            <property name="label">Open</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

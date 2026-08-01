@@ -1,8 +1,15 @@
 #!/bin/bash
-#
-# Refreshes all core Hyprland configuration files.
-
 set -euo pipefail
+#
+# Refreshes all core Hyprland configuration files (Lua-based).
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Main function to refresh the Hyprland configuration files.
@@ -14,11 +21,15 @@ set -euo pipefail
 #   None
 #######################################
 main() {
-  hypr-refresh-config hypr/autostart.conf
-  hypr-refresh-config hypr/bindings.conf
-  hypr-refresh-config hypr/envs.conf
-  hypr-refresh-config hypr/input.conf
-  hypr-refresh-config hypr/hyprland.conf
+    check_help "$@"
+    hypr-refresh-config hypr/autostart.lua
+    hypr-refresh-config hypr/bindings.lua
+    hypr-refresh-config hypr/envs.lua
+    hypr-refresh-config hypr/input.lua
+    hypr-refresh-config hypr/hyprland.lua
+    hypr-refresh-config hypr/looknfeel.lua
+    hypr-refresh-config hypr/monitors.lua
+    hypr-refresh-config hypr/windows.lua
 }
 
-main
+main "$@"

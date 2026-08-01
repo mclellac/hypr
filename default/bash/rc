@@ -1,7 +1,0 @@
-source ~/.local/share/hypr/default/bash/shell
-source ~/.local/share/hypr/default/bash/aliases
-source ~/.local/share/hypr/default/bash/functions
-source ~/.local/share/hypr/default/bash/prompt
-source ~/.local/share/hypr/default/bash/init
-source ~/.local/share/hypr/default/bash/envs
-[[ $- == *i* ]] && bind -f ~/.local/share/hypr/default/bash/inputrc

@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="AdwPreferencesGroup" id="general_layout_group">
+    <property name="title">General</property>
+    <property name="description">General layout settings.</property>
+    <child>
+      <object class="AdwSwitchRow" id="allow_tearing_row">
+        <property name="title">Allow Tearing</property>
+        <property name="subtitle">Allow screen tearing (general:allow_tearing)</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwComboRow" id="layout_name_row">
+        <property name="title">Layout</property>
+        <property name="subtitle">The tiling layout (general:layout)</property>
+        <property name="model">
+          <object class="GtkStringList">
+            <items>
+              <item>dwindle</item>
+              <item>master</item>
+              <item>monocle</item>
+              <item>scrolling</item>
+            </items>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="single_window_aspect_ratio_row">
+        <property name="title">Single Window Aspect Ratio</property>
+        <property name="subtitle">Aspect ratio for single windows (0 to disable)</property>
+        <property name="digits">2</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">0.0</property>
+            <property name="upper">10.0</property>
+            <property name="step-increment">0.1</property>
+            <property name="value">0.0</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="single_window_aspect_ratio_tolerance_row">
+        <property name="title">Aspect Ratio Tolerance</property>
+        <property name="subtitle">Tolerance for the aspect ratio</property>
+        <property name="digits">2</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">0.0</property>
+            <property name="upper">1.0</property>
+            <property name="step-increment">0.01</property>
+            <property name="value">0.0</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwExpanderRow" id="workspace_layouts_row">
+        <property name="title">Per-Workspace Layouts</property>
+        <property name="subtitle">Assign a specific layout per workspace</property>
+        <child>
+          <object class="AdwComboRow" id="ws_layout_1">
+            <property name="title">Workspace 1</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>none</item>
+                  <item>dwindle</item>
+                  <item>master</item>
+                  <item>monocle</item>
+                  <item>scrolling</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="ws_layout_2">
+            <property name="title">Workspace 2</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>none</item>
+                  <item>dwindle</item>
+                  <item>master</item>
+                  <item>monocle</item>
+                  <item>scrolling</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="ws_layout_3">
+            <property name="title">Workspace 3</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>none</item>
+                  <item>dwindle</item>
+                  <item>master</item>
+                  <item>monocle</item>
+                  <item>scrolling</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="ws_layout_4">
+            <property name="title">Workspace 4</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>none</item>
+                  <item>dwindle</item>
+                  <item>master</item>
+                  <item>monocle</item>
+                  <item>scrolling</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="ws_layout_5">
+            <property name="title">Workspace 5</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>none</item>
+                  <item>dwindle</item>
+                  <item>master</item>
+                  <item>monocle</item>
+                  <item>scrolling</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="ws_layout_6">
+            <property name="title">Workspace 6</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>none</item>
+                  <item>dwindle</item>
+                  <item>master</item>
+                  <item>monocle</item>
+                  <item>scrolling</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="ws_layout_7">
+            <property name="title">Workspace 7</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>none</item>
+                  <item>dwindle</item>
+                  <item>master</item>
+                  <item>monocle</item>
+                  <item>scrolling</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="ws_layout_8">
+            <property name="title">Workspace 8</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>none</item>
+                  <item>dwindle</item>
+                  <item>master</item>
+                  <item>monocle</item>
+                  <item>scrolling</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="ws_layout_9">
+            <property name="title">Workspace 9</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>none</item>
+                  <item>dwindle</item>
+                  <item>master</item>
+                  <item>monocle</item>
+                  <item>scrolling</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="ws_layout_10">
+            <property name="title">Workspace 10</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>none</item>
+                  <item>dwindle</item>
+                  <item>master</item>
+                  <item>monocle</item>
+                  <item>scrolling</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="dwindle_group">
+    <property name="title">Dwindle Layout</property>
+    <property name="description">Settings for the Dwindle tiling layout.</property>
+    <child>
+      <object class="AdwSwitchRow" id="preserve_split_row">
+        <property name="title">Preserve Split</property>
+        <property name="subtitle">Preserve split direction (dwindle:preserve_split)</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSwitchRow" id="smart_split_row">
+        <property name="title">Smart Split</property>
+        <property name="subtitle">Better split directions (dwindle:smart_split)</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSwitchRow" id="precise_mouse_move_row">
+        <property name="title">Precise Mouse Move</property>
+        <property name="subtitle">Precise mouse movement (dwindle:precise_mouse_move)</property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="master_group">
+    <property name="title">Master Layout</property>
+    <property name="description">Settings for the Master tiling layout.</property>
+    <child>
+      <object class="AdwComboRow" id="new_status_row">
+        <property name="title">New Window Status</property>
+        <property name="subtitle">Where new windows are added (master:new_status)</property>
+        <property name="model">
+          <object class="GtkStringList">
+            <items>
+              <item>master</item>
+              <item>slave</item>
+              <item>inherit</item>
+            </items>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="mfact_row">
+        <property name="title">Master Factor (mfact)</property>
+        <property name="digits">2</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">0.05</property>
+            <property name="upper">0.95</property>
+            <property name="step-increment">0.05</property>
+            <property name="value">0.55</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwComboRow" id="orientation_row">
+        <property name="title">Orientation</property>
+        <property name="model">
+          <object class="GtkStringList">
+            <items>
+              <item>left</item>
+              <item>right</item>
+              <item>top</item>
+              <item>bottom</item>
+              <item>center</item>
+            </items>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSwitchRow" id="new_on_top_row">
+        <property name="title">New on Top</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwComboRow" id="new_on_active_row">
+        <property name="title">New on Active</property>
+        <property name="model">
+          <object class="GtkStringList">
+            <items>
+              <item>none</item>
+              <item>before</item>
+              <item>after</item>
+            </items>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="groupbar_group">
+    <property name="title">Groupbar</property>
+    <property name="description">Settings for the window groupbar.</property>
+    <child>
+      <object class="AdwSwitchRow" id="groupbar_enabled_row">
+        <property name="title">Enable Groupbar</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSwitchRow" id="groupbar_gradients_row">
+        <property name="title">Enable Gradients</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="groupbar_font_size_row">
+        <property name="title">Font Size</property>
+        <property name="subtitle">Override global size (0 for default)</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">0</property>
+            <property name="lower">0</property>
+            <property name="upper">50</property>
+            <property name="step-increment">1</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="groupbar_height_row">
+        <property name="title">Height</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">1</property>
+            <property name="upper">100</property>
+            <property name="step-increment">1</property>
+            <property name="value">14</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSwitchRow" id="groupbar_stacked_row">
+        <property name="title">Stacked</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSwitchRow" id="groupbar_render_titles_row">
+        <property name="title">Render Titles</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSwitchRow" id="groupbar_scrolling_row">
+        <property name="title">Scrolling</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwActionRow" id="groupbar_text_color_row">
+        <property name="title">Text Color</property>
+        <child type="suffix">
+          <object class="GtkColorDialogButton" id="groupbar_text_color_button">
+            <property name="valign">center</property>
+            <property name="dialog">
+              <object class="GtkColorDialog">
+                <property name="with-alpha">True</property>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="scrolling_group">
+    <property name="title">Scrolling Layout</property>
+    <property name="description">Settings for the Scrolling tiling layout.</property>
+    <child>
+      <object class="AdwSwitchRow" id="scrolling_fullscreen_on_one_column_row">
+        <property name="title">Fullscreen on One Column</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="scrolling_column_width_row">
+        <property name="title">Column Width</property>
+        <property name="digits">2</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">0.05</property>
+            <property name="upper">0.95</property>
+            <property name="step-increment">0.05</property>
+            <property name="value">0.5</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwComboRow" id="scrolling_focus_fit_method_row">
+        <property name="title">Focus Fit Method</property>
+        <property name="model">
+          <object class="GtkStringList">
+            <items>
+              <item>0</item>
+              <item>1</item>
+            </items>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSwitchRow" id="scrolling_follow_focus_row">
+        <property name="title">Follow Focus</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="scrolling_follow_min_visible_row">
+        <property name="title">Follow Min Visible</property>
+        <property name="digits">2</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">0.05</property>
+            <property name="upper">0.95</property>
+            <property name="step-increment">0.05</property>
+            <property name="value">0.4</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwComboRow" id="scrolling_direction_row">
+        <property name="title">Direction</property>
+        <property name="model">
+          <object class="GtkStringList">
+            <items>
+              <item>left</item>
+              <item>right</item>
+              <item>up</item>
+              <item>down</item>
+            </items>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+</interface>

@@ -1,0 +1,64 @@
+name: Material
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#263238'
+  foreground: '#b0bec5'
+  cursor: '#b0bec5'
+  cursor_text: '#263238'
+  selection_bg: '#37474f'
+  selection_fg: '#b0bec5'
+  primary: '#00e5ff'
+  secondary: '#00e5ff'
+  alert: '#ff4444'
+  warning: '#ffcc00'
+  success: '#00ffcc'
+  color0: '#1e272c'
+  color1: '#f07178'
+  color2: '#c3e88d'
+  color3: '#ffcb6b'
+  color4: '#82aaff'
+  color5: '#c792ea'
+  color6: '#89ddff'
+  color7: '#eeffff'
+  color8: '#1e272c'
+  color9: '#f07178'
+  color10: '#c3e88d'
+  color11: '#ffcb6b'
+  color12: '#82aaff'
+  color13: '#c792ea'
+  color14: '#89ddff'
+  color15: '#eeffff'
+  accent: '#009688'
+  url_color: '#82aaff'
+layout:
+  active_border: rgba(009688ff)
+  inactive_border: rgba(2A373Eff)
+  nogroup_border: rgba(2A373Eff)
+  nogroup_border_active: rgba(009688ff)
+  group_border_active: '#82aaff'
+  group_border_inactive: '#1e272c'
+  group_border_locked_active: '#c792ea'
+  group_border_locked_inactive: '#1e272c'
+  groupbar_text_color: '#b0bec5'
+  groupbar_col_active: '#82aaff'
+  groupbar_col_inactive: '#1e272c'
+  groupbar_col_locked_active: '#c792ea'
+  groupbar_col_locked_inactive: '#1e272c'
+  glow_color: rgba(82aaffee)
+  shadow_color: rgba(1a1a1aee)
+  animation_style: fast
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(80, 80, 80, 0.88)
+  style:
+    size: 16
+nvim:
+  colorscheme: material

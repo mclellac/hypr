@@ -1,25 +1,86 @@
 #!/usr/bin/env python3
-import subprocess
+"""Logs notifications to a file."""
 import json
 import os
-import time
 import re
-import sys
+import subprocess
+import time
 
-LOG_FILE = os.path.expanduser("~/.local/share/hypr/notifications.json")
+# pylint: disable=invalid-name
+
+HYPR_PATH = os.environ.get("HYPR_PATH", os.path.expanduser("~/.local/share/hypr"))
+LOG_FILE = os.path.join(HYPR_PATH, "notifications.json")
 MAX_LOGS = 50
 
-def send_waybar_signal():
-    try:
-        # Send SIGRTMIN+10 (44) to waybar
-        subprocess.run(["pkill", "-RTMIN+10", "waybar"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    except Exception:
-        pass
+# List of summaries or keywords that indicate an unimportant notification
+# that should NOT be saved in the history.
+UNIMPORTANT_SUMMARIES = [
+    "Theme Applied",
+    "Gaming Mode",
+    "Window Gaps",
+    "Workspace layout",
+    "Nightlight",
+    "Daylight",
+    "locking computer",
+    "Silenced notifications",
+    "Enabled notifications",
+    "Display scaling",
+    "Controller connected",
+    "Controller disconnected",
+    "Battery level",
+    "Power profile",
+    "Editing config file",
+    "Screenshot captured",
+    "Screen recording",
+]
+
+# List of app names to ignore completely in history
+IGNORE_APPS = [
+    "hypr-toggle",
+    "hypr-theme-set",
+    "swayosd-client",
+    "SwayOSD",
+]
+
+
+def should_log(app_name, summary, body):
+    """Determines if a notification is important enough to log in history."""
+    # Filter by app name
+    if app_name in IGNORE_APPS:
+        return False
+
+    # Filter by summary keywords (case-insensitive)
+    all_text = (summary + " " + body).lower()
+    
+    for keyword in UNIMPORTANT_SUMMARIES:
+        if keyword.lower() in all_text:
+            return False
+
+    # Filter specific hardware/theme noise patterns
+    if "controller" in all_text and ("connected" in all_text or "paired" in all_text):
+        return False
+        
+    if "applied" in all_text and "theme" in all_text:
+        return False
+        
+    if "display" in all_text and "scaling" in all_text:
+        return False
+
+    return True
+
 
 def log_notification(notification):
+    """Logs the given notification to the history file."""
+    app_name = notification.get("app_name", "")
+    summary = notification.get("summary", "")
+    body = notification.get("body", "")
+    
+    if not should_log(app_name, summary, body):
+        return
+
     try:
         if os.path.exists(LOG_FILE):
-            with open(LOG_FILE, 'r') as f:
+            with open(LOG_FILE, 'r', encoding='utf-8') as f:
                 logs = json.load(f)
         else:
             logs = []
@@ -30,97 +91,64 @@ def log_notification(notification):
     logs.insert(0, notification)
     logs = logs[:MAX_LOGS]
 
-    with open(LOG_FILE, 'w') as f:
+    with open(LOG_FILE, 'w', encoding='utf-8') as f:
         json.dump(logs, f, indent=2)
 
-    send_waybar_signal()
+    # Send SIGRTMIN+10 (44) to waybar to refresh the module
+    try:
+        subprocess.run(["pkill", "-RTMIN+10", "waybar"], stderr=subprocess.DEVNULL, check=False)
+    except Exception:  # pylint: disable=broad-except
+        pass
+
 
 def main():
-    # Ensure log directory exists
+    """Main function to listen for notifications."""
     os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
 
-    # Start dbus-monitor
-    # We filter for the Notify method on the interface
-    cmd = ["dbus-monitor", "interface='org.freedesktop.Notifications',member='Notify'"]
+    cmd = ["dbus-monitor", "interface=org.freedesktop.Notifications,member=Notify"]
+    with subprocess.Popen(cmd, stdout=subprocess.PIPE, text=True, bufsize=1) as process:
+        # Regexes
+        re_string = re.compile(r'^\s*string "(.*)"$')
+        re_uint32 = re.compile(r'^\s*uint32 (\d+)$')
 
-    # Use unbuffered output to get logs immediately
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, bufsize=1)
+        current_notif = None
 
-    capturing = False
-    args_count = 0
-    current_notification = {}
+        while True:
+            line = process.stdout.readline()
+            if not line:
+                break
+            line = line.strip()
 
-    # Regexes
-    re_string = re.compile(r'^\s*string "(.*)"$')
-    re_uint32 = re.compile(r'^\s*uint32 (\d+)$')
+            if line.startswith("method call"):
+                # If we had a pending notification that was mostly parsed, we could log it here
+                # But the Notify signature is well-defined.
+                current_notif = {"timestamp": time.time(), "strings": []}
+                continue
+            
+            if current_notif is None:
+                continue
 
-    print(f"Listening for notifications... Logging to {LOG_FILE}")
+            m_str = re_string.match(line)
+            if m_str:
+                val = m_str.group(1).replace('\\"', '"').replace('\\n', '\n')
+                current_notif["strings"].append(val)
 
-    while True:
-        line = process.stdout.readline()
-        if not line:
-            break
+            m_ui = re_uint32.match(line)
+            if m_ui and "replaces_id" not in current_notif:
+                current_notif["replaces_id"] = int(m_ui.group(1))
 
-        line = line.strip()
-
-        if line.startswith("method call"):
-            # Start of a new notification
-            capturing = True
-            args_count = 0
-            current_notification = {"timestamp": time.time()}
-            continue
-
-        if not capturing:
-            continue
-
-        # Parse arguments based on position in signature (susss...)
-
-        # Arg 0: app_name (string)
-        if args_count == 0:
-            m = re_string.match(line)
-            if m:
-                current_notification["app_name"] = m.group(1).replace('\\"', '"')
-                args_count += 1
-            continue
-
-        # Arg 1: replaces_id (uint32)
-        if args_count == 1:
-            m = re_uint32.match(line)
-            if m:
-                current_notification["replaces_id"] = int(m.group(1))
-                args_count += 1
-            continue
-
-        # Arg 2: app_icon (string)
-        if args_count == 2:
-            m = re_string.match(line)
-            if m:
-                current_notification["icon"] = m.group(1).replace('\\"', '"')
-                args_count += 1
-            continue
-
-        # Arg 3: summary (string)
-        if args_count == 3:
-            m = re_string.match(line)
-            if m:
-                current_notification["summary"] = m.group(1).replace('\\"', '"')
-                args_count += 1
-            continue
-
-        # Arg 4: body (string)
-        if args_count == 4:
-            m = re_string.match(line)
-            if m:
-                current_notification["body"] = m.group(1).replace('\\"', '"').replace('\\n', '\n')
-                args_count += 1
-
-                # Log it
-                log_notification(current_notification)
-
-                # Reset capture
-                capturing = False
-                current_notification = {}
-            continue
+            # Once we have enough data, log it
+            # Actually, let's just collect all 4 strings we care about
+            if len(current_notif["strings"]) == 4:
+                notif_to_log = {
+                    "timestamp": current_notif["timestamp"],
+                    "app_name": current_notif["strings"][0],
+                    "icon": current_notif["strings"][1],
+                    "summary": current_notif["strings"][2],
+                    "body": current_notif["strings"][3]
+                }
+                log_notification(notif_to_log)
+                current_notif = None # Done with this one
 
 if __name__ == "__main__":
     main()

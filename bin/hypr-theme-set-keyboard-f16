@@ -1,0 +1,38 @@
+#!/bin/bash
+set -euo pipefail
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    THEME_PATH=$(cat ~/.config/hypr/current_theme_path); FRAMEWORK16_THEME="$THEME_PATH/keyboard.rgb"
+
+    if command -v qmk_hid &>/dev/null && [[ -f $FRAMEWORK16_THEME ]]; then
+      hex=$(cat "$FRAMEWORK16_THEME")
+      hex="${hex#\#}"
+
+      # Convert hex to QMK HSV (0-255 scale) using Python's colorsys
+      read -r h s <<< "$(python3 -c "
+    import colorsys
+    r, g, b = int('$hex'[:2],16)/255, int('$hex'[2:4],16)/255, int('$hex'[4:6],16)/255
+    h, s, v = colorsys.rgb_to_hsv(r, g, b)
+    print(int(h * 255), int(s * 255))
+    ")"
+
+      qmk_hid via --rgb-effect 1 2>/dev/null
+      qmk_hid via --rgb-hue "$h" 2>/dev/null
+      qmk_hid via --rgb-saturation "$s" 2>/dev/null
+      qmk_hid via --rgb-brightness 100 2>/dev/null
+      qmk_hid via --save 2>/dev/null
+    fi
+}
+
+main "$@"

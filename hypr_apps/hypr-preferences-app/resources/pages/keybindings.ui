@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <object class="GtkBox" id="page_content">
+    <property name="orientation">vertical</property>
+    <property name="spacing">12</property>
+    <child>
+      <object class="AdwStatusPage" id="status_page">
+        <property name="title">Keybindings</property>
+        <property name="description">Manage your Hyprland keybindings in the advanced editor.</property>
+        <property name="icon-name">input-keyboard-symbolic</property>
+        <property name="child">
+          <object class="GtkButton" id="open_editor_btn">
+            <property name="label">Open Keybindings Editor</property>
+            <property name="halign">center</property>
+            <style>
+              <class name="pill"/>
+              <class name="suggested-action"/>
+            </style>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+</interface>

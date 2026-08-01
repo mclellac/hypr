@@ -1,0 +1,30 @@
+#!/bin/bash
+set -euo pipefail
+
+# Listen on Hyprland's event socket and recover the internal display whenever
+# a monitor is removed.
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    SOCKET="$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
+
+    socat -U - "UNIX-CONNECT:$SOCKET" | while read -r event; do
+      case "$event" in
+        monitorremoved\>\>*|monitorremovedv2\>\>*)
+          hypr-hw-recover-internal-monitor recover
+          ;;
+      esac
+    done
+}
+
+main "$@"

@@ -1,0 +1,48 @@
+#!/bin/bash
+set -euo pipefail
+# Interface for editing custom XCompose sequences using walker dmenu
+# It creates a simple selection to list or add sequences.
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+
+    XCOMPOSE_FILE="$HOME/.XCompose"
+    CUSTOM_COMPOSE_START="# --- CUSTOM USER SEQUENCES ---"
+
+    if [ ! -f "$XCOMPOSE_FILE" ]; then
+        echo "include \"$HYPR_PATH/templates/xcompose\"" > "$XCOMPOSE_FILE"
+    fi
+
+    if ! grep -q "$CUSTOM_COMPOSE_START" "$XCOMPOSE_FILE"; then
+        echo "" >> "$XCOMPOSE_FILE"
+        echo "$CUSTOM_COMPOSE_START" >> "$XCOMPOSE_FILE"
+    fi
+
+    ACTION=$(echo -e "Add Sequence\nEdit File Manually\nRestart Input Method" | walker --dmenu)
+
+    if [ "$ACTION" = "Add Sequence" ]; then
+        SEQUENCE=$(echo -e "Example: <Multi_key> <a> <b> : \"ab\"" | walker --dmenu --prompt "Enter Compose Sequence:")
+        if [ -n "$SEQUENCE" ] && [ "$SEQUENCE" != "Example: <Multi_key> <a> <b> : \"ab\"" ]; then
+            echo "$SEQUENCE" >> "$XCOMPOSE_FILE"
+            hypr-notification-status "Success" "Added sequence to XCompose"
+            hypr-restart-xcompose
+        fi
+    elif [ "$ACTION" = "Edit File Manually" ]; then
+        kitty -e nvim "$XCOMPOSE_FILE"
+        hypr-restart-xcompose
+    elif [ "$ACTION" = "Restart Input Method" ]; then
+        hypr-restart-xcompose
+    fi
+}
+
+main "$@"

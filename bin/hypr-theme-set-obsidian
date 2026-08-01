@@ -1,0 +1,84 @@
+#!/bin/bash
+#
+# Sync Hypr theme to all Obsidian vaults
+
+set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Syncs the current Hyprland theme colors and fonts to all Obsidian vaults.
+
+Options:
+  -h, --help    Show this help message and exit
+EOF
+}
+
+main() {
+    check_help "$@"
+
+    local theme_state_file="${HOME}/.config/hypr/current_theme_path"
+    local theme_path=""
+    if [[ -f "${theme_state_file}" ]]; then
+      theme_path=$(cat "${theme_state_file}")
+    fi
+
+    local obsidian_theme_source="${HOME}/.config/hypr/obsidian.css"
+
+    [[ -f "${obsidian_theme_source}" ]] || exit 0
+
+    # Determine if we should use dark or light base theme
+    local base_theme="obsidian"
+    if [[ -f "${theme_path}/light.mode" ]]; then
+      base_theme="moonstone" # Obsidian light theme name
+    fi
+
+    jq -r '.vaults | values[].path' ~/.config/obsidian/obsidian.json 2>/dev/null | while read -r vault_path; do
+      [[ -d "${vault_path}/.obsidian" ]] || continue
+
+      local theme_dir="${vault_path}/.obsidian/themes/Hypr"
+      mkdir -p "${theme_dir}"
+
+      # Create manifest if missing
+      if [[ ! -f "${theme_dir}/manifest.json" ]]; then
+        cat >"${theme_dir}/manifest.json" <<'EOF'
+{
+  "name": "Hypr",
+  "version": "1.0.0",
+  "minAppVersion": "0.16.0",
+  "description": "Automatically syncs with your current Hypr system theme colors and fonts",
+  "author": "Hypr",
+  "authorUrl": "https://github.com/mclellac/hypr-refactor"
+}
+EOF
+      fi
+
+      # Copy the rendered CSS
+      cp "${obsidian_theme_source}" "${theme_dir}/theme.css"
+
+      # Force the theme and base mode in appearance.json
+      local appearance_json="${vault_path}/.obsidian/appearance.json"
+      if [[ -f "${appearance_json}" ]]; then
+        # Update existing file
+        local tmp
+        tmp=$(mktemp)
+        jq --arg base "${base_theme}" '.cssTheme = "Hypr" | .theme = $base' "${appearance_json}" > "${tmp}" && mv "${tmp}" "${appearance_json}"
+      else
+        # Create new file
+        echo "{\"cssTheme\": \"Hypr\", \"theme\": \"${base_theme}\"}" > "${appearance_json}"
+      fi
+
+      log_info "Updated Obsidian vault at: ${vault_path} (Mode: ${base_theme})"
+    done
+}
+
+main "$@"

@@ -1,0 +1,61 @@
+name: Ethereal
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#060B1E'
+  foreground: '#ffcead'
+  cursor: '#ffcead'
+  cursor_text: '#060B1E'
+  selection_bg: '#ffcead'
+  selection_fg: '#060B1E'
+  primary: '#7d82d9'
+  secondary: '#7d82d9'
+  alert: '#ED5B5A'
+  warning: '#E9BB4F'
+  success: '#92a593'
+  color0: '#3C486D'
+  color1: '#ED5B5A'
+  color2: '#92a593'
+  color3: '#E9BB4F'
+  color4: '#7d82d9'
+  color5: '#c89dc1'
+  color6: '#a3bfd1'
+  color7: '#F99957'
+  color8: '#6d7db6'
+  color9: '#faaaa9'
+  color10: '#c4cfc4'
+  color11: '#f7dc9c'
+  color12: '#c2c4f0'
+  color13: '#ead7e7'
+  color14: '#dfeaf0'
+  color15: '#ffcead'
+  accent: '#7d82d9'
+layout:
+  active_border: '#7d82d9ff'
+  inactive_border: '#3C486Dff'
+  groupbar_text_color: '#ffcead'
+  group_border_active: '#7d82d9'
+  group_border_inactive: '#3C486D'
+  group_border_locked_active: '#c89dc1'
+  group_border_locked_inactive: '#6d7db6'
+  groupbar_col_active: '#7d82d9'
+  groupbar_col_inactive: '#3C486D'
+  groupbar_col_locked_active: '#c89dc1'
+  groupbar_col_locked_inactive: '#6d7db6'
+  nogroup_border: '#3C486D'
+  nogroup_border_active: '#7d82d9'
+  glow_color: '#7d82d9ee'
+  shadow_color: '#060B1E7b'
+  animation_style: relaxed
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(60, 72, 109, 0.53)
+  style:
+    size: 16

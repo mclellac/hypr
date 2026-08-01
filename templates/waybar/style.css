@@ -1,0 +1,17 @@
+/* =============================================================================
+ *
+ * Waybar configuration
+ *
+ * Configuration reference: https://github.com/Alexays/Waybar/wiki/Configuration
+ *
+ * =========================================================================== */
+
+/* import css definitions for current theme */
+@import url("theme.css");
+
+/* Default modules styles */
+@import url("modules.css");
+
+/* User overrides */
+/* @import url("user.css"); */
+

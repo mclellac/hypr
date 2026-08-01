@@ -1,77 +1,95 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Checks if an update is available for the hypr repository by comparing the
 # latest remote git tag with the current local tag.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Gets the latest git tag from the remote repository.
 # Globals:
-#   HYPR_PATH - The path to the hypr git repository.
+#   1: git_repo_path - The path to the hypr git repository.
 # Arguments:
 #   None
 # Outputs:
 #   The latest remote tag.
 #######################################
 get_latest_remote_tag() {
-  git -C "${HYPR_PATH}" ls-remote --tags origin |
-    grep -v "{}" |
-    awk '{print $2}' |
-    sed 's#refs/tags/##' |
-    sort -V |
-    tail -n 1
+    local git_repo_path="$1"
+    git -C "${git_repo_path}" ls-remote --tags origin |
+        grep -v "{}" |
+        awk '{print $2}' |
+        sed 's#refs/tags/##' |
+        sort -V |
+        tail -n 1
 }
 
 #######################################
 # Gets the most recent git tag on the local repository.
 # Globals:
-#   HYPR_PATH - The path to the hypr git repository.
+#   1: git_repo_path - The path to the hypr git repository.
 # Arguments:
 #   None
 # Outputs:
 #   The latest local tag.
 #######################################
 get_current_local_tag() {
-  git -C "${HYPR_PATH}" describe --tags "$(git -C "${HYPR_PATH}" rev-list --tags --max-count=1)"
+    local git_repo_path="$1"
+    git -C "${git_repo_path}" describe --tags "$(git -C "${git_repo_path}" rev-list --tags --max-count=1)"
 }
 
 #######################################
 # Main function to check for updates.
 # Globals:
-#   HYPR_PATH - The path to the hypr git repository.
+#   None
 # Arguments:
 #   None
 # Outputs:
 #   Exits with status 0 if an update is available, 1 otherwise.
 #######################################
 main() {
-  if [[ -z "${HYPR_PATH:-}" || ! -d "${HYPR_PATH}/.git" ]]; then
-    echo "Error: HYPR_PATH is not set or is not a git repository." >&2
-    exit 1
-  fi
+    check_help "$@"
+    local repo_path_file="${HOME}/.config/hypr/hypr_repo_path"
+    local git_repo_path=""
 
-  local latest_tag
-  latest_tag=$(get_latest_remote_tag)
-  if [[ -z "${latest_tag}" ]]; then
-    echo "Error: Could not retrieve latest remote tag." >&2
-    exit 1
-  fi
+    if [[ -f "${repo_path_file}" ]]; then
+        git_repo_path=$(cat "${repo_path_file}")
+    fi
 
-  local current_tag
-  current_tag=$(get_current_local_tag)
-  if [[ -z "${current_tag}" ]]; then
-    echo "Error: Could not retrieve current local tag." >&2
-    exit 1
-  fi
+    if [[ -z "${git_repo_path}" || ! -d "${git_repo_path}/.git" ]]; then
+        echo "Error: Could not find hypr git repository. Please ensure it's cloned and install.sh has been run." >&2
+        exit 1
+    fi
 
-  if [[ "${current_tag}" != "${latest_tag}" ]]; then
-    echo "hypr update available (${latest_tag})"
-    exit 0
-  else
-    echo "hypr is up to date (${current_tag})"
-    exit 1
-  fi
+    local latest_tag
+    latest_tag=$(get_latest_remote_tag "${git_repo_path}")
+    if [[ -z "${latest_tag}" ]]; then
+        echo "Error: Could not retrieve latest remote tag." >&2
+        exit 1
+    fi
+
+    local current_tag
+    current_tag=$(get_current_local_tag "${git_repo_path}")
+    if [[ -z "${current_tag}" ]]; then
+        echo "Error: Could not retrieve current local tag." >&2
+        exit 1
+    fi
+
+    if [[ "${current_tag}" != "${latest_tag}" ]]; then
+        log_info "hypr update available (${latest_tag})"
+        exit 0
+    else
+        log_info "hypr is up to date (${current_tag})"
+        exit 1
+    fi
 }
 
-main
+main "$@"

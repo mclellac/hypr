@@ -1,0 +1,36 @@
+#!/bin/bash
+set -euo pipefail
+# Toggles Zen Mode by switching the system state and regenerating configurations.
+# This hides gaps, borders, and simplifies Waybar modules.
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    if hypr-state clear zen_mode; then
+        # If it was set, it's now cleared
+        notify-send -t 2000 "Zen Mode" "Disabled\nRestored full layout."
+    else
+        # It wasn't set, so set it
+        hypr-state set zen_mode
+        notify-send -t 2000 "Zen Mode" "Enabled - Distraction Free\nHidden all non-essential modules and gaps."
+    fi
+
+    # Regenerate all configurations to apply Zen Mode state
+    if command -v hypr-theme-templater >/dev/null 2>&1; then
+        hypr-theme-templater
+    else
+        # Fallback to direct python call if not in path
+        "$(dirname "$0")/hypr-theme-templater"
+    fi
+}
+
+main "$@"

@@ -1,0 +1,119 @@
+{%- macro anim(name, enabled_key, speed_default, curve, style="") -%}
+    {%- set is_enabled = theme.layout[enabled_key] | default(true) | lower -%}
+    {%- set enabled_flag = "true" if is_enabled == "true" or is_enabled == true else "false" -%}
+    hl.animation({ leaf = [=[{{ name }}]=], enabled = {{ enabled_flag }}, speed = {{ speed_default }}, bezier = [=[{{ curve }}]=]{% if style %}, style = [=[{{ style }}]=]{% endif %} })
+{%- endmacro -%}
+
+    {%- if theme.layout.animation_style == "fast" %}
+    -- Fast Animations
+    hl.curve([=[linear]=], { type = [=[bezier]=], points = { {0, 0}, {1, 1} } })
+    hl.curve([=[quick]=], { type = [=[bezier]=], points = { {0.15, 0}, {0.1, 1} } })
+    {{ anim("windows", "animation_windows_enabled", 3, "quick") }}
+    {{ anim("windowsOut", "animation_windows_out_enabled", 3, "quick") }}
+    {{ anim("border", "animation_border_enabled", 5, "quick") }}
+    {{ anim("fade", "animation_fade_enabled", 3, "quick") }}
+    {{ anim("workspaces", "animation_workspaces_enabled", 3, "quick") }}
+
+    {%- elif theme.layout.animation_style == "snappy" %}
+    -- Snappy Animations
+    hl.curve([=[snappy]=], { type = [=[bezier]=], points = { {0.1, 0.9}, {0.1, 1.05} } })
+    {{ anim("windows", "animation_windows_enabled", 4, "snappy", "popin 80%") }}
+    {{ anim("windowsOut", "animation_windows_out_enabled", 4, "snappy", "popin 80%") }}
+    {{ anim("border", "animation_border_enabled", 4, "default") }}
+    {{ anim("fade", "animation_fade_enabled", 4, "default") }}
+    {{ anim("workspaces", "animation_workspaces_enabled", 4, "snappy") }}
+
+    {%- elif theme.layout.animation_style == "smooth" %}
+    -- Smooth Animations
+    hl.curve([=[smoothOut]=], { type = [=[bezier]=], points = { {0.36, 0}, {0.66, -0.56} } })
+    hl.curve([=[smoothIn]=], { type = [=[bezier]=], points = { {0.25, 1}, {0.5, 1} } })
+    {{ anim("windows", "animation_windows_enabled", 6, "smoothIn", "slide") }}
+    {{ anim("windowsOut", "animation_windows_out_enabled", 6, "smoothOut", "slide") }}
+    {{ anim("border", "animation_border_enabled", 6, "default") }}
+    {{ anim("fade", "animation_fade_enabled", 6, "smoothIn") }}
+    {{ anim("workspaces", "animation_workspaces_enabled", 6, "smoothIn", "slide") }}
+
+    {%- elif theme.layout.animation_style == "relaxed" %}
+    -- Relaxed Animations
+    hl.curve([=[relaxed]=], { type = [=[bezier]=], points = { {0.42, 0}, {0.58, 1} } })
+    {{ anim("windows", "animation_windows_enabled", 8, "relaxed", "slide") }}
+    {{ anim("windowsOut", "animation_windows_out_enabled", 8, "relaxed", "slide") }}
+    {{ anim("border", "animation_border_enabled", 8, "default") }}
+    {{ anim("fade", "animation_fade_enabled", 8, "relaxed") }}
+    {{ anim("workspaces", "animation_workspaces_enabled", 8, "relaxed", "slide") }}
+
+    {%- elif theme.layout.animation_style == "bouncy" %}
+    -- Bouncy Animations (Spring Physics)
+    hl.curve([=[spring]=], { type = [=[bezier]=], points = { {0.4, 0.0}, {0.2, 1.0} } })
+    hl.curve([=[overshot]=], { type = [=[bezier]=], points = { {0.05, 0.9}, {0.1, 1.1} } })
+    {{ anim("windows", "animation_windows_enabled", 5, "spring", "popin") }}
+    {{ anim("windowsOut", "animation_windows_out_enabled", 5, "overshot", "slide") }}
+    {{ anim("border", "animation_border_enabled", 5, "default") }}
+    {{ anim("fade", "animation_fade_enabled", 5, "default") }}
+    {{ anim("workspaces", "animation_workspaces_enabled", 5, "spring", "slide") }}
+
+    {%- elif theme.layout.animation_style == "classic" %}
+    -- Classic Animations (Hyprland Defaults)
+    hl.curve([=[myBezier]=], { type = [=[bezier]=], points = { {0.05, 0.9}, {0.1, 1.05} } })
+    {{ anim("windows", "animation_windows_enabled", 7, "myBezier") }}
+    {{ anim("windowsOut", "animation_windows_out_enabled", 7, "default", "popin 80%") }}
+    {{ anim("border", "animation_border_enabled", 10, "default") }}
+    {{ anim("borderangle", "animation_border_enabled", 8, "default") }}
+    {{ anim("fade", "animation_fade_enabled", 7, "default") }}
+    {{ anim("workspaces", "animation_workspaces_enabled", 6, "default") }}
+
+    {%- elif theme.layout.animation_style == "minimal" %}
+    -- Minimal Animations (Linear, Fast)
+    hl.curve([=[linear]=], { type = [=[bezier]=], points = { {0, 0}, {1, 1} } })
+    {{ anim("windows", "animation_windows_enabled", 2, "linear") }}
+    {{ anim("windowsOut", "animation_windows_out_enabled", 2, "linear") }}
+    {{ anim("border", "animation_border_enabled", 2, "linear") }}
+    {{ anim("fade", "animation_fade_enabled", 2, "linear") }}
+    {{ anim("workspaces", "animation_workspaces_enabled", 2, "linear") }}
+
+    {%- elif theme.layout.animation_style == "exaggerated" %}
+    -- Exaggerated Animations (High Bounce)
+    hl.curve([=[overshot]=], { type = [=[bezier]=], points = { {0.05, 0.9}, {0.1, 1.2} } })
+    {{ anim("windows", "animation_windows_enabled", 6, "overshot", "slide") }}
+    {{ anim("windowsOut", "animation_windows_out_enabled", 6, "overshot", "slide") }}
+    {{ anim("border", "animation_border_enabled", 6, "default") }}
+    {{ anim("fade", "animation_fade_enabled", 6, "default") }}
+    {{ anim("workspaces", "animation_workspaces_enabled", 6, "overshot", "slide") }}
+
+    {%- elif theme.layout.animation_style == "cyberpunk" %}
+    -- Cyberpunk Animations (High-Energy & Glitchy)
+    {%- set _curve = theme.layout.animation_windows_curve | default("0.05, 0.9, 0.1, 1.2") %}
+    {%- set _curve_vals = _curve | replace(' ', '') | split(',') %}
+    hl.curve([=[glitch]=], { type = [=[bezier]=], points = { {0, 1}, {0, 1} } })
+    hl.curve([=[energetic]=], { type = [=[bezier]=], points = { { {{ _curve_vals[0] }}, {{ _curve_vals[1] }} }, { {{ _curve_vals[2] }}, {{ _curve_vals[3] }} } } })
+    hl.curve([=[linear]=], { type = [=[bezier]=], points = { {0, 0}, {1, 1} } })
+    {{ anim("windows", "animation_windows_enabled", 3, "energetic", "popin 80%") }}
+    {{ anim("windowsOut", "animation_windows_out_enabled", 3, "energetic", "popin 80%") }}
+    {{ anim("border", "animation_border_enabled", 2, "glitch") }}
+    {{ anim("borderangle", "animation_border_enabled", 30, "linear", "loop") }}
+    {{ anim("fade", "animation_fade_enabled", 2, "glitch") }}
+    {{ anim("workspaces", "animation_workspaces_enabled", 4, "energetic", "slide") }}
+
+    {%- elif theme.layout.animation_style == "custom" %}
+    -- Custom Animations
+        {%- set _curve_vals = theme.layout.animation_windows_curve | default("0.05, 0.9, 0.1, 1.05") | replace(' ', '') | split(',') %}
+    hl.curve([=[customBezier]=], { type = [=[bezier]=], points = { { {{ _curve_vals[0] }}, {{ _curve_vals[1] }} }, { {{ _curve_vals[2] }}, {{ _curve_vals[3] }} } } })
+    {{ anim("windows", "animation_windows_enabled", theme.layout.animation_windows_speed | default(5), "customBezier") }}
+    {{ anim("windowsOut", "animation_windows_out_enabled", theme.layout.animation_windows_speed | default(5), "customBezier", "popin 80%") }}
+    {{ anim("border", "animation_border_enabled", 10, "default") }}
+    {{ anim("fade", "animation_fade_enabled", theme.layout.animation_fade_speed | default(5), "default") }}
+    {{ anim("workspaces", "animation_workspaces_enabled", theme.layout.animation_workspaces_speed | default(5), "customBezier") }}
+
+    {%- else %}
+    -- Fluid Animations (Default)
+    hl.curve([=[fluid]=], { type = [=[bezier]=], points = { {0.05, 0.9}, {0.1, 1.05} } })
+    hl.curve([=[smoothOut]=], { type = [=[bezier]=], points = { {0.36, 0}, {0.66, -0.56} } })
+    hl.curve([=[smoothIn]=], { type = [=[bezier]=], points = { {0.25, 1}, {0.5, 1} } })
+
+    {{ anim("windows", "animation_windows_enabled", 5, "fluid", "slide") }}
+    {{ anim("windowsOut", "animation_windows_out_enabled", 4, "smoothOut", "slide") }}
+    {{ anim("windowsMove", "animation_windows_enabled", 4, "default") }}
+    {{ anim("border", "animation_border_enabled", 5, "default") }}
+    {{ anim("fade", "animation_fade_enabled", 5, "smoothIn") }}
+    {{ anim("workspaces", "animation_workspaces_enabled", 5, "fluid", "slide") }}
+    {%- endif %}

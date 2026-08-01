@@ -1,10 +1,18 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Checks for pending reboot or relaunch requirements after an update and
 # prompts the user to take action. Also restarts any services that have
 # been marked as needing a restart.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Checks if a reboot is required due to a kernel update.
@@ -68,9 +76,10 @@ restart_pending_services() {
             local filename
             filename=$(basename "${file}")
             local service
-            service=$(echo "${filename}" | sed 's/restart-\(.*\)-required/\1/')
+            service="${filename#restart-}"
+            service="${service%-required}"
 
-            echo "Restarting ${service}..."
+            log_info "Restarting ${service}..."
             hypr-state clear "${filename}"
             "hypr-restart-${service}"
         fi
@@ -87,8 +96,9 @@ restart_pending_services() {
 #   None
 #######################################
 main() {
+    check_help "$@"
   handle_reboot_and_relaunch
   restart_pending_services
 }
 
-main
+main "$@"

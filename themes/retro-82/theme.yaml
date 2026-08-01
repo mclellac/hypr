@@ -1,0 +1,64 @@
+name: Retro 82
+colors:
+  background: '#05182e'
+  foreground: '#f6dcac'
+  cursor: '#f6dcac'
+  accent: '#faa968'
+  active_border_color: '#faa968'
+  color0: '#303442'
+  color1: '#f85525'
+  color2: '#028391'
+  color3: '#e97b3c'
+  color4: '#faa968'
+  color5: '#3f8f8a'
+  color6: '#8cbfb8'
+  color7: '#a7c9c6'
+  color8: '#134e5a'
+  color9: '#f85525'
+  color10: '#028391'
+  color11: '#e97b3c'
+  color12: '#faa968'
+  color13: '#3f8f8a'
+  color14: '#8cbfb8'
+  color15: '#f6dcac'
+  selection_bg: '#faa968'
+  selection_fg: '#00172e'
+  cursor_text: '#05182e'
+  primary: '#faa968'
+  secondary: '#faa968'
+  alert: '#f85525'
+  warning: '#e97b3c'
+  success: '#028391'
+layout:
+  active_border: '#faa968ff'
+  inactive_border: '#303442ff'
+  nogroup_border: '#303442'
+  shadow_color: '#05182e7b'
+  groupbar_text_color: '#819799'
+  group_border_active: '#faa968'
+  group_border_inactive: '#303442'
+  group_border_locked_active: '#3f8f8a'
+  group_border_locked_inactive: '#134e5a'
+  groupbar_col_active: '#faa968'
+  groupbar_col_inactive: '#303442'
+  groupbar_col_locked_active: '#3f8f8a'
+  groupbar_col_locked_inactive: '#134e5a'
+  nogroup_border_active: '#faa968'
+  glow_color: '#faa968ee'
+  animation_style: relaxed
+fonts:
+  font_family: Hack Nerd Font Propo
+  font_style: Regular
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: yellow
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(48, 52, 66, 0.53)
+  style:
+    size: 16
+nvim:
+  colorscheme: retro-82

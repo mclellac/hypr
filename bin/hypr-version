@@ -4,22 +4,41 @@
 
 set -euo pipefail
 
-#######################################
-# Main function to get and print the repository version.
-# Globals:
-#   HYPR_PATH - The path to the hypr git repository.
-# Arguments:
-#   None
-# Outputs:
-#   The git tag to stdout.
-#######################################
-main() {
-  if [[ -z "${HYPR_PATH:-}" || ! -d "${HYPR_PATH}/.git" ]]; then
-    echo "Error: HYPR_PATH is not set or is not a git repository." >&2
-    exit 1
-  fi
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
-  git -C "${HYPR_PATH}" describe --tags "$(git -C "${HYPR_PATH}" rev-list --tags --max-count=1)"
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Returns the version of the Hypr repository.
+
+Options:
+  -h, --help    Show this help message and exit
+EOF
 }
 
-main
+main() {
+    check_help "$@"
+
+    if [[ ! -d "${HYPR_PATH}/.git" ]]; then
+        echo "0.0.0-dev"
+        return
+    fi
+
+    # Try to get the latest tag
+    local version
+    if version=$(git -C "${HYPR_PATH}" describe --tags "$(git -C "${HYPR_PATH}" rev-list --tags --max-count=1 2>/dev/null)" 2>/dev/null); then
+        echo "${version}"
+    else
+        # Fallback to short commit hash or dev version
+        git -C "${HYPR_PATH}" rev-parse --short HEAD 2>/dev/null || echo "0.0.0-dev"
+    fi
+}
+
+main "$@"

@@ -1,0 +1,171 @@
+{% from "partials/fonts.j2" import font_family, font_size, font_style %}
+-- Refer to https://wiki.hyprland.org/Configuring/Variables/
+
+hl.config({
+    general = {
+        gaps_in = {{ theme.layout.gaps_in }},
+        gaps_out = {{ theme.layout.gaps_out }},
+        border_size = {{ theme.layout.border_size }},
+        ["col.active_border"] = {{ theme.layout.active_border | hypr_lua_border }},
+        ["col.inactive_border"] = {{ theme.layout.inactive_border | hypr_lua_border }},
+        ["col.nogroup_border"] = {{ theme.layout.nogroup_border | hypr_lua_border }},
+        ["col.nogroup_border_active"] = {{ theme.layout.nogroup_border_active | hypr_lua_border }},
+        resize_on_border = true,
+        allow_tearing = {{ theme.layout.allow_tearing | default('false') | lower }},
+        layout = "{{ theme.layout.name | default('dwindle') }}"
+    },
+    decoration = {
+        rounding = {{ theme.layout.rounding }},
+        shadow = {
+            enabled = {{ theme.layout.shadow_enabled | lower }},
+            range = {{ theme.layout.shadow_range }},
+            render_power = {{ theme.layout.shadow_power }},
+            color = {{ theme.layout.shadow_color | default(theme.colors.primary | hypr_shadow) | hypr_lua_border }},
+            offset = "{{ theme.layout.shadow_offset | default('0 5') }}"
+        },
+        blur = {
+            enabled = {{ theme.layout.blur_enabled | lower }},
+            size = {{ theme.layout.blur_size }},
+            passes = {{ theme.layout.blur_passes }},
+            vibrancy = {{ theme.layout.blur_vibrancy }}
+        },
+        glow = {
+            enabled = {{ theme.layout.glow_enabled | lower }},
+            range = {{ theme.layout.glow_range }},
+            color = {{ theme.layout.glow_color | hypr_lua_border }}
+        },
+        dim_inactive = {{ theme.layout.dim_inactive | default('false') | lower }},
+        dim_strength = {{ theme.layout.dim_strength | default(0.2) }}
+    },
+    group = {
+        ["col.border_active"] = {{ theme.layout.group_border_active | hypr_lua_border }},
+        ["col.border_inactive"] = {{ theme.layout.group_border_inactive | hypr_lua_border }},
+        ["col.border_locked_active"] = {{ theme.layout.group_border_locked_active | hypr_lua_border }},
+        ["col.border_locked_inactive"] = {{ theme.layout.group_border_locked_inactive | hypr_lua_border }},
+        groupbar = {
+            enabled = {{ theme.layout.groupbar_enabled | default('true') | lower }},
+            font_family = "{{ theme.fonts.font_family }}",
+            font_size = {{ theme.layout.groupbar_font_size | default(8) }},
+            gradients = {{ theme.layout.groupbar_gradients | default('false') | lower }},
+            height = {{ theme.layout.groupbar_height | default(14) }},
+            stacked = {{ theme.layout.groupbar_stacked | default('false') | lower }},
+            render_titles = {{ theme.layout.groupbar_render_titles | default('true') | lower }},
+            scrolling = {{ theme.layout.groupbar_scrolling | default('true') | lower }},
+            text_color = {{ theme.layout.groupbar_text_color | default('0xffffffff') | hypr_color_alpha | hypr_lua_border }},
+            ["col.active"] = {{ theme.layout.groupbar_col_active | default(theme.layout.group_border_active) | hypr_lua_border }},
+            ["col.inactive"] = {{ theme.layout.groupbar_col_inactive | default(theme.layout.group_border_inactive) | hypr_lua_border }},
+            ["col.locked_active"] = {{ theme.layout.groupbar_col_locked_active | default(theme.layout.group_border_locked_active) | hypr_lua_border }},
+            ["col.locked_inactive"] = {{ theme.layout.groupbar_col_locked_inactive | default(theme.layout.group_border_locked_inactive) | hypr_lua_border }}
+        }
+    },
+    animations = {
+        enabled = {{ theme.layout.animations_enabled | lower }},
+        -- Animations need to be converted to Lua format, for now we will inject strings
+        -- wait, if animations.j2 outputs `animation = ...`, it won't work in Lua.
+        -- We will need to address animations separately or use raw string configs.
+    },
+    dwindle = {
+        preserve_split = {{ theme.layout.preserve_split | lower }},
+        smart_split = {{ theme.layout.smart_split | default('true') | lower }},
+        precise_mouse_move = {{ theme.layout.precise_mouse_move | default('true') | lower }},
+        force_split = {{ theme.layout.force_split | default(2) }},
+        smart_resizing = false
+    },
+    master = {
+        new_status = "{{ theme.layout.master_new_status }}",
+        {% if theme.layout.master_mfact and theme.layout.master_mfact | string | trim != '' %}
+        mfact = {{ theme.layout.master_mfact }},
+        {% endif %}
+        {% if theme.layout.master_orientation and theme.layout.master_orientation | string | trim != '' %}
+        orientation = "{{ theme.layout.master_orientation }}",
+        {% endif %}
+        {% if theme.layout.master_new_on_top is not none and theme.layout.master_new_on_top | string | trim != '' %}
+        new_on_top = {{ theme.layout.master_new_on_top | lower }},
+        {% endif %}
+        {% if theme.layout.master_new_on_active and theme.layout.master_new_on_active | string | trim != '' %}
+        new_on_active = "{{ theme.layout.master_new_on_active }}",
+        {% endif %}
+        smart_resizing = false
+    },
+    misc = {
+        disable_hyprland_logo = true,
+        disable_splash_rendering = true,
+        disable_scale_notification = true,
+        focus_on_activate = true,
+        anr_missed_pings = 3,
+        on_focus_under_fullscreen = 1
+    },
+    cursor = {
+        hide_on_key_press = true,
+        warp_on_change_workspace = 1,
+        {% if theme.cursor.no_hardware is defined and theme.cursor.no_hardware is not none %}
+        no_hardware_cursors = {{ theme.cursor.no_hardware | lower }},
+        {% elif is_nvidia or is_vm %}
+        no_hardware_cursors = true,
+        {% endif %}
+    },
+    binds = {
+        focus_preferred_method = 1
+    }
+})
+
+{% set show_layout = (theme.layout.single_window_aspect_ratio and theme.layout.single_window_aspect_ratio | string | trim != '') or (theme.layout.single_window_aspect_ratio_tolerance and theme.layout.single_window_aspect_ratio_tolerance | string | trim != '') %}
+
+{% if show_layout %}
+hl.config({
+    layout = {
+        {% if theme.layout.single_window_aspect_ratio and theme.layout.single_window_aspect_ratio | string | trim != '' %}
+        single_window_aspect_ratio = "{{ theme.layout.single_window_aspect_ratio }}",
+        {% endif %}
+        {% if theme.layout.single_window_aspect_ratio_tolerance and theme.layout.single_window_aspect_ratio_tolerance | string | trim != '' %}
+        single_window_aspect_ratio_tolerance = "{{ theme.layout.single_window_aspect_ratio_tolerance }}",
+        {% endif %}
+    }
+})
+{% endif %}
+
+{% if theme.layout.workspace_layouts and theme.layout.workspace_layouts | string | trim != '' %}
+-- Per-workspace layouts
+
+{% for ws, lyt in theme.layout.workspace_layouts | dictsort %}
+hl.workspace_rule({
+    workspace = "{{ ws }}",
+    layout = "{{ lyt }}"
+})
+
+{% endfor %}
+{% endif %}
+
+{% set show_scrolling = (theme.layout.scrolling_fullscreen_on_one_column is not none and theme.layout.scrolling_fullscreen_on_one_column | string | trim != '') or (theme.layout.scrolling_column_width and theme.layout.scrolling_column_width | string | trim != '') or (theme.layout.scrolling_focus_fit_method and theme.layout.scrolling_focus_fit_method | string | trim != '') or (theme.layout.scrolling_follow_focus is not none and theme.layout.scrolling_follow_focus | string | trim != '') or (theme.layout.scrolling_follow_min_visible and theme.layout.scrolling_follow_min_visible | string | trim != '') or (theme.layout.scrolling_direction and theme.layout.scrolling_direction | string | trim != '') %}
+
+{% if show_scrolling %}
+hl.config({
+    scrolling = {
+        {% if theme.layout.scrolling_fullscreen_on_one_column is not none and theme.layout.scrolling_fullscreen_on_one_column | string | trim != '' %}
+        fullscreen_on_one_column = {{ theme.layout.scrolling_fullscreen_on_one_column | lower }},
+        {% endif %}
+        {% if theme.layout.scrolling_column_width and theme.layout.scrolling_column_width | string | trim != '' %}
+        column_width = {{ theme.layout.scrolling_column_width }},
+        {% endif %}
+        {% if theme.layout.scrolling_focus_fit_method and theme.layout.scrolling_focus_fit_method | string | trim != '' %}
+        focus_fit_method = {{ theme.layout.scrolling_focus_fit_method }},
+        {% endif %}
+        {% if theme.layout.scrolling_follow_focus is not none and theme.layout.scrolling_follow_focus | string | trim != '' %}
+        follow_focus = {{ theme.layout.scrolling_follow_focus | lower }},
+        {% endif %}
+        {% if theme.layout.scrolling_follow_min_visible and theme.layout.scrolling_follow_min_visible | string | trim != '' %}
+        follow_min_visible = {{ theme.layout.scrolling_follow_min_visible }},
+        {% endif %}
+        {% if theme.layout.scrolling_direction and theme.layout.scrolling_direction | string | trim != '' %}
+        direction = "{{ theme.layout.scrolling_direction }}",
+        {% endif %}
+    }
+})
+
+{% endif %}
+
+-- Animations included directly due to macro/string generation complexities
+-- For full native Lua, animations.j2 needs to output `animation = { "name, ..." }` 
+-- This handles legacy string fallback within hl.config if possible, 
+-- or we will update partials/animations.lua.j2
+{% include 'partials/animations.lua.j2' ignore missing %}

@@ -13,43 +13,43 @@
 theme[main_bg]="#263238"
 
 # Main text color
-theme[main_fg]="#B0BEC5"
+theme[main_fg]="#b0bec5"
 
 # Title color for boxes
-theme[title]="#B0BEC5"
+theme[title]="#b0bec5"
 
 # Highlight color for keyboard shortcuts
 theme[hi_fg]="#009688"
 
 # Background color of selected items
-theme[selected_bg]="#546E7A"
+theme[selected_bg]="#546e7a"
 
 # Foreground color of selected items
-theme[selected_fg]="#FFFFFF"
+theme[selected_fg]="#ffffff"
 
 # Color of inactive/disabled text
 theme[inactive_fg]="#415967"
 
 # Color of text appearing on top of graphs, i.e uptime and current network graph scaling
-theme[graph_text]="#B0BEC5"
+theme[graph_text]="#b0bec5"
 
 # Misc colors for processes box including mini cpu graphs, details memory graph and details status text
 theme[proc_misc]="#c3e88d"
 
 # Cpu box outline color
-theme[cpu_box]="#B0BEC5"
+theme[cpu_box]="#b0bec5"
 
 # Memory/disks box outline color
-theme[mem_box]="#B0BEC5"
+theme[mem_box]="#b0bec5"
 
 # Net up/down box outline color
-theme[net_box]="#B0BEC5"
+theme[net_box]="#b0bec5"
 
 # Processes box outline color
-theme[proc_box]="#B0BEC5"
+theme[proc_box]="#b0bec5"
 
 # Box divider line and small boxes line color
-theme[div_line]="#2A373E"
+theme[div_line]="#2a373e"
 
 # Temperature graph colors
 theme[temp_start]="#82aaff"

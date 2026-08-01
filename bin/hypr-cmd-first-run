@@ -5,9 +5,21 @@
 # tasks and removes the flag to prevent re-execution.
 
 set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 # The presence of this file indicates that the first-run tasks should be executed.
 readonly FIRST_RUN_FLAG="${HOME}/.local/state/hypr/first-run.mode"
+
+usage() {
+    echo "Usage: $(basename "$0")"
+    echo
+    echo "Executes one-time setup scripts after the initial installation."
+}
 
 #######################################
 # Main function to execute the first-run setup tasks.
@@ -19,44 +31,37 @@ readonly FIRST_RUN_FLAG="${HOME}/.local/state/hypr/first-run.mode"
 #   None
 #######################################
 main() {
-  if [[ ! -f "${FIRST_RUN_FLAG}" ]]; then
-    echo "First-run flag not found. Nothing to do."
-    exit 0
-  fi
+    check_help "$@"
 
-  # Determine the repository root directory based on the script's location.
-  local repo_root
-  repo_root=$(cd "$(dirname "$0")/.." && pwd)
+    if [[ ! -f "${FIRST_RUN_FLAG}" ]]; then
+        log_info "First-run flag not found. Nothing to do."
+        exit 0
+    fi
 
-  local battery_monitor_script="${repo_root}/install/first-run/battery-monitor.sh"
-  local firewall_script="${repo_root}/install/first-run/firewall.sh"
-  local sudoers_file="/etc/sudoers.d/first-run"
+    # Determine the repository root directory.
+    local repo_root="${HYPR_PATH}"
 
-  echo "First-run flag found. Executing setup tasks..."
+    local battery_monitor_script="${repo_root}/install/first-run/battery-monitor.sh"
+    local sudoers_file="/etc/sudoers.d/first-run"
 
-  # Remove the flag first to prevent re-running on failure.
-  rm -f "${FIRST_RUN_FLAG}"
+    log_info "First-run flag found. Executing setup tasks..."
 
-  if [[ -x "${battery_monitor_script}" ]]; then
-    echo "Running battery monitor setup..."
-    "${battery_monitor_script}"
-  else
-    echo "Warning: Battery monitor setup script not found or not executable." >&2
-  fi
+    # Remove the flag first to prevent re-running on failure.
+    rm -f "${FIRST_RUN_FLAG}"
 
-  if [[ -x "${firewall_script}" ]]; then
-    echo "Running firewall setup..."
-    "${firewall_script}"
-  else
-    echo "Warning: Firewall setup script not found or not executable." >&2
-  fi
+    if [[ -x "${battery_monitor_script}" ]]; then
+        log_info "Running battery monitor setup..."
+        "${battery_monitor_script}"
+    else
+        log_warn "Battery monitor setup script not found or not executable."
+    fi
 
-  if [[ -f "${sudoers_file}" ]]; then
-    echo "Removing temporary sudoers file..."
-    sudo rm -f "${sudoers_file}"
-  fi
+    if [[ -f "${sudoers_file}" ]]; then
+        log_info "Removing temporary sudoers file..."
+        sudo rm -f "${sudoers_file}"
+    fi
 
-  echo "First-run setup complete."
+    log_info "First-run setup complete."
 }
 
-main
+main "$@"

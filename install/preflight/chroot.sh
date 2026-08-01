@@ -16,10 +16,15 @@ set -euo pipefail
 #   HYPR_CHROOT_INSTALL (read-only)
 #######################################
 enable_systemctl_service() {
-  local service_name="$1"
-  if [[ -n "${HYPR_CHROOT_INSTALL:-}" ]]; then
-    sudo systemctl enable "${service_name}"
-  else
-    sudo systemctl enable --now "${service_name}"
-  fi
+    local service_name="$1"
+    if ! systemctl is-enabled "${service_name}" >/dev/null 2>&1; then
+        if [[ -n "${HYPR_CHROOT_INSTALL:-}" ]]; then
+            sudo systemctl enable "${service_name}" >/dev/null 2>&1 || true
+        else
+            sudo systemctl enable --now "${service_name}" >/dev/null 2>&1 || true
+        fi
+    elif [[ -z "${HYPR_CHROOT_INSTALL:-}" ]] && ! systemctl is-active --quiet "${service_name}" >/dev/null 2>&1; then
+        # Service is enabled but not running, start it
+        sudo systemctl start "${service_name}" >/dev/null 2>&1 || true
+    fi
 }

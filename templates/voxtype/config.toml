@@ -1,0 +1,28 @@
+# Voxtype Configuration
+# Generated from template
+
+state_file = "auto"
+
+[hotkey]
+enabled = {{ theme.voxtype.enabled | lower | default("false") }}
+
+[audio]
+device = "default"
+sample_rate = 16000
+max_duration_secs = 60
+pause_media = true
+
+[whisper]
+model = "{{ theme.voxtype.model | default("base.en") }}"
+language = "{{ theme.voxtype.language | default("en") }}"
+translate = false
+
+[output]
+mode = "{{ theme.voxtype.mode | default("type") }}"
+fallback_to_clipboard = true
+type_delay_ms = 1
+
+[output.notification]
+on_recording_start = {{ theme.voxtype.notifications.recording_start | lower | default("false") }}
+on_recording_stop = {{ theme.voxtype.notifications.recording_stop | lower | default("false") }}
+on_transcription = {{ theme.voxtype.notifications.transcription | lower | default("false") }}

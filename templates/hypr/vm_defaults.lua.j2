@@ -1,0 +1,85 @@
+-- THIS FILE IS FOR HYPRLAND RUNNING IN VIRTUAL MACHINES
+-- VM Performance Optimizations for Hyprland 0.55+
+
+hl.config({
+    -- Performance Optimizations for VMs
+    {% if not is_virgl -%}
+    -- Disable Animations (Crucial for software rendering responsiveness)
+    animations = {
+        enabled = false
+    },
+    
+    -- Disable Decorations (Blur and Shadows are heavy on virtual GPUs without virgl)
+    decoration = {
+        blur = {
+            enabled = false
+        },
+        shadow = {
+            enabled = false
+        }
+    },
+    {%- endif %}
+
+    -- Renderer & Misc Tweaks
+    render = {
+        -- Disable HDR/High Precision in VM to save cycles
+        cm_auto_hdr = false
+    },
+
+    debug = {
+        -- VFR (Variable Frame Rate) can sometimes cause "stuck" frames; 
+        -- we set this to false for better responsiveness during resizes.
+        vfr = false
+    },
+
+    misc = {
+        -- Disable splash for faster startup and less rendering
+        disable_hyprland_logo = true,
+        disable_splash_rendering = true
+    },
+
+    xwayland = {
+        force_zero_scaling = true
+    },
+
+    ecosystem = {
+        no_update_news = true
+    }
+})
+
+-- Environment variables for VM performance and compatibility
+-- As mandated by GEMINI.md, manage these via Hyprland config
+-- Modern GTK4 renderer for VMs (In 4.16+, 'gl' is the new unified renderer)
+hl.env("GSK_RENDERER", "gl")
+-- Disable atomic modesetting and modifiers for virtual GPUs (fixes virtio-gpu modesetting errors on UTM/VM/QEMU)
+hl.env("AQ_NO_ATOMIC", "1")
+hl.env("AQ_NO_MODIFIERS", "1")
+
+{% if is_virgl -%}
+-- virgl (VirtIO GPU) is highly optimized for QEMU/KVM on ARM64/Apple Silicon
+hl.env("MESA_LOADER_DRIVER_OVERRIDE", "virtio_gpu")
+-- Force OpenGL 3.3+ support for Alacritty and other modern apps in VM
+hl.env("MESA_GL_VERSION_OVERRIDE", "3.3")
+hl.env("MESA_GLSL_VERSION_OVERRIDE", "330")
+{% elif is_qemu -%}
+-- Fallback for QEMU/UTM without definitive virgl detection
+hl.env("MESA_LOADER_DRIVER_OVERRIDE", "virtio_gpu")
+-- Force OpenGL 3.3+ support for Alacritty and other modern apps in VM
+hl.env("MESA_GL_VERSION_OVERRIDE", "3.3")
+hl.env("MESA_GLSL_VERSION_OVERRIDE", "330")
+{% elif is_vmware -%}
+hl.env("MESA_LOADER_DRIVER_OVERRIDE", "vmwgfx")
+hl.env("LIBGL_ALWAYS_SOFTWARE", "1")
+{% else -%}
+hl.env("LIBGL_ALWAYS_SOFTWARE", "1")
+{% endif -%}
+
+-- Passthrough media keys to the guest
+hl.bind("XF86AudioRaiseVolume", hl.dsp.pass({ window = "^$" }), { description = "VM: Pass Volume Up" })
+hl.bind("XF86AudioLowerVolume", hl.dsp.pass({ window = "^$" }), { description = "VM: Pass Volume Down" })
+hl.bind("XF86AudioMute", hl.dsp.pass({ window = "^$" }), { description = "VM: Pass Mute" })
+hl.bind("XF86AudioMicMute", hl.dsp.pass({ window = "^$" }), { description = "VM: Pass Mic Mute" })
+hl.bind("XF86LaunchA", hl.dsp.pass({ window = "^$" }), { description = "VM: Pass LaunchA" })
+hl.bind("XF86LaunchB", hl.dsp.pass({ window = "^$" }), { description = "VM: Pass LaunchB" })
+hl.bind("XF86MonBrightnessUp", hl.dsp.pass({ window = "^$" }), { description = "VM: Pass Brightness Up" })
+hl.bind("XF86MonBrightnessDown", hl.dsp.pass({ window = "^$" }), { description = "VM: Pass Brightness Down" })

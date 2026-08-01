@@ -1,0 +1,62 @@
+name: Gruvbox
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#282828'
+  foreground: '#d4be98'
+  cursor: '#bdae93'
+  cursor_text: '#282828'
+  selection_bg: '#d65d0e'
+  selection_fg: '#ebdbb2'
+  primary: '#7daea3'
+  secondary: '#7daea3'
+  alert: '#ea6962'
+  warning: '#d8a657'
+  success: '#a9b665'
+  color0: '#3c3836'
+  color1: '#ea6962'
+  color2: '#a9b665'
+  color3: '#d8a657'
+  color4: '#7daea3'
+  color5: '#d3869b'
+  color6: '#89b482'
+  color7: '#d4be98'
+  color8: '#3c3836'
+  color9: '#ea6962'
+  color10: '#a9b665'
+  color11: '#d8a657'
+  color12: '#7daea3'
+  color13: '#d3869b'
+  color14: '#89b482'
+  color15: '#d4be98'
+  accent: '#7daea3'
+  url_color: '#7daea3'
+layout:
+  active_border: '#7daea3ff'
+  inactive_border: '#3c3836ff'
+  groupbar_text_color: '#ebdbb2'
+  group_border_active: '#7daea3'
+  group_border_inactive: '#3c3836'
+  group_border_locked_active: '#d3869b'
+  group_border_locked_inactive: '#3c3836'
+  groupbar_col_active: '#7daea3'
+  groupbar_col_inactive: '#3c3836'
+  groupbar_col_locked_active: '#d3869b'
+  groupbar_col_locked_inactive: '#3c3836'
+  nogroup_border: '#3c3836ff'
+  nogroup_border_active: '#7daea3ff'
+  glow_color: '#7daea3ee'
+  shadow_color: '#2828287b'
+  animation_style: fluid
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: teal
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(60, 56, 54, 0.88)
+  style:
+    size: 16

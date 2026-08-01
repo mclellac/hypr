@@ -1,0 +1,265 @@
+#!/usr/bin/env bash
+#
+# Hardware detection utility.
+# Usage: hypr-hw check <profile>
+#        hypr-hw match <pattern>
+
+set -euo pipefail
+
+# Helper to read DMI fields safely
+get_dmi_field() {
+    local file="/sys/class/dmi/id/$1"
+    if [[ -r "${file}" ]]; then
+        cat "${file}"
+    else
+        echo ""
+    fi
+}
+
+VENDOR=$(get_dmi_field "sys_vendor")
+readonly VENDOR
+PRODUCT=$(get_dmi_field "product_name")
+readonly PRODUCT
+BOARD=$(get_dmi_field "board_name")
+readonly BOARD
+FAMILY=$(get_dmi_field "product_family")
+readonly FAMILY
+
+check_apple() {
+    if [[ "${VENDOR}" =~ [Aa]pple ]] || [[ -f /proc/device-tree/model ]] && grep -qi "MacBook\|Apple" /proc/device-tree/model; then
+        return 0
+    fi
+    return 1
+}
+
+check_asus() {
+    if [[ "${VENDOR}" =~ [Aa]sus ]]; then
+        return 0
+    fi
+    return 1
+}
+
+check_asus_rog() {
+    if check_asus && [[ "${PRODUCT}" =~ ROG\|Zephyrus\|Strix\|Flow ]]; then
+        return 0
+    fi
+    return 1
+}
+
+check_framework() {
+    if [[ "${VENDOR}" =~ [Ff]ramework ]]; then
+        return 0
+    fi
+    return 1
+}
+
+check_framework16() {
+    if [[ "${PRODUCT}" =~ "Framework Laptop 16" ]]; then
+        return 0
+    fi
+    return 1
+}
+
+check_hybrid_gpu() {
+    if lspci | grep -qi nvidia && lspci | grep -E -qi "vga|3d" | grep -v -qi nvidia; then
+        return 0
+    fi
+    return 1
+}
+
+check_intel() {
+    if [[ "${VENDOR}" =~ [Ii]ntel ]] || lspci | grep -qi "VGA compatible controller: Intel"; then
+        return 0
+    fi
+    return 1
+}
+
+check_intel_ptl() {
+    if [[ "${PRODUCT}" =~ "PTL" ]] || [[ "${BOARD}" =~ "PTL" ]]; then
+        return 0
+    fi
+    return 1
+}
+
+check_nvidia() {
+    if lspci | grep -qi nvidia || command -v nvidia-smi &>/dev/null; then
+        return 0
+    fi
+    return 1
+}
+
+check_surface() {
+    if [[ "${VENDOR}" =~ "Microsoft" ]] && [[ "${PRODUCT}" =~ "Surface" ]]; then
+        return 0
+    fi
+    return 1
+}
+
+check_vm() {
+    if command -v systemd-detect-virt &>/dev/null; then
+        if systemd-detect-virt -q; then
+            return 0
+        fi
+    fi
+    if [[ "${VENDOR}" =~ QEMU|KVM|VMware|VirtualBox|UTM|Oracle|Amazon ]]; then
+        return 0
+    fi
+    return 1
+}
+
+check_qemu() {
+    if [[ "${VENDOR}" =~ QEMU|KVM ]] || [[ "${PRODUCT}" =~ QEMU|KVM ]]; then
+        return 0
+    fi
+    if command -v systemd-detect-virt &>/dev/null; then
+        if [[ "$(systemd-detect-virt)" == "qemu" || "$(systemd-detect-virt)" == "kvm" ]]; then
+            return 0
+        fi
+    fi
+    return 1
+}
+
+check_virgl() {
+    if glxinfo 2>/dev/null | grep -i "virgl" >/dev/null; then
+        return 0
+    fi
+    return 1
+}
+
+check_vmware() {
+    if [[ "${VENDOR}" =~ VMware ]] || [[ "${PRODUCT}" =~ VMware ]]; then
+        return 0
+    fi
+    if command -v systemd-detect-virt &>/dev/null; then
+        if [[ "$(systemd-detect-virt)" == "vmware" ]]; then
+            return 0
+        fi
+    fi
+    return 1
+}
+
+check_arm64() {
+    local arch
+    arch=$(uname -m)
+    if [[ "${arch}" == "aarch64" || "${arch}" == "arm64" ]]; then
+        return 0
+    fi
+    return 1
+}
+
+check_apple_virt() {
+    if check_arm64 && check_vm; then
+        return 0
+    fi
+    return 1
+}
+
+check_dell_xps() {
+    if [[ "${PRODUCT}" =~ "XPS" ]]; then
+        return 0
+    fi
+    return 1
+}
+
+check_mx_master() {
+    if command -v hyprctl &>/dev/null; then
+        if hyprctl devices -j | grep -qi "MX Master"; then
+            return 0
+        fi
+    fi
+    return 1
+}
+
+check_battery() {
+    if find /sys/class/power_supply/ -maxdepth 1 -name "BAT*" -print -quit | grep -q .; then
+        return 0
+    fi
+    return 1
+}
+
+check_backlight() {
+    if find /sys/class/backlight/ -maxdepth 1 -mindepth 1 -print -quit | grep -q .; then
+        return 0
+    fi
+    return 1
+}
+
+check_laptop() {
+    # If it has a battery or is categorized as a laptop
+    if check_battery; then
+        return 0
+    fi
+    local chassis=""
+    if [[ -r /sys/class/dmi/id/chassis_type ]]; then
+        chassis=$(cat /sys/class/dmi/id/chassis_type)
+        # chassis types: 8=Portable, 9=Laptop, 10=Notebook, 11=Handheld
+        if [[ "${chassis}" -eq 8 || "${chassis}" -eq 9 || "${chassis}" -eq 10 || "${chassis}" -eq 11 ]]; then
+            return 0
+        fi
+    fi
+    return 1
+}
+
+check_zen_mode() {
+    if [[ -f "${HOME}/.local/state/hypr/zen_mode" ]]; then
+        return 0
+    fi
+    return 1
+}
+
+match_pattern() {
+    local pattern="$1"
+    if [[ "${PRODUCT}" =~ ${pattern} ]] || [[ "${BOARD}" =~ ${pattern} ]] || [[ "${FAMILY}" =~ ${pattern} ]]; then
+        return 0
+    fi
+    return 1
+}
+
+main() {
+    if [[ $# -lt 2 ]]; then
+        echo "Usage: hypr-hw check <profile> | match <pattern>" >&2
+        exit 1
+    fi
+
+    local action="$1"
+    local target="$2"
+
+    case "${action}" in
+        check)
+            case "${target}" in
+                apple) check_apple ;;
+                asus) check_asus ;;
+                asus-rog) check_asus_rog ;;
+                framework) check_framework ;;
+                framework16) check_framework16 ;;
+                hybrid-gpu) check_hybrid_gpu ;;
+                intel) check_intel ;;
+                intel-ptl) check_intel_ptl ;;
+                nvidia) check_nvidia ;;
+                surface) check_surface ;;
+                vm) check_vm ;;
+                qemu) check_qemu ;;
+                virgl) check_virgl ;;
+                vmware) check_vmware ;;
+                arm64) check_arm64 ;;
+                apple-virt) check_apple_virt ;;
+                dell-xps) check_dell_xps ;;
+                mx-master) check_mx_master ;;
+                battery) check_battery ;;
+                backlight) check_backlight ;;
+                laptop) check_laptop ;;
+                zen-mode) check_zen_mode ;;
+                *) echo "Unknown profile: ${target}" >&2; exit 1 ;;
+            esac
+            ;;
+        match)
+            match_pattern "${target}"
+            ;;
+        *)
+            echo "Unknown action: ${action}" >&2
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"

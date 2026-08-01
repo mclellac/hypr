@@ -1,8 +1,16 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Unblocks the Wi-Fi hardware kill switch and lists the status.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Main function to unblock and list Wi-Fi devices.
@@ -14,16 +22,17 @@ set -euo pipefail
 #   None
 #######################################
 main() {
-  if ! command -v rfkill &>/dev/null; then
-    echo "Error: 'rfkill' command not found." >&2
-    exit 1
-  fi
+    check_help "$@"
+    if ! command -v rfkill &>/dev/null; then
+        echo "Error: 'rfkill' command not found." >&2
+        exit 1
+    fi
 
-  echo "Unblocking Wi-Fi..."
-  rfkill unblock wifi
+    log_info "Unblocking Wi-Fi..."
+    rfkill unblock wifi
 
-  echo "Current Wi-Fi status:"
-  rfkill list wifi
+    log_info "Current Wi-Fi status:"
+    rfkill list wifi
 }
 
-main
+main "$@"

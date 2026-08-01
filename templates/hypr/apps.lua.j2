@@ -1,0 +1,28 @@
+-- App-specific tweaks
+local function safe_require(module_name)
+    local success, err = pcall(require, module_name)
+    if not success then
+        print("Error loading module: " .. module_name .. " - " .. tostring(err))
+    end
+end
+
+safe_require("apps.1password")
+safe_require("apps.bitwarden")
+safe_require("apps.browser")
+safe_require("apps.davinci-resolve")
+safe_require("apps.hyprshot")
+safe_require("apps.localsend")
+safe_require("apps.pip")
+safe_require("apps.qemu")
+safe_require("apps.retroarch")
+safe_require("apps.steam")
+safe_require("apps.geforce")
+safe_require("apps.moonlight")
+safe_require("apps.system")
+safe_require("apps.telegram")
+safe_require("apps.typora")
+safe_require("apps.terminals")
+safe_require("apps.walker")
+safe_require("apps.akamaistaging")
+safe_require("apps.woes")
+safe_require("apps.webcam-overlay")

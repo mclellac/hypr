@@ -1,34 +1,75 @@
 #!/bin/bash
-#
-# Launches a floating terminal window (Alacritty) to execute a given command.
-# Before the command runs, a logo is displayed. After the command finishes,
-# a "Done" message is shown.
-
 set -euo pipefail
 
-#######################################
-# Main function to launch the floating terminal.
-# Globals:
-#   None
-# Arguments:
-#   $@ - The command to be executed within the terminal.
-# Outputs:
-#   None
-#######################################
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
 main() {
-  if [[ $# -eq 0 ]]; then
-    echo "Usage: $(basename "$0") <command>" >&2
-    exit 1
-  fi
+    check_help "$@"
+    if [[ $# -eq 0 ]]; then
+        echo "Usage: $(basename "$0") <command>" >&2
+        exit 1
+    fi
 
-  # We use `setsid` to detach the new terminal.
-  # We construct the bash command to run the sequence:
-  # 1. hypr-show-logo
-  # 2. The user's command (passed as arguments to the inner bash)
-  # 3. hypr-show-done
-  # We use `"$@"` to safely expand the arguments in the inner bash.
+    local terminal
+    # Try to get terminal from theme, but ignore the default 'ghostty' if we are in a VM
+    terminal=$(hypr-theme-get terminal)
+    
+    if systemd-detect-virt -q; then
+        # If we are in a VM, and the theme hasn't explicitly set a terminal 
+        # (other than the global default 'ghostty'), we use alacritty.
+        if [[ "$terminal" == "ghostty" ]] || [[ -z "$terminal" ]]; then
+            terminal="alacritty"
+        fi
+    fi
 
-  setsid alacritty --class hypr-exec -e bash -c 'hypr-show-logo; "$@"; ret=$?; hypr-show-done; exit $ret' -- "$@"
+    # Final fallback
+    if [[ -z "$terminal" ]]; then
+        terminal="ghostty"
+    fi
+
+    local args=()
+
+    case "$terminal" in
+    ghostty)
+        args+=("--title=hypr-exec")
+        ;;
+    alacritty | kitty)
+        args+=("--class" "hypr-exec")
+        args+=("--title" "hypr-exec")
+        ;;
+    *)
+        args+=("--class" "hypr-exec")
+        args+=("--title" "hypr-exec")
+        ;;
+    esac
+
+    # Ensure we pass the command correctly to different terminals
+    if is_uwsm_active; then
+        case "$terminal" in
+        kitty | alacritty | ghostty)
+            setsid uwsm app -- "$terminal" "${args[@]}" -e bash -c 'hypr-show-logo; "$@"; echo; hypr-show-done' -- "$@"
+            ;;
+        *)
+            setsid uwsm app -- "$terminal" "${args[@]}" -e "$@"
+            ;;
+        esac
+    else
+        case "$terminal" in
+        kitty | alacritty | ghostty)
+            setsid "$terminal" "${args[@]}" -e bash -c 'hypr-show-logo; "$@"; echo; hypr-show-done' -- "$@"
+            ;;
+        *)
+            setsid "$terminal" "${args[@]}" -e "$@"
+            ;;
+        esac
+    fi
 }
 
 main "$@"
+

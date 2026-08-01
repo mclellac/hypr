@@ -1,0 +1,36 @@
+#!/bin/bash
+set -euo pipefail
+# Gaming Mode Toggle Script
+# Disables animations, blur, gaps, and enables tearing for zero latency gaming.
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    if hypr-state clear game_mode; then
+        # Disable Gaming Mode
+        log_info "Disabling Gaming Mode"
+        hyprctl reload
+        notify-send -t 2000 "Gaming Mode" "Disabled\nRestored animations, blur, and gaps."
+    else
+        # Enable Gaming Mode
+        log_info "Enabling Gaming Mode"
+        hyprctl eval "hl.config({
+            animations = { enabled = false },
+            decoration = { blur = { enabled = false } },
+            general = { gaps_in = 0, gaps_out = 0, allow_tearing = true }
+        })"
+        hypr-state set game_mode
+        notify-send -t 2000 "Gaming Mode" "Enabled - Performance Optimized\nDisabled animations, blur, gaps, and enabled tearing."
+    fi
+}
+
+main "$@"

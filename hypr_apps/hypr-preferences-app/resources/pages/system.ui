@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="AdwPreferencesGroup" id="app_group">
+    <property name="title">Application</property>
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">About</property>
+        <property name="subtitle">View application information</property>
+        <property name="activatable-widget">about_btn</property>
+        <child>
+          <object class="GtkButton" id="about_btn">
+            <property name="label">View</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="maintenance_group">
+    <property name="title">Maintenance</property>
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">Update System</property>
+        <property name="subtitle">Run full system update (hypr-update)</property>
+        <property name="tooltip-text">Runs hypr-update to fetch latest packages and configuration updates.</property>
+        <property name="activatable-widget">update_btn</property>
+        <child>
+          <object class="GtkButton" id="update_btn">
+            <property name="label">Run</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">System Doctor</property>
+        <property name="subtitle">Diagnose issues (hypr-doctor)</property>
+        <property name="tooltip-text">Runs hypr-doctor to diagnose common configuration and hardware issues.</property>
+        <property name="activatable-widget">doctor_btn</property>
+        <child>
+          <object class="GtkButton" id="doctor_btn">
+            <property name="label">Run</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwActionRow" id="clean_row">
+        <property name="title">Clean System</property>
+        <property name="subtitle">Remove unused packages (hypr-clean)</property>
+        <property name="tooltip-text">Runs hypr-clean to remove unused packages and clear cache.</property>
+        <property name="activatable-widget">clean_btn</property>
+        <child>
+          <object class="GtkButton" id="clean_btn">
+            <property name="label">Run</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="lifestyle_group">
+    <property name="title">Performance and Lifestyle</property>
+    <child>
+      <object class="AdwSwitchRow" id="gamemode_toggle">
+        <property name="title">Gaming Mode</property>
+        <property name="subtitle">Optimize system for gaming (disable animations/blur)</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSwitchRow" id="zenmode_toggle">
+        <property name="title">Zen Mode</property>
+        <property name="subtitle">Minimal Waybar for distraction-free work</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwComboRow" id="power_profile">
+        <property name="title">Power Profile</property>
+        <property name="subtitle">Select system performance level</property>
+        <property name="model">
+          <object class="GtkStringList">
+            <items>
+              <item>balanced</item>
+              <item>performance</item>
+              <item>power-saver</item>
+            </items>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="power_group">
+    <property name="title">Power and Idle</property>
+    <child>
+      <object class="AdwSpinRow" id="idle_timeout">
+        <property name="title">Idle Timeout</property>
+        <property name="subtitle">Seconds before screen dims or screensaver starts</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">4100</property>
+            <property name="lower">60</property>
+            <property name="upper">86400</property>
+            <property name="step-increment">60</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="lock_timeout">
+        <property name="title">Lock Timeout</property>
+        <property name="subtitle">Seconds before screen locks</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">4200</property>
+            <property name="lower">60</property>
+            <property name="upper">86400</property>
+            <property name="step-increment">60</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="dpms_timeout">
+        <property name="title">Screen Off Timeout</property>
+        <property name="subtitle">Seconds before screen turns off (DPMS)</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">4300</property>
+            <property name="lower">60</property>
+            <property name="upper">86400</property>
+            <property name="step-increment">60</property>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="config_group">
+    <property name="title">Configuration</property>
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">Reset to Defaults</property>
+        <property name="subtitle">Revert all settings to original defaults</property>
+        <property name="activatable-widget">reset_defaults_btn</property>
+        <child>
+          <object class="GtkButton" id="reset_defaults_btn">
+            <property name="label">Reset</property>
+            <property name="valign">center</property>
+            <style>
+              <class name="destructive-action"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

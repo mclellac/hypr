@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+
+# NVIDIA (Turing+ with GSP firmware)
+# NVIDIA (Maxwell/Pascal/Volta without GSP firmware)
+
+main() {
+    hypr-hw check nvidia
+}
+
+main "$@"

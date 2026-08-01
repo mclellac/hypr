@@ -1,9 +1,17 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Updates all system packages, including official and AUR packages, and
 # removes any orphaned packages.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Updates official system packages using pacman.
@@ -15,13 +23,13 @@ set -euo pipefail
 #   None
 #######################################
 update_official_packages() {
-  local ignored_packages="$1"
-  echo -e "\e[32m\nUpdating official system packages...\e[0m"
-  local pacman_cmd="sudo pacman -Syu --noconfirm"
-  if [[ -n "${ignored_packages}" ]]; then
-    pacman_cmd+=" --ignore ${ignored_packages}"
-  fi
-  ${pacman_cmd}
+    local ignored_packages="$1"
+    echo -e "\e[32m\nUpdating official system packages...\e[0m"
+    local pacman_cmd="sudo pacman -Syu --noconfirm"
+    if [[ -n "${ignored_packages}" ]]; then
+        pacman_cmd+=" --ignore ${ignored_packages}"
+    fi
+    ${pacman_cmd}
 }
 
 #######################################
@@ -34,21 +42,21 @@ update_official_packages() {
 #   None
 #######################################
 update_aur_packages() {
-  local ignored_packages="$1"
-  if pacman -Qem >/dev/null; then
-    if hypr-pkg-aur-accessible; then
-      echo -e "\e[32m\nUpdating AUR packages...\e[0m"
-      local yay_cmd="yay -Sua --noconfirm"
-      if [[ -n "${ignored_packages}" ]]; then
-        yay_cmd+=" --ignore ${ignored_packages}"
-      fi
-      ${yay_cmd}
-      echo
-    else
-      echo -e "\e[31m\nAUR is unavailable, skipping updates.\e[0m"
-      echo
+    local ignored_packages="$1"
+    if pacman -Qem >/dev/null 2>&1; then
+        if hypr-pkg-aur-accessible; then
+            echo -e "\e[32m\nUpdating AUR packages...\e[0m"
+            local yay_cmd="yay -Sua --noconfirm"
+            if [[ -n "${ignored_packages}" ]]; then
+                yay_cmd+=" --ignore ${ignored_packages}"
+            fi
+            ${yay_cmd}
+            echo
+        else
+            echo -e "\e[31m\nAUR is unavailable, skipping updates.\e[0m"
+            echo
+        fi
     fi
-  fi
 }
 
 #######################################
@@ -61,16 +69,16 @@ update_aur_packages() {
 #   None
 #######################################
 remove_orphaned_packages() {
-  local orphans
-  orphans=$(pacman -Qtdq)
-  if [[ -n "${orphans}" ]]; then
-    echo -e "\e[32m\nRemoving orphaned packages...\e[0m"
-    # shellcheck disable=SC2068
-    for pkg in ${orphans[@]}; do
-      sudo pacman -Rs --noconfirm "${pkg}" || true
-    done
-    echo
-  fi
+    local orphans
+    orphans=$(pacman -Qtdq || true)
+    if [[ -n "${orphans}" ]]; then
+        echo -e "\e[32m\nRemoving orphaned packages...\e[0m"
+        # shellcheck disable=SC2068
+        for pkg in ${orphans[@]}; do
+            sudo pacman -Rs --noconfirm "${pkg}" || true
+        done
+        echo
+    fi
 }
 
 #######################################
@@ -83,12 +91,17 @@ remove_orphaned_packages() {
 #   None
 #######################################
 main() {
-  local ignored_packages
-  ignored_packages=$(hypr-pkg-ignored)
+    check_help "$@"
+    local ignored_packages
+    ignored_packages=$(hypr-pkg-ignored)
 
-  update_official_packages "${ignored_packages}"
-  update_aur_packages "${ignored_packages}"
-  remove_orphaned_packages
+    update_official_packages "${ignored_packages}"
+    update_aur_packages "${ignored_packages}"
+    remove_orphaned_packages
+
+    # Refresh Waybar to reflect the new update status immediately.
+    touch /tmp/hypr-system-updated
+    pkill -RTMIN+8 waybar || true
 }
 
-main
+main "$@"

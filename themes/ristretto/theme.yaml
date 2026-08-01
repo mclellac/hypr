@@ -1,0 +1,63 @@
+name: Ristretto
+fonts:
+  font_family: Hack Nerd Font Propo
+  font_style: Regular
+colors:
+  background: '#252020'
+  foreground: '#eee0d7'
+  cursor: '#d4c2b8'
+  cursor_text: '#252020'
+  selection_bg: '#443634'
+  selection_fg: '#f5ece5'
+  primary: '#ffaa3b'
+  secondary: '#f7c244'
+  alert: '#e06c75'
+  warning: '#f7c244'
+  success: '#98c379'
+  color0: '#4c3f3e'
+  color1: '#e06c75'
+  color2: '#98c379'
+  color3: '#f7c244'
+  color4: '#6c9bc2'
+  color5: '#c694c8'
+  color6: '#75c4b6'
+  color7: '#eee0d7'
+  color8: '#7c6c6b'
+  color9: '#eb838b'
+  color10: '#add88d'
+  color11: '#f9ce6b'
+  color12: '#89b2d9'
+  color13: '#d4a4d6'
+  color14: '#8cd5c8'
+  color15: '#f7eee7'
+  accent: '#ffaa3b'
+  url_color: '#ffaa3b'
+  chromium_frame: '#332928'
+layout:
+  active_border: '#ffaa3bff'
+  inactive_border: '#443634ff'
+  shadow_color: '#2520207b'
+  groupbar_text_color: '#eee0d7'
+  group_border_active: '#ffaa3b'
+  group_border_inactive: '#443634'
+  group_border_locked_active: '#c694c8'
+  group_border_locked_inactive: '#7c6c6b'
+  groupbar_col_active: '#ffaa3b'
+  groupbar_col_inactive: '#443634'
+  groupbar_col_locked_active: '#c694c8'
+  groupbar_col_locked_inactive: '#7c6c6b'
+  nogroup_border: '#443634ff'
+  nogroup_border_active: '#ffaa3bff'
+  glow_color: '#ffaa3bee'
+  animation_style: snappy
+waybar:
+  colors:
+    hardware_border: rgba(76, 63, 62, 0.88)
+  style:
+    size: 16
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: orange
+  theme: Adwaita

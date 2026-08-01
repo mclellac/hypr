@@ -1,0 +1,17 @@
+[General]
+{%- set font_family = theme.fonts.font_family | default('AdwaitaMonoNerdFont') %}
+{%- set font_size = theme.fonts.size | default(10.0) %}
+
+[Icons]
+Theme={{ theme.gtk.icon_theme | default('Adwaita') }}
+
+[KDE]
+ShowIconsInMenuItems=true
+ShowIconsOnPushButtons=true
+
+[Colors:Window]
+BackgroundNormal={{ theme.colors.background | default('#1a2529') }}
+ForegroundNormal={{ theme.colors.foreground | default('#CEE2E4') }}
+
+[KDE Optional Settings]
+ColorsWal=false

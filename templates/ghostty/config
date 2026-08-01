@@ -1,0 +1,44 @@
+{% from "partials/fonts.j2" import font_family, font_size, font_style %}
+# Dynamic theme colors
+config-file = "theme.conf"
+
+# Font
+font-family = "{{ font_family() }}"
+font-style = "{{ theme.fonts.font_style | default("Regular") }}"
+font-size = {{ font_size(theme.ghostty.font_size, 13.0) }}
+
+# Window
+window-theme = ghostty
+background-opacity = {{ theme.ghostty.opacity | default(1.0) }}
+window-padding-x = {{ theme.ghostty.padding | default(14) }}
+window-padding-y = {{ theme.ghostty.padding | default(14) }}
+confirm-close-surface=false
+resize-overlay = never
+gtk-toolbar-style = flat
+
+# Cursor styling
+cursor-style = "{{ theme.ghostty.cursor_shape | default("block") }}"
+cursor-style-blink = false
+
+# Cursor styling + SSH session terminfo
+# (all shell integration options must be passed together)
+shell-integration-features = no-cursor,ssh-env
+
+# Keyboard bindings
+keybind = shift+insert=paste_from_clipboard
+keybind = control+insert=copy_to_clipboard
+keybind = super+control+shift+alt+arrow_down=resize_split:down,100
+keybind = super+control+shift+alt+arrow_up=resize_split:up,100
+keybind = super+control+shift+alt+arrow_left=resize_split:left,100
+keybind = super+control+shift+alt+arrow_right=resize_split:right,100
+
+# Mouse scrolling (use system defaults or set higher if desired)
+# mouse-scroll-multiplier = 1.0
+
+# Clipboard and Selection
+copy-on-select = {{ theme.ghostty.copy_on_select | default("clipboard") }}
+# Ensure middle click pastes from primary selection (usually default, but explicit is better)
+# ghostty doesn't have a direct "middle-click-action" yet but we can ensure selection works.
+
+# Fix general slowness on hyprland (https://github.com/ghostty-org/ghostty/discussions/3224)
+async-backend = epoll

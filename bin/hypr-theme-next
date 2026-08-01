@@ -1,62 +1,86 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Switches to the next available theme in the themes directory.
 
-set -euo pipefail
 
-readonly THEMES_DIR="${HOME}/.config/hypr/themes/"
-readonly CURRENT_THEME_LINK="${HOME}/.config/hypr/current/theme"
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+readonly USER_THEMES_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/hypr/themes"
+readonly SYSTEM_THEMES_DIR="${XDG_DATA_HOME:-${HOME}/.local/share}/hypr/themes"
+readonly CURRENT_THEME_STATE="${HOME}/.config/hypr/current_theme_path"
 
 #######################################
 # Main function to cycle to the next theme.
 # Globals:
-#   THEMES_DIR
-#   CURRENT_THEME_LINK
+#   USER_THEMES_DIR
+#   SYSTEM_THEMES_DIR
+#   CURRENT_THEME_STATE
 # Arguments:
 #   None
 # Outputs:
 #   None
 #######################################
 main() {
-  if [[ ! -d "${THEMES_DIR}" ]]; then
-    echo "Error: Themes directory not found at ${THEMES_DIR}" >&2
-    exit 1
-  fi
+    check_help "$@"
+    # Get unique theme names, preferring user themes over system themes.
+    local -a theme_names
+    mapfile -t theme_names < <(find "${SYSTEM_THEMES_DIR}" "${USER_THEMES_DIR}" -mindepth 1 -maxdepth 1 -type d -printf "%f\n" 2>/dev/null | sort -u)
 
-  local -a themes
-  mapfile -t themes < <(find "${THEMES_DIR}" -mindepth 1 -maxdepth 1 -type d | sort)
-  local total=${#themes[@]}
+    local -a themes=()
+    for name in "${theme_names[@]}"; do
+        if [[ -d "${USER_THEMES_DIR}/${name}" ]]; then
+            themes+=("${USER_THEMES_DIR}/${name}")
+        elif [[ -d "${SYSTEM_THEMES_DIR}/${name}" ]]; then
+            themes+=("${SYSTEM_THEMES_DIR}/${name}")
+        fi
+    done
 
-  if [[ ${total} -eq 0 ]]; then
-    echo "No themes found in ${THEMES_DIR}" >&2
-    exit 1
-  fi
+    local total=${#themes[@]}
 
-  local current_theme=""
-  if [[ -L "${CURRENT_THEME_LINK}" ]]; then
-    current_theme=$(realpath "${CURRENT_THEME_LINK}")
-  else
-    # Default to the first theme if no symlink exists.
-    current_theme=$(realpath "${themes[0]}")
-  fi
-
-  local current_index=0
-  for i in "${!themes[@]}"; do
-    themes[$i]=$(realpath "${themes[$i]}")
-    if [[ "${themes[$i]}" == "${current_theme}" ]]; then
-      current_index=$i
-      break
+    if [[ ${total} -eq 0 ]]; then
+        echo "No themes found." >&2
+        exit 1
     fi
-  done
 
-  local next_index=$(((current_index + 1) % total))
-  local new_theme_path="${themes[${next_index}]}"
-  local new_theme_name
-  new_theme_name=$(basename "${new_theme_path}")
+    local current_theme=""
+    if [[ -f "${CURRENT_THEME_STATE}" ]]; then
+        local state_path
+        state_path=$(<"${CURRENT_THEME_STATE}")
+        if [[ -d "${state_path}" ]]; then
+            current_theme=$(realpath "${state_path}")
+        fi
+    fi
 
-  echo "Switching to next theme: ${new_theme_name}"
-  hypr-theme-set "${new_theme_name}"
-  notify-send "Theme changed to ${new_theme_name}" -t 2000
+    if [[ -z "${current_theme}" ]]; then
+        # Default to the first theme if no state exists.
+        current_theme=$(realpath "${themes[0]}")
+    fi
+
+    local current_index=0
+    for i in "${!themes[@]}"; do
+        themes[i]=$(realpath "${themes[i]}")
+        if [[ "${themes[$i]}" == "${current_theme}" ]]; then
+            current_index=$i
+            break
+        fi
+    done
+
+    local next_index
+    next_index=$(((current_index + 1) % total))
+    local new_theme_path="${themes[${next_index}]}"
+    local new_theme_name
+    new_theme_name=$(basename "${new_theme_path}")
+
+    log_info "Switching to next theme: ${new_theme_name}"
+    hypr-theme-set "${new_theme_name}"
+    notify-send "Theme Applied: ${new_theme_name}" "Successfully switched to the next theme." -t 2000 -i "preferences-desktop-theme"
 }
 
-main
+main "$@"

@@ -1,0 +1,27 @@
+#!/bin/bash
+set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    url="$1"
+    web_url="https://app.hey.com"
+
+    # Handle mailto: URLs
+    if [[ $url =~ ^mailto: ]]; then
+      email="${url#mailto:}"
+      web_url="https://app.hey.com/messages/new?to=$email"
+    fi
+
+    exec hypr-launch-webapp "$web_url"
+}
+
+main "$@"

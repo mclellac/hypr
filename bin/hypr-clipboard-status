@@ -1,36 +1,37 @@
-#!/usr/bin/env python3
-import json
-import subprocess
-import shutil
+#!/bin/bash
+#
+# Returns the number of items in the clipboard as JSON for Waybar.
 
-def main():
-    count = 0
-    if shutil.which("cliphist"):
-        try:
-            # Use shell=True for pipe, or properly pipe processes
-            # cliphist list | wc -l
-            p1 = subprocess.Popen(["cliphist", "list"], stdout=subprocess.PIPE, text=True)
-            p2 = subprocess.Popen(["wc", "-l"], stdin=p1.stdout, stdout=subprocess.PIPE, text=True)
-            p1.stdout.close()
-            output = p2.communicate()[0].strip()
-            if output:
-                count = int(output)
-        except Exception:
-            pass
+set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
-    tooltip = f"{count} item(s) in the clipboard\n(Mid click to clear)"
+usage() {
+    echo "Usage: $(basename "$0") [OPTIONS]"
+    echo
+    echo "Returns the number of clipboard items as JSON for Waybar."
+    echo
+    echo "Options:"
+    echo "  -h, --help    Show this help message and exit"
+}
 
-    # Text icon for clipboard
-    text = "󰨸"
+main() {
+    check_help "$@"
 
-    output = {
-        "text": text,
-        "tooltip": tooltip,
-        "class": "clipboard",
-        "alt": "clipboard"
-    }
+    local count=0
+    if command -v cliphist &>/dev/null; then
+        count=$(cliphist list | wc -l || echo 0)
+    fi
 
-    print(json.dumps(output))
+    local tooltip="${count} item(s) in the clipboard\n(Mid click to clear)"
+    local text="󰨸"
 
-if __name__ == "__main__":
-    main()
+    printf '{"text": "%s", "tooltip": "%s", "class": "clipboard", "alt": "clipboard"}\n' \
+        "${text}" "${tooltip}"
+}
+
+main "$@"

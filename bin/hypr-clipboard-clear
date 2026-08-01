@@ -1,0 +1,55 @@
+#!/bin/bash
+#
+# Clears the clipboard history using cliphist and refreshes Waybar.
+
+set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    echo "Usage: $(basename "$0") [OPTIONS]"
+    echo
+    echo "Clears the clipboard history and refreshes Waybar."
+    echo
+    echo "Options:"
+    echo "  -h, --help    Show this help message and exit"
+}
+
+main() {
+    check_help "$@"
+
+    if command -v cliphist &>/dev/null; then
+        log_info "Clearing clipboard history..."
+        cliphist wipe || true
+        
+        # Clear elephant's in-memory clipboard cache if running
+        if pgrep -x elephant &>/dev/null; then
+            elephant activate "clipboard;;remove_all;;" || true
+        fi
+        
+        # Clear persistent databases on disk to prevent old history from returning on reload/crash
+        rm -f "$HOME/.cache/elephant/clipboard.gob" || true
+        rm -rf "$HOME/.cache/elephant/clipboardimages/"* || true
+
+        # Also clear active clipboard selections to prevent pasting old data
+        if command -v wl-copy &>/dev/null; then
+            wl-copy --clear || true
+            wl-copy --primary --clear || true
+        fi
+
+        # Restart Walker and Elephant services to reload empty state and refresh sockets
+        if command -v hypr-restart-walker &>/dev/null; then
+            hypr-restart-walker || true
+        else
+            pkill -RTMIN+9 waybar || true
+        fi
+    else
+        log_warn "cliphist not found, skipping clipboard clear."
+    fi
+}
+
+main "$@"

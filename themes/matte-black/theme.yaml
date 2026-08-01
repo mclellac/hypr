@@ -1,0 +1,62 @@
+name: Matte Black
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#121212'
+  foreground: '#bebebe'
+  cursor: '#eaeaea'
+  cursor_text: '#121212'
+  selection_bg: '#515151'
+  selection_fg: '#bebebe'
+  primary: '#e68e0d'
+  secondary: '#e68e0d'
+  alert: '#D35F5F'
+  warning: '#b91c1c'
+  success: '#FFC107'
+  color0: '#333333'
+  color1: '#D35F5F'
+  color2: '#FFC107'
+  color3: '#b91c1c'
+  color4: '#e68e0d'
+  color5: '#D35F5F'
+  color6: '#bebebe'
+  color7: '#bebebe'
+  color8: '#8a8a8d'
+  color9: '#B91C1C'
+  color10: '#FFC107'
+  color11: '#b90a0a'
+  color12: '#f59e0b'
+  color13: '#B91C1C'
+  color14: '#eaeaea'
+  color15: '#ffffff'
+  accent: '#e68e0d'
+  url_color: '#e68e0d'
+layout:
+  active_border: '#e68e0dff'
+  inactive_border: '#333333ff'
+  groupbar_text_color: '#bebebe'
+  group_border_active: '#e68e0d'
+  group_border_inactive: '#333333'
+  group_border_locked_active: '#d35f5f'
+  group_border_locked_inactive: '#8a8a8d'
+  groupbar_col_active: '#e68e0d'
+  groupbar_col_inactive: '#333333'
+  groupbar_col_locked_active: '#d35f5f'
+  groupbar_col_locked_inactive: '#8a8a8d'
+  nogroup_border: '#333333'
+  nogroup_border_active: '#e68e0d'
+  glow_color: '#e68e0dee'
+  shadow_color: '#1212127b'
+  animation_style: fast
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: orange
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(51, 51, 51, 0.53)
+  style:
+    size: 16

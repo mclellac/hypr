@@ -1,12 +1,20 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Launches a web application (a URL in a browser with app-like flags)
-# using a supported Chromium-based browser.
+# using a supported browser.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
-# Determines the default Chromium-based browser.
+# Determines the default browser to use for webapps.
 # Globals:
 #   None
 # Arguments:
@@ -14,50 +22,16 @@ set -euo pipefail
 # Outputs:
 #   The .desktop filename of a supported browser.
 #######################################
-get_chromium_browser() {
-  local browser
-  browser=$(timeout 1s xdg-settings get default-web-browser || echo "chromium.desktop")
+get_default_browser() {
+    local browser
+    browser=$(timeout 1s env -u KDE_SESSION_VERSION -u KDE_FULL_SESSION xdg-settings get default-web-browser 2>/dev/null || echo "")
 
-  # Fallback to a known-good default if the detected browser is not supported.
-  case "${browser}" in
-  google-chrome* | brave-browser* | microsoft-edge* | opera* | vivaldi*)
-    echo "${browser}"
-    ;;
-  *)
-    echo "chromium.desktop"
-    ;;
-  esac
-}
-
-#######################################
-# Finds the executable path from a .desktop file.
-# Globals:
-#   HOME - The user's home directory.
-# Arguments:
-#   $1 - The .desktop filename.
-# Outputs:
-#   The full path to the browser's executable.
-#######################################
-get_browser_executable() {
-  local browser_desktop_file="$1"
-  local -a search_dirs=(
-    "${HOME}/.local/share/applications"
-    "${HOME}/.nix-profile/share/applications"
-    "/usr/share/applications"
-  )
-  local desktop_file_path=""
-
-  for dir in "${search_dirs[@]}"; do
-    if [[ -f "${dir}/${browser_desktop_file}" ]]; then
-      desktop_file_path="${dir}/${browser_desktop_file}"
-      break
+    if [[ -n "${browser}" ]]; then
+        echo "${browser}"
+        return 0
     fi
-  done
 
-  if [[ -n "${desktop_file_path}" ]]; then
-    # Parse the Exec line to get the command, ignoring arguments.
-    sed -n 's/^Exec=\([^ ]*\).*/\1/p' "${desktop_file_path}" | head -1
-  fi
+    echo "chromium.desktop"
 }
 
 #######################################
@@ -71,23 +45,79 @@ get_browser_executable() {
 #   Exits with an error if the URL or browser executable is not found.
 #######################################
 main() {
-  if [[ -z "${1:-}" ]]; then
-    echo "Usage: $(basename "$0") <url> [browser-args...]" >&2
-    exit 1
-  fi
+    check_help "$@"
+    if [[ -z "${1:-}" ]]; then
+        echo "Usage: $(basename "$0") <url> [browser-args...]" >&2
+        exit 1
+    fi
 
-  local browser_desktop_file
-  browser_desktop_file=$(get_chromium_browser)
+    local url="$1"
+    shift
 
-  local browser_executable
-  browser_executable=$(get_browser_executable "${browser_desktop_file}")
-  if [[ -z "${browser_executable}" ]]; then
-    echo "Error: Could not find executable for '${browser_desktop_file}'." >&2
-    exit 1
-  fi
+    local browser_desktop_file
+    browser_desktop_file=$(get_default_browser)
 
-  # Launch the browser with the --app flag to create a PWA-like experience.
-  exec setsid uwsm app -- "${browser_executable}" "--app=${1}" "${@:2}"
+    local -a search_dirs=(
+        "${HOME}/.local/share/applications"
+        "${HOME}/.nix-profile/share/applications"
+        "/usr/share/applications"
+    )
+    local desktop_file_path=""
+
+    for dir in "${search_dirs[@]}"; do
+        if [[ -f "${dir}/${browser_desktop_file}" ]]; then
+            desktop_file_path="${dir}/${browser_desktop_file}"
+            break
+        fi
+    done
+
+    if [[ -z "${desktop_file_path}" ]]; then
+        log_warn "Could not find .desktop file for '${browser_desktop_file}'. Attempting fallbacks..."
+        local fallback
+        for fallback in chromium.desktop google-chrome.desktop firefox.desktop; do
+            for dir in "${search_dirs[@]}"; do
+                if [[ -f "${dir}/${fallback}" ]]; then
+                    desktop_file_path="${dir}/${fallback}"
+                    browser_desktop_file="${fallback}"
+                    break 2
+                fi
+            done
+        done
+    fi
+
+    if [[ -z "${desktop_file_path}" ]]; then
+        echo "Error: Could not find .desktop file for default or fallback browser." >&2
+        exit 1
+    fi
+
+    # Read the Exec line from the desktop file and remove field codes.
+    local exec_line
+    exec_line=$(grep -E '^Exec=' "${desktop_file_path}" | head -1 | sed -e 's/^Exec=//' -e 's/ %[UufF]//g')
+    if [[ -z "${exec_line}" ]]; then
+        echo "ERROR: Could not find the Exec line in '${desktop_file_path}'." >&2
+        exit 1
+    fi
+
+    # Determine flags based on the browser.
+    # Chromium browsers support --app for a PWA experience.
+    # Firefox and its derivatives (LibreWolf, Zen, Nightly, etc.) do not.
+    local app_flag=""
+    case "${browser_desktop_file}:${exec_line}" in
+        *[Ff]irefox*|*[Nn]ightly*|*[Ll]ibrewolf*|*[Zz]en*|*[Ww]aterfox*|*[Ff]loorp*|*[Mm]ozilla*)
+            app_flag="\"${url}\""
+            ;;
+        *)
+            app_flag="--app=\"${url}\""
+            ;;
+    esac
+
+    # Launch the browser. `eval` handles potential quotes in exec_line.
+    if is_uwsm_active; then
+        eval "exec setsid uwsm-app -- ${exec_line} ${app_flag} \"\$@\""
+    else
+        eval "exec setsid ${exec_line} ${app_flag} \"\$@\""
+    fi
 }
 
 main "$@"
+

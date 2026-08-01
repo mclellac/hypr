@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=YouTube
+Comment=YouTube
+Exec={{ HYPR_PATH }}/bin/hypr-launch-webapp https://www.youtube.com
+Terminal=false
+Type=Application
+Icon={{ env.HOME }}/.local/share/applications/icons/youtube.png
+StartupNotify=true

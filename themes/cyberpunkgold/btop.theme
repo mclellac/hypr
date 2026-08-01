@@ -1,0 +1,81 @@
+# Theme: Cyberpunk Gold
+# By: Gemini CLI
+
+# Main bg
+theme[main_bg]="#423300"
+
+# Main text color
+theme[main_fg]="#ffbb00"
+
+# Title color for boxes
+theme[title]="#ffbb00"
+
+# Highlight color for keyboard shortcuts
+theme[hi_fg]="#ffff00"
+
+# Background color of selected item in processes box
+theme[selected_bg]="#ffc43b"
+
+# Foreground color of selected item in processes box
+theme[selected_fg]="#423300"
+
+# Color of inactive/disabled text
+theme[inactive_fg]="#665c00"
+
+# Misc colors for processes box including mini cpu graphs, details memory graph and details status text
+theme[proc_misc]="#ffc43b"
+
+# Cpu box outline color
+theme[cpu_box]="#ffc43b"
+
+# Memory/disks box outline color
+theme[mem_box]="#ffc43b"
+
+# Net up/down box outline color
+theme[net_box]="#ffc43b"
+
+# Processes box outline color
+theme[proc_box]="#ffc43b"
+
+# Box divider line and small boxes line color
+theme[div_line]="#ffc43b"
+
+# Temperature graph colors
+theme[temp_start]="#ffc43b"
+theme[temp_mid]="#ffff00"
+theme[temp_end]="#ffbb00"
+
+# CPU graph colors
+theme[cpu_start]="#ffc43b"
+theme[cpu_mid]="#ffff00"
+theme[cpu_end]="#ffbb00"
+
+# Mem/Disk free meter
+theme[free_start]="#ffc43b"
+theme[free_mid]="#ffff00"
+theme[free_end]="#ffbb00"
+
+# Mem/Disk cached meter
+theme[cached_start]="#ffc43b"
+theme[cached_mid]="#ffff00"
+theme[cached_end]="#ffbb00"
+
+# Mem/Disk available meter
+theme[available_start]="#ffc43b"
+theme[available_mid]="#ffff00"
+theme[available_end]="#ffbb00"
+
+# Mem/Disk used meter
+theme[used_start]="#ffc43b"
+theme[used_mid]="#ffff00"
+theme[used_end]="#ffbb00"
+
+# Download graph colors
+theme[download_start]="#ffc43b"
+theme[download_mid]="#ffff00"
+theme[download_end]="#ffbb00"
+
+# Upload graph colors
+theme[upload_start]="#ffc43b"
+theme[upload_mid]="#ffff00"
+theme[upload_end]="#ffbb00"

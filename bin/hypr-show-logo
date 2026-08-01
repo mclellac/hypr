@@ -4,26 +4,28 @@
 
 set -euo pipefail
 
-#######################################
-# Main function to display the logo.
-# Globals:
-#   HOME - The user's home directory.
-# Arguments:
-#   None
-# Outputs:
-#   The logo text to stdout.
-#######################################
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
 main() {
-  local logo_file="${HOME}/.local/share/hypr/logo.txt"
-  if [[ -f "${logo_file}" ]]; then
-    clear
-    echo -e "\033[32m" # Green text
-    cat "${logo_file}"
-    echo -e "\033[0m" # Reset color
-    echo
-  else
-    echo "Logo file not found: ${logo_file}" >&2
-  fi
+    check_help "$@"
+
+    local logo_file="${HYPR_PATH}/logo.txt"
+    if [[ -f "${logo_file}" ]]; then
+        clear
+        echo -e "\033[32m" # Green text
+        cat "${logo_file}"
+        echo -e "\033[0m"  # Reset color
+        echo
+    else
+        log_error "Logo file not found: ${logo_file}"
+        exit 1
+    fi
 }
 
-main
+main "$@"

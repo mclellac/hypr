@@ -1,0 +1,36 @@
+{% from "partials/colors.j2" import get_color %}
+[window]
+opacity = {{ theme.alacritty.opacity | default(1.0) }}
+padding = { x = {{ theme.alacritty.padding_x | default(25) }}, y = {{ theme.alacritty.padding_y | default(25) }} }
+
+[colors.primary]
+background = "{{ get_color('background', '#1e1e2e')  }}"
+foreground = "{{ get_color('foreground', '#cdd6f4')  }}"
+
+[colors.cursor]
+text = "{{ get_color('cursor_text', theme.colors.background) | default('#1e1e2e')  }}"
+cursor = "{{ get_color('cursor', theme.colors.primary) | default('#89b4fa')  }}"
+
+[colors.selection]
+text = "{{ get_color('selection_fg', theme.colors.background) | default('#1e1e2e')  }}"
+background = "{{ get_color('selection_bg', theme.colors.primary) | default('#89b4fa')  }}"
+
+[colors.normal]
+black = "{{ get_color('color0', '#1e1e2e')  }}"
+red = "{{ get_color('color1', '#f38ba8')  }}"
+green = "{{ get_color('color2', '#a6e3a1')  }}"
+yellow = "{{ get_color('color3', '#f9e2af')  }}"
+blue = "{{ get_color('color4', '#89b4fa')  }}"
+magenta = "{{ get_color('color5', '#f5c2e7')  }}"
+cyan = "{{ get_color('color6', '#94e2d5')  }}"
+white = "{{ get_color('color7', '#bac2de')  }}"
+
+[colors.bright]
+black = "{{ get_color('color8', '#45475a')  }}"
+red = "{{ get_color('color9', '#f38ba8')  }}"
+green = "{{ get_color('color10', '#a6e3a1')  }}"
+yellow = "{{ get_color('color11', '#f9e2af')  }}"
+blue = "{{ get_color('color12', '#89b4fa')  }}"
+magenta = "{{ get_color('color13', '#f5c2e7')  }}"
+cyan = "{{ get_color('color14', '#94e2d5')  }}"
+white = "{{ get_color('color15', '#a6adc8')  }}"

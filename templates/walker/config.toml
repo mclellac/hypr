@@ -1,0 +1,94 @@
+close_when_open = true
+force_keyboard_focus = true
+selection_wrap = true
+theme = "hypr-default"
+app_launch_prefix = ""
+terminal = "{{ 'alacritty' if is_vm and (theme.terminal | default('ghostty')) == 'ghostty' else (theme.terminal | default('ghostty')) }}"
+
+[window]
+box_align = "center"
+align = "center"
+margin = "200 0 0 0"
+
+[shell]
+anchor_top = false
+anchor_bottom = false
+anchor_left = false
+anchor_right = false
+
+[placeholders]
+"default" = { input = " Search...", list = "No Results" }
+"desktopapplications" = { input = " Search Apps...", list = "No Apps Found" }
+"files" = { input = " Search Files...", list = "No Files Found" }
+
+[keybinds]
+close = ["Escape"]
+next = ["Down"]
+previous = ["Up"]
+toggle_exact = ["ctrl e"]
+resume_last_query = ["ctrl r"]
+quick_activate = ["F1", "F2", "F3", "F4"]
+
+[providers]
+max_results = 500
+default = [
+  "desktopapplications",
+  "calc",
+  "runner",
+  "ssh",
+]
+empty = ["desktopapplications"]
+
+[[providers.prefixes]]
+prefix = ";"
+provider = "providerlist"
+
+[[providers.prefixes]]
+prefix = "/"
+provider = "files"
+
+{% if theme.walker.mod_symbols | default(true) %}
+[[providers.prefixes]]
+prefix = "."
+provider = "symbols"
+{% endif %}
+
+[[providers.prefixes]]
+prefix = "!"
+provider = "todo"
+
+[[providers.prefixes]]
+prefix = "="
+provider = "calc"
+
+[[providers.prefixes]]
+prefix = "@"
+provider = "websearch"
+
+{% if theme.walker.mod_clipboard | default(true) %}
+[[providers.prefixes]]
+prefix = ":"
+provider = "clipboard"
+{% endif %}
+
+{% if theme.walker.mod_snippets | default(true) %}
+[[providers.prefixes]]
+prefix = "~"
+provider = "snippets"
+{% endif %}
+
+[providers.snippets]
+name = "snippets"
+src = "~/.config/walker/snippets.json"
+
+[providers.symbols]
+name = "symbols"
+src = "~/.config/walker/symbols.json"
+
+[providers.actions]
+dmenu = [{ action = "select", default = true, bind = "Return" }]
+clipboard = [
+  { action = "copy", bind = "Return", default = true },
+  { action = "remove", bind = "ctrl d", after = "ClearReload" },
+  { action = "remove_all", global = true, label = "clear", bind = "ctrl shift Delete", after = "ClearReload" }
+]

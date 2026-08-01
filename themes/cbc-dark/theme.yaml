@@ -1,0 +1,61 @@
+name: CBC Dark
+fonts:
+  font_family: AdwaitaMono Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#112330'
+  foreground: '#cdd6f4'
+  cursor: '#00e5ff'
+  cursor_text: '#05080d'
+  selection_bg: '#254f54'
+  selection_fg: '#cdd6f4'
+  primary: '#EE0000'
+  secondary: '#253D86'
+  accent: '#00e5ff'
+  alert: '#EE0000'
+  warning: '#FBC02D'
+  success: '#4CAF50'
+  color0: '#254f54'
+  color1: '#ff4444'
+  color2: '#00ffcc'
+  color3: '#ffcc00'
+  color4: '#00aaff'
+  color5: '#d670d6'
+  color6: '#00e5ff'
+  color7: '#cdd6f4'
+  color8: '#3b4252'
+  color9: '#ff6666'
+  color10: '#33ffdd'
+  color11: '#ffd633'
+  color12: '#33bbff'
+  color13: '#e085e0'
+  color14: '#33ecff'
+  color15: '#ffffff'
+layout:
+  active_border: rgba(EE0000FF) rgba(253D86FF) 45deg
+  inactive_border: rgba(494949FF)
+  nogroup_border: rgba(1a2529FF)
+  shadow_color: rgba(00000099)
+  groupbar_text_color: '#FFFFFF'
+  group_border_active: '#253D86'
+  group_border_inactive: '#121212'
+  group_border_locked_active: '#9C27B0'
+  group_border_locked_inactive: '#494949'
+  groupbar_col_active: '#253D86'
+  groupbar_col_inactive: '#121212'
+  groupbar_col_locked_active: '#9C27B0'
+  groupbar_col_locked_inactive: '#494949'
+  nogroup_border_active: rgba(ffff00ff)
+  glow_color: rgba(EE0000ee)
+  animation_style: classic
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(80, 80, 80, 0.88)
+  style:
+    size: 16

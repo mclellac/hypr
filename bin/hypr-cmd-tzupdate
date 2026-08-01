@@ -4,6 +4,21 @@
 # relevant services to apply the change.
 
 set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    echo "Usage: $(basename "$0")"
+    echo
+    echo "Updates the system timezone automatically."
+    echo
+    echo "Options:"
+    echo "  -h, --help    Show this help message and exit"
+}
 
 #######################################
 # Main function to handle the timezone update process.
@@ -15,30 +30,40 @@ set -euo pipefail
 #   Exits with an error if dependencies are not met.
 #######################################
 main() {
-  for cmd in systemctl tzupdate timedatectl notify-send; do
-    if ! command -v "${cmd}" &>/dev/null; then
-      echo "Error: Required command not found: ${cmd}" >&2
-      exit 1
+    check_help "$@"
+
+    for cmd in systemctl timedatectl notify-send; do
+        if ! command -v "${cmd}" &>/dev/null; then
+            log_error "Required command not found: ${cmd}"
+            exit 1
+        fi
+    done
+
+    if ! command -v tzupdate &>/dev/null; then
+        log_error "tzupdate is not installed. Automatic timezone detection is unavailable."
+        log_info "You can set your timezone manually using: sudo timedatectl set-timezone <your_timezone>"
+        notify-send "Timezone Update Failed" "tzupdate is not installed. Please set timezone manually." -u critical -t 10000
+        exit 1
     fi
-  done
 
-  echo "Restarting systemd-timesyncd to sync system clock..."
-  sudo systemctl restart systemd-timesyncd
+    log_info "Restarting systemd-timesyncd to sync system clock..."
+    sudo systemctl restart systemd-timesyncd
 
-  echo "Updating timezone based on location..."
-  if ! sudo tzupdate; then
-    notify-send "Error: tzupdate failed." "Could not determine or set timezone." -u critical -t 5000
-    exit 1
-  fi
+    log_info "Updating timezone based on location..."
+    if ! sudo tzupdate; then
+        log_error "tzupdate failed."
+        notify-send "Error: tzupdate failed." "Could not determine or set timezone." -u critical -t 5000
+        exit 1
+    fi
 
-  # Retrieve the newly set timezone to display in the notification.
-  local new_timezone
-  new_timezone=$(timedatectl show -p Timezone --value)
+    # Retrieve the newly set timezone to display in the notification.
+    local new_timezone
+    new_timezone=$(timedatectl show -p Timezone --value)
 
-  echo "Timezone updated to ${new_timezone}. Restarting Waybar..."
-  hypr-restart-waybar
+    log_info "Timezone updated to ${new_timezone}. Restarting Waybar..."
+    hypr-restart-waybar
 
-  notify-send "Timezone Updated" "System time synced and timezone set to ${new_timezone}" -t 5000
+    notify-send "Timezone Updated" "System time synced and timezone set to ${new_timezone}" -t 5000
 }
 
-main
+main "$@"

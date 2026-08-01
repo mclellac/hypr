@@ -1,0 +1,1 @@
+{% if theme.colors.chromium_frame is defined %}{{ Color(theme.colors.chromium_frame).csv }}{% elif theme.colors.background is defined %}{{ Color(theme.colors.background).csv }}{% elif theme.colors.secondary is defined %}{{ Color(theme.colors.secondary).csv }}{% else %}{{ Color('#242424').csv }}{% endif %}

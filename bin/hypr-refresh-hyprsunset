@@ -1,8 +1,16 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Refreshes the hyprsunset configuration and restarts the service.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Main function to refresh the hyprsunset configuration.
@@ -14,8 +22,25 @@ set -euo pipefail
 #   None
 #######################################
 main() {
-  hypr-refresh-config hypr/hyprsunset.conf
-  hypr-restart-hyprsunset
+    check_help "$@"
+    local temp="${1:-}"
+
+    # Refresh config file first
+    hypr-refresh-config hypr/hyprsunset.conf
+
+    if [[ -n "${temp}" ]]; then
+        # If temperature is provided, try to apply it dynamically if running
+        if pgrep -x hyprsunset >/dev/null; then
+            log_info "Applying temperature ${temp} to running hyprsunset..."
+            hyprctl hyprsunset temperature "${temp}" || hypr-restart-hyprsunset
+        else
+            # Not running, just restart it (it should pick up config or we could pass temp)
+            hypr-restart-hyprsunset
+        fi
+    else
+        # No temp provided, just standard restart
+        hypr-restart-hyprsunset
+    fi
 }
 
-main
+main "$@"

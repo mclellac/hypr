@@ -1,0 +1,41 @@
+#!/bin/bash
+set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    set -e
+
+    # Install voxtype and configure it for use.
+
+    if gum confirm "Install Voxtype + AI model (~150MB) to enable dictation?"; then
+      # wtype is in official repos
+      hypr-pkg-add wtype
+      # voxtype-bin is in AUR
+      yay -S --noconfirm --needed voxtype-bin
+
+      # Setup voxtype
+      mkdir -p ~/.config/voxtype
+      # Trigger configuration generation for voxtype
+      hypr-theme-templater
+
+      voxtype setup --download --no-post-install
+      if hypr-hw-vulkan; then
+        voxtype setup gpu --enable || true
+      fi
+      voxtype setup systemd
+
+      hypr-restart-waybar
+      notify-send "    Voxtype Dictation Ready" "Press Super + Ctrl + X to toggle dictation.\nEdit ~/.config/voxtype/config.toml for options." -t 10000
+    fi
+}
+
+main "$@"

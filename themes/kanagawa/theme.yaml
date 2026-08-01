@@ -1,0 +1,62 @@
+name: Kanagawa
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#1f1f28'
+  foreground: '#dcd7ba'
+  cursor: '#c8c093'
+  cursor_text: '#1f1f28'
+  selection_bg: '#2d4f67'
+  selection_fg: '#c8c093'
+  primary: '#7e9cd8'
+  secondary: '#7e9cd8'
+  alert: '#c34043'
+  warning: '#c0a36e'
+  success: '#76946a'
+  color0: '#090618'
+  color1: '#c34043'
+  color2: '#76946a'
+  color3: '#c0a36e'
+  color4: '#7e9cd8'
+  color5: '#957fb8'
+  color6: '#6a9589'
+  color7: '#c8c093'
+  color8: '#727169'
+  color9: '#e82424'
+  color10: '#98bb6c'
+  color11: '#e6c384'
+  color12: '#7fb4ca'
+  color13: '#938aa9'
+  color14: '#7aa89f'
+  color15: '#dcd7ba'
+  accent: '#7e9cd8'
+  url_color: '#7e9cd8'
+layout:
+  active_border: '#7e9cd8ff'
+  inactive_border: '#090618ff'
+  groupbar_text_color: '#dcd7ba'
+  group_border_active: '#7e9cd8'
+  group_border_inactive: '#090618'
+  group_border_locked_active: '#957fb8'
+  group_border_locked_inactive: '#727169'
+  groupbar_col_active: '#7e9cd8'
+  groupbar_col_inactive: '#090618'
+  groupbar_col_locked_active: '#957fb8'
+  groupbar_col_locked_inactive: '#727169'
+  nogroup_border: '#090618'
+  nogroup_border_active: '#7e9cd8'
+  glow_color: '#7e9cd8ee'
+  shadow_color: '#1f1f287b'
+  animation_style: classic
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(9, 6, 24, 0.53)
+  style:
+    size: 16

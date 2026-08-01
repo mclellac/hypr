@@ -1,0 +1,67 @@
+#!/bin/bash
+set -euo pipefail
+
+# Toggle to pop-out a tile to stay fixed on a display basis.
+
+# Usage:
+# hypr-window-pop [width height [x y]]
+#
+# Arguments:
+#   width   Optional. Width of the floating window. Default: 1300
+#   height  Optional. Height of the floating window. Default: 900
+#   x       Optional. X position of the window. Must provide both X and Y to take effect.
+#   y       Optional. Y position of the window. Must provide both X and Y to take effect.
+#
+# Behavior:
+#   - If the window is already pinned, it will be unpinned and removed from the pop layer.
+#   - If the window is not pinned, it will be floated, resized, moved/centered, pinned, brought to top, and popped.
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    width=${1:-1300}
+    height=${2:-900}
+    x=${3:-}
+    y=${4:-}
+
+    active=$(hyprctl activewindow -j)
+    pinned=$(echo "$active" | jq -r ".pinned // false")
+    addr=$(echo "$active" | jq -r ".address // empty")
+
+    if [[ -z "$addr" || "$addr" == "null" ]]; then
+        exit 0
+    fi
+
+    if [[ "$pinned" == "true" ]]; then
+        hyprctl dispatch "hl.dsp.window.pin({ window = \"address:${addr}\" })" >/dev/null
+        hyprctl dispatch "hl.dsp.window.float({ action = \"toggle\", window = \"address:${addr}\" })" >/dev/null
+        hyprctl dispatch "hl.dsp.window.tag({ tag = \"-pop\", window = \"address:${addr}\" })" >/dev/null
+    else
+        floating=$(echo "$active" | jq -r ".floating // false")
+        if [[ "$floating" != "true" ]]; then
+            hyprctl dispatch "hl.dsp.window.float({ action = \"toggle\", window = \"address:${addr}\" })" >/dev/null
+        fi
+        hyprctl dispatch "hl.dsp.window.resize({ x = ${width}, y = ${height}, window = \"address:${addr}\" })" >/dev/null
+
+        if [[ -n "$x" ]] && [[ -n "$y" ]]; then
+            hyprctl dispatch "hl.dsp.window.move({ x = ${x}, y = ${y}, window = \"address:${addr}\" })" >/dev/null
+        else
+            hyprctl dispatch "hl.dsp.window.center({ window = \"address:${addr}\" })" >/dev/null
+        fi
+
+        hyprctl dispatch "hl.dsp.window.pin({ window = \"address:${addr}\" })" >/dev/null
+        hyprctl dispatch "hl.dsp.window.alter_zorder({ mode = \"top\", window = \"address:${addr}\" })" >/dev/null
+        hyprctl dispatch "hl.dsp.window.tag({ tag = \"+pop\", window = \"address:${addr}\" })" >/dev/null
+    fi
+}
+
+main "$@"

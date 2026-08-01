@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="AdwPreferencesGroup" id="global_group">
+    <property name="title">Global Settings</property>
+    <child>
+      <object class="AdwSwitchRow" id="night_light_toggle">
+        <property name="title">Night Light</property>
+        <property name="subtitle">Reduces eye strain by warming display colors (hyprsunset)</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="night_light_temp">
+        <property name="title">Temperature</property>
+        <property name="subtitle">Color temperature in Kelvin</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">1000</property>
+            <property name="upper">10000</property>
+            <property name="value">6000</property>
+            <property name="step-increment">100</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSwitchRow" id="hotplug_toggle">
+        <property name="title">Hotplug Management</property>
+        <property name="subtitle">Auto-adjust layout when monitors connect/disconnect</property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="monitors_group">
+    <property name="title">Monitors</property>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="actions_group">
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">Add Monitor</property>
+        <property name="activatable-widget" >add_monitor_btn</property>
+        <child>
+          <object class="GtkButton" id="add_monitor_btn">
+            <property name="icon-name">list-add-symbolic</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

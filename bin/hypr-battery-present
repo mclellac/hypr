@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+# Returns 0 if a battery device is present on the system, 1 otherwise.
+
+set -euo pipefail
+
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    echo "Usage: $(basename "$0")"
+    echo
+    echo "Returns 0 if a battery device is present, 1 otherwise."
+}
+
+main() {
+    check_help "$@"
+
+    for bat in /sys/class/power_supply/BAT* /sys/class/power_supply/battery*; do
+        if [[ -d "$bat" ]]; then
+            exit 0
+        fi
+    done
+
+    if command -v upower &>/dev/null && upower -e | grep -q 'BAT'; then
+        exit 0
+    fi
+
+    exit 1
+}
+
+main "$@"

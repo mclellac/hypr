@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Policy helper script to write browser theme policy files.
+# Designed to run with passwordless sudo.
+set -euo pipefail
+
+COLOR="${1:-#1e1e2e}"
+
+policy_dirs=(
+    "/etc/chromium/policies"
+    "/etc/opt/chrome/policies"
+    "/etc/brave/policies"
+    "/etc/vivaldi/policies"
+    "/etc/thorium/policies"
+    "/etc/opt/edge/policies"
+)
+
+for pdir in "${policy_dirs[@]}"; do
+    mkdir -p "${pdir}/managed"
+    echo "{\"BrowserThemeColor\": \"${COLOR}\"}" > "${pdir}/managed/theme.json"
+    chmod 644 "${pdir}/managed/theme.json"
+done

@@ -1,0 +1,62 @@
+name: Tokyo Night
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#1a1b26'
+  foreground: '#a9b1d6'
+  cursor: '#c0caf5'
+  cursor_text: '#1a1b26'
+  selection_bg: '#7aa2f7'
+  selection_fg: '#c0caf5'
+  primary: '#7aa2f7'
+  secondary: '#7aa2f7'
+  alert: '#f7768e'
+  warning: '#e0af68'
+  success: '#9ece6a'
+  color0: '#32344a'
+  color1: '#f7768e'
+  color2: '#9ece6a'
+  color3: '#e0af68'
+  color4: '#7aa2f7'
+  color5: '#ad8ee6'
+  color6: '#449dab'
+  color7: '#787c99'
+  color8: '#444b6a'
+  color9: '#ff7a93'
+  color10: '#b9f27c'
+  color11: '#ff9e64'
+  color12: '#7da6ff'
+  color13: '#bb9af7'
+  color14: '#0db9d7'
+  color15: '#acb0d0'
+  accent: '#7aa2f7'
+  url_color: '#9ece6a'
+layout:
+  active_border: '#7aa2f7ff'
+  inactive_border: '#32344aff'
+  groupbar_text_color: '#a9b1d6'
+  group_border_active: '#7aa2f7'
+  group_border_inactive: '#32344a'
+  group_border_locked_active: '#bb9af7'
+  group_border_locked_inactive: '#414868'
+  groupbar_col_active: '#7aa2f7'
+  groupbar_col_inactive: '#32344a'
+  groupbar_col_locked_active: '#bb9af7'
+  groupbar_col_locked_inactive: '#414868'
+  nogroup_border: '#32344a'
+  nogroup_border_active: '#7aa2f7'
+  glow_color: '#7aa2f7ee'
+  shadow_color: '#1a1b267b'
+  animation_style: fluid
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(50, 52, 74, 0.53)
+  style:
+    size: 16

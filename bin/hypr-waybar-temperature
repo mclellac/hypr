@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+"""Temperature module for Waybar."""
+import json
+import subprocess
+
+# pylint: disable=invalid-name,broad-except
+
+def main():
+    """Main function to get temperature."""
+    try:
+        cmd_temp = "sensors | grep -oP '\\+\\K[0-9.]+(?=(°C| C))' | head -1"
+        temp_str = subprocess.check_output(cmd_temp, shell=True, text=True).strip()
+        temp = float(temp_str) if temp_str else 0.0
+    except Exception:
+        temp = 0.0
+
+    tooltip = f"Temperature: {temp:.0f}°C"
+
+    css_class = "normal"
+    icon = ""
+    if temp >= 80:
+        icon = ""
+        css_class = "warning"
+    elif temp >= 60:
+        icon = ""
+
+    if temp >= 90:
+        css_class = "critical"
+
+    print(json.dumps({
+        "text": f"{icon} {temp:.0f}°C",
+        "tooltip": tooltip,
+        "class": css_class
+    }))
+
+if __name__ == "__main__":
+    main()

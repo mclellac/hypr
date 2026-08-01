@@ -1,0 +1,100 @@
+{% from "partials/colors.j2" import get_color %}
+/* Hypr Theme for Obsidian */
+
+.theme-dark, .theme-light {
+  /* Core colors */
+  --background-primary: {{ get_color('background')  }};
+  --background-primary-alt: {{ get_color('background')  }};
+  --background-secondary: {{ get_color('background')  }};
+  --background-secondary-alt: {{ get_color('background')  }};
+  --text-normal: {{ get_color('foreground')  }};
+
+  /* Selection colors */
+  --text-selection: {{ get_color('selection_bg')  }};
+
+  /* Border color */
+  --background-modifier-border: {{ get_color('color8')  }};
+
+  /* Semantic heading colors */
+  --text-title-h1: {{ get_color('color1')  }};
+  --text-title-h2: {{ get_color('color2')  }};
+  --text-title-h3: {{ get_color('color3')  }};
+  --text-title-h4: {{ get_color('color4')  }};
+  --text-title-h5: {{ get_color('color5')  }};
+  --text-title-h6: {{ get_color('color5')  }};
+
+  /* Links and accents */
+  --text-link: {{ get_color('color4')  }};
+  --text-accent: {{ get_color('accent')  }};
+  --text-accent-hover: {{ get_color('accent')  }};
+  --interactive-accent: {{ get_color('accent')  }};
+  --interactive-accent-hover: {{ get_color('accent')  }};
+
+  /* Muted text */
+  --text-muted: color-mix(in srgb, {{ get_color('foreground')  }} 70%, transparent);
+  --text-faint: color-mix(in srgb, {{ get_color('foreground')  }} 55%, transparent);
+
+  /* Code */
+  --code-normal: {{ get_color('color6')  }};
+
+  /* Errors and success */
+  --text-error: {{ get_color('color1')  }};
+  --text-error-hover: {{ get_color('color1')  }};
+  --text-success: {{ get_color('color2')  }};
+
+  /* Tags */
+  --tag-color: {{ get_color('color6')  }};
+  --tag-background: {{ get_color('color8')  }};
+
+  /* Graph */
+  --graph-line: {{ get_color('color8')  }};
+  --graph-node: {{ get_color('accent')  }};
+  --graph-node-focused: {{ get_color('color4')  }};
+  --graph-node-tag: {{ get_color('color6')  }};
+  --graph-node-attachment: {{ get_color('color2')  }};
+}
+
+/* Headers */
+.cm-header-1, .markdown-rendered h1 { color: var(--text-title-h1); }
+.cm-header-2, .markdown-rendered h2 { color: var(--text-title-h2); }
+.cm-header-3, .markdown-rendered h3 { color: var(--text-title-h3); }
+.cm-header-4, .markdown-rendered h4 { color: var(--text-title-h4); }
+.cm-header-5, .markdown-rendered h5 { color: var(--text-title-h5); }
+.cm-header-6, .markdown-rendered h6 { color: var(--text-title-h6); }
+
+/* Code blocks */
+.markdown-rendered code {
+  color: {{ get_color('color6')  }};
+}
+
+/* Syntax highlighting */
+.cm-s-obsidian span.cm-keyword { color: {{ get_color('color1')  }}; }
+.cm-s-obsidian span.cm-string { color: {{ get_color('color2')  }}; }
+.cm-s-obsidian span.cm-number { color: {{ get_color('color3')  }}; }
+.cm-s-obsidian span.cm-comment { color: {{ get_color('color8')  }}; }
+.cm-s-obsidian span.cm-operator { color: {{ get_color('color4')  }}; }
+.cm-s-obsidian span.cm-def { color: {{ get_color('color4')  }}; }
+
+/* Links */
+.markdown-rendered a {
+  color: var(--text-link);
+}
+
+/* Blockquotes */
+.markdown-rendered blockquote {
+  border-left-color: {{ get_color('accent')  }};
+}
+
+/* Active elements */
+.workspace-leaf.mod-active .workspace-leaf-header-title {
+  color: var(--interactive-accent);
+}
+
+.nav-file-title.is-active {
+  color: var(--interactive-accent);
+}
+
+/* Search results */
+.search-result-file-title {
+  color: var(--interactive-accent);
+}

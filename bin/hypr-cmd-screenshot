@@ -1,54 +1,83 @@
 #!/bin/bash
 #
-# Captures a screenshot using 'hyprshot' and opens it in 'satty' for editing
+# Captures a screenshot using 'grim' and 'slurp' and opens it in 'satty' for editing
 # and saving. Supports capturing a region, a window, or an entire output.
 
 set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 # Source user-dirs.dirs to get XDG pictures directory, with fallbacks.
 if [[ -f "${HOME}/.config/user-dirs.dirs" ]]; then
-  # shellcheck source=/dev/null
-  source "${HOME}/.config/user-dirs.dirs"
+    # shellcheck source=/dev/null
+    source "${HOME}/.config/user-dirs.dirs"
 fi
 readonly OUTPUT_DIR="${HYPR_SCREENSHOT_DIR:-${XDG_PICTURES_DIR:-${HOME}/Pictures}}"
+
+usage() {
+    echo "Usage: $(basename "$0") [region|window|output]"
+    echo
+    echo "Captures a screenshot."
+    echo "Modes:"
+    echo "  region    Capture a selected region (default)"
+    echo "  window    Capture a selected window"
+    echo "  output    Capture the entire output"
+    echo
+    echo "Options:"
+    echo "  -h, --help    Show this help message and exit"
+}
 
 #######################################
 # Main function to handle the screenshot process.
 # Globals:
 #   OUTPUT_DIR
 # Arguments:
-#   $1 - (Optional) The capture mode for hyprshot ('region', 'window', 'output').
+#   $1 - (Optional) The capture mode ('region', 'window', 'output').
 #        Defaults to 'region'.
 # Outputs:
 #   Exits with an error if dependencies are not met or directories are missing.
 #######################################
 main() {
-  for cmd in hyprshot satty wl-copy; do
-    if ! command -v "${cmd}" &>/dev/null; then
-      notify-send "Error: Required command not found" "${cmd}" -u critical -t 5000
-      exit 1
+    check_help "$@"
+
+    for cmd in grim slurp satty wl-copy notify-send jq; do
+        if ! command -v "${cmd}" &>/dev/null; then
+            log_error "Required command not found: ${cmd}"
+            notify-send "Error: Required command not found" "${cmd}" -u critical -t 5000
+            exit 1
+        fi
+    done
+
+    if [[ ! -d "${OUTPUT_DIR}" ]]; then
+        log_error "Screenshot directory does not exist: ${OUTPUT_DIR}"
+        notify-send "Error: Screenshot directory does not exist" "${OUTPUT_DIR}" -u critical -t 5000
+        exit 1
     fi
-  done
 
-  if [[ ! -d "${OUTPUT_DIR}" ]]; then
-    notify-send "Error: Screenshot directory does not exist" "${OUTPUT_DIR}" -u critical -t 5000
-    exit 1
-  fi
+    local mode="${1:-region}"
+    local output_filename
+    output_filename="${OUTPUT_DIR}/screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png"
 
-  local mode="${1:-region}"
-  local output_filename="${OUTPUT_DIR}/screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png"
+    # Ensure no slurp process is running
+    pkill slurp || true
 
-  # Ensure no slurp process is running, which can interfere with hyprshot.
-  pkill slurp || true
+    notify-send -t 1000 -a "Screenshot" "Select area to capture"
 
-  # The main command pipeline for taking and editing a screenshot.
-  hyprshot -m "${mode}" --raw |
-    satty --filename - \
-      --output-filename "${output_filename}" \
-      --early-exit \
-      --actions-on-enter save-to-clipboard \
-      --save-after-copy \
-      --copy-command 'wl-copy'
+    if [[ "${mode}" == "region" ]]; then
+        grim -g "$(slurp)" - | satty --filename - --output-filename "${output_filename}"
+    elif [[ "${mode}" == "window" ]]; then
+        grim -g "$(hyprctl clients -j | jq -r '.[] | select(.hidden==false) | "\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"' | slurp)" - | satty --filename - --output-filename "${output_filename}"
+    elif [[ "${mode}" == "output" ]]; then
+        grim - | satty --filename - --output-filename "${output_filename}"
+    fi
+
+    # Screen flash effect using satty notification instead of hyprctl since
+    # hyprctl reload destroys runtime states and dimming before screenshot dims the output.
+    notify-send -t 3000 -a "Screenshot" "Screenshot captured" "Saved to: ${output_filename}\nOpened in Satty" -i "camera-photo"
 }
 
 main "$@"

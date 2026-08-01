@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Zoom
+Comment=Zoom
+Exec={{ HYPR_PATH }}/bin/hypr-launch-webapp https://zoom.us
+Terminal=false
+Type=Application
+Icon={{ env.HOME }}/.local/share/applications/icons/zoom.png
+StartupNotify=true

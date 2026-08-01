@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Google Messages
+Comment=Google Messages
+Exec={{ HYPR_PATH }}/bin/hypr-launch-webapp https://messages.google.com/web
+Terminal=false
+Type=Application
+Icon={{ env.HOME }}/.local/share/applications/icons/google-messages.png
+StartupNotify=true

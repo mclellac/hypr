@@ -1,0 +1,61 @@
+name: Everforest
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#2d353b'
+  foreground: '#d3c6aa'
+  cursor: '#d3c6aa'
+  cursor_text: '#2d353b'
+  selection_bg: '#d3c6aa'
+  selection_fg: '#2d353b'
+  primary: '#7fbbb3'
+  secondary: '#7fbbb3'
+  alert: '#e67e80'
+  warning: '#dbbc7f'
+  success: '#a7c080'
+  color0: '#475258'
+  color1: '#e67e80'
+  color2: '#a7c080'
+  color3: '#dbbc7f'
+  color4: '#7fbbb3'
+  color5: '#d699b6'
+  color6: '#83c092'
+  color7: '#d3c6aa'
+  color8: '#475258'
+  color9: '#e67e80'
+  color10: '#a7c080'
+  color11: '#dbbc7f'
+  color12: '#7fbbb3'
+  color13: '#d699b6'
+  color14: '#83c092'
+  color15: '#d3c6aa'
+  accent: '#7fbbb3'
+layout:
+  active_border: '#7fbbb3ff'
+  inactive_border: '#475258ff'
+  groupbar_text_color: '#d8caac'
+  group_border_active: '#7fbbb3'
+  group_border_inactive: '#475258'
+  group_border_locked_active: '#d39bb6'
+  group_border_locked_inactive: '#868d80'
+  groupbar_col_active: '#7fbbb3'
+  groupbar_col_inactive: '#475258'
+  groupbar_col_locked_active: '#d39bb6'
+  groupbar_col_locked_inactive: '#868d80'
+  nogroup_border: '#475258'
+  nogroup_border_active: '#7fbbb3'
+  glow_color: '#7fbbb3ee'
+  shadow_color: '#2d353b7b'
+  animation_style: smooth
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: teal
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(71, 82, 88, 0.53)
+  style:
+    size: 16

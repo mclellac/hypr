@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # https://google.github.io/styleguide/shellguide.html
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 # Define actions
 readonly LOCK="Lock"
@@ -11,23 +19,24 @@ readonly REBOOT="Reboot"
 readonly SHUTDOWN="Shutdown"
 
 function main() {
-  local selection
-  selection=$(echo -e "${LOCK}\n${LOGOUT}\n${REBOOT}\n${SHUTDOWN}" | walker --dmenu --placeholder "Power Menu")
+    check_help "$@"
+    local selection
+    selection=$(echo -e "${LOCK}\n${LOGOUT}\n${REBOOT}\n${SHUTDOWN}" | walker --dmenu --placeholder "Power Menu")
 
-  case "${selection}" in
-    "${LOCK}")
-      hypr-lock-screen
-      ;;
-    "${LOGOUT}")
-      loginctl terminate-user "${USER}"
-      ;;
-    "${REBOOT}")
-      systemctl reboot
-      ;;
-    "${SHUTDOWN}")
-      systemctl poweroff
-      ;;
-  esac
+    case "${selection}" in
+        "${LOCK}")
+            hypr-lock-screen
+            ;;
+        "${LOGOUT}")
+            loginctl terminate-user "${USER}"
+            ;;
+        "${REBOOT}")
+            systemctl reboot
+            ;;
+        "${SHUTDOWN}")
+            systemctl poweroff
+            ;;
+    esac
 }
 
 main "$@"

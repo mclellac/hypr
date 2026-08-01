@@ -1,0 +1,806 @@
+keybindings:
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: X
+    desc: Toggle Dictation
+    dispatcher: exec
+    arg: voxtype record toggle
+    category: Application bindings
+  - type: bindd
+    mods: $mainMod
+    key: return
+    desc: Launch Terminal
+    dispatcher: exec
+    arg: $terminal --working-directory=$(hypr-cmd-terminal-cwd)
+    category: Application bindings
+  - type: bindd
+    mods: $mainMod
+    key: E
+    desc: Launch File Manager
+    dispatcher: exec
+    arg: uwsm app -- nautilus --new-window
+    category: Application bindings
+  - type: bindd
+    mods: $mainMod
+    key: B
+    desc: Launch Browser
+    dispatcher: exec
+    arg: $browser
+    category: Application bindings
+  - type: bindd
+    mods: $mainMod
+    key: N
+    desc: Launch Neovim
+    dispatcher: exec
+    arg: $terminal -e nvim
+    category: Application bindings
+  - type: bindd
+    mods: $mainMod
+    key: T
+    desc: Launch Alacritty Terminal
+    dispatcher: exec
+    arg: uwsm app -- alacritty
+    category: Application bindings
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: D
+    desc: Docker
+    dispatcher: exec
+    arg: $terminal -e lazydocker
+    category: Application bindings
+  - type: bindd
+    mods: $mainMod
+    key: D
+    desc: Launch Docs Menu
+    dispatcher: exec
+    arg: uwsm app -- hypr-docs-menu
+    category: Application bindings
+  - type: bindd
+    mods: $mainMod
+    key: O
+    desc: Launch Obsidian
+    dispatcher: exec
+    arg: uwsm app -- obsidian -disable-gpu
+    category: Application bindings
+  - type: bindd
+    mods: $mainMod
+    key: slash
+    desc: Launch Passwords
+    dispatcher: exec
+    arg: uwsm app -- keepassxc
+    category: Application bindings
+  - type: bindd
+    mods: $mainMod
+    key: A
+    desc: Launch Google Gemini
+    dispatcher: exec
+    arg: hypr-launch-webapp "https://gemini.google.com"
+    category: Web Applications
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: A
+    desc: Launch ChatGPT
+    dispatcher: exec
+    arg: hypr-launch-webapp "https://chatgpt.com"
+    category: Web Applications
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: O
+    desc: Launch Google Calendar
+    dispatcher: exec
+    arg: hypr-launch-webapp "https://calendar.google.com"
+    category: Web Applications
+  - type: bindd
+    mods: $mainMod
+    key: M
+    desc: Launch Google Gmail
+    dispatcher: exec
+    arg: hypr-launch-webapp "https://gmail.com"
+    category: Web Applications
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: M
+    desc: Launch Google Maps
+    dispatcher: exec
+    arg: hypr-launch-webapp "https://maps.google.com"
+    category: Web Applications
+  - type: bindd
+    mods: $mainMod
+    key: Y
+    desc: Launch Google YouTube
+    dispatcher: exec
+    arg: hypr-launch-webapp "https://youtube.com/"
+    category: Web Applications
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: Y
+    desc: Launch Google YouTube Music
+    dispatcher: exec
+    arg: hypr-launch-webapp "https://music.youtube.com/"
+    category: Web Applications
+  - type: bindd
+    mods: $mainMod
+    key: W
+    desc: Launch Work Menu
+    dispatcher: exec
+    arg: uwsm app -- hypr-work-menu
+    category: Web Applications
+  - type: bindd
+    mods: $mainMod
+    key: S
+    desc: Launch Socials Menu
+    dispatcher: exec
+    arg: uwsm app -- hypr-socials-menu
+    category: Web Applications
+  - type: bindd
+    mods: $mainMod
+    key: Z
+    desc: Launch Google Messages
+    dispatcher: exec
+    arg: hypr-launch-webapp "https://messages.google.com/web/conversations"
+    category: Web Applications
+  - type: bindd
+    mods: $mainMod
+    key: C
+    desc: Universal copy
+    dispatcher: sendshortcut
+    arg: CTRL, Insert, activewindow
+    category: Universal Copy / Paste / Cut
+  - type: bindd
+    mods: $mainMod
+    key: V
+    desc: Clipboard History
+    dispatcher: exec
+    arg: hypr-launch-walker -m clipboard
+    category: Launchers
+  - type: bindd
+    mods: $mainMod ALT
+    key: SPACE
+    desc: Main Menu
+    dispatcher: exec
+    arg: hypr-menu
+    category: Launchers
+  - type: bindd
+    mods: $mainMod
+    key: X
+    desc: Universal cut
+    dispatcher: sendshortcut
+    arg: CTRL, X, activewindow
+    category: Universal Copy / Paste / Cut
+  - type: bindd
+    mods: ""
+    key: XF86LaunchB
+    desc: Launchpad
+    dispatcher: exec
+    arg: hypr-launch-walker
+    category: Launchers
+  - type: bindd
+    mods: $mainMod CTRL
+    key: Left
+    desc: Switch to Previous Workspace
+    dispatcher: workspace
+    arg: e-1
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod CTRL
+    key: Right
+    desc: Switch to Next Workspace
+    dispatcher: workspace
+    arg: e+1
+    category: Workspaces
+  - type: bindeld
+    mods: ''
+    key: XF86AudioRaiseVolume
+    desc: Volume up
+    dispatcher: exec
+    arg: $osdclient --output-volume raise
+    category: Media & Hardware
+  - type: bindeld
+    mods: ''
+    key: XF86AudioLowerVolume
+    desc: Volume down
+    dispatcher: exec
+    arg: $osdclient --output-volume lower
+    category: Media & Hardware
+  - type: bindeld
+    mods: ''
+    key: XF86AudioMute
+    desc: Mute
+    dispatcher: exec
+    arg: $osdclient --output-volume mute-toggle
+    category: Media & Hardware
+  - type: bindeld
+    mods: ''
+    key: XF86MonBrightnessUp
+    desc: Brightness up
+    dispatcher: exec
+    arg: $osdclient --brightness raise
+    category: Media & Hardware
+  - type: bindeld
+    mods: ''
+    key: XF86MonBrightnessDown
+    desc: Brightness down
+    dispatcher: exec
+    arg: $osdclient --brightness lower
+    category: Media & Hardware
+  - type: bindeld
+    mods: $mainMod ALT
+    key: XF86AudioRaiseVolume
+    desc: Volume up precise
+    dispatcher: exec
+    arg: $osdclient --output-volume +1
+    category: Precise 1% multimedia adjustment
+  - type: bindeld
+    mods: $mainMod ALT
+    key: XF86AudioLowerVolume
+    desc: Volume down precise
+    dispatcher: exec
+    arg: $osdclient --output-volume -1
+    category: Precise 1% multimedia adjustment
+  - type: bindeld
+    mods: $mainMod ALT
+    key: XF86MonBrightnessUp
+    desc: Brightness up precise
+    dispatcher: exec
+    arg: $osdclient --brightness +1
+    category: Precise 1% multimedia adjustment
+  - type: bindeld
+    mods: $mainMod ALT
+    key: XF86MonBrightnessDown
+    desc: Brightness down precise
+    dispatcher: exec
+    arg: $osdclient --brightness -1
+    category: Precise 1% multimedia adjustment
+  - type: bindld
+    mods: ''
+    key: XF86AudioNext
+    desc: Next track
+    dispatcher: exec
+    arg: $osdclient --playerctl next
+    category: Media & Hardware
+  - type: bindld
+    mods: ''
+    key: XF86AudioPause
+    desc: Pause
+    dispatcher: exec
+    arg: $osdclient --playerctl play-pause
+    category: Media & Hardware
+  - type: bindld
+    mods: ''
+    key: XF86AudioPlay
+    desc: Play
+    dispatcher: exec
+    arg: $osdclient --playerctl play-pause
+    category: Media & Hardware
+  - type: bindld
+    mods: ''
+    key: XF86AudioPrev
+    desc: Previous track
+    dispatcher: exec
+    arg: $osdclient --playerctl previous
+    category: Media & Hardware
+  - type: bindld
+    mods: $mainMod
+    key: XF86AudioMute
+    desc: Switch audio output
+    dispatcher: exec
+    arg: hypr-cmd-audio-switch
+    category: Media & Hardware
+  - type: bindd
+    mods: $mainMod
+    key: Q
+    desc: Close active window
+    dispatcher: killactive
+    arg: ''
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT CTRL
+    key: DELETE
+    desc: Close all Windows
+    dispatcher: exec
+    arg: hypr-cmd-close-all-windows
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: S
+    desc: Toggle Split
+    dispatcher: layoutmsg
+    arg: togglesplit
+    category: Control tiling
+  - type: bindd
+    mods: $mainMod
+    key: P
+    desc: Pseudo Window
+    dispatcher: pseudo
+    arg: ''
+    category: Control tiling
+  - type: bindd
+    mods: $mainMod
+    key: Left
+    desc: Move Focus Left
+    dispatcher: exec
+    arg: $scrPath/hypr-vim-nav l
+    category: Windows
+  - type: bindd
+    mods: $mainMod
+    key: Right
+    desc: Move Focus Right
+    dispatcher: exec
+    arg: $scrPath/hypr-vim-nav r
+    category: Windows
+  - type: bindd
+    mods: $mainMod
+    key: Up
+    desc: Move Focus Up
+    dispatcher: exec
+    arg: $scrPath/hypr-vim-nav u
+    category: Windows
+  - type: bindd
+    mods: $mainMod
+    key: Down
+    desc: Move Focus Down
+    dispatcher: exec
+    arg: $scrPath/hypr-vim-nav d
+    category: Windows
+  - type: bindd
+    mods: $mainMod
+    key: J
+    desc: Toggle window split
+    dispatcher: layoutmsg
+    arg: togglesplit
+    category: Control tiling
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: T
+    desc: Toggle window floating/tiling
+    dispatcher: togglefloating
+    arg: ''
+    category: Control tiling
+  - type: bindd
+    mods: $mainMod
+    key: F
+    desc: Full screen
+    dispatcher: fullscreen
+    arg: '0'
+    category: Control tiling
+  - type: bindd
+    mods: $mainMod CTRL
+    key: F
+    desc: Tiled full screen
+    dispatcher: fullscreenstate
+    arg: 0 2
+    category: Control tiling
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: F
+    desc: Full width
+    dispatcher: fullscreen
+    arg: '1'
+    category: Control tiling
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: P
+    desc: Pop window out (float & pin)
+    dispatcher: exec
+    arg: hypr-window-pop
+    category: Control tiling
+  - type: bindd
+    mods: $mainMod
+    key: L
+    desc: Toggle workspace layout
+    dispatcher: exec
+    arg: hypr-workspace-layout-toggle
+    category: Control tiling
+  - type: bindd
+    mods: $mainMod
+    key: code:10
+    desc: Switch to Workspace 1
+    dispatcher: workspace
+    arg: '1'
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod
+    key: code:11
+    desc: Switch to Workspace 2
+    dispatcher: workspace
+    arg: '2'
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod
+    key: code:12
+    desc: Switch to Workspace 3
+    dispatcher: workspace
+    arg: '3'
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod
+    key: code:13
+    desc: Switch to Workspace 4
+    dispatcher: workspace
+    arg: '4'
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod
+    key: code:14
+    desc: Switch to Workspace 5
+    dispatcher: workspace
+    arg: '5'
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod
+    key: code:15
+    desc: Switch to Workspace 6
+    dispatcher: workspace
+    arg: '6'
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod
+    key: code:16
+    desc: Switch to Workspace 7
+    dispatcher: workspace
+    arg: '7'
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod
+    key: code:17
+    desc: Switch to Workspace 8
+    dispatcher: workspace
+    arg: '8'
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod
+    key: code:18
+    desc: Switch to Workspace 9
+    dispatcher: workspace
+    arg: '9'
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod
+    key: code:19
+    desc: Switch to Workspace 10
+    dispatcher: workspace
+    arg: '10'
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: code:10
+    desc: Move Window to Workspace 1
+    dispatcher: movetoworkspace
+    arg: '1'
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: code:11
+    desc: Move Window to Workspace 2
+    dispatcher: movetoworkspace
+    arg: '2'
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: code:12
+    desc: Move Window to Workspace 3
+    dispatcher: movetoworkspace
+    arg: '3'
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: code:13
+    desc: Move Window to Workspace 4
+    dispatcher: movetoworkspace
+    arg: '4'
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: code:14
+    desc: Move Window to Workspace 5
+    dispatcher: movetoworkspace
+    arg: '5'
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: code:15
+    desc: Move Window to Workspace 6
+    dispatcher: movetoworkspace
+    arg: '6'
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: code:16
+    desc: Move Window to Workspace 7
+    dispatcher: movetoworkspace
+    arg: '7'
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: code:17
+    desc: Move Window to Workspace 8
+    dispatcher: movetoworkspace
+    arg: '8'
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: code:18
+    desc: Move Window to Workspace 9
+    dispatcher: movetoworkspace
+    arg: '9'
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: code:19
+    desc: Move Window to Workspace 10
+    dispatcher: movetoworkspace
+    arg: '10'
+    category: Windows
+  - type: bindd
+    mods: $mainMod
+    key: TAB
+    desc: Next Workspace
+    dispatcher: workspace
+    arg: e+1
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: TAB
+    desc: Previous Workspace
+    dispatcher: workspace
+    arg: e-1
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: Left
+    desc: Swap Window Left
+    dispatcher: swapwindow
+    arg: l
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: Right
+    desc: Swap Window Right
+    dispatcher: swapwindow
+    arg: r
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: Up
+    desc: Swap Window Up
+    dispatcher: swapwindow
+    arg: u
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: Down
+    desc: Swap Window Down
+    dispatcher: swapwindow
+    arg: d
+    category: Windows
+  - type: bindd
+    mods: ALT
+    key: Tab
+    desc: Cycle Next Window
+    dispatcher: cyclenext
+    arg: ''
+    category: Workspaces
+  - type: bindd
+    mods: ALT SHIFT
+    key: Tab
+    desc: Cycle Previous Window
+    dispatcher: cyclenext
+    arg: prev
+    category: Workspaces
+  - type: bindd
+    mods: ALT
+    key: Tab
+    desc: Reveal Active Window
+    dispatcher: bringactivetotop
+    arg: ''
+    category: Workspaces
+  - type: bindd
+    mods: ALT SHIFT
+    key: Tab
+    desc: Reveal Active Window
+    dispatcher: bringactivetotop
+    arg: ''
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod
+    key: code:20
+    desc: Shrink Window Left
+    dispatcher: resizeactive
+    arg: -100 0
+    category: Windows
+  - type: bindd
+    mods: $mainMod
+    key: code:21
+    desc: Expand Window Right
+    dispatcher: resizeactive
+    arg: 100 0
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: code:20
+    desc: Shrink Window Up
+    dispatcher: resizeactive
+    arg: 0 -100
+    category: Windows
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: code:21
+    desc: Expand Window Down
+    dispatcher: resizeactive
+    arg: 0 100
+    category: Windows
+  - type: bindd
+    mods: $mainMod
+    key: mouse_down
+    desc: Scroll Workspace Forward
+    dispatcher: workspace
+    arg: e+1
+    category: Workspaces
+  - type: bindd
+    mods: $mainMod
+    key: mouse_up
+    desc: Scroll Workspace Backward
+    dispatcher: workspace
+    arg: e-1
+    category: Workspaces
+  - type: bindm
+    mods: $mainMod
+    key: mouse:272
+    desc: Movewindow
+    dispatcher: movewindow
+    arg: ''
+    category: Windows
+  - type: bindm
+    mods: $mainMod
+    key: mouse:273
+    desc: Resizewindow
+    dispatcher: resizewindow
+    arg: ''
+    category: Windows
+  - type: bindd
+    mods: $mainMod
+    key: SPACE
+    desc: Application Launcher
+    dispatcher: exec
+    arg: "hypr-launch-walker -p \"Start…\""
+    category: Launchers
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: E
+    desc: Emoji Picker
+    dispatcher: exec
+    arg: hypremoji
+    category: Menus
+  - type: bindd
+    mods: $mainMod
+    key: ESCAPE
+    desc: Power Menu
+    dispatcher: exec
+    arg: hypr-menu system
+    category: Launchers
+  - type: bindd
+    mods: ALT
+    key: DELETE
+    desc: Power Menu
+    dispatcher: exec
+    arg: hypr-menu system
+    category: Launchers
+  - type: bindld
+    mods: ''
+    key: XF86PowerOff
+    desc: Power menu
+    dispatcher: exec
+    arg: hypr-menu system
+    category: Launchers
+  - type: bindd
+    mods: $mainMod
+    key: K
+    desc: Keybindings Menu
+    dispatcher: exec
+    arg: hypr-menu-keybindings
+    category: Launchers
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: SPACE
+    desc: Toggle Waybar
+    dispatcher: exec
+    arg: pkill -SIGUSR1 waybar
+    category: Aesthetics
+  - type: bindd
+    mods: $mainMod CTRL
+    key: SPACE
+    desc: Next Wallpaper
+    dispatcher: exec
+    arg: hypr-theme-bg-next
+    category: Aesthetics
+  - type: bindd
+    mods: $mainMod
+    key: COMMA
+    desc: Dismiss Notification
+    dispatcher: exec
+    arg: makoctl dismiss
+    category: Notifications
+  - type: bindd
+    mods: $mainMod SHIFT
+    key: COMMA
+    desc: Dismiss All Notifications
+    dispatcher: exec
+    arg: makoctl dismiss --all
+    category: Notifications
+  - type: bindd
+    mods: $mainMod CTRL
+    key: COMMA
+    desc: Toggle Notification Silence
+    dispatcher: exec
+    arg: makoctl mode -t do-not-disturb && makoctl mode | grep -q 'do-not-disturb' && notify-send "Silenced notifications" -t 5000 || notify-send "Enabled notifications" -t 5000
+    category: Notifications
+  - type: bindd
+    mods: $mainMod CTRL
+    key: I
+    desc: Toggle Idle Lock
+    dispatcher: exec
+    arg: hypr-toggle-idle
+    category: Toggle idling
+  - type: bindd
+    mods: $mainMod CTRL
+    key: N
+    desc: Toggle Night Light
+    dispatcher: exec
+    arg: hypr-toggle-nightlight
+    category: Toggle nightlight
+  - type: bindd
+    mods: $mainMod CTRL
+    key: '4'
+    desc: Screenshot Region
+    dispatcher: exec
+    arg: hypr-cmd-screenshot
+    category: System
+  - type: bindd
+    mods: $mainMod CTRL
+    key: '5'
+    desc: Screenshot Window
+    dispatcher: exec
+    arg: hypr-cmd-screenshot window
+    category: System
+  - type: bindd
+    mods: $mainMod CTRL
+    key: '3'
+    desc: Screenshot Display
+    dispatcher: exec
+    arg: hypr-cmd-screenshot output
+    category: System
+  - type: bindd
+    mods: $mainMod CTRL
+    key: '6'
+    desc: Record Screen Region
+    dispatcher: exec
+    arg: hypr-cmd-screenrecord
+    category: Screen recordings
+  - type: bindd
+    mods: $mainMod CTRL
+    key: '7'
+    desc: Record Screen Display
+    dispatcher: exec
+    arg: hypr-cmd-screenrecord output
+    category: Screen recordings
+  - type: bindd
+    mods: $mainMod CTRL
+    key: P
+    desc: Color Picker
+    dispatcher: exec
+    arg: pkill hyprpicker || hyprpicker -a
+    category: Color picker
+  - type: bindldn
+    mods: ''
+    key: Caps_Lock
+    desc: Caps Lock
+    dispatcher: exec
+    arg: hypr-caps-lock-osd
+    category: System
+  - type: bindd
+    mods: $mainMod
+    key: G
+    desc: Launch Google Meet
+    dispatcher: exec
+    arg: hypr-launch-webapp "https://meet.google.com/"
+    category: Web Applications

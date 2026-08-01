@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Discord
+Comment=Discord
+Exec={{ HYPR_PATH }}/bin/hypr-launch-webapp https://discord.com/app
+Terminal=false
+Type=Application
+Icon={{ env.HOME }}/.local/share/applications/icons/discord.png
+StartupNotify=true

@@ -1,8 +1,16 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Updates all git-based themes by running 'git pull' in each theme's directory.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Main function to update all themes.
@@ -14,21 +22,22 @@ set -euo pipefail
 #   None
 #######################################
 main() {
-  local themes_dir="${HOME}/.config/hypr/themes"
-  if [[ ! -d "${themes_dir}" ]]; then
-    echo "Themes directory not found: ${themes_dir}" >&2
-    exit 1
-  fi
-
-  for dir in "${themes_dir}"/*/; do
-    # Ensure it's a directory and not a symlink.
-    if [[ -d "${dir}" && ! -L "${dir%/}" && -d "${dir}/.git" ]]; then
-      echo "Updating: $(basename "${dir}")"
-      git -C "${dir}" pull
+    check_help "$@"
+    local themes_dir="${HOME}/.config/hypr/themes"
+    if [[ ! -d "${themes_dir}" ]]; then
+        echo "Themes directory not found: ${themes_dir}" >&2
+        exit 1
     fi
-  done
 
-  echo "All themes updated."
+    for dir in "${themes_dir}"/*/; do
+        # Ensure it's a directory and not a symlink.
+        if [[ -d "${dir}" && ! -L "${dir%/}" && -d "${dir}/.git" ]]; then
+            echo "Updating: $(basename "${dir}")"
+            git -C "${dir}" pull
+        fi
+    done
+
+    log_info "All themes updated."
 }
 
-main
+main "$@"

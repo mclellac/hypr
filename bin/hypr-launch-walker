@@ -1,0 +1,43 @@
+#!/bin/bash
+set -euo pipefail
+
+# Launch the Walker application launcher while ensuring that it's data provider (called elephant) is running first.
+
+# Ensure elephant is running before launching walker
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    if ! pgrep -x elephant > /dev/null; then
+      elephant service enable >/dev/null 2>&1 || true
+      systemctl --user start elephant.service || true
+    fi
+
+    # Ensure walker service is running
+    if ! pgrep -f "walker --gapplication-service" > /dev/null; then
+      if systemctl --user list-unit-files | grep -Fq "app-walker@autostart.service"; then
+        systemctl --user start app-walker@autostart.service || true
+      else
+        if is_uwsm_active; then
+          setsid uwsm app -- walker --gapplication-service >/dev/null 2>&1 &
+        else
+          setsid walker --gapplication-service >/dev/null 2>&1 &
+        fi
+      fi
+    fi
+
+    WALKER_WIDTH=$(hypr-theme-get walker.width --default 644)
+    WALKER_MAX_HEIGHT=$(hypr-theme-get walker.max_height --default 300)
+
+    exec walker --width "${WALKER_WIDTH}" --maxheight "${WALKER_MAX_HEIGHT}" --minheight "${WALKER_MAX_HEIGHT}" "$@"
+}
+
+main "$@"

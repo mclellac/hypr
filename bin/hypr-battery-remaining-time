@@ -1,0 +1,51 @@
+#!/bin/bash
+#
+# Returns the battery time remaining (to empty or full) in a compact format.
+
+set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    echo "Usage: $(basename "$0")"
+    echo
+    echo "Returns the battery time remaining (to empty or full) in a compact format."
+}
+
+main() {
+    check_help "$@"
+
+    local battery_device
+    battery_device=$(upower -e | grep BAT | head -n 1 || true)
+
+    if [[ -z "${battery_device}" ]]; then
+        # No battery found, just exit silently as this is likely used in a status bar
+        exit 0
+    fi
+
+    local battery_info
+    battery_info=$(upower -i "${battery_device}")
+
+    echo "$battery_info" | awk '/time to (empty|full)/ {
+        value = $4
+        unit = $5
+        if (unit ~ /^minute/) {
+            printf "%dm", int(value)
+        } else {
+            hours = int(value)
+            minutes = int((value - hours) * 60)
+            if (minutes > 0) {
+                printf "%dh %dm", hours, minutes
+            } else {
+                printf "%dh", hours
+            }
+        }
+        exit
+    }'
+}
+
+main "$@"

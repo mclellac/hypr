@@ -1,0 +1,36 @@
+#!/bin/bash
+set -euo pipefail
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    url="$1"
+    web_url="https://app.zoom.us/wc/home"
+
+    if [[ $url =~ ^zoom(mtg|us):// ]]; then
+      confno=$(echo "$url" | sed -n 's/.*[?&]confno=\([^&]*\).*/\1/p')
+
+      if [[ -n $confno ]]; then
+        pwd=$(echo "$url" | sed -n 's/.*[?&]pwd=\([^&]*\).*/\1/p')
+
+        if [[ -n $pwd ]]; then
+          web_url="https://app.zoom.us/wc/join/$confno?pwd=$pwd"
+        else
+          web_url="https://app.zoom.us/wc/join/$confno"
+        fi
+      fi
+    fi
+
+    exec hypr-launch-webapp "$web_url"
+}
+
+main "$@"

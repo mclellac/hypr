@@ -12,16 +12,20 @@ set -euo pipefail
 main() {
   if ls /sys/class/power_supply/BAT* &>/dev/null; then
     # This computer runs on a battery
-    echo "Battery detected. Setting power profile to 'balanced'."
+    log_info "Battery detected. Setting power profile to 'balanced'."
     powerprofilesctl set balanced || true
 
     # Enable battery monitoring timer for low battery notifications
-    echo "Enabling battery monitor timer."
+    log_info "Enabling battery monitor timer."
     systemctl --user enable --now hypr-battery-monitor.timer
   else
     # This computer runs on a power outlet
-    echo "No battery detected. Setting power profile to 'performance'."
-    powerprofilesctl set performance || true
+    log_info "No battery detected. Setting power profile to 'performance' (if available)."
+    if powerprofilesctl list | grep -q "performance"; then
+      powerprofilesctl set performance || true
+    else
+      powerprofilesctl set balanced || true
+    fi
   fi
 }
 

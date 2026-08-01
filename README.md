@@ -1,137 +1,128 @@
 # hypr
 
-No need to write bespoke configs for every essential tool just to get started or
-to be up on all the latest command-line tools.
-
-This repository is a fork of [Omarchy](https://github.com/omarchy/omarchy).
+This repository was a fork of [Omarchy](https://github.com/omarchy/omarchy).
 
 ## Installation
 
-To install hypr, run the following command in your terminal:
+The recommended way to install is by cloning the repository and executing `install.sh`.
 
 ```bash
-/bin/bash -c "$(curl -fsSL \
-    https://raw.githubusercontent.com/mclellac/hypr/main/install.sh)"
+git clone https://github.com/mclellac/hypr.git
+cd hypr
+./install.sh
 ```
 
-The installation script will:
+The installer will synchronize the repository files to `~/.local/share/hypr`, which serves as the application's home directory. It will then run a series of setup scripts for packages, fonts, and configurations.
 
-1. Install a comprehensive list of packages using `yay`.
-2. Copy the configuration files to your `~/.config` directory.
-3. Replace your `~/.bashrc` with the one provided by hypr.
-4. Install fonts, TUIs, and web apps.
-5. Set up the default theme.
+### Updates
+
+To update your installation, simply pull the latest changes from the git repository and re-run the script:
+
+```bash
+cd /path/to/your/hypr/repo
+git pull
+./install.sh
+```
+
+The installer synchronizes the repository's files to `~/.local/share/hypr`. The templates and system themes in `~/.local/share/hypr` are updated, and the configuration generator ensures your personal customizations in your theme are preserved and reapplied.
 
 ## Features
 
-- **Update Notifications:** Get notified of official Arch Linux and AUR package
-  updates directly in Waybar.
-- **One-Click Updates:** Click the update icon to open a terminal and update all
-  your packages.
-- **Comprehensive Theming:** Easily switch between themes for all your
-  applications.
-- **Pre-configured Applications:** A wide range of applications are
-  pre-configured for a seamless experience.
+- **High-Performance Preferences App:** Optimized for speed with a tiered caching system and batch-fetching backend. UI refreshes take under 5ms, and startup is near-instant.
+- **Enhanced Appearance Customization:** Use the modern Libadwaita Preferences App to customize border colors, including gradient active borders with a custom angle.
+- **Rock-Solid Stability:** Fully resolved all GTK/Adwaita parenting errors through a zero-tolerance unparenting architecture.
+- **Wallpaper Management:** Browse and apply wallpapers from the current theme or your personal collection via the Preferences App.
+- **Interactive Keybindings Editor:** Easily view, edit, and capture keybindings graphically with built-in conflict detection and support for the new Lua-based configuration system.
+- **Hyprland 0.55+ Ready:** Fully optimized for the latest Hyprland releases, utilizing the new Lua-based configuration system for maximum performance and flexibility.
+- **Hyprland Plugin Ecosystem Support:** Native `hyprpm` plugin compilation and management integrated into the Preferences App and CLI (`hypr-plugin`), featuring full configuration for `hyprglass` dynamic glassmorphism.
+- **Standardized Shortcut Ecosystem:** Strictly mnemonic and consistent keybindings across all 50+ themes. No more `CTRL` for app launches; just clean `mainMod + <letter>` shortcuts.
+- **Update Notifications:** Get notified of official Arch Linux and AUR package updates directly in Waybar.
 
 ## Directory Structure
 
-The installation script copies the default configuration files directly into
-your `~/.config` directory, which is the standard location for application
-configurations in Linux. All the scripts for managing the environment are
-installed to `~/.local/bin`, and the themes are located in
-`~/.config/hypr/themes`.
+This project follows the XDG Base Directory Specification and uses a template-based architecture.
 
-Here's a brief overview of the key directories:
+- **`~/code/hypr` (Example)**: This is the location where you clone the git repository. You run `install.sh` from here to install or update.
 
-- `~/.config`: Contains the configuration files for all the integrated
-  applications.
-- `~/.local/bin`: Contains all the `hypr-*` scripts for managing the
-  environment.
-- `~/.config/hypr/themes`: Contains the different themes for the desktop
-  environment.
+- **`~/.local/share/hypr`**: This is the **installation directory**.
+  - **`templates/`**: Contains the canonical configuration templates (Jinja2). These are the source of truth for all generated configs.
+  - **`bin/`**: Helper scripts and core utilities.
+  - **`hypr_config_manager/`**: Rust crate and binary for rendering templates and managing configuration state.
+  - **`hypr_apps/`**: Rust-based GTK4/Libadwaita applications (Preferences, Keybindings Editor, etc.).
+  - **`themes/`**: Default "system" themes.
+  - **Do not edit files in this directory directly**, as they are overwritten on update.
+
+- **`~/.config/`**: This is your **user configuration directory**.
+  - **Generated Files**: The installer and theme switcher generate the final configuration files into their standard locations (e.g., `~/.config/hypr/hyprland.lua`, `~/.config/waybar/style.css`). It is not recommended to edit these directly, as changes will be overwritten.
 
 ## Keybindings
 
-The default keybindings are defined within the repository. You can customize
-them by editing the following file after installation:
-
-- `~/.config/hypr/bindings.conf`: User-defined keybindings.
-
-You can customize the keybindings by editing `~/.config/hypr/bindings.conf`.
-
-Here are some of the most important default keybindings:
+Keybindings are managed interactively through the **Keybindings Editor App**. All themes now follow a standardized, mnemonic schema:
 
 | Keybinding              | Description               |
 | ----------------------- | ------------------------- |
-| `SUPER + Return`        | Open terminal             |
-| `SUPER + E`             | Open file manager         |
-| `SUPER + B`             | Open browser              |
-| `SUPER + Q`             | Close active window       |
-| `SUPER + J`             | Toggle split              |
-| `SUPER + V`             | Toggle floating           |
-| `SUPER + F`             | Force full screen         |
-| `SUPER + Arrow keys`    | Move focus                |
-| `SUPER + [0-9]`         | Switch to workspace       |
-| `SUPER + SHIFT + [0-9]` | Move window to workspace  |
-| `SUPER + SPACE`         | Launch apps               |
-| `SUPER + K`             | Show key bindings         |
-| `SUPER + COMMA`         | Dismiss last notification |
-| `SUPER + SHIFT + COMMA` | Dismiss all notifications |
-| `, PRINT`               | Screenshot of region      |
-| `SHIFT, PRINT`          | Screenshot of window      |
-| `CTRL, PRINT`           | Screenshot of display     |
+| `mainMod + Return`      | Open terminal             |
+| `mainMod + SHIFT + Return`| Open Alacritty          |
+| `mainMod + E`           | Open file manager         |
+| `mainMod + B`           | Open browser              |
+| `mainMod + N`           | Open Neovim               |
+| `mainMod + G`           | Open Gmail                |
+| `mainMod + SHIFT + G`   | Open Maps                 |
+| `mainMod + M`           | Open Main Menu            |
+| `mainMod + SHIFT + M`   | Open Theme Picker         |
+| `mainMod + O`           | Open Obsidian             |
+| `mainMod + SHIFT + O`   | Open Calendar             |
+| `mainMod + SHIFT + P`   | Pop window out            |
+| `mainMod + R`           | Toggle Dictation          |
+| `mainMod + SHIFT + E`   | Open Emoji Picker         |
+| `mainMod + SPACE`       | Application Launcher      |
+| `mainMod + SHIFT + V`   | Clipboard History         |
+| `mainMod + K`           | Show key bindings         |
+| `mainMod + Q`           | Close active window       |
+| `mainMod + Arrow keys`  | Move focus                |
+| `mainMod + SHIFT + Arrows`| Swap window position    |
+| `mainMod + [0-9]`       | Switch to workspace       |
+| `mainMod + SHIFT + [0-9]` | Move window to workspace|
+| `mainMod + COMMA`       | Dismiss last notification |
+| `mainMod + SHIFT + COMMA` | Dismiss all notifications|
+| `mainMod + CTRL + COMMA` | Silence notifications     |
 
 ## Theming
 
-The theming system is located in `~/.config/hypr/themes`. Each theme is a
-directory containing configuration files for various applications.
+The theming system is powered by a Rust-based generator that creates all configuration files from a set of master templates. This ensures a consistent and robust experience.
 
-To change the theme, you can use the `hypr-theme-set` script:
-
-```bash
-hypr-theme-set <theme-name>
-```
-
-For example, to set the theme to `tokyo-night`, you would run:
+To change the theme, you can use the `hypr-theme-set` script or the `hypr-preferences-app`.
 
 ```bash
+# List available themes
+hypr-theme-list
+
+# Set a new theme
 hypr-theme-set tokyo-night
 ```
 
-The `hypr-theme-set` script will update the symlinks for the current theme and
-restart the necessary components to apply the new theme.
+Running this command triggers the theme engine, which re-renders all necessary configurations based on the selected theme's properties.
+
+### Customization
+
+- **For simple tweaks** (like changing a font or color), modify your active theme's `theme.yaml`.
+- **For major changes**, you can create a new user theme by copying a system theme from ``$XDG_DATA_HOME/hypr/themes`` to ``$XDG_CONFIG_HOME/hypr/themes``.
+
+For a complete guide on customization and theme creation, please see **[docs/THEMING.md](docs/THEMING.md)** and **[docs/CREATE_THEME.md](docs/CREATE_THEME.md)**.
 
 ### Neovim Theming
 
-The `hypr` theming system supports two methods for theming Neovim, ensuring both
-simplicity and flexibility.
+Each theme provides a Neovim theme file (`neovim.theme.lua`) that integrates with the existing LazyVim setup. When you switch themes, the appropriate theme file is rendered to `~/.config/nvim/lua/plugins/theme.lua`, and LazyVim handles the rest.
 
-1. **Plugin-Based Theming (Preferred Method):**
-    For complex themes that are distributed as full Neovim plugins (e.g.,
-    `folke/tokyonight.nvim`), a theme can include a `neovim.plugin` file. This
-    file defines the theme as a LazyVim plugin. The `hypr-theme-set` script will
-    copy this file to `~/.config/nvim/lua/plugins/theme.lua`, allowing
-    `lazy.nvim` to manage it. This is the most robust method.
-
-2. **Simple Colorscheme Theming (Legacy):**
-    For simpler themes that only require setting a colorscheme name, a theme can
-    include a `neovim.colorscheme` file. This file contains only the name of the
-    colorscheme (e.g., `catppuccin-latte`). The script will then generate a
-    basic plugin file to set the colorscheme for LazyVim.
-
-This dual approach ensures that your personal Neovim configuration in
-`~/.config/nvim/lua/user/` is never overwritten when you switch themes.
+This approach ensures that your personal Neovim configuration in `~/.config/nvim/lua/plugins/` is never overwritten.
 
 ## Neovim Configuration
 
-Your personal Neovim configuration is located in `~/.config/nvim/lua/user/`. You
+Your personal Neovim configuration is located in `~/.config/nvim/lua/plugins/`. You
 can add your own plugins and settings here. The `hypr` setup uses LazyVim, so
 you should follow the LazyVim conventions for customization.
 
-The base `hypr` Neovim configuration is defined in the repository. During the
-initial installation, these files are copied to `~/.config/nvim/`. After that,
-your local configuration will not be overwritten by `hypr` updates unless you
-manually re-run the installation script.
+The base `hypr` Neovim configuration is generated from templates.
 
 ## License
 

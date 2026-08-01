@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+# Match against the computer's DMI product name or product family (case-insensitive).
+# Usage: hypr-hw-match "XPS" or hypr-hw-match "ThinkPad"
+
+set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") PATTERN
+
+Matches the PATTERN against the computer's DMI product name or product family.
+
+Options:
+  -h, --help    Show this help message and exit
+EOF
+}
+
+main() {
+    check_help "$@"
+    
+    if [[ $# -eq 0 ]]; then
+        usage
+        exit 1
+    fi
+
+    hypr-hw match "$1"
+}
+
+main "$@"

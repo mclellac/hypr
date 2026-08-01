@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkBox" id="page_content"><property name="orientation">vertical</property><property name="spacing">12</property>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title">Mako Configuration</property>
+        <child>
+          <object class="AdwSpinRow" id="mako_font_size">
+            <property name="title">Font Size</property>
+            <property name="subtitle">Override global size (0 for default)</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="value">0</property>
+                <property name="lower">0</property>
+                <property name="upper">50</property>
+                <property name="step-increment">1</property>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

@@ -1,0 +1,220 @@
+#!/bin/bash
+#
+# Diagnoses common issues with the Hyprland configuration and environment.
+
+set -euo pipefail
+
+# Source utility functions
+# This sets HYPR_PATH if not already set
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+#######################################
+# Displays usage information.
+#######################################
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Diagnoses common issues with the Hyprland configuration and environment.
+Checks for dependencies, configuration file existence, permissions, and
+detects the running environment.
+
+Options:
+  -h, --help    Show this help message and exit
+EOF
+}
+
+check_dependencies() {
+    log_info "Checking dependencies..."
+    if ! hypr-check-deps; then
+        log_warn "Some dependencies are missing."
+    else
+        log_info "All core dependencies found."
+    fi
+}
+
+check_config() {
+    log_info "Checking configuration files..."
+    local -a configs=(
+        "${HOME}/.config/hypr/hyprland.lua"
+        "${HOME}/.config/waybar/config.jsonc"
+    )
+
+    local missing=0
+    for config in "${configs[@]}"; do
+        if [[ ! -f "${config}" ]]; then
+            log_error "Missing config file: ${config}"
+            missing=1
+        else
+            log_info "Found config file: ${config}"
+        fi
+    done
+
+    if [[ ${missing} -eq 0 ]]; then
+        log_info "All core config files found."
+    else
+        log_warn "Some config files are missing."
+    fi
+}
+
+check_permissions() {
+    log_info "Checking permissions..."
+    local -a paths=(
+        "${HOME}/.config/hypr"
+        "${HOME}/.local/bin"
+    )
+
+    local issues=0
+    for path in "${paths[@]}"; do
+        if [[ ! -d "${path}" ]]; then
+             log_warn "Directory does not exist: ${path}"
+             # Not necessarily an error if it doesn't exist, but we check writability if it does.
+             continue
+        fi
+
+        if [[ ! -w "${path}" ]]; then
+            log_error "Directory is not writable: ${path}"
+            issues=1
+        else
+            log_info "Directory is writable: ${path}"
+        fi
+    done
+
+    if [[ ${issues} -eq 0 ]]; then
+        log_info "Permissions look good."
+    else
+        log_warn "Some permission issues detected."
+    fi
+
+    # Check if ~/.local/bin is in PATH
+    if [[ ":$PATH:" != *":${HOME}/.local/bin:"* ]]; then
+        log_error "${HOME}/.local/bin is NOT in your PATH. Many scripts will not work."
+    else
+        log_info "${HOME}/.local/bin is in your PATH."
+    fi
+}
+
+check_vm() {
+    log_info "Detecting environment..."
+    if command -v systemd-detect-virt >/dev/null 2>&1; then
+        local virt
+        # systemd-detect-virt returns non-zero when NOT in a VM.
+        if ! virt=$(systemd-detect-virt 2>/dev/null); then
+            virt="none"
+        fi
+
+        if [[ "${virt}" != "none" ]]; then
+            log_info "Virtualization detected: ${virt}"
+        else
+            log_info "Running on bare metal (no virtualization detected)."
+        fi
+    else
+        log_warn "systemd-detect-virt not found, cannot detect environment."
+    fi
+}
+
+check_nvidia() {
+    if ! lspci | grep -qi nvidia; then
+        return
+    fi
+
+    log_info "NVIDIA GPU detected. Checking NVIDIA-specific settings..."
+    
+    # Check for modesetting
+    if [[ -f /sys/module/nvidia_drm/parameters/modeset ]]; then
+        local modeset
+        if ! modeset=$(cat /sys/module/nvidia_drm/parameters/modeset 2>/dev/null); then
+            # Fallback to checking via grep on the param file which might have better perms or just assume it's okay if we can't read it
+             log_warn "Could not read NVIDIA DRM modeset status (Permission denied). Run with sudo to be sure."
+        else
+            if [[ "${modeset}" == "Y" ]]; then
+                log_info "NVIDIA DRM modeset is enabled."
+            else
+                log_error "NVIDIA DRM modeset is DISABLED. This will cause issues with Hyprland."
+            fi
+        fi
+    else
+        log_warn "Could not verify NVIDIA DRM modeset status (Module not loaded or file missing)."
+    fi
+
+    # Check for GSP firmware (Turing+)
+    if grep -q "EnableGpuFirmware: 1" /proc/driver/nvidia/params 2>/dev/null; then
+        log_info "NVIDIA GSP Firmware is enabled."
+    else
+        log_warn "NVIDIA GSP Firmware is not enabled. Consider enabling it for Turing+ cards."
+    fi
+}
+
+check_conflicts() {
+    log_info "Checking for conflicting services..."
+    local -a notif_daemons=("mako" "dunst" "swaync")
+    local running=()
+    for daemon in "${notif_daemons[@]}"; do
+        if pgrep -xf "${daemon}" >/dev/null; then
+            running+=("${daemon}")
+        fi
+    done
+
+    if [[ ${#running[@]} -gt 1 ]]; then
+        log_error "Multiple notification daemons running: ${running[*]}"
+    elif [[ ${#running[@]} -eq 1 ]]; then
+        log_info "Notification daemon: ${running[0]}"
+    else
+        log_warn "No notification daemon detected."
+    fi
+}
+
+check_groups() {
+
+    log_info "Checking user groups..."
+    local user
+    user=$(whoami)
+    local -a target_groups=("video" "input")
+    for group in "${target_groups[@]}"; do
+        if ! groups "${user}" | grep -q "\b${group}\b"; then
+            log_warn "User '${user}' is NOT in group: ${group}"
+        else
+            log_info "User '${user}' is in group: ${group}"
+        fi
+    done
+}
+
+check_zombie_portals() {
+    log_info "Checking for zombie xdg-desktop-portal processes..."
+    if pgrep -f "xdg-desktop-portal" | xargs ps -o state= -p | grep -q "Z"; then
+        log_error "Detected zombie xdg-desktop-portal processes."
+    else
+        log_info "No zombie portal processes detected."
+    fi
+}
+
+main() {
+    check_help "$@"
+
+    log_info "Starting Hyprland Doctor..."
+    echo "---------------------------------------------------"
+    check_vm
+    echo "---------------------------------------------------"
+    check_nvidia
+    echo "---------------------------------------------------"
+    check_groups
+    echo "---------------------------------------------------"
+    check_dependencies
+    echo "---------------------------------------------------"
+    check_conflicts
+    echo "---------------------------------------------------"
+    check_zombie_portals
+    echo "---------------------------------------------------"
+    check_config
+    echo "---------------------------------------------------"
+    check_permissions
+    echo "---------------------------------------------------"
+    log_info "Diagnosis complete."
+}
+
+main "$@"

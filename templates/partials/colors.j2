@@ -1,0 +1,3 @@
+{% macro get_color(name, default_val) -%}
+{% if theme.colors[name] is defined %}{{ theme.colors[name] }}{% else %}{{ default_val }}{% endif %}
+{%- endmacro %}

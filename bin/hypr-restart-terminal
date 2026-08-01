@@ -1,0 +1,52 @@
+#!/bin/bash
+set -euo pipefail
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    if [[ -f ~/.config/alacritty/alacritty.toml ]]; then
+      # Alacritty does not watch imported configuration files. To force Alacritty
+      # to reload and re-evaluate imports, we must modify the main configuration file.
+      # We do this by appending a dynamic reload timestamp comment.
+      # To prevent breaking Alacritty's file watcher (which watches the file inode),
+      # we must modify the file in-place using redirection rather than 'sed -i' (which replaces the inode).
+      local temp_file
+      temp_file=$(mktemp)
+      grep -v "# FORCE_RELOAD_" ~/.config/alacritty/alacritty.toml > "${temp_file}" || true
+      echo "" >> "${temp_file}"
+      echo "# FORCE_RELOAD_$(date +%s)" >> "${temp_file}"
+      cat "${temp_file}" > ~/.config/alacritty/alacritty.toml
+      rm -f "${temp_file}"
+    fi
+
+    if command -v alacritty &>/dev/null && [[ -f ~/.config/alacritty/theme.toml ]]; then
+      alacritty msg config "$(cat ~/.config/alacritty/theme.toml)" &>/dev/null || true
+    fi
+
+    if [[ -f ~/.config/kitty/kitty.conf ]]; then
+      touch ~/.config/kitty/kitty.conf
+    fi
+
+    if [[ -f ~/.config/ghostty/config ]]; then
+      touch ~/.config/ghostty/config
+    fi
+
+    if pgrep -x kitty >/dev/null; then
+      killall -SIGUSR1 kitty >/dev/null || true
+    fi
+
+    if pgrep -x ghostty >/dev/null; then
+      killall -SIGUSR2 ghostty || true
+    fi
+}
+
+main "$@"

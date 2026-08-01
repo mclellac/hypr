@@ -4,5 +4,25 @@
 # screen recording script, which handles the stop logic.
 
 set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
-hypr-cmd-screenrecord
+usage() {
+    echo "Usage: $(basename "$0")"
+    echo
+    echo "Stops any active screen recording session."
+    echo
+    echo "Options:"
+    echo "  -h, --help    Show this help message and exit"
+}
+
+main() {
+    check_help "$@"
+    hypr-cmd-screenrecord
+}
+
+main "$@"

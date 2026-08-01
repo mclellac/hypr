@@ -1,0 +1,45 @@
+#!/bin/bash
+set -euo pipefail
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    STATE_CONF="$HOME/.local/state/hypr/toggles/hypr/touchpad-disabled.conf"
+
+    device="$(hypr-hw-touchpad)"
+
+    if [[ -z $device ]]; then
+      echo "No touchpad device found" >&2
+      exit 1
+    fi
+
+    enable() {
+      hyprctl eval "hl.config({ device = { [\"$device\"] = { enabled = true } } })" >/dev/null
+      rm -f "$STATE_CONF"
+      hypr-swayosd-client --custom-icon input-touchpad-symbolic --custom-message "Touchpad enabled"
+    }
+
+    disable() {
+      hyprctl eval "hl.config({ device = { [\"$device\"] = { enabled = false } } })" >/dev/null
+      mkdir -p "$(dirname "$STATE_CONF")"
+      printf 'device {\n    name = %s\n    enabled = false\n}\n' "$device" > "$STATE_CONF"
+      hypr-swayosd-client --custom-icon touchpad-disabled-symbolic --custom-message "Touchpad disabled"
+    }
+
+    case "${1:-toggle}" in
+      on) enable ;;
+      off) disable ;;
+      toggle) if [[ -f $STATE_CONF ]]; then enable; else disable; fi ;;
+    esac
+}
+
+main "$@"

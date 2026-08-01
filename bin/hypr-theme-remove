@@ -1,59 +1,73 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Removes a theme from hypr by name.
 # Usage: hypr-theme-remove [theme-name]
 
-set -euo pipefail
 
-readonly THEMES_DIR="${HOME}/.config/hypr/themes"
-readonly CURRENT_DIR="${HOME}/.config/hypr/current"
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+readonly THEMES_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/hypr/themes"
+readonly CURRENT_THEME_STATE_FILE="${HOME}/.config/hypr/current_theme_path"
 
 #######################################
 # Main function to remove a theme.
 # Globals:
 #   THEMES_DIR
-#   CURRENT_DIR
+#   CURRENT_THEME_STATE_FILE
 # Arguments:
 #   $1 - (Optional) The name of the theme to remove.
 # Outputs:
 #   Exits with an error if the theme is not found.
 #######################################
 main() {
-  local theme_name="${1:-}"
-  if [[ -z "${theme_name}" ]]; then
-    local -a extra_themes
-    mapfile -t extra_themes < <(find "${THEMES_DIR}" -mindepth 1 -maxdepth 1 -type d ! -xtype l -printf '%f\n')
+    check_help "$@"
+    local theme_name="${1:-}"
+    if [[ -z "${theme_name}" ]]; then
+        local -a extra_themes
+        mapfile -t extra_themes < <(find "${THEMES_DIR}" -mindepth 1 -maxdepth 1 -type d ! -xtype l -printf '%f\n')
 
-    if [[ ${#extra_themes[@]} -gt 0 ]]; then
-      theme_name=$(gum choose --header="Remove extra theme" "${extra_themes[@]}")
-    else
-      echo "No extra themes installed."
-      exit 0
+        if [[ ${#extra_themes[@]} -gt 0 ]]; then
+            theme_name=$(gum choose --header="Remove extra theme" "${extra_themes[@]}")
+        else
+            log_info "No extra themes installed."
+            exit 0
+        fi
     fi
-  fi
 
-  if [[ -z "${theme_name}" ]]; then
-    exit 0
-  fi
+    if [[ -z "${theme_name}" ]]; then
+        exit 0
+    fi
 
-  local theme_path="${THEMES_DIR}/${theme_name}"
+    local theme_path="${THEMES_DIR}/${theme_name}"
 
-  # Check if theme exists before attempting removal.
-  if [[ ! -d "${theme_path}" ]]; then
-    echo "Error: Theme '${theme_name}' not found." >&2
-    exit 1
-  fi
+    # Check if theme exists before attempting removal.
+    if [[ ! -d "${theme_path}" ]]; then
+        echo "Error: Theme '${theme_name}' not found." >&2
+        exit 1
+    fi
 
-  # Move to the next theme if the current theme is the one being removed.
-  if [[ "$(readlink -f "${CURRENT_DIR}/theme")" == "$(readlink -f "${theme_path}")" ]]; then
-    echo "Current theme is being removed, switching to the next one."
-    hypr-theme-next
-  fi
+    # Move to the next theme if the current theme is the one being removed.
+    local current_theme_path=""
+    if [[ -f "${CURRENT_THEME_STATE_FILE}" ]]; then
+        current_theme_path=$(readlink -f "$(<"${CURRENT_THEME_STATE_FILE}")")
+    fi
 
-  # Now remove the theme directory.
-  echo "Removing theme: ${theme_name}"
-  rm -rf "${theme_path}"
-  echo "Theme removed successfully."
+    if [[ -n "${current_theme_path}" && "$(readlink -f "${theme_path}")" == "${current_theme_path}" ]]; then
+        log_info "Current theme is being removed, switching to the next one."
+        hypr-theme-next
+    fi
+
+    # Now remove the theme directory.
+    log_info "Removing theme: ${theme_name}"
+    rm -rf "${theme_path}"
+    log_info "Theme removed successfully."
 }
 
 main "$@"

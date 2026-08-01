@@ -1,0 +1,27 @@
+-- See https://wiki.hyprland.org/Configuring/Monitors/
+-- List current monitors and resolutions possible: hyprctl monitors
+-- You must relaunch Hyprland after changing any envs (use Super+Esc, then Relaunch)
+
+{% if theme.monitors and theme.monitors|length > 0 -%}
+-- Specific monitor configurations
+{% for monitor in theme.monitors -%}
+hl.monitor({
+    output = "{{ monitor.output }}",
+    mode = "{{ monitor.mode | default('preferred') }}",
+    position = "{{ monitor.position | default('auto') }}",
+    scale = {{ monitor.scale | default(1.0) }},
+    {% if monitor.bitdepth and monitor.bitdepth > 0 -%}
+    bitdepth = {{ monitor.bitdepth }}
+    {%- endif %}
+})
+{% endfor -%}
+{%- endif %}
+
+-- Default fallback monitor rule (works for physical hardware, virtual machines, and newly connected displays)
+hl.monitor({
+    output = "",
+    mode = "preferred",
+    position = "auto",
+    scale = 1
+})
+

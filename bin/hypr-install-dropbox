@@ -1,8 +1,16 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Installs Dropbox and its dependencies, then launches the client.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Main function to install and start Dropbox.
@@ -14,23 +22,25 @@ set -euo pipefail
 #   Exits with an error if dependencies are not met.
 #######################################
 main() {
-  for cmd in hypr-pkg-add uwsm; do
-    if ! command -v "${cmd}" &>/dev/null; then
-      echo "Error: Required command not found: ${cmd}" >&2
-      exit 1
+    check_help "$@"
+    if ! command -v hypr-pkg-add &>/dev/null; then
+        echo "Error: Required command not found: hypr-pkg-add" >&2
+        exit 1
     fi
-  done
 
-  echo "Installing Dropbox and its dependencies..."
-  hypr-pkg-add dropbox dropbox-cli libappindicator-gtk3 python-gpgme nautilus-dropbox
+    log_info "Installing Dropbox and its dependencies..."
+    hypr-pkg-add dropbox dropbox-cli libappindicator-gtk3 python-gpgme nautilus-dropbox
 
-  echo "Starting Dropbox client in the background..."
-  # 'uwsm app' is used to launch the application in a managed way.
-  # The process is backgrounded to allow the script to complete.
-  uwsm app -- dropbox-cli start &>/dev/null &
+    log_info "Starting Dropbox client in the background..."
+    # Launch via UWSM if active, otherwise launch directly.
+    if is_uwsm_active; then
+        setsid uwsm app -- dropbox-cli start &>/dev/null &
+    else
+        setsid dropbox-cli start &>/dev/null &
+    fi
 
-  echo "Dropbox setup will continue in the system tray."
-  echo "Look for the Dropbox icon, right-click it, and follow the instructions."
+    log_info "Dropbox setup will continue in the system tray."
+    log_info "Look for the Dropbox icon, right-click it, and follow the instructions."
 }
 
-main
+main "$@"

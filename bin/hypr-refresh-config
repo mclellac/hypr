@@ -1,79 +1,86 @@
 #!/bin/bash
 #
-# Refreshes a user's configuration file with the default version from the
-# hypr repository. It creates a timestamped backup of the user's file
-# before replacing it.
+# Refreshes a configuration file with the default version from the repo.
 
 set -euo pipefail
 
-#######################################
-# Prints the usage information for the script.
-# Globals:
-#   None
-# Arguments:
-#   None
-# Outputs:
-#   Writes usage information to stdout.
-#######################################
-print_usage() {
-  cat <<USAGE
-Usage: $(basename "$0") [config_file]
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS] CONFIG_FILE
 
 Refreshes a configuration file with its default version.
-The [config_file] path should be relative to ~/.config.
+The CONFIG_FILE path should be relative to ~/.config.
 
 Example:
-  To copy ~/.local/share/hypr/config/hypr/hyprlock.conf to ~/.config/hypr/hyprlock.conf:
-  $(basename "$0") hypr/hyprlock.conf
-USAGE
+    To refresh ~/.config/hypr/hyprlock.conf from its template:
+    $(basename "$0") hypr/hyprlock.conf
+
+Options:
+  -h, --help    Show this help message and exit
+EOF
 }
 
-#######################################
-# Main function to refresh the configuration file.
-# Globals:
-#   HOME - The user's home directory.
-# Arguments:
-#   $1 - The path to the configuration file, relative to ~/.config.
-# Outputs:
-#   Exits with an error if the config file argument is missing.
-#######################################
 main() {
-  local config_file="${1:-}"
-  if [[ -z "${config_file}" ]]; then
-    print_usage
-    exit 1
-  fi
+    check_help "$@"
 
-  local user_config_file="${HOME}/.config/${config_file}"
-  local default_config_file="${HOME}/.local/share/hypr/config/${config_file}"
-  local backup_config_file="${user_config_file}.bak.$(date +%s)"
-
-  if [[ ! -f "${default_config_file}" ]]; then
-      echo "Error: Default config file not found: ${default_config_file}" >&2
-      exit 1
-  fi
-
-  if [[ -f "${user_config_file}" ]]; then
-    # Create a backup of the user's existing config file.
-    cp -f "${user_config_file}" "${backup_config_file}"
-
-    # Replace the user's config with the new default.
-    cp -f "${default_config_file}" "${user_config_file}"
-
-    # If the files are identical, the backup is unnecessary.
-    if cmp -s "${user_config_file}" "${backup_config_file}"; then
-      rm "${backup_config_file}"
-    else
-      echo -e "\e[31mReplaced ${user_config_file} with new hypr default."
-      echo -e "Saved backup as ${backup_config_file}.\n\n\e[32mChanges:\e[0m"
-      diff "${backup_config_file}" "${user_config_file}" || true
+    local config_file="${1:-}"
+    if [[ -z "${config_file}" ]]; then
+        usage
+        exit 1
     fi
-  else
-    # If the user's config file doesn't exist, just copy the default.
-    echo "Creating new config file: ${user_config_file}"
-    mkdir -p "$(dirname "${user_config_file}")"
-    cp -f "${default_config_file}" "${user_config_file}"
-  fi
+
+    # Sanitize input: Strip ~/.config/ prefix if provided
+    config_file="${config_file#"${HOME}"/.config/}"
+    # Remove leading slash just in case
+    config_file="${config_file#/}"
+
+    local user_config_file="${HOME}/.config/${config_file}"
+    local default_template_file="${HYPR_PATH}/templates/${config_file}"
+    local backup_config_file
+    backup_config_file="${user_config_file}.bak.$(date +%s)"
+
+    if [[ ! -f "${default_template_file}" ]]; then
+        if [[ -f "${default_template_file}.j2" ]]; then
+            default_template_file="${default_template_file}.j2"
+        else
+            log_error "Template not found: ${default_template_file} (or .j2)"
+            exit 1
+        fi
+    fi
+
+    # Backup existing
+    if [[ -f "${user_config_file}" ]]; then
+        cp -f "${user_config_file}" "${backup_config_file}"
+    fi
+
+    # Run the templater to regenerate the file correctly from the template
+    log_info "Regenerating configuration from template..."
+    if command -v hypr-theme-templater &>/dev/null; then
+        hypr-theme-templater --targets "${config_file}"
+    elif [[ -f "${HYPR_PATH}/bin/hypr-theme-templater" ]]; then
+        "${HYPR_PATH}/bin/hypr-theme-templater" --targets "${config_file}"
+    else
+        log_error "hypr-theme-templater not found."
+        exit 1
+    fi
+
+    # Cleanup backup if no change
+    if [[ -f "${backup_config_file}" ]]; then
+        if cmp -s "${user_config_file}" "${backup_config_file}"; then
+            rm "${backup_config_file}"
+        else
+            log_info "Refreshed ${user_config_file} from template."
+            log_info "Saved backup as ${backup_config_file}."
+        fi
+    fi
 }
 
 main "$@"

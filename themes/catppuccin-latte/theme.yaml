@@ -1,0 +1,62 @@
+name: Catppuccin Latte
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#eff1f5'
+  foreground: '#4c4f69'
+  cursor: '#dc8a78'
+  cursor_text: '#eff1f5'
+  selection_bg: '#dc8a78'
+  selection_fg: '#eff1f5'
+  primary: '#1e66f5'
+  secondary: '#1e66f5'
+  alert: '#d20f39'
+  warning: '#df8e1d'
+  success: '#40a02b'
+  color0: '#bcc0cc'
+  color1: '#d20f39'
+  color2: '#40a02b'
+  color3: '#df8e1d'
+  color4: '#1e66f5'
+  color5: '#ea76cb'
+  color6: '#179299'
+  color7: '#5c5f77'
+  color8: '#acb0be'
+  color9: '#d20f39'
+  color10: '#40a02b'
+  color11: '#df8e1d'
+  color12: '#1e66f5'
+  color13: '#ea76cb'
+  color14: '#179299'
+  color15: '#6c6f85'
+  accent: '#1e66f5'
+  url_color: '#dc8a78'
+layout:
+  active_border: '#1e66f5ff'
+  inactive_border: '#bcc0ccff'
+  groupbar_text_color: '#4c4f69'
+  group_border_active: '#1e66f5'
+  group_border_inactive: '#bcc0cc'
+  group_border_locked_active: '#ea76cb'
+  group_border_locked_inactive: '#6c6f85'
+  groupbar_col_active: '#1e66f5'
+  groupbar_col_inactive: '#bcc0cc'
+  groupbar_col_locked_active: '#ea76cb'
+  groupbar_col_locked_inactive: '#6c6f85'
+  nogroup_border: '#bcc0cc'
+  nogroup_border_active: '#1e66f5'
+  glow_color: '#1e66f5ee'
+  shadow_color: '#eff1f57b'
+  animation_style: bouncy
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(188, 192, 204, 0.53)
+  style:
+    size: 16

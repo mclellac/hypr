@@ -1,0 +1,62 @@
+name: Solitude
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#101315'
+  foreground: '#cacccc'
+  cursor: '#cacccc'
+  cursor_text: '#101315'
+  selection_bg: '#798186'
+  selection_fg: '#101315'
+  primary: '#798186'
+  secondary: '#798186'
+  alert: '#565d60'
+  warning: '#d9dbdc'
+  success: '#9fa5a9'
+  color0: '#101315'
+  color1: '#565d60'
+  color2: '#9fa5a9'
+  color3: '#d9dbdc'
+  color4: '#798186'
+  color5: '#aeaeae'
+  color6: '#707070'
+  color7: '#cbc2be'
+  color8: '#4b4e55'
+  color9: '#de6145'
+  color10: '#343d41'
+  color11: '#c9c2b4'
+  color12: '#5d6367'
+  color13: '#9a9a9a'
+  color14: '#707070'
+  color15: '#a5aeb4'
+  accent: '#798186'
+  url_color: '#798186'
+layout:
+  active_border: '798186ee caccccee 45deg'
+  inactive_border: 'rgb(1e1e1e'
+  groupbar_text_color: '#cacccc'
+  group_border_active: '798186ee'
+  group_border_inactive: 'rgb(1e1e1e'
+  group_border_locked_active: '#aeaeae'
+  group_border_locked_inactive: '#4b4e55'
+  groupbar_col_active: '798186ee'
+  groupbar_col_inactive: 'rgb(1e1e1e'
+  groupbar_col_locked_active: '#aeaeae'
+  groupbar_col_locked_inactive: '#4b4e55'
+  nogroup_border: 'rgb(1e1e1e'
+  nogroup_border_active: '798186ee'
+  glow_color: '#798186ee'
+  shadow_color: '#1013157b'
+  animation_style: fluid
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(50, 52, 74, 0.53)
+  style:
+    size: 16

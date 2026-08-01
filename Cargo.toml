@@ -1,0 +1,13 @@
+[workspace]
+resolver = "3"
+members = [
+    "hypr_config_manager",
+    "hypr_apps/hypr-preferences-app",
+    "hypr_apps/keybindings_editor"
+]
+
+[profile.release]
+opt-level = 3     # Standard speed optimizations
+lto = "thin"      # Thin LTO is faster and avoids ICE compiler panics
+codegen-units = 16
+strip = true      # Strip symbols

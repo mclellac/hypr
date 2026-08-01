@@ -1,0 +1,2 @@
+@import url("file://{{ env.HOME }}/.config/walker/theme.css");
+@import url("file://{{ env.HOME }}/.config/walker/themes/base-dmenu.css");

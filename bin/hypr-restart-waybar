@@ -4,24 +4,42 @@
 
 set -euo pipefail
 
-#######################################
-# Main function to restart the waybar service.
-# Globals:
-#   None
-# Arguments:
-#   None
-# Outputs:
-#   None
-#######################################
-main() {
-  if pgrep -x waybar >/dev/null; then
-    echo "Reloading waybar..."
-    # SIGUSR2 reloads the configuration and style without restarting the process.
-    pkill -SIGUSR2 -x waybar
-  else
-    echo "Starting waybar..."
-    hyprctl dispatch exec waybar
-  fi
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS] [-f]
+
+Restarts or reloads waybar.
+
+Options:
+  -h, --help    Show this help message and exit
+  -f            Force full restart instead of reload
+EOF
 }
 
-main
+main() {
+    check_help "$@"
+
+    if pgrep -x waybar >/dev/null; then
+        log_info "Stopping waybar..."
+        pkill -x waybar
+        # Wait for it to exit
+        while pgrep -x waybar >/dev/null; do sleep 0.1; done
+    fi
+
+    log_info "Starting waybar..."
+    if is_uwsm_active; then
+        hyprctl dispatch 'hl.dsp.exec_cmd("uwsm app -- waybar")'
+    else
+        hyprctl dispatch 'hl.dsp.exec_cmd("waybar")'
+    fi
+}
+
+main "$@"

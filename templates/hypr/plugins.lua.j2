@@ -1,0 +1,39 @@
+-- Hyprland Plugins Configuration (generated from template)
+
+{% if theme.plugins.hyprglass.enabled %}
+-- Hyprglass Plugin Configuration
+if hl.plugin and hl.plugin.hyprglass then
+    local hg = hl.plugin.hyprglass
+    hg.config({
+        enabled = true,
+        default_theme = "dark",
+        default_preset = "clear",
+        manage_window_blur = {{ theme.plugins.hyprglass.manage_window_blur | default(true) | lower }},
+        brightness = {{ theme.plugins.hyprglass.brightness | default(0.9) }},
+        contrast = {{ theme.plugins.hyprglass.contrast | default(1.0) }},
+        layers = { enabled = 1 },
+    })
+
+    hg.preset("clear", {
+        glass_opacity = {{ theme.plugins.hyprglass.glass_opacity | default(0.85) }},
+        blur_strength = {{ theme.plugins.hyprglass.blur_strength | default(2.0) }},
+        blur_iterations = {{ theme.plugins.hyprglass.blur_iterations | default(3) }},
+        refraction_strength = {{ theme.plugins.hyprglass.refraction_strength | default(0.6) }},
+        chromatic_aberration = {{ theme.plugins.hyprglass.chromatic_aberration | default(0.5) }},
+        fresnel_strength = {{ theme.plugins.hyprglass.fresnel_strength | default(0.6) }},
+        specular_strength = {{ theme.plugins.hyprglass.specular_strength | default(0.8) }},
+        edge_thickness = {{ theme.plugins.hyprglass.edge_thickness | default(0.06) }},
+        tint_color = {{ theme.plugins.hyprglass.tint_color | default("0x8899aa22") }},
+    })
+
+    {% if theme.plugins.hyprglass.layer_waybar | default(true) %}
+    hg.layer("waybar", { preset = "clear", mask_threshold = 0.05 })
+    {% endif %}
+    {% if theme.plugins.hyprglass.layer_walker | default(true) %}
+    hg.layer("walker", { preset = "clear", mask_threshold = 0.05 })
+    {% endif %}
+    {% if theme.plugins.hyprglass.layer_mako | default(true) %}
+    hg.layer("mako", { preset = "clear", mask_threshold = 0.05 })
+    {% endif %}
+end
+{% endif %}

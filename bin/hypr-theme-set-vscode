@@ -1,0 +1,64 @@
+#!/bin/bash
+set -euo pipefail
+
+# Sync Hypr theme to VS Code, VSCodium, and Cursor
+
+# Get current theme path from state file
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    THEME_STATE_FILE=~/.config/hypr/current_theme_path
+    if [[ -f $THEME_STATE_FILE ]]; then
+      THEME_PATH=$(cat "$THEME_STATE_FILE")
+      VS_CODE_THEME="$THEME_PATH/vscode.json"
+    else
+      VS_CODE_THEME=""
+    fi
+
+    set_theme() {
+      local editor_cmd="$1"
+      local settings_path="$2"
+
+      command -v "$editor_cmd" &>/dev/null || return 0
+
+      if [[ -f $VS_CODE_THEME ]]; then
+        theme_name=$(jq -r '.name' "$VS_CODE_THEME")
+        extension=$(jq -r '.extension' "$VS_CODE_THEME")
+
+        if [[ -n $extension ]] && [[ "$extension" != "null" ]] && ! "$editor_cmd" --list-extensions | grep -Fxq "$extension"; then
+          "$editor_cmd" --install-extension "$extension" >/dev/null
+        fi
+
+        mkdir -p "$(dirname "$settings_path")"
+        [[ -f $settings_path ]] || printf '{\n}\n' >"$settings_path"
+
+        if ! grep -q '"workbench.colorTheme"' "$settings_path"; then
+          sed -i --follow-symlinks -E '0,/\{/{s/\{/{\ "workbench.colorTheme": "",/}' "$settings_path"
+        fi
+
+        sed -i --follow-symlinks -E \
+          "s/(\"workbench.colorTheme\"[[:space:]]*:[[:space:]]*\")[^\"]*(\")/\1$theme_name\2/" \
+          "$settings_path"
+      elif [[ -f $settings_path ]]; then
+        # Optional: fallback to a generic theme if no vscode.json present
+        # For now, we'll just leave it as is if no theme specified
+        :
+      fi
+    }
+
+    ! hypr-toggle-enabled skip-vscode-theme-changes && set_theme "code" "$HOME/.config/Code/User/settings.json"
+    ! hypr-toggle-enabled skip-vscode-insiders-theme-changes && set_theme "code-insiders" "$HOME/.config/Code - Insiders/User/settings.json"
+    ! hypr-toggle-enabled skip-codium-theme-changes && set_theme "codium" "$HOME/.config/VSCodium/User/settings.json"
+    ! hypr-toggle-enabled skip-cursor-theme-changes && set_theme "cursor" "$HOME/.config/Cursor/User/settings.json"
+}
+
+main "$@"

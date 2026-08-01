@@ -1,0 +1,29 @@
+-- https://wiki.hyprland.org/Configuring/Variables/#input
+hl.config({
+    input = {
+        kb_layout = "{{ theme.input.kb_layout | default('us') }}",
+        kb_variant = "",
+        kb_model = "",
+        kb_options = "{{ theme.input.kb_options | default('compose:caps') }}{% if is_apple_virt and has_mx_master %},altwin:swap_lalt_lwin{% endif %}",
+        kb_rules = "",
+
+        follow_mouse = {{ theme.input.follow_mouse | default(1) | int }},
+
+        sensitivity = {{ theme.input.sensitivity | default(0.0) }}, -- -1.0 - 1.0, 0 means no modification.
+        scroll_factor = {{ theme.input.scroll_factor | default(2.5) }},
+        accel_profile = "{{ 'flat' if is_vm else (theme.input.accel_profile | default('adaptive')) }}",
+
+        touchpad = {
+            natural_scroll = {{ theme.input.touchpad_natural_scroll | default('false' if not is_apple else 'true') | lower }},
+            scroll_factor = {{ theme.input.touchpad_scroll_factor | default(1.0) }},
+            tap_to_click = {{ theme.input.touchpad_tap_to_click | default('true') | lower }}
+        }
+    }
+})
+
+-- https://wiki.hyprland.org/Configuring/Variables/#gestures
+-- hl.config({
+--     gestures = {
+--         workspace_swipe = false
+--     }
+-- })

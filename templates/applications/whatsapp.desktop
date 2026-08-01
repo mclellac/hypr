@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=WhatsApp
+Comment=WhatsApp
+Exec={{ HYPR_PATH }}/bin/hypr-launch-webapp https://web.whatsapp.com
+Terminal=false
+Type=Application
+Icon={{ env.HOME }}/.local/share/applications/icons/whatsapp.png
+StartupNotify=true

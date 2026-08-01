@@ -1,9 +1,39 @@
 #!/bin/bash
 #
-# Performs a full system update, including creating a snapshot, updating git
-# repositories, running migrations, and updating system packages.
+# Performs a full system update, including updating git repositories
+# and updating system packages.
 
 set -euo pipefail
+
+# Source utility functions
+# This sets HYPR_PATH if not already set
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+#######################################
+# Displays usage information.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   Usage information to stdout.
+#######################################
+usage() {
+        cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Performs a full system update, including updating git repositories
+and updating system packages.
+
+Options:
+    -h, --help    Show this help message and exit
+EOF
+}
 
 #######################################
 # Main function to perform the system update.
@@ -15,26 +45,21 @@ set -euo pipefail
 #   None
 #######################################
 main() {
-  echo "Starting full system update..."
+    check_help "$@"
 
-  # Create a system snapshot before making changes.
-  # The `|| [ $? -eq 127 ]` part ignores the error if snapper is not installed.
-  hypr-snapshot create || [[ $? -eq 127 ]]
+    log_info "Starting full system update..."
 
-  # Update the hypr git repository.
-  hypr-update-git
+    # Update the hypr git repository.
+    hypr-update-git
 
-  # Run any pending database migrations.
-  hypr-migrate
+    # Update all system packages.
+    hypr-update-system-pkgs
 
-  # Update all system packages.
-  hypr-update-system-pkgs
+    # Restart services to apply updates.
+    hypr-update-restart
+    hypr-restart-waybar # This removes the 'update-available' icon.
 
-  # Restart services to apply updates.
-  hypr-update-restart
-  hypr-restart-waybar # This removes the 'update-available' icon.
-
-  echo "System update complete."
+    log_info "System update complete."
 }
 
-main
+main "$@"

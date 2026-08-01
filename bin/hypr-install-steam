@@ -1,9 +1,17 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Installs Steam by first enabling the 'multilib' repository in pacman.conf
 # for 32-bit compatibility, and then installing the 'steam' package.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 readonly PACMAN_CONFIG="/etc/pacman.conf"
 
@@ -17,15 +25,15 @@ readonly PACMAN_CONFIG="/etc/pacman.conf"
 #   None
 #######################################
 enable_multilib() {
-  # Check if multilib is already enabled to avoid redundant edits.
-  if grep -q "^\s*\[multilib\]" "${PACMAN_CONFIG}"; then
-    echo "Multilib repository is already enabled."
-    return
-  fi
+    # Check if multilib is already enabled to avoid redundant edits.
+    if grep -q "^\s*\[multilib\]" "${PACMAN_CONFIG}"; then
+        log_info "Multilib repository is already enabled."
+        return
+    fi
 
-  echo "Enabling multilib repository for 32-bit compatibility..."
-  # This sed command uncomments the two lines for the [multilib] repository.
-  sudo sed -i '/^#\s*\[multilib\]/,/^#\s*Include/ s/^#\s*//' "${PACMAN_CONFIG}"
+    log_info "Enabling multilib repository for 32-bit compatibility..."
+    # This sed command uncomments the two lines for the [multilib] repository.
+    sudo sed -i '/^#\s*\[multilib\]/,/^#\s*Include/ s/^#\s*//' "${PACMAN_CONFIG}"
 }
 
 #######################################
@@ -38,26 +46,27 @@ enable_multilib() {
 #   Exits with an error if dependencies are not met.
 #######################################
 main() {
-  if ! command -v pacman &>/dev/null; then
-    echo "Error: 'pacman' command not found." >&2
-    exit 1
-  fi
+    check_help "$@"
+    if ! command -v pacman &>/dev/null; then
+        echo "Error: 'pacman' command not found." >&2
+        exit 1
+    fi
 
-  enable_multilib
+    enable_multilib
 
-  echo "Updating package database and installing Steam..."
-  echo "You may be prompted to select video driver packages."
-  sudo pacman -Syu --noconfirm steam
+    log_info "Updating package database and installing Steam..."
+    log_info "You may be prompted to select video driver packages."
+    sudo pacman -Syu --noconfirm steam
 
-  if command -v gtk-launch &>/dev/null; then
-    echo "Launching Steam..."
-    # setsid and backgrounding detaches the process from the terminal.
-    setsid gtk-launch steam &>/dev/null &
-  else
-    echo "Warning: 'gtk-launch' not found. Cannot launch Steam automatically." >&2
-  fi
+    if command -v gtk-launch &>/dev/null; then
+        log_info "Launching Steam..."
+        # setsid and backgrounding detaches the process from the terminal.
+        setsid gtk-launch steam &>/dev/null &
+    else
+        echo "Warning: 'gtk-launch' not found. Cannot launch Steam automatically." >&2
+    fi
 
-  echo "Steam installation complete."
+    log_info "Steam installation complete."
 }
 
-main
+main "$@"

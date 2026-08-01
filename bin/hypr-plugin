@@ -1,0 +1,240 @@
+#!/usr/bin/env bash
+#
+# Manage Hyprland plugins (install, enable, disable, configure, list)
+# Usage: hypr-plugin <command> [args]
+
+set -euo pipefail
+
+# Source utility functions
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+# shellcheck disable=SC1091
+source "$_SCRIPT_DIR/hypr-utils"
+
+readonly SETTINGS_FILE="${HOME}/.config/hypr/settings.yaml"
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") <command> [arguments]
+
+Commands:
+  list                        List installed and available Hyprland plugins
+  install <name|repository>   Install and enable a plugin via hyprpm
+  enable <plugin_name>        Enable a plugin and update configuration
+  disable <plugin_name>       Disable a plugin and update configuration
+  set <plugin_name> <key> <val> Update configuration property for a plugin
+
+Examples:
+  hypr-plugin list
+  hypr-plugin install hyprglass
+  hypr-plugin enable hyprglass
+  hypr-plugin disable hyprglass
+  hypr-plugin set hyprglass blur_size 7
+EOF
+}
+
+update_setting_yaml() {
+    local plugin_name="$1"
+    local key="$2"
+    local val="$3"
+
+    if [ ! -f "${SETTINGS_FILE}" ]; then
+        log_error "Settings file not found at ${SETTINGS_FILE}"
+        return 1
+    fi
+
+    python3 -c "
+import sys
+from ruamel.yaml import YAML
+
+yaml = YAML()
+yaml.preserve_quotes = True
+
+settings_path = '${SETTINGS_FILE}'
+with open(settings_path, 'r') as f:
+    data = yaml.load(f) or {}
+
+if 'plugins' not in data:
+    data['plugins'] = {}
+
+if '${plugin_name}' not in data['plugins']:
+    data['plugins']['${plugin_name}'] = {}
+
+raw_val = '''${val}'''
+if raw_val.lower() == 'true':
+    parsed_val = True
+elif raw_val.lower() == 'false':
+    parsed_val = False
+else:
+    try:
+        parsed_val = int(raw_val)
+    except ValueError:
+        try:
+            parsed_val = float(raw_val)
+        except ValueError:
+            parsed_val = raw_val
+
+data['plugins']['${plugin_name}']['${key}'] = parsed_val
+
+with open(settings_path, 'w') as f:
+    yaml.dump(data, f)
+"
+}
+
+cmd_list() {
+    log_info "Listing Hyprland plugins..."
+    if command -v hyprpm &>/dev/null; then
+        hyprpm list
+    else
+        log_error "hyprpm CLI utility is not installed."
+        exit 1
+    fi
+}
+
+cmd_install() {
+    local target="$1"
+    local repo_url="${target}"
+    local plugin_name="${target}"
+
+    if [ "${target}" = "hyprglass" ]; then
+        repo_url="https://github.com/hyprnux/hyprglass"
+    fi
+
+    log_info "Adding Hyprland plugin from ${repo_url}..."
+    yes | hyprpm add "${repo_url}" || log_warn "Plugin repository add returned non-zero code or is already present."
+
+    log_info "Enabling plugin ${plugin_name} in hyprpm..."
+    hyprpm enable "${plugin_name}" || log_warn "hyprpm enable failed or plugin binary already enabled."
+
+    log_info "Updating user settings in ${SETTINGS_FILE}..."
+    update_setting_yaml "${plugin_name}" "enabled" "true"
+    update_setting_yaml "${plugin_name}" "repository" "${repo_url}"
+
+    log_info "Rebuilding Hyprland configuration templates..."
+    if command -v hypr-theme-templater &>/dev/null; then
+        hypr-theme-templater
+    fi
+
+    log_info "Reloading Hyprland..."
+    if command -v hypr-refresh-hyprland &>/dev/null; then
+        hypr-refresh-hyprland
+    fi
+}
+
+cmd_enable() {
+    local plugin_name="$1"
+    log_info "Enabling plugin ${plugin_name}..."
+
+    if command -v hyprpm &>/dev/null; then
+        if ! hyprpm list 2>/dev/null | grep -i "Plugin ${plugin_name}" &>/dev/null; then
+            log_info "Plugin ${plugin_name} not found in hyprpm. Adding repository..."
+            local repo_url="${plugin_name}"
+            if [ "${plugin_name}" = "hyprglass" ]; then
+                repo_url="https://github.com/hyprnux/hyprglass"
+            fi
+            yes | hyprpm add "${repo_url}" || log_warn "hyprpm add returned non-zero code."
+        fi
+        hyprpm enable "${plugin_name}" || log_warn "hyprpm enable failed."
+        hyprpm reload || log_warn "hyprpm reload failed."
+    fi
+
+    update_setting_yaml "${plugin_name}" "enabled" "true"
+
+    if command -v hypr-theme-templater &>/dev/null; then
+        hypr-theme-templater
+    fi
+
+    if command -v hypr-refresh-hyprland &>/dev/null; then
+        hypr-refresh-hyprland
+    fi
+}
+
+cmd_disable() {
+    local plugin_name="$1"
+    log_info "Disabling plugin ${plugin_name}..."
+
+    if command -v hyprpm &>/dev/null; then
+        hyprpm disable "${plugin_name}" || log_warn "hyprpm disable failed."
+    fi
+
+    update_setting_yaml "${plugin_name}" "enabled" "false"
+
+    if command -v hypr-theme-templater &>/dev/null; then
+        hypr-theme-templater
+    fi
+
+    if command -v hypr-refresh-hyprland &>/dev/null; then
+        hypr-refresh-hyprland
+    fi
+}
+
+cmd_set() {
+    local plugin_name="$1"
+    local key="$2"
+    local val="$3"
+
+    log_info "Setting plugin ${plugin_name} property ${key} = ${val}..."
+    update_setting_yaml "${plugin_name}" "${key}" "${val}"
+
+    if command -v hypr-theme-templater &>/dev/null; then
+        hypr-theme-templater
+    fi
+
+    if command -v hypr-refresh-hyprland &>/dev/null; then
+        hypr-refresh-hyprland
+    fi
+}
+
+main() {
+    if [ $# -eq 0 ]; then
+        usage
+        exit 0
+    fi
+
+    case "$1" in
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        list)
+            cmd_list
+            ;;
+        install)
+            if [ $# -lt 2 ]; then
+                log_error "Usage: hypr-plugin install <name|repository>"
+                exit 1
+            fi
+            cmd_install "$2"
+            ;;
+        enable)
+            if [ $# -lt 2 ]; then
+                log_error "Usage: hypr-plugin enable <plugin_name>"
+                exit 1
+            fi
+            cmd_enable "$2"
+            ;;
+        disable)
+            if [ $# -lt 2 ]; then
+                log_error "Usage: hypr-plugin disable <plugin_name>"
+                exit 1
+            fi
+            cmd_disable "$2"
+            ;;
+        set)
+            if [ $# -lt 4 ]; then
+                log_error "Usage: hypr-plugin set <plugin_name> <key> <value>"
+                exit 1
+            fi
+            cmd_set "$2" "$3" "$4"
+            ;;
+        *)
+            log_error "Unknown command: $1"
+            usage
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"

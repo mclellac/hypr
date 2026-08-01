@@ -1,0 +1,70 @@
+name: Cyberpunk
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#2c2c2c'
+  foreground: '#ffffff'
+  cursor: '#FFEA00'
+  cursor_text: '#2c2c2c'
+  selection_bg: '#6F00FF'
+  selection_fg: '#FFEA00'
+  primary: '#B0BF1A'
+  secondary: '#00FF7F'
+  alert: '#FF1DCE'
+  warning: '#FFEA00'
+  success: '#B0BF1A'
+  color0: '#2c2c2c'
+  color1: '#FF1DCE'
+  color2: '#B0BF1A'
+  color3: '#FFEA00'
+  color4: '#B0BF1A'
+  color5: '#FF1DCE'
+  color6: '#00FF7F'
+  color7: '#ffffff'
+  color8: '#7b8496'
+  color9: '#FF1DCE'
+  color10: '#B0BF1A'
+  color11: '#FFEA00'
+  color12: '#B0BF1A'
+  color13: '#FF1DCE'
+  color14: '#00FF7F'
+  color15: '#ffffff'
+  accent: '#E3AA6D'
+  color15": '#ffffff'
+  color3": '#FFEA00'
+  color4": '#B0BF1A'
+  color5": '#FF1DCE'
+  color6": '#00FF7F'
+  color7": '#ffffff'
+  color8": '#7b8496'
+  color9": '#FF1DCE'
+  url_color: '#00FF7F'
+layout:
+  active_border: rgba(FFEA00ee)
+  inactive_border: rgba(2c2c2caa)
+  groupbar_text_color: '#ffffff'
+  group_border_active: '#00FF7F'
+  group_border_inactive: '#2c2c2c'
+  group_border_locked_active: '#FF1DCE'
+  group_border_locked_inactive: '#7b8496'
+  groupbar_col_active: '#00FF7F'
+  groupbar_col_inactive: '#2c2c2c'
+  groupbar_col_locked_active: '#FF1DCE'
+  groupbar_col_locked_inactive: '#7b8496'
+  nogroup_border: rgba(ffffaaff)
+  nogroup_border_active: rgba(ffff00ff)
+  glow_color: rgba(00FF7Fee)
+  shadow_color: rgba(1a1a1aee)
+  animation_style: cyberpunk
+waybar:
+  colors:
+    hardware_border: rgba(80, 80, 80, 0.88)
+  style:
+    size: 16
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita

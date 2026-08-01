@@ -1,0 +1,63 @@
+name: Amateur
+fonts:
+  font_family: Hack Nerd Font Propo
+  font_style: Regular
+colors:
+  color0: '#172125'
+  color1: '#f37f7f'
+  color2: '#52dca6'
+  color3: '#ffd15c'
+  color4: '#2bc4c2'
+  color5: '#cf7cd1'
+  color6: '#38b4c2'
+  color7: '#b3fff9'
+  color8: '#3c4f57'
+  color9: '#ff9c9c'
+  color10: '#7bf0c1'
+  color11: '#ffe185'
+  color12: '#3edbe0'
+  color13: '#e9a9eb'
+  color14: '#b3fff9'
+  color15: '#d9fffc'
+  background: '#24333a'
+  foreground: '#b3fff9'
+  cursor: '#38b4c2'
+  cursor_text: '#172125'
+  selection_bg: '#107369'
+  selection_fg: '#2af7dc'
+  primary: '#2af7dc'
+  secondary: '#38b4c2'
+  accent: '#eed463'
+  alert: '#f37f7f'
+  warning: '#eec152'
+  success: '#52dca6'
+layout:
+  active_border: rgba(2af7dcff) rgba(172125ff) 45deg
+  inactive_border: rgba(172125ff)
+  nogroup_border: rgba(24333aff)
+  shadow_color: rgba(00000099)
+  groupbar_text_color: '#b3fff9'
+  group_border_active: '#2af7dc'
+  group_border_inactive: '#24333a'
+  group_border_locked_active: '#cf7cd1'
+  group_border_locked_inactive: '#3c4f57'
+  groupbar_col_active: '#2af7dc'
+  groupbar_col_inactive: '#24333a'
+  groupbar_col_locked_active: '#cf7cd1'
+  groupbar_col_locked_inactive: '#3c4f57'
+  glow_color: rgba(2af7dcee)
+  nogroup_border_active: '#eed463ff'
+  animation_style: fast
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: teal
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(60, 79, 87, 0.88)
+  style:
+    size: 16
+nvim:
+  colorscheme: amateur-x

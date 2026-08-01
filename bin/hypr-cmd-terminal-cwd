@@ -6,6 +6,21 @@
 # from the /proc filesystem.
 
 set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    echo "Usage: $(basename "$0")"
+    echo
+    echo "Determines the current working directory of the active terminal."
+    echo
+    echo "Options:"
+    echo "  -h, --help    Show this help message and exit"
+}
 
 #######################################
 # Finds the PID of the active window using hyprctl.
@@ -17,7 +32,7 @@ set -euo pipefail
 #   The PID of the active window, or an empty string on failure.
 #######################################
 get_active_window_pid() {
-  hyprctl activewindow | awk '/pid:/ {print $2; exit}'
+    hyprctl activewindow | awk '/pid:/ {print $2; exit}'
 }
 
 #######################################
@@ -30,11 +45,11 @@ get_active_window_pid() {
 #   The PID of the child process, or an empty string if none is found.
 #######################################
 get_child_pid() {
-  local parent_pid="$1"
-  if [[ -z "${parent_pid}" ]]; then
-    return
-  fi
-  pgrep -P "${parent_pid}" | head -n 1
+    local parent_pid="$1"
+    if [[ -z "${parent_pid}" ]]; then
+        return
+    fi
+    pgrep -P "${parent_pid}" | head -n 1
 }
 
 #######################################
@@ -47,23 +62,25 @@ get_child_pid() {
 #   Prints the CWD to stdout. Defaults to $HOME if unable to determine.
 #######################################
 main() {
-  if ! command -v hyprctl &>/dev/null; then
-    echo "${HOME}"
-    exit 1
-  fi
+    check_help "$@"
 
-  local terminal_pid
-  terminal_pid=$(get_active_window_pid)
-  local shell_pid
-  shell_pid=$(get_child_pid "${terminal_pid}")
+    if ! command -v hyprctl &>/dev/null; then
+        echo "${HOME}"
+        exit 1
+    fi
 
-  if [[ -n "${shell_pid}" && -d "/proc/${shell_pid}" ]]; then
-    # Read the symbolic link to get the current working directory.
-    readlink -f "/proc/${shell_pid}/cwd" 2>/dev/null || echo "${HOME}"
-  else
-    # Fallback to the user's home directory if the CWD cannot be found.
-    echo "${HOME}"
-  fi
+    local terminal_pid
+    terminal_pid=$(get_active_window_pid)
+    local shell_pid
+    shell_pid=$(get_child_pid "${terminal_pid}")
+
+    if [[ -n "${shell_pid}" && -d "/proc/${shell_pid}" ]]; then
+        # Read the symbolic link to get the current working directory.
+        readlink -f "/proc/${shell_pid}/cwd" 2>/dev/null || echo "${HOME}"
+    else
+        # Fallback to the user's home directory if the CWD cannot be found.
+        echo "${HOME}"
+    fi
 }
 
-main
+main "$@"

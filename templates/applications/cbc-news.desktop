@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=CBC News
+Comment=CBC News
+Exec=alacritty --class TUI.tile -e {{ env.HOME }}/.local/bin/newstui
+Terminal=false
+Type=Application
+Icon={{ env.HOME }}/.local/share/applications/icons/cbc-news.png
+StartupNotify=true

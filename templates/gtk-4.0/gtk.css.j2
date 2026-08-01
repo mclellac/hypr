@@ -1,0 +1,190 @@
+/* GTK 4.0 / Libadwaita Theme Configuration */
+
+{% set accent_choice = theme.gtk.accent_color | default('blue') -%}
+{% if accent_choice == 'teal' or accent_choice == 'cyan' -%}
+  {% set gtk_accent = theme.colors.primary | default(theme.colors.color6) | default(theme.colors.color14) | default(theme.colors.accent) -%}
+{% elif accent_choice == 'blue' -%}
+  {% set gtk_accent = theme.colors.color4 | default(theme.colors.color12) | default(theme.colors.accent) | default(theme.colors.primary) -%}
+{% elif accent_choice == 'green' -%}
+  {% set gtk_accent = theme.colors.color2 | default(theme.colors.color10) | default(theme.colors.success) | default(theme.colors.accent) -%}
+{% elif accent_choice == 'yellow' -%}
+  {% set gtk_accent = theme.colors.color3 | default(theme.colors.color11) | default(theme.colors.accent) | default(theme.colors.warning) -%}
+{% elif accent_choice == 'orange' -%}
+  {% set gtk_accent = theme.colors.accent | default(theme.colors.color12) | default(theme.colors.color4) | default(theme.colors.warning) | default('#ffaa00') -%}
+{% elif accent_choice == 'red' -%}
+  {% set gtk_accent = theme.colors.color1 | default(theme.colors.color9) | default(theme.colors.alert) | default(theme.colors.accent) -%}
+{% elif accent_choice == 'pink' or accent_choice == 'purple' -%}
+  {% set gtk_accent = theme.colors.color5 | default(theme.colors.color13) | default(theme.colors.accent) | default('#ff00ff') -%}
+{% else -%}
+  {% set gtk_accent = theme.colors.accent | default(theme.colors.primary) -%}
+{% endif -%}
+
+{% set is_light = (theme.gtk.color_scheme == 'prefer-light') -%}
+{% if is_light -%}
+  {% set container_bg = theme.colors.background -%}
+{% else -%}
+  {% set container_bg = theme.colors.color0 | default(theme.colors.background) -%}
+{% endif -%}
+
+/* Standard Libadwaita Theme Colors */
+@define-color accent_color {{ gtk_accent }};
+@define-color accent_bg_color {{ gtk_accent }};
+@define-color accent_fg_color {{ gtk_accent | hypr_contrast_fg }};
+
+@define-color destructive_color {{ theme.colors.alert | default('#ff5555') }};
+@define-color destructive_bg_color {{ theme.colors.alert | default('#ff5555') }};
+@define-color destructive_fg_color {{ theme.colors.alert | default('#ff5555') | hypr_contrast_fg }};
+
+@define-color window_bg_color {{ theme.colors.background }};
+@define-color window_fg_color {{ theme.colors.foreground }};
+
+@define-color view_bg_color {{ theme.colors.background }};
+@define-color view_fg_color {{ theme.colors.foreground }};
+
+@define-color headerbar_bg_color {{ theme.colors.background | hypr_mix_color(theme.colors.foreground, 0.04) }};
+@define-color headerbar_fg_color {{ theme.colors.foreground }};
+@define-color headerbar_border_color {{ theme.colors.background | hypr_mix_color(theme.colors.foreground, 0.12) }};
+@define-color headerbar_backdrop_color @window_bg_color;
+
+@define-color sidebar_bg_color {{ theme.colors.background | hypr_mix_color(theme.colors.foreground, 0.04) }};
+@define-color sidebar_fg_color {{ theme.colors.foreground }};
+@define-color sidebar_border_color {{ theme.colors.background | hypr_mix_color(theme.colors.foreground, 0.12) }};
+@define-color sidebar_backdrop_color @window_bg_color;
+
+@define-color card_bg_color {{ theme.colors.background | hypr_mix_color(theme.colors.foreground, 0.03) }};
+@define-color card_fg_color {{ theme.colors.foreground }};
+@define-color card_border_color {{ theme.colors.background | hypr_mix_color(theme.colors.foreground, 0.12) }};
+
+@define-color dialog_bg_color {{ theme.colors.background }};
+@define-color dialog_fg_color {{ theme.colors.foreground }};
+
+@define-color popover_bg_color {{ theme.colors.background | hypr_mix_color(theme.colors.foreground, 0.03) }};
+@define-color popover_fg_color {{ theme.colors.foreground }};
+@define-color popover_border_color {{ theme.colors.background | hypr_mix_color(theme.colors.foreground, 0.12) }};
+
+@define-color tooltip_bg_color {{ theme.colors.background }};
+@define-color tooltip_fg_color {{ theme.colors.foreground }};
+
+@define-color entry_bg_color {{ theme.colors.background | hypr_mix_color(theme.colors.foreground, 0.03) }};
+@define-color entry_fg_color {{ theme.colors.foreground }};
+@define-color entry_border_color {{ theme.colors.background | hypr_mix_color(theme.colors.foreground, 0.12) }};
+
+@define-color border_color {{ theme.colors.background | hypr_mix_color(theme.colors.foreground, 0.15) }};
+
+@define-color success_color {{ theme.colors.success | default('#2ecc71') }};
+@define-color success_bg_color {{ theme.colors.success | default('#2ecc71') }};
+@define-color success_fg_color {{ theme.colors.success | default('#2ecc71') | hypr_contrast_fg }};
+
+@define-color warning_color {{ theme.colors.warning | default('#f1c40f') }};
+@define-color warning_bg_color {{ theme.colors.warning | default('#f1c40f') }};
+@define-color warning_fg_color {{ theme.colors.warning | default('#f1c40f') | hypr_contrast_fg }};
+
+@define-color error_color {{ theme.colors.alert | default('#e74c3c') }};
+@define-color error_bg_color {{ theme.colors.alert | default('#e74c3c') }};
+@define-color error_fg_color {{ theme.colors.alert | default('#e74c3c') | hypr_contrast_fg }};
+
+/* General widget styling overrides for maximum cohesion */
+
+/* Window & Background */
+window,
+.background,
+.main-window {
+  background-color: @window_bg_color;
+  color: @window_fg_color;
+}
+
+/* Headerbar / Titlebar */
+headerbar,
+.titlebar,
+.header-bar {
+  background-color: @headerbar_bg_color;
+  color: @headerbar_fg_color;
+  border-bottom: 1px solid @headerbar_border_color;
+  box-shadow: none;
+}
+
+/* Sidebar */
+.sidebar,
+stacksidebar,
+listbox.sidebar {
+  background-color: @sidebar_bg_color;
+  color: @sidebar_fg_color;
+  border-right: 1px solid @sidebar_border_color;
+}
+
+/* Cards & Frames */
+.card,
+frame,
+.frame {
+  background-color: @card_bg_color;
+  border: 1px solid @card_border_color;
+  border-radius: {{ theme.layout.rounding | default(4) }}px;
+}
+
+/* Views & Lists */
+textview,
+textview text,
+.view,
+list,
+listrow {
+  background-color: @view_bg_color;
+  color: @view_fg_color;
+}
+
+/* Text Entries */
+entry,
+searchbar,
+.search-bar,
+.search-entry,
+textentry {
+  background-color: @entry_bg_color;
+  color: @entry_fg_color;
+  border: 1px solid @entry_border_color;
+  border-radius: {{ theme.layout.rounding | default(4) }}px;
+}
+
+/* Scrollbars */
+scrollbar {
+  background-color: transparent;
+  background: transparent;
+  border: none;
+}
+
+/* Scrollbar slider customization */
+scrollbar slider {
+  background-color: @accent_bg_color;
+  border-radius: {{ theme.layout.rounding | default(4) }}px;
+  min-width: 6px;
+  min-height: 6px;
+}
+
+scrollbar slider:hover {
+  background-color: @accent_color;
+}
+
+/* Fix popovers/menus borders and shadows rendering bugs on Wayland/Hyprland */
+popover,
+popover.background,
+.popover {
+  background-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+popover.background > contents,
+popover.background contents,
+.popover > contents,
+.menu,
+menu {
+  box-shadow: none;
+  border: 1px solid @popover_border_color;
+  border-radius: {{ theme.layout.rounding | default(4) }}px;
+  background-color: @popover_bg_color;
+  color: @popover_fg_color;
+}
+
+popover.background > arrow {
+  background: transparent;
+  border-color: transparent;
+}

@@ -1,0 +1,3 @@
+# Framework 16 RGB Macropad / Keyboard
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0012", MODE="0660", GROUP="input", TAG+="uaccess"
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="001b", MODE="0660", GROUP="input", TAG+="uaccess"

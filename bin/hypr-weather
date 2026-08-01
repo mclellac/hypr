@@ -1,10 +1,17 @@
 #!/bin/bash
 set -euo pipefail
 
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
 # Configuration
 CITY="Toronto"
 CACHE_FILE="/tmp/hypr-weather-cache.json"
-MAX_AGE=1800 # Optional: Consider data "stale" after 30 mins (not enforced here for reliability)
 
 fetch_weather() {
     # 5s timeout to prevent Waybar hanging
@@ -19,7 +26,7 @@ fetch_weather() {
 
     # Process into Waybar format
     echo "$raw_data" | jq -c '
-    .current_condition[0] as $c |
+    (.current_condition[0] // .data.current_condition[0]) as $c |
     ($c.weatherDesc[0].value // "Unknown") as $desc |
     (if ($desc | contains("Sunny")) or ($desc | contains("Clear")) then ""
      elif ($desc | contains("Partly cloudy")) then ""
@@ -35,6 +42,7 @@ fetch_weather() {
 }
 
 main() {
+    check_help "$@"
     local new_weather
 
     # Try to fetch new data

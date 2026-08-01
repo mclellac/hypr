@@ -5,53 +5,86 @@
 
 set -euo pipefail
 
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Refreshes the application database by syncing icons and .desktop files.
+
+Options:
+  -h, --help    Show this help message and exit
+EOF
+}
+
 #######################################
 # Main function to refresh the application database.
 # Globals:
 #   HYPR_PATH - The root path of the hypr configuration.
 #   HOME - The user's home directory.
-# Arguments:
-#   None
-# Outputs:
-#   None
 #######################################
 main() {
-  if [[ -z "${HYPR_PATH:-}" ]]; then
-    echo "Error: HYPR_PATH environment variable is not set." >&2
-    exit 1
-  fi
+    check_help "$@"
 
-  local local_icons_dir="${HOME}/.local/share/icons/hicolor/48x48/apps"
-  local local_apps_dir="${HOME}/.local/share/applications"
-  local source_icons_dir="${HYPR_PATH}/applications/icons"
-  local source_apps_dir="${HYPR_PATH}/applications"
-  local source_hidden_apps_dir="${HYPR_PATH}/applications/hidden"
+    local local_icons_dir="${HOME}/.local/share/icons/hicolor/48x48/apps"
+    local local_apps_dir="${HOME}/.local/share/applications"
+    local source_icons_dir="${HYPR_PATH}/applications/icons"
+    local source_apps_dir="${HYPR_PATH}/applications"
+    local source_hidden_apps_dir="${HYPR_PATH}/applications/hidden"
 
-  # Copy and sync icon files.
-  echo "Syncing application icons..."
-  mkdir -p "${local_icons_dir}"
-  if ls "${source_icons_dir}"/*.png &>/dev/null; then
-    cp "${source_icons_dir}"/*.png "${local_icons_dir}/"
-  fi
-  gtk-update-icon-cache "${HOME}/.local/share/icons/hicolor" &>/dev/null
+    # Copy and sync icon files.
+    log_info "Syncing application icons..."
+    mkdir -p "${local_icons_dir}"
+    mkdir -p "${HOME}/.local/share/applications/icons"
+    if ls "${source_icons_dir}"/*.png &>/dev/null; then
+        for f in "${source_icons_dir}"/*.png; do
+            dest_name=$(basename "$f" | tr '[:upper:]' '[:lower:]')
+            # Remove any existing versions with different case
+            find "${local_icons_dir}" -maxdepth 1 -iname "${dest_name}" ! -name "${dest_name}" -delete 2>/dev/null || true
+            find "${HOME}/.local/share/applications/icons" -maxdepth 1 -iname "${dest_name}" ! -name "${dest_name}" -delete 2>/dev/null || true
+            
+            cp "$f" "${local_icons_dir}/${dest_name}"
+            cp "$f" "${HOME}/.local/share/applications/icons/${dest_name}"
+        done
+    fi
+    gtk-update-icon-cache "${HOME}/.local/share/icons/hicolor" &>/dev/null || true
 
-  # Copy .desktop files.
-  echo "Syncing .desktop files..."
-  mkdir -p "${local_apps_dir}"
-  if ls "${source_apps_dir}"/*.desktop &>/dev/null; then
-    cp "${source_apps_dir}"/*.desktop "${local_apps_dir}/"
-  fi
-  if ls "${source_hidden_apps_dir}"/*.desktop &>/dev/null; then
-    cp "${source_hidden_apps_dir}"/*.desktop "${local_apps_dir}/"
-  fi
+    # Copy .desktop files.
+    log_info "Syncing .desktop files..."
+    mkdir -p "${local_apps_dir}"
+    if ls "${source_apps_dir}"/*.desktop &>/dev/null; then
+        for f in "${source_apps_dir}"/*.desktop; do
+            dest_name=$(basename "$f" | tr '[:upper:]' '[:lower:]')
+            # Remove any existing versions with different case
+            find "${local_apps_dir}" -maxdepth 1 -iname "${dest_name}" ! -name "${dest_name}" -delete 2>/dev/null || true
+            
+            cp "$f" "${local_apps_dir}/${dest_name}"
+        done
+    fi
+    if ls "${source_hidden_apps_dir}"/*.desktop &>/dev/null; then
+        for f in "${source_hidden_apps_dir}"/*.desktop; do
+            dest_name=$(basename "$f" | tr '[:upper:]' '[:lower:]')
+            # Remove any existing versions with different case
+            find "${local_apps_dir}" -maxdepth 1 -iname "${dest_name}" ! -name "${dest_name}" -delete 2>/dev/null || true
+            
+            cp "$f" "${local_apps_dir}/${dest_name}"
+        done
+    fi
 
-  # Update the desktop database if the command is available.
-  if command -v update-desktop-database &>/dev/null; then
-    echo "Updating desktop database..."
-    update-desktop-database "${local_apps_dir}"
-  fi
+    # Update the desktop database if the command is available.
+    if command -v update-desktop-database &>/dev/null; then
+        log_info "Updating desktop database..."
+        update-desktop-database "${local_apps_dir}"
+    fi
 
-  echo "Application refresh complete."
+    log_info "Application refresh complete."
 }
 
-main
+main "$@"

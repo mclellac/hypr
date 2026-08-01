@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkBox" id="page_content"><property name="orientation">vertical</property><property name="spacing">12</property>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title">Ghostty Terminal</property>
+        <child>
+          <object class="AdwSpinRow" id="ghostty_font_size">
+            <property name="title">Font Size</property>
+            <property name="subtitle">Override global size (0 for default)</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="lower">0</property>
+                <property name="upper">72</property>
+                <property name="step-increment">1</property>
+                <property name="value">0</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSpinRow" id="ghostty_opacity">
+            <property name="title">Window Opacity</property>
+            <property name="digits">2</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="lower">0.1</property>
+                <property name="upper">1.0</property>
+                <property name="step-increment">0.05</property>
+                <property name="value">1.0</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSpinRow" id="ghostty_padding">
+            <property name="title">Window Padding</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="lower">0</property>
+                <property name="upper">100</property>
+                <property name="step-increment">1</property>
+                <property name="value">14</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="ghostty_cursor_shape">
+            <property name="title">Cursor Shape</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>block</item>
+                  <item>underline</item>
+                  <item>beam</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="ghostty_copy_on_select">
+            <property name="title">Copy on Select</property>
+            <property name="subtitle">Automatically copy highlighted text</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>clipboard</item>
+                  <item>true</item>
+                  <item>false</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

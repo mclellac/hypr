@@ -10,20 +10,23 @@ set -euo pipefail
 # the timezone without a password.
 #######################################
 main() {
-  local -r sudoers_file="/etc/sudoers.d/hypr-tzupdate"
+    local -r sudoers_file="/etc/sudoers.d/hypr-tzupdate"
+    local -r temp_sudoers=$(mktemp)
 
-  echo "Configuring sudo-less access for timezone updates..."
-
-  # The tee command is used to write to a file with sudo privileges.
-  sudo tee "${sudoers_file}" >/dev/null <<EOF
+    cat > "${temp_sudoers}" <<EOF
 # Allow users in the wheel group to run tzupdate and timedatectl without a password.
 %wheel ALL=(root) NOPASSWD: /usr/bin/tzupdate, /usr/bin/timedatectl
 EOF
 
-  # Set restrictive permissions for the sudoers file.
-  sudo chmod 0440 "${sudoers_file}"
+    if [[ ! -f "${sudoers_file}" ]] || ! cmp -s "${temp_sudoers}" "${sudoers_file}"; then
+        log_info "Configuring sudo-less access for timezone updates..."
+        sudo cp "${temp_sudoers}" "${sudoers_file}"
+        sudo chmod 0440 "${sudoers_file}"
+    else
+        log_info "Timezone update configuration is already up to date."
+    fi
 
-  echo "Timezone update configuration complete."
+    rm -f "${temp_sudoers}"
 }
 
 main "$@"

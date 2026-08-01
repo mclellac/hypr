@@ -1,9 +1,17 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Creates a .desktop file for launching a terminal-based user interface (TUI)
 # application, including a custom icon.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Gathers TUI application details from the user via interactive prompts.
@@ -15,15 +23,15 @@ set -euo pipefail
 #   Exports the gathered details as global variables.
 #######################################
 get_tui_details_interactive() {
-  echo -e "\e[32mLet's create a TUI shortcut you can start with the app launcher.\n\e[0m"
-  export APP_NAME
-  APP_NAME=$(gum input --prompt "Name> " --placeholder "My TUI")
-  export APP_EXEC
-  APP_EXEC=$(gum input --prompt "Launch Command> " --placeholder "lazydocker or bash -c 'dust; read -n 1 -s'")
-  export WINDOW_STYLE
-  WINDOW_STYLE=$(gum choose --header "Window style" float tile)
-  export ICON_URL
-  ICON_URL=$(gum input --prompt "Icon URL> " --placeholder "See https://dashboardicons.com (must use PNG!)")
+    echo -e "\e[32mLet's create a TUI shortcut you can start with the app launcher.\n\e[0m"
+    export APP_NAME
+    APP_NAME=$(gum input --prompt "Name> " --placeholder "My TUI")
+    export APP_EXEC
+    APP_EXEC=$(gum input --prompt "Launch Command> " --placeholder "lazydocker or bash -c 'dust; read -n 1 -s'")
+    export WINDOW_STYLE
+    WINDOW_STYLE=$(gum choose --header "Window style" float tile)
+    export ICON_URL
+    ICON_URL=$(gum input --prompt "Icon URL> " --placeholder "See https://dashboardicons.com (must use PNG!)")
 }
 
 #######################################
@@ -39,39 +47,42 @@ get_tui_details_interactive() {
 #   Exits with an error if required information is missing or icon download fails.
 #######################################
 main() {
-  if [[ "$#" -ne 4 ]]; then
-    get_tui_details_interactive
-  else
-    APP_NAME="$1"
-    APP_EXEC="$2"
-    WINDOW_STYLE="$3"
-    ICON_URL="$4"
-  fi
+    check_help "$@"
+    if [[ "$#" -ne 4 ]]; then
+        get_tui_details_interactive
+    else
+        APP_NAME="$1"
+        APP_EXEC="$2"
+        WINDOW_STYLE="$3"
+        ICON_URL="$4"
+    fi
 
-  if [[ -z "${APP_NAME}" || -z "${APP_EXEC}" || -z "${ICON_URL}" ]]; then
-    echo "Error: Application name, command, and icon URL are required." >&2
-    exit 1
-  fi
+    if [[ -z "${APP_NAME}" || -z "${APP_EXEC}" || -z "${ICON_URL}" ]]; then
+        echo "Error: Application name, command, and icon URL are required." >&2
+        exit 1
+    fi
 
-  local icon_dir="${HOME}/.local/share/applications/icons"
-  local desktop_file="${HOME}/.local/share/applications/${APP_NAME}.desktop"
-  local icon_path="${icon_dir}/${APP_NAME}.png"
+    local safe_name
+    safe_name=$(echo "${APP_NAME}" | tr ' ' '-' | tr '[:upper:]' '[:lower:]')
+    local icon_dir="${HOME}/.local/share/applications/icons"
+    local desktop_file="${HOME}/.local/share/applications/${safe_name}.desktop"
+    local icon_path="${icon_dir}/${safe_name}.png"
 
-  mkdir -p "${icon_dir}"
+    mkdir -p "${icon_dir}"
 
-  echo "Downloading icon..."
-  if ! curl -sL -o "${icon_path}" "${ICON_URL}"; then
-    echo "Error: Failed to download icon from ${ICON_URL}" >&2
-    return 1
-  fi
+    log_info "Downloading icon..."
+    if ! curl -sL -o "${icon_path}" "${ICON_URL}"; then
+        echo "Error: Failed to download icon from ${ICON_URL}" >&2
+        return 1
+    fi
 
-  local app_class="TUI.tile"
-  if [[ "${WINDOW_STYLE}" == "float" ]]; then
-    app_class="TUI.float"
-  fi
+    local app_class="TUI.tile"
+    if [[ "${WINDOW_STYLE}" == "float" ]]; then
+        app_class="TUI.float"
+    fi
 
-  echo "Creating .desktop file..."
-  cat >"${desktop_file}" <<EOF
+    log_info "Creating .desktop file..."
+    cat >"${desktop_file}" <<EOF
 [Desktop Entry]
 Version=1.0
 Name=${APP_NAME}
@@ -83,11 +94,11 @@ Icon=${icon_path}
 StartupNotify=true
 EOF
 
-  chmod +x "${desktop_file}"
+    chmod +x "${desktop_file}"
 
-  if [[ "$#" -ne 4 ]]; then
-    echo -e "\nYou can now find ${APP_NAME} using the app launcher (SUPER + SPACE)\n"
-  fi
+    if [[ "$#" -ne 4 ]]; then
+        echo -e "\nYou can now find ${APP_NAME} using the app launcher (SUPER + SPACE)\n"
+    fi
 }
 
 main "$@"

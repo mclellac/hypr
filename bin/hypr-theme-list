@@ -1,8 +1,16 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Lists the available themes in a human-readable format.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Main function to list and format theme names.
@@ -14,14 +22,23 @@ set -euo pipefail
 #   A newline-separated list of formatted theme names.
 #######################################
 main() {
-  local themes_dir="${HOME}/.config/hypr/themes"
-  if [[ -d "${themes_dir}" ]]; then
-    find "${themes_dir}" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0 | sort -z |
-      while IFS= read -r -d '' path; do
-        # `basename` gets the directory name, and `sed` capitalizes words and replaces hyphens.
-        basename "${path}" | sed -E 's/(^|-)([a-z])/\1\u\2/g; s/-/ /g'
-      done
-  fi
+    check_help "$@"
+    local user_themes_dir="${HOME}/.config/hypr/themes"
+    local system_themes_dir="${HYPR_PATH}/themes"
+    local repo_themes_dir="${HYPR_PATH}/themes"
+    
+    local -a search_paths
+    [[ -d "${user_themes_dir}" ]] && search_paths+=("${user_themes_dir}")
+    [[ -d "${system_themes_dir}" ]] && search_paths+=("${system_themes_dir}")
+    [[ -d "${repo_themes_dir}" ]] && search_paths+=("${repo_themes_dir}")
+
+    if [[ ${#search_paths[@]} -gt 0 ]]; then
+        find "${search_paths[@]}" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -exec basename {} \; 2>/dev/null | sort -u |
+            while IFS= read -r theme; do
+                # Capitalize words and replace hyphens for display.
+                echo "${theme}" | sed -E 's/(^|-)([a-z])/\1\u\2/g; s/-/ /g'
+            done
+    fi
 }
 
-main
+main "$@"

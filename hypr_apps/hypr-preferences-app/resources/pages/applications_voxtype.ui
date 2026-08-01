@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkBox" id="page_content"><property name="orientation">vertical</property><property name="spacing">12</property>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title">Voxtype AI Dictation</property>
+        <child>
+          <object class="AdwSwitchRow" id="voxtype_enabled">
+            <property name="title">Enabled</property>
+            <property name="subtitle">Enable AI-powered voice-to-text dictation</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="voxtype_model">
+            <property name="title">Whisper Model</property>
+            <property name="subtitle">Selected AI model size</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>tiny</item>
+                  <item>base</item>
+                  <item>small</item>
+                  <item>medium</item>
+                  <item>large-v3-turbo</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+
+        <child>
+          <object class="AdwEntryRow" id="voxtype_language">
+            <property name="title">Language (e.g. en, auto)</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="voxtype_mode">
+            <property name="title">Output Mode</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>type</item>
+                  <item>clipboard</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title">Notifications</property>
+        <child>
+          <object class="AdwSwitchRow" id="voxtype_notify_start">
+            <property name="title">Recording Started</property>
+            <property name="subtitle">Show notification when starting dictation</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSwitchRow" id="voxtype_notify_stop">
+            <property name="title">Recording Stopped</property>
+            <property name="subtitle">Show notification when stopping dictation</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSwitchRow" id="voxtype_notify_text">
+            <property name="title">Show Transcription</property>
+            <property name="subtitle">Show the final text in a notification</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

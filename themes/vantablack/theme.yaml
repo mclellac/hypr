@@ -1,0 +1,61 @@
+name: Vantablack
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#000000'
+  foreground: '#ffffff'
+  cursor: '#ffffff'
+  cursor_text: '#000000'
+  selection_bg: '#ffffff'
+  selection_fg: '#000000'
+  primary: '#8d8d8d'
+  secondary: '#8d8d8d'
+  alert: '#a4a4a4'
+  warning: '#cecece'
+  success: '#b6b6b6'
+  color0: '#404040'
+  color1: '#a4a4a4'
+  color2: '#b6b6b6'
+  color3: '#cecece'
+  color4: '#8d8d8d'
+  color5: '#9b9b9b'
+  color6: '#b0b0b0'
+  color7: '#ececec'
+  color8: '#5c5c5c'
+  color9: '#a4a4a4'
+  color10: '#b6b6b6'
+  color11: '#cecece'
+  color12: '#8d8d8d'
+  color13: '#9b9b9b'
+  color14: '#b0b0b0'
+  color15: '#ffffff'
+  accent: '#8d8d8d'
+layout:
+  active_border: '#8d8d8dff'
+  inactive_border: '#404040ff'
+  groupbar_text_color: '#ffffff'
+  group_border_active: '#8d8d8d'
+  group_border_inactive: '#404040'
+  group_border_locked_active: '#9b9b9b'
+  group_border_locked_inactive: '#fdfdfd'
+  groupbar_col_active: '#8d8d8d'
+  groupbar_col_inactive: '#404040'
+  groupbar_col_locked_active: '#9b9b9b'
+  groupbar_col_locked_inactive: '#fdfdfd'
+  nogroup_border: '#404040'
+  nogroup_border_active: '#8d8d8d'
+  glow_color: '#8d8d8dee'
+  shadow_color: '#0000007b'
+  animation_style: exaggerated
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: purple
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(64, 64, 64, 0.53)
+  style:
+    size: 16

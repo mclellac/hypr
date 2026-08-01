@@ -14,9 +14,9 @@ source "${HYPR_INSTALL}/preflight/chroot.sh"
 # Enables the Bluetooth systemd service.
 #######################################
 main() {
-  echo "Enabling Bluetooth service..."
-  enable_systemctl_service "bluetooth.service"
-  echo "Bluetooth service enabled."
+    log_info "Enabling Bluetooth service..."
+    enable_systemctl_service "bluetooth.service"
+    log_info "Bluetooth service enabled."
 }
 
 main "$@"

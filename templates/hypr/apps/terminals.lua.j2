@@ -1,0 +1,42 @@
+-- Define terminal tag to style them uniformly
+hl.window_rule({
+    name = "tag-terminal",
+    match = {
+        class = [=[^(?i)(Alacritty|kitty|com.mitchellh.ghostty|org.hypr.terminal|org.hypr.bash)$]=]
+    },
+    tag = "+terminal"
+})
+
+
+hl.window_rule({
+    name = "terminal-no-default-opacity",
+    match = {
+        tag = "terminal"
+    },
+    tag = "-default-opacity"
+})
+
+
+-- --- Terminal Specific Opacity ---
+hl.window_rule({
+    name = "alacritty-opacity",
+    match = {
+        class = "^(Alacritty)$"
+    },
+    opacity = [=[{{ theme.alacritty.opacity | default(theme.hypr.window.opacity.active) | default(1.0) }} {{ theme.hypr.window.opacity.inactive | default(1.0) }}]=]
+})
+
+
+-- Default terminal opacity if not overridden
+hl.window_rule({
+    name = "terminal-default-opacity",
+    match = {
+        tag = "terminal",
+        class = "!(Alacritty)"
+    },
+    {% if is_vm -%}
+    opacity = "1.0 1.0"
+    {%- else -%}
+    opacity = [=[{{ theme.hypr.window.opacity.active | default(0.99) }} {{ theme.hypr.window.opacity.inactive | default(0.98) }}]=]
+    {%- endif %}
+})

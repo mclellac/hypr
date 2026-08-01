@@ -4,56 +4,45 @@ This document describes the wallpaper management system for the Hyprland environ
 
 ## Overview
 
-Wallpaper management has been decoupled from themes to allow for user persistence and greater flexibility. The system consists of:
+Wallpaper management is handled by a simple, persistent system. It consists of:
 
-1.  **Persistence Mechanism**: A symlink at `~/.config/hypr/current/background` that points to the active wallpaper.
-2.  **CLI Tool**: `hypr-wallpaper-set` updates the symlink and reloads `swaybg`.
-3.  **GUI Application**: `hypr-wallpaper-manager` allows users to browse and select wallpapers visually.
+**Persistence Mechanism**: A symlink at `~/.config/hypr/current_background` that points to the active wallpaper image file.
+**CLI Tool**: `hypr-wallpaper-set` updates the symlink and reloads the background process (`swaybg`).
+**GUI Application**: The **Preferences App** (`hypr-preferences-app`) provides a visual interface to browse and select wallpapers from your theme's backgrounds or your personal collection.
 
 ## Components
 
-### `hypr-wallpaper-manager` (GUI)
+### `hypr-preferences-app` (Graphical Interface)
 
-A GTK4 application for managing wallpapers.
+The primary way for most users to manage wallpapers. Launch the app and go to the **Wallpaper** tab to see a grid of available backgrounds. Clicking one applies it instantly.
 
-**Features:**
-- **Grid View**: Displays thumbnails of available wallpapers.
-- **Sources**:
-    - **Theme Wallpapers**: Automatically detects wallpapers from the current theme (`~/.config/hypr/current/theme/backgrounds`).
-    - **User Library**: Manages user-added wallpapers in `~/.local/share/hypr/wallpapers`.
-- **Add Wallpaper**: Allows importing external images into the user library.
-- **Set Wallpaper**: Updates the desktop background immediately and persistently.
-
-**Usage:**
-Launch "Wallpaper Manager" from the application launcher (Walker), or run:
-```bash
-hypr-wallpaper-manager
-```
-
-### `hypr-wallpaper-set` (CLI)
+### `hypr-wallpaper-set` (CLI Tool)
 
 The underlying script used to set the wallpaper.
 
 **Usage:**
+
 ```bash
 hypr-wallpaper-set /path/to/image.jpg
 ```
 
 This script:
-1.  Validates the image file.
-2.  Updates `~/.config/hypr/current/background` symlink.
-3.  Restarts `swaybg` via `uwsm`.
+
+Validates the image file.
+Updates the `~/.config/hypr/current_background` symlink to point to the new image.
+Restarts the `swaybg` process to display the new wallpaper.
 
 ### `hypr-theme-bg-next`
 
-Legacy script to cycle wallpapers in the current theme. It has been updated to use `hypr-wallpaper-set` internally.
+A script that cycles to the next wallpaper available in the current theme's `backgrounds/` directory. It uses `hypr-wallpaper-set` internally to apply the change.
 
 ## Persistence
 
-By using `hypr-wallpaper-set` (directly or via the Manager), the `~/.config/hypr/current/background` symlink is updated. The `autostart.conf` script loads this symlink on startup:
+By using `hypr-wallpaper-set` (or a script that calls it), the `~/.config/hypr/current_background` symlink is updated. The generated `autostart.conf` is configured to load this symlink on startup:
 
 ```ini
-exec-once = uwsm app -- swaybg -i ~/.config/hypr/current/background -m fill
+# In autostart.conf (generated)
+exec-once = swaybg -i ~/.config/hypr/current_background -m fill
 ```
 
 This ensures the selected wallpaper persists across reboots.

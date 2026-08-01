@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkBox" id="page_content"><property name="orientation">vertical</property><property name="spacing">12</property>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title">Kitty Terminal</property>
+        <child>
+          <object class="AdwSpinRow" id="kitty_font_spin">
+            <property name="title">Font Size</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="lower">6</property>
+                <property name="upper">72</property>
+                <property name="step-increment">1</property>
+                <property name="value">11</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSpinRow" id="kitty_opacity_spin">
+            <property name="title">Background Opacity</property>
+            <property name="digits">2</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="lower">0.1</property>
+                <property name="upper">1.0</property>
+                <property name="step-increment">0.05</property>
+                <property name="value">1.0</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSpinRow" id="kitty_padding_spin">
+            <property name="title">Window Padding</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="lower">0</property>
+                <property name="upper">100</property>
+                <property name="step-increment">1</property>
+                <property name="value">0</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSpinRow" id="kitty_scrollback_spin">
+            <property name="title">Scrollback Lines</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="lower">100</property>
+                <property name="upper">100000</property>
+                <property name="step-increment">100</property>
+                <property name="value">2000</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="kitty_cursor_shape">
+            <property name="title">Cursor Shape</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>block</item>
+                  <item>beam</item>
+                  <item>underline</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSpinRow" id="kitty_cursor_trail_spin">
+            <property name="title">Cursor Trail</property>
+            <property name="subtitle">Length of the cursor trail</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="lower">0</property>
+                <property name="upper">2000</property>
+                <property name="step-increment">10</property>
+                <property name="value">200</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwEntryRow" id="kitty_cursor_trail_decay_entry">
+            <property name="title">Cursor Trail Decay</property>
+            <property name="tooltip-text">Decay parameters (e.g. 0.1 0.4)</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSpinRow" id="kitty_cursor_blink_interval_spin">
+            <property name="title">Cursor Blink Interval</property>
+            <property name="subtitle">-1 for system default, 0 to disable</property>
+            <property name="digits">1</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="lower">-1.0</property>
+                <property name="upper">10.0</property>
+                <property name="step-increment">0.1</property>
+                <property name="value">-1.0</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSwitchRow" id="kitty_confirm_close_switch">
+            <property name="title">Confirm Window Close</property>
+            <property name="subtitle">Ask for confirmation when closing a window</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
+

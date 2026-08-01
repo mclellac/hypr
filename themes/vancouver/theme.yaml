@@ -1,0 +1,64 @@
+name: Vancouver
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#2a2a2a'
+  foreground: '#f0f0f0'
+  cursor: '#f0f0f0'
+  cursor_text: '#2a2a2a'
+  selection_bg: '#4a4a4a'
+  selection_fg: '#f0f0f0'
+  primary: '#00e5ff'
+  secondary: '#00e5ff'
+  alert: '#ff4444'
+  warning: '#ffcc00'
+  success: '#00ffcc'
+  color0: '#888888'
+  color1: '#f5b7b1'
+  color2: '#a3e4d7'
+  color3: '#f9e79f'
+  color4: '#a9cce3'
+  color5: '#d7bde2'
+  color6: '#a2d9ce'
+  color7: '#f0f0f0'
+  color8: '#aaaaaa'
+  color9: '#ff8781'
+  color10: '#b3f4e7'
+  color11: '#fff7af'
+  color12: '#b9ddf3'
+  color13: '#e7cde2'
+  color14: '#b2e9de'
+  color15: '#f0f0f0'
+  accent: '#a2d9ce'
+  url_color: '#a9cce3'
+layout:
+  active_border: rgba(a2d9ceff) rgba(f5cba7ff) 45deg
+  inactive_border: rgba(888888ff)
+  nogroup_border: rgba(2a2a2aff)
+  groupbar_text_color: '#f0f0f0'
+  group_border_active: '#a9cce3'
+  group_border_inactive: '#888888'
+  group_border_locked_active: '#d7bde2'
+  group_border_locked_inactive: '#aaaaaa'
+  groupbar_col_active: '#a9cce3'
+  groupbar_col_inactive: '#888888'
+  groupbar_col_locked_active: '#d7bde2'
+  groupbar_col_locked_inactive: '#aaaaaa'
+  nogroup_border_active: rgba(ffff00ff)
+  glow_color: rgba(a9cce3ee)
+  shadow_color: rgba(1a1a1aee)
+  animation_style: exaggerated
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(80, 80, 80, 0.88)
+  style:
+    size: 16
+nvim:
+  colorscheme: vancouver

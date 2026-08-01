@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkBox" id="page_content"><property name="orientation">vertical</property><property name="spacing">12</property>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title">Walker Configuration</property>
+        <child>
+          <object class="AdwSpinRow" id="walker_font_size">
+            <property name="title">Font Size</property>
+            <property name="subtitle">Override global size (0 for default)</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="value">0</property>
+                <property name="lower">0</property>
+                <property name="upper">50</property>
+                <property name="step-increment">1</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSpinRow" id="walker_opacity">
+            <property name="title">Window Opacity</property>
+            <property name="digits">2</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="lower">0.1</property>
+                <property name="upper">1.0</property>
+                <property name="step-increment">0.05</property>
+                <property name="value">0.95</property>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title">Modules</property>
+        <child>
+          <object class="AdwSwitchRow" id="walker_mod_clipboard">
+            <property name="title">Clipboard</property>
+            <property name="subtitle">Enable clipboard history module</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSwitchRow" id="walker_mod_snippets">
+            <property name="title">Snippets</property>
+            <property name="subtitle">Enable text snippets module</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSwitchRow" id="walker_mod_symbols">
+            <property name="title">Symbols</property>
+            <property name="subtitle">Enable character symbols module</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title">Positioning</property>
+        <child>
+          <object class="AdwSpinRow" id="walker_width">
+            <property name="title">Width</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="value">644</property>
+                <property name="lower">300</property>
+                <property name="upper">2000</property>
+                <property name="step-increment">10</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSpinRow" id="walker_max_height">
+            <property name="title">Max Height</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="value">300</property>
+                <property name="lower">100</property>
+                <property name="upper">1000</property>
+                <property name="step-increment">10</property>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

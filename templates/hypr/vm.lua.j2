@@ -1,0 +1,7 @@
+-- VM specific configuration
+-- This file is populated by the templater if virtualization is detected.
+-- It overrides settings in envs.lua
+
+{% if is_vm -%}
+require("vm_defaults")
+{%- endif %}

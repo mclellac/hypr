@@ -1,0 +1,61 @@
+name: Flexoki Light
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#FFFCF0'
+  foreground: '#100F0F'
+  cursor: '#100F0F'
+  cursor_text: '#FFFCF0'
+  selection_bg: '#CECDC3'
+  selection_fg: '#100F0F'
+  primary: '#205EA6'
+  secondary: '#205EA6'
+  alert: '#D14D41'
+  warning: '#D0A215'
+  success: '#879A39'
+  color0: '#DAD8CE'
+  color1: '#D14D41'
+  color2: '#879A39'
+  color3: '#D0A215'
+  color4: '#205EA6'
+  color5: '#CE5D97'
+  color6: '#3AA99F'
+  color7: '#B7B5AC'
+  color8: '#100F0F'
+  color9: '#D14D41'
+  color10: '#879A39'
+  color11: '#D0A215'
+  color12: '#4385BE'
+  color13: '#CE5D97'
+  color14: '#3AA99F'
+  color15: '#CECDC3'
+  accent: '#205EA6'
+layout:
+  active_border: '#205EA6ff'
+  inactive_border: '#DAD8CEff'
+  groupbar_text_color: '#100F0F'
+  group_border_active: '#205EA6'
+  group_border_inactive: '#DAD8CE'
+  group_border_locked_active: '#CE5D97'
+  group_border_locked_inactive: '#100F0F'
+  groupbar_col_active: '#205EA6'
+  groupbar_col_inactive: '#DAD8CE'
+  groupbar_col_locked_active: '#CE5D97'
+  groupbar_col_locked_inactive: '#100F0F'
+  nogroup_border: '#DAD8CE'
+  nogroup_border_active: '#205EA6'
+  glow_color: '#205EA6ee'
+  shadow_color: '#FFFCF07b'
+  animation_style: fast
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(218, 216, 206, 0.53)
+  style:
+    size: 16

@@ -1,0 +1,11 @@
+-- --- RetroArch ---
+hl.window_rule({
+    name = "retroarch-gaming-mode",
+    match = {
+        class = "com.libretro.RetroArch"
+    },
+    fullscreen = true,
+    opacity = "1.0 1.0 override",
+    idle_inhibit = "fullscreen"
+})
+

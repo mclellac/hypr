@@ -1,10 +1,18 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Launches the default web browser with the provided arguments.
 # It determines the browser from xdg-settings, finds its .desktop file,
 # parses the Exec line, and launches it in a managed way.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Gets the filename of the default web browser's .desktop file.
@@ -16,8 +24,8 @@ set -euo pipefail
 #   The filename of the default browser (e.g., "chromium.desktop").
 #######################################
 get_default_browser_desktop_file() {
-  # xdg-settings can sometimes hang, so we wrap it in a timeout.
-  timeout 1s xdg-settings get default-web-browser || echo "chromium.desktop"
+    # xdg-settings can sometimes hang, so we wrap it in a timeout.
+    timeout 1s env -u KDE_SESSION_VERSION -u KDE_FULL_SESSION xdg-settings get default-web-browser || echo "chromium.desktop"
 }
 
 #######################################
@@ -30,21 +38,22 @@ get_default_browser_desktop_file() {
 #   The full path to the .desktop file, or an empty string if not found.
 #######################################
 find_desktop_file_path() {
-  local browser_desktop_file="$1"
-  local desktop_file_path=""
-  local -a search_dirs=(
-    "${HOME}/.local/share/applications"
-    "${HOME}/.nix-profile/share/applications"
-    "/usr/share/applications"
-  )
+    local browser_desktop_file="$1"
+    local desktop_file_path=""
+    local -a search_dirs=(
+        "${HOME}/.local/share/applications"
+        "${HOME}/.nix-profile/share/applications"
+        "/usr/share/applications"
+    )
 
-  for dir in "${search_dirs[@]}"; do
-    if [[ -f "${dir}/${browser_desktop_file}" ]]; then
-      desktop_file_path="${dir}/${browser_desktop_file}"
-      break
-    fi
-  done
-  echo "${desktop_file_path}"
+    for dir in "${search_dirs[@]}"; do
+        if [[ -f "${dir}/${browser_desktop_file}" ]]; then
+            desktop_file_path="${dir}/${browser_desktop_file}"
+            break
+        fi
+    done
+    log_info "Found desktop file: ${desktop_file_path}"
+    echo "${desktop_file_path}"
 }
 
 #######################################
@@ -57,30 +66,41 @@ find_desktop_file_path() {
 #   Exits with an error if the browser cannot be launched.
 #######################################
 main() {
-  local browser_desktop_file
-  browser_desktop_file=$(get_default_browser_desktop_file)
-  if [[ -z "${browser_desktop_file}" ]]; then
-    echo "ERROR: Could not determine the default web browser." >&2
-    exit 1
-  fi
+    check_help "$@"
+    local browser_desktop_file
+    browser_desktop_file=$(get_default_browser_desktop_file)
+    if [[ -z "${browser_desktop_file}" ]]; then
+        echo "ERROR: Could not determine the default web browser." >&2
+        exit 1
+    fi
 
-  local desktop_file_path
-  desktop_file_path=$(find_desktop_file_path "${browser_desktop_file}")
-  if [[ -z "${desktop_file_path}" ]]; then
-    echo "ERROR: Could not find the .desktop file for '${browser_desktop_file}'." >&2
-    exit 1
-  fi
+    local desktop_file_path
+    desktop_file_path=$(find_desktop_file_path "${browser_desktop_file}")
+    if [[ -z "${desktop_file_path}" ]]; then
+        echo "ERROR: Could not find the .desktop file for '${browser_desktop_file}'." >&2
+        exit 1
+    fi
 
-  # Read the Exec line from the desktop file and remove field codes.
-  local exec_line
-  exec_line=$(grep -E '^Exec=' "${desktop_file_path}" | head -1 | sed -e 's/^Exec=//' -e 's/ %[UufF]//g')
-  if [[ -z "${exec_line}" ]]; then
-    echo "ERROR: Could not find the Exec line in '${desktop_file_path}'." >&2
-    exit 1
-  fi
+    # Read the Exec line from the desktop file and remove field codes.
+    local exec_line
+    exec_line=$(grep -E '^Exec=' "${desktop_file_path}" | head -1 | sed -e 's/^Exec=//' -e 's/ %[UufF]//g')
+    if [[ -z "${exec_line}" ]]; then
+        echo "ERROR: Could not find the Exec line in '${desktop_file_path}'." >&2
+        exit 1
+    fi
 
-  # Launch the browser using uwsm. `eval` is used to handle potential quotes.
-  eval "exec setsid uwsm app -- ${exec_line} \"\$@\""
+    # Ensure the latest theme color is synced to browser preferences before launch
+    if command -v hypr-theme-set-browser &>/dev/null; then
+        hypr-theme-set-browser || log_warn "Failed to set browser theme."
+    fi
+
+    # Launch the browser using uwsm. `eval` is used to handle potential quotes.
+    if is_uwsm_active; then
+        eval "exec setsid uwsm-app -- ${exec_line} \"\$@\""
+    else
+        eval "exec setsid ${exec_line} \"\$@\""
+    fi
 }
 
 main "$@"
+

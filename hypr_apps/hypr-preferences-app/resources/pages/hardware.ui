@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="AdwPreferencesGroup" id="detection_group">
+    <property name="title">Detection</property>
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">Hardware Match</property>
+        <property name="subtitle">Detected hardware profile</property>
+        <child>
+          <object class="GtkLabel" id="hw_match_label">
+            <property name="valign">center</property>
+            <property name="label">Unknown</property>
+            <style>
+              <class name="dim-label"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="quirks_group">
+    <property name="title">Device Quirks</property>
+    <child>
+      <object class="AdwExpanderRow" id="apple_row">
+        <property name="title">Apple Silicon / Intel Mac</property>
+        <property name="subtitle">Specialized fixes for Apple hardware</property>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title">Display Brightness</property>
+            <property name="activatable-widget">apple_brightness_btn</property>
+            <child>
+              <object class="GtkButton" id="apple_brightness_btn">
+                <property name="label">Run Fix</property>
+                <property name="valign">center</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwExpanderRow" id="asus_row">
+        <property name="title">Asus ROG / ExpertBook</property>
+        <property name="subtitle">Specialized fixes for Asus hardware</property>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title">Audio Mixer Fix</property>
+            <property name="activatable-widget">asus_audio_btn</property>
+            <child>
+              <object class="GtkButton" id="asus_audio_btn">
+                <property name="label">Run Fix</property>
+                <property name="valign">center</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="security_group">
+    <property name="title">Security</property>
+    <child>
+      <object class="AdwActionRow" id="fingerprint_row">
+        <property name="title">Fingerprint Setup</property>
+        <property name="subtitle">Configure biometric authentication</property>
+        <property name="activatable-widget">fingerprint_btn</property>
+        <child>
+          <object class="GtkButton" id="fingerprint_btn">
+            <property name="label">Setup</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwActionRow" id="fido2_row">
+        <property name="title">FIDO2 Setup</property>
+        <property name="subtitle">Configure security keys</property>
+        <property name="activatable-widget">fido2_btn</property>
+        <child>
+          <object class="GtkButton" id="fido2_btn">
+            <property name="label">Setup</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

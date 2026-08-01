@@ -15,11 +15,11 @@ if [ -n "$NVIDIA" ]; then
     fi
     # Bail if no supported GPU
     if [ -z "${PACKAGES+x}" ]; then
-        echo "No compatible driver for your NVIDIA GPU. See: https://wiki.archlinux.org/title/NVIDIA"
+        log_info "No compatible driver for your NVIDIA GPU. See: https://wiki.archlinux.org/title/NVIDIA"
         exit 0
     fi
 
-    omarchy-pkg-add "$KERNEL_HEADERS" "${PACKAGES[@]}"
+    hypr-pkg-add "$KERNEL_HEADERS" "${PACKAGES[@]}"
 
     # Configure modprobe for early KMS
     sudo tee /etc/modprobe.d/nvidia.conf <<EOF >/dev/null

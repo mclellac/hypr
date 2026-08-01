@@ -1,9 +1,17 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Locks the screen using hyprlock, locks the 1Password vault, and stops any
 # running screensavers to prevent interference.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Main function to perform the screen locking sequence.
@@ -15,21 +23,22 @@ set -euo pipefail
 #   None
 #######################################
 main() {
-  echo "Locking the screen..."
-  # Start hyprlock only if it's not already running.
-  pidof hyprlock || hyprlock &
+    check_help "$@"
+    log_info "Locking the screen..."
+    # Start hyprlock only if it's not already running.
+    pidof hyprlock || hyprlock &
 
-  # Lock 1Password if it is running.
-  if pgrep -x "1password" >/dev/null; then
-    echo "Locking 1Password..."
-    1password --lock &
-  fi
+    # Lock 1Password if it is running.
+    if pgrep -x "1password" >/dev/null; then
+        log_info "Locking 1Password..."
+        1password --lock &
+    fi
 
-  # Terminate any running screensaver processes.
-  if pgrep -f "alacritty --class Screensaver" >/dev/null; then
-    echo "Stopping screensaver..."
-    pkill -f "alacritty --class Screensaver"
-  fi
+    # Terminate any running screensaver processes.
+    if pgrep -f "alacritty --class Screensaver" >/dev/null; then
+        log_info "Stopping screensaver..."
+        pkill -f "alacritty --class Screensaver"
+    fi
 }
 
-main
+main "$@"

@@ -1,0 +1,64 @@
+name: Lumon
+colors:
+  background: '#16242d'
+  foreground: '#d6e2ee'
+  cursor: '#f2fcff'
+  accent: '#8bc9eb'
+  active_border_color: '#f2fcff'
+  color0: '#1b2d40'
+  color1: '#4d86b0'
+  color2: '#5e95bc'
+  color3: '#6fa4c9'
+  color4: '#6fb8e3'
+  color5: '#8bc9eb'
+  color6: '#b4e4f6'
+  color7: '#d6e2ee'
+  color8: '#304860'
+  color9: '#73a6cb'
+  color10: '#86b7d8'
+  color11: '#9dcae5'
+  color12: '#f2fcff'
+  color13: '#b1d8ee'
+  color14: '#d1eef8'
+  color15: '#ffffff'
+  selection_bg: '#4d9ed3'
+  selection_fg: '#1b2d40'
+  cursor_text: '#16242d'
+  primary: '#8bc9eb'
+  secondary: '#8bc9eb'
+  alert: '#4d86b0'
+  warning: '#6fa4c9'
+  success: '#5e95bc'
+layout:
+  active_border: '#8bc9ebff'
+  inactive_border: '#1b2d40ff'
+  nogroup_border: '#1b2d40'
+  shadow_color: '#16242d7b'
+  groupbar_text_color: '#819799'
+  group_border_active: '#8bc9eb'
+  group_border_inactive: '#1b2d40'
+  group_border_locked_active: '#b4e4f6'
+  group_border_locked_inactive: '#304860'
+  groupbar_col_active: '#8bc9eb'
+  groupbar_col_inactive: '#1b2d40'
+  groupbar_col_locked_active: '#b4e4f6'
+  groupbar_col_locked_inactive: '#304860'
+  nogroup_border_active: '#8bc9eb'
+  glow_color: '#8bc9ebee'
+  animation_style: minimal
+fonts:
+  font_family: Hack Nerd Font Propo
+  font_style: Regular
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(27, 45, 64, 0.53)
+  style:
+    size: 16
+nvim:
+  colorscheme: lumon

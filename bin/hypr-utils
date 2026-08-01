@@ -1,0 +1,144 @@
+#!/bin/bash
+#
+# Common utilities for Hyprland configuration scripts.
+#
+# This file provides logging, help text generation, and other common functions
+# used by scripts in the bin/ directory.
+
+# Ensure consistent environment
+set -euo pipefail
+
+# Set HYPR_PATH if not already set
+if [[ -z "${HYPR_PATH:-}" ]]; then
+    # Resolve the directory of this script (bin/) and go up one level.
+    # We use readlink -f to follow symlinks.
+    script_path=$(readlink -f "${BASH_SOURCE[0]}")
+    export HYPR_PATH
+    HYPR_PATH="$(cd "$(dirname "${script_path}")/.." && pwd)"
+fi
+
+# Ensure bin directory is in PATH
+export PATH="${HYPR_PATH}/bin:${PATH}"
+
+# Log file path
+LOG_FILE="${HOME}/.local/state/hypr/hypr.log"
+LOG_MAX_SIZE=$((2 * 1024 * 1024)) # 2MB
+
+# Ensure log directory exists
+mkdir -p "$(dirname "${LOG_FILE}")"
+
+# Rotate logs if too large
+if [[ -f "${LOG_FILE}" ]] && [[ $(stat -c%s "${LOG_FILE}") -ge ${LOG_MAX_SIZE} ]]; then
+    mv "${LOG_FILE}" "${LOG_FILE}.old"
+fi
+
+#######################################
+# Error handler for shell scripts.
+#######################################
+error_handler() {
+    local exit_code=$?
+    local line_number=$1
+    local command=$2
+    local script_name
+    script_name=$(basename "$0")
+
+    if [[ ${exit_code} -ne 0 ]]; then
+        log_error "Error in ${script_name} at line ${line_number}: Command '${command}' failed with exit code ${exit_code}"
+    fi
+}
+
+# Set error trap
+trap 'error_handler $LINENO "$BASH_COMMAND"' ERR
+
+#######################################
+# Logs a message to the log file and stdout/stderr.
+# Arguments:
+#   $1 - Log level (INFO, WARN, ERROR).
+#   $2 - The message to log.
+#######################################
+log() {
+    local level="$1"
+    shift
+    local message="$*"
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+
+    # Log to file
+    echo "[${timestamp}] [${level}] ${message}" >> "${LOG_FILE}"
+
+    # Log to stdout/stderr with color
+    case "${level}" in
+        INFO)
+            echo -e "\e[34m[INFO]\e[0m ${message}" >&2
+            ;;
+        WARN)
+            echo -e "\e[33m[WARN]\e[0m ${message}" >&2
+            ;;
+        ERROR)
+            echo -e "\e[31m[ERROR]\e[0m ${message}" >&2
+            ;;
+    esac
+}
+
+log_info() {
+    log "INFO" "$@"
+}
+
+log_warn() {
+    log "WARN" "$@"
+}
+
+log_error() {
+    log "ERROR" "$@"
+}
+
+#######################################
+# Checks if the user requested help and displays usage.
+# Arguments:
+#   $1 - The first argument passed to the script.
+#######################################
+check_help() {
+    if [[ "${1:-}" == "-h" ]] || [[ "${1:-}" == "--help" ]]; then
+        usage
+        exit 0
+    fi
+}
+
+#######################################
+# Default usage function. Scripts should override this.
+#######################################
+usage() {
+    echo "Usage: $(basename "$0") [OPTIONS]"
+    echo
+    echo "Options:"
+    echo "  -h, --help    Show this help message and exit"
+}
+
+#######################################
+# Safely enables and starts a systemd service.
+# Only attempts to enable if the unit has a valid [Install] section.
+# Arguments:
+#   $1 - The unit name (e.g., spice-vdagentd.service)
+#######################################
+activate_service() {
+    local unit="$1"
+    if systemctl list-unit-files "${unit}" &>/dev/null; then
+        # Only try to enable if the unit has a valid [Install] section with keys
+        if systemctl cat "${unit}" | grep -qE "^(WantedBy|RequiredBy|Alias|Also)="; then
+            log_info "Enabling ${unit}..."
+            sudo systemctl enable "${unit}"
+        fi
+        log_info "Starting ${unit}..."
+        sudo systemctl start "${unit}"
+    fi
+}
+
+#######################################
+# Checks if the Universal Wayland Session Manager (UWSM) is active.
+# Outputs:
+#   0 if active, 1 otherwise.
+#######################################
+is_uwsm_active() {
+    command -v uwsm >/dev/null 2>&1 && [[ -n "${UWSM_ACTIVE:-}" ]]
+}
+

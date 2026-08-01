@@ -1,0 +1,19 @@
+-- Core session variables (Managed by UWSM now, but kept for legacy/fallback if needed)
+-- Note: UWSM users should prefer ~/.config/uwsm/env
+
+hl.config({
+    xwayland = {
+        force_zero_scaling = true
+    }
+})
+
+-- Don't show update on first launch
+hl.config({
+    ecosystem = {
+        no_update_news = true
+    }
+})
+
+-- Extra env variables
+-- Note: You must relaunch Hyprland after changing envs (use Super+Esc, then Relaunch)
+-- For UWSM, use ~/.config/uwsm/env instead.

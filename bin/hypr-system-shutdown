@@ -1,0 +1,29 @@
+#!/bin/bash
+set -euo pipefail
+
+# Shutdown command that first closes all application windows (thus giving them a chance to save state).
+# This is particularly helpful for applications like Chromium that otherwise won't shutdown cleanly.
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    hypr-state clear re*-required
+
+    # Schedule the shutdown to happen after closing windows (detached from terminal)
+    nohup bash -c "sleep 2 && systemctl poweroff --no-wall" >/dev/null 2>&1 &
+
+    # Now close all windows
+    hypr-window-close-all
+    sleep 1 # Allow apps like Chrome to shutdown correctly
+}
+
+main "$@"

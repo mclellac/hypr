@@ -1,29 +1,30 @@
 #!/bin/bash
 #
-# Refreshes the pacman mirrorlist with the default version from the hypr repository.
+# Refreshes the pacman mirrorlist with the default version from the repo.
 
 set -euo pipefail
 
-#######################################
-# Main function to refresh the pacman mirrorlist.
-# Globals:
-#   HOME - The user's home directory.
-# Arguments:
-#   None
-# Outputs:
-#   None
-#######################################
-main() {
-  local default_mirrorlist="${HOME}/.local/share/hypr/default/pacman/mirrorlist"
-  local system_mirrorlist="/etc/pacman.d/mirrorlist"
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
-  if [[ -f "${default_mirrorlist}" ]]; then
-    echo "Refreshing pacman mirrorlist..."
-    sudo cp -f "${default_mirrorlist}" "${system_mirrorlist}"
-  else
-    echo "Error: Default mirrorlist not found at ${default_mirrorlist}" >&2
-    exit 1
-  fi
+main() {
+    check_help "$@"
+
+    local default_mirrorlist="${HYPR_PATH}/default/pacman/mirrorlist"
+    local system_mirrorlist="/etc/pacman.d/mirrorlist"
+
+    if [[ -f "${default_mirrorlist}" ]]; then
+        log_info "Refreshing pacman mirrorlist..."
+        sudo cp -f "${default_mirrorlist}" "${system_mirrorlist}"
+    else
+        log_error "Default mirrorlist not found at ${default_mirrorlist}"
+        exit 1
+    fi
 }
 
-main
+main "$@"

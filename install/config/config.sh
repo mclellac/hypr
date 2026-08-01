@@ -5,78 +5,59 @@
 # Exit immediately if a command exits with a non-zero status.
 set -euo pipefail
 
+# --- Source Utils ---
+if [[ -n "${HYPR_INSTALL:-}" ]]; then
+    source "${HYPR_INSTALL}/utils.sh"
+else
+    source "$(dirname "$0")/../utils.sh"
+fi
+
 #######################################
 # Copies the main configuration files from the repo to ~/.config.
 # Globals:
 #   HYPR_PATH (read-only)
+#   VENV_PYTHON (optional)
+#   VENV_PIP (optional)
 #######################################
 copy_main_config() {
-    echo "Installing hypr configurations into ~/.config..."
+    log_info "Installing hypr configurations into ~/.config..."
     mkdir -p "${HOME}/.config"
-    cp -R "${HYPR_PATH}"/config/* "${HOME}/.config/"
 
-    # Copy .desktop files if they exist and sanitize paths
-    if [[ -d "${HYPR_PATH}/applications" ]]; then
-        echo "Installing application shortcuts..."
-        mkdir -p "${HOME}/.local/share/applications"
-        cp "${HYPR_PATH}"/applications/*.desktop "${HOME}/.local/share/applications/"
-        # Replace placeholder with actual home directory
-        sed -i "s|/HOME_PLACEHOLDER/|${HOME}/|g" "${HOME}/.local/share/applications/"*.desktop
-    fi
+    # Install Python dependencies for templater into VENV if available
+    # install.sh sources utils.sh which sets up VENV.
 
-    if command -v systemd-detect-virt >/dev/null 2>&1; then
-        if systemd-detect-virt >/dev/null; then
-            echo "Virtualization detected. Applying VM specific environment settings..."
-            cp "${HOME}/.config/hypr/envs.conf.vms" "${HOME}/.config/hypr/envs.conf"
+    # Generate configurations using the templater, but skip if we are applying a target theme in FRESH/FORCE mode anyway
+    if [[ -n "${TARGET_THEME:-}" ]] && [[ "${INSTALL_MODE:-}" != "UPDATE" ]]; then
+        log_info "Skipping initial template generation as TARGET_THEME is set..."
+    else
+        log_info "Generating configuration files from templates..."
+        if [[ -x "${HYPR_PATH}/bin/hypr-theme-templater" ]]; then
+             "${HYPR_PATH}/bin/hypr-theme-templater" --init --no-reload || log_warn "Templater failed during init."
+        else
+            log_error "hypr-theme-templater not found or not executable."
         fi
     fi
 }
-
-#######################################
-# Copies all themes and ensures a 'backgrounds' subdirectory exists for each.
-# Globals:
-#   HYPR_PATH (read-only)
-#######################################
-copy_themes() {
-    echo "Copying themes and ensuring backgrounds directory exists..."
-    local -r themes_dest_dir="${HOME}/.config/hypr/themes"
-    mkdir -p "${themes_dest_dir}"
-
-    local theme_dir
-    for theme_dir in "${HYPR_PATH}"/themes/*; do
-        if [[ -d "${theme_dir}" ]]; then
-            # Copy the full theme directory to the destination
-            cp -R "${theme_dir}" "${themes_dest_dir}/"
-            # Ensure the backgrounds subdirectory exists in the new location
-            local theme_name
-            theme_name=$(basename "${theme_dir}")
-            mkdir -p "${themes_dest_dir}/${theme_name}/backgrounds"
-        fi
-    done
-}
-
-#######################################
-# Installs the default .bashrc file.
-# Globals:
-#   HYPR_PATH (read-only)
-#######################################
-install_bashrc() {
-    echo "Installing .bashrc..."
-    cp -R "${HYPR_PATH}/default/bashrc" "${HOME}/.bashrc"
-}
-
-#######################################
-# Main function to orchestrate the configuration file installation.
-#######################################
 main() {
+    print_header "Applying System Configuration"
     copy_main_config
-    copy_themes
 
-    echo "Creating current theme directory..."
-    mkdir -p "${HOME}/.config/hypr/current"
+    # Ensure user config files exist
+    if [[ -f "${HYPR_PATH}/install/config/user_configs.sh" ]]; then
+        # Check if the script is executable, if not make it executable
+        if [[ ! -x "${HYPR_PATH}/install/config/user_configs.sh" ]]; then
+             chmod +x "${HYPR_PATH}/install/config/user_configs.sh"
+        fi
+        "${HYPR_PATH}/install/config/user_configs.sh"
+    else
+        log_warn "user_configs.sh not found at ${HYPR_PATH}/install/config/user_configs.sh"
+    fi
 
-    install_bashrc
-    echo "Configuration installation complete."
+    # Configure asdcontrol sudo access
+
+    # Configure UTM/QEMU guest integration if in a VM
+
+    log_success "Configuration installation complete."
 }
 
 main "$@"

@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ "${1}" = "post" ]; then
+    if grep -q '"mode": "Integrated"' /etc/supergfxd.conf; then
+        supergfxctl -m Integrated
+    fi
+fi

@@ -1,11 +1,19 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Sets the wallpaper and ensures persistence by updating the current background symlink.
 # Usage: hypr-wallpaper-set <path-to-image>
 
-set -euo pipefail
 
-readonly CURRENT_BACKGROUND_LINK="${HOME}/.config/hypr/current/background"
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+readonly CURRENT_BACKGROUND_LINK="${HOME}/.config/hypr/current_background"
 
 #######################################
 # Sets the wallpaper.
@@ -15,46 +23,47 @@ readonly CURRENT_BACKGROUND_LINK="${HOME}/.config/hypr/current/background"
 #   None
 #######################################
 main() {
-  local new_background="${1:-}"
+    check_help "$@"
+    local new_background="${1:-}"
 
-  if [[ -z "${new_background}" ]]; then
-    echo "Usage: $(basename "$0") <path-to-image>" >&2
-    exit 1
-  fi
+    if [[ -z "${new_background}" ]]; then
+        echo "Usage: $(basename "$0") <path-to-image>" >&2
+        exit 1
+    fi
 
-  # Resolve absolute path if necessary
-  if [[ "${new_background}" != /* ]]; then
-    new_background="$(pwd)/${new_background}"
-  fi
+    # Resolve absolute path if necessary
+    if [[ "${new_background}" != /* ]]; then
+        new_background="$(pwd)/${new_background}"
+    fi
 
-  if [[ ! -f "${new_background}" ]]; then
-    echo "Error: File not found: ${new_background}" >&2
-    exit 1
-  fi
+    if [[ ! -f "${new_background}" ]]; then
+        echo "Error: File not found: ${new_background}" >&2
+        exit 1
+    fi
 
-  # Update the symlink for persistence
-  ln -sf "${new_background}" "${CURRENT_BACKGROUND_LINK}"
+    # Update the symlink for persistence
+    ln -sf "${new_background}" "${CURRENT_BACKGROUND_LINK}"
 
-  # Stop any running swaybg systemd units (e.g., managed by uwsm) to prevent auto-restarts.
-  # This is cleaner than pkill and avoids race conditions where the service manager
-  # restarts the old instance before the new one starts.
-  if command -v systemctl &>/dev/null; then
-    # Find active units containing 'swaybg' (typically app-swaybg-....scope)
-    # Use -r with xargs to avoid running if input is empty
-    systemctl --user list-units --state=running --no-legend --plain \
-      | grep "swaybg" \
-      | cut -d' ' -f1 \
-      | xargs -r systemctl --user stop
-  fi
+    # Stop any running swaybg systemd units (e.g., managed by uwsm) to prevent auto-restarts.
+    # This is cleaner than pkill and avoids race conditions where the service manager
+    # restarts the old instance before the new one starts.
+    if command -v systemctl &>/dev/null; then
+        # Find active units containing 'swaybg' (typically app-swaybg-....scope)
+        # Use awk to filter as it doesn't exit with error if no match is found,
+        # which is safer with 'set -o pipefail'.
+        systemctl --user list-units --state=running --no-legend --plain \
+            | awk '/swaybg/ {print $1}' \
+            | xargs -r systemctl --user stop
+    fi
 
-  # Kill any remaining instances that might not be managed by systemd
-  pkill -x swaybg || true
+    # Kill any remaining instances that might not be managed by systemd
+    pkill -x swaybg || true
 
-  # Start swaybg using uwsm
-  # We use setsid to detach it from this shell
-  setsid uwsm app -- swaybg -i "${CURRENT_BACKGROUND_LINK}" -m fill >/dev/null 2>&1 &
+    # Start swaybg using uwsm
+    # We use setsid to detach it from this shell
+    setsid uwsm app -- swaybg -i "${CURRENT_BACKGROUND_LINK}" -m fill >/dev/null 2>&1 &
 
-  echo "Wallpaper set to: ${new_background}"
+    log_info "Wallpaper set to: ${new_background}"
 }
 
 main "$@"

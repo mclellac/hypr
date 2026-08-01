@@ -1,31 +1,37 @@
 #!/bin/bash
 #
-# Reads the list of pinned packages from the configuration file and prints
-# them as a single, comma-separated string.
+# Reads the list of pinned packages and prints them as a comma-separated string.
 
 set -euo pipefail
 
-#######################################
-# Main function to read and format the pinned packages list.
-# Globals:
-#   HYPR_PATH - The root path of the hypr configuration.
-# Arguments:
-#   None
-# Outputs:
-#   A comma-separated string of pinned package names.
-#######################################
-main() {
-  if [[ -z "${HYPR_PATH:-}" ]]; then
-    echo "Error: HYPR_PATH environment variable is not set." >&2
-    exit 1
-  fi
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
-  local pinned_packages_file="${HYPR_PATH}/install/packages.pinned"
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
 
-  if [[ -f "${pinned_packages_file}" ]]; then
-    # `tr` replaces newlines with commas, and `sed` removes the trailing comma.
-    tr '\r\n' ',' <"${pinned_packages_file}" | sed 's/,$//'
-  fi
+Returns a comma-separated list of pinned packages.
+
+Options:
+  -h, --help    Show this help message and exit
+EOF
 }
 
-main
+main() {
+    check_help "$@"
+
+    local pinned_packages_file="${HYPR_PATH}/install/packages.pinned"
+
+    if [[ -f "${pinned_packages_file}" ]]; then
+        # tr replaces newlines with commas, and sed removes the trailing comma.
+        tr '\r\n' ',' <"${pinned_packages_file}" | sed 's/,$//'
+    fi
+}
+
+main "$@"

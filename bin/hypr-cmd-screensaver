@@ -5,8 +5,23 @@
 # key is pressed.
 
 set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 readonly BRANDING_FILE="${HOME}/.config/hypr/branding/screensaver.txt"
+
+usage() {
+    echo "Usage: $(basename "$0")"
+    echo
+    echo "Launches a terminal-based screensaver."
+    echo
+    echo "Options:"
+    echo "  -h, --help    Show this help message and exit"
+}
 
 #######################################
 # Cleans up running processes and exits the script.
@@ -19,10 +34,10 @@ readonly BRANDING_FILE="${HOME}/.config/hypr/branding/screensaver.txt"
 #   None
 #######################################
 exit_screensaver() {
-  # Terminate any running 'tte' or screensaver terminal instances.
-  pkill -x tte &>/dev/null || true
-  pkill -f "alacritty --class Screensaver" &>/dev/null || true
-  exit 0
+    # Terminate any running 'tte' or screensaver terminal instances.
+    pkill -x tte &>/dev/null || true
+    pkill -f "alacritty --class Screensaver" &>/dev/null || true
+    exit 0
 }
 
 #######################################
@@ -35,15 +50,14 @@ exit_screensaver() {
 #   The name of a single, randomly chosen effect.
 #######################################
 get_random_effect() {
-  # This pipeline is used to extract the list of available effects from
-  # the 'tte' command's help text. It is fragile and may break if the
-  # help output of 'tte' changes in a future version.
-  tte 2>&1 |
-    grep -oP '{\K[^}]+' | # Extract comma-separated list from braces
-    tr ',' '\n' |         # Put each effect on a new line
-    sed -n '/^beams$/,$p' | # Filter to a specific subset of effects
-    sort -u |             # Sort and remove duplicates
-    shuf -n 1             # Select one random effect
+    # Extract the list of available effects from the tte help text.
+    # The list is enclosed in curly braces at the end of the help output.
+    tte --help 2>&1 |
+        grep -oP '\{[a-z,]+\}' |
+        tail -n 1 |
+        tr -d '{}' |
+        tr ',' '\n' |
+        shuf -n 1
 }
 
 #######################################
@@ -56,41 +70,43 @@ get_random_effect() {
 #   Exits with an error if dependencies are not met.
 #######################################
 main() {
-  if ! command -v tte &>/dev/null; then
-    echo "Error: 'tte' command not found. Please install it to use the screensaver." >&2
-    exit 1
-  fi
+    check_help "$@"
 
-  if [[ ! -f "${BRANDING_FILE}" ]]; then
-    echo "Error: Branding file not found at ${BRANDING_FILE}" >&2
-    exit 1
-  fi
+    if ! command -v tte &>/dev/null; then
+        log_error "'tte' command not found. Please install it to use the screensaver."
+        exit 1
+    fi
 
-  # Set up a trap to ensure a clean exit on common termination signals.
-  trap exit_screensaver SIGINT SIGTERM SIGHUP SIGQUIT
+    if [[ ! -f "${BRANDING_FILE}" ]]; then
+        log_error "Branding file not found at ${BRANDING_FILE}"
+        exit 1
+    fi
 
-  while true; do
-    local effect
-    effect=$(get_random_effect)
+    # Set up a trap to ensure a clean exit on common termination signals.
+    trap exit_screensaver SIGINT SIGTERM SIGHUP SIGQUIT
 
-    # Launch the 'tte' screensaver in the background.
-    # The canvas is sized to almost fill the terminal.
-    tte -i "${BRANDING_FILE}" \
-      --frame-rate 60 \
-      --canvas-width 0 \
-      --canvas-height "$(( $(tput lines) - 2 ))" \
-      --anchor-canvas c \
-      --anchor-text c \
-      "${effect}" &
+    while true; do
+        local effect
+        effect=$(get_random_effect)
 
-    # Wait for user input to exit.
-    while pgrep -x tte &>/dev/null; do
-      # 'read' waits for a single keypress with a 3-second timeout.
-      if read -n 1 -t 3; then
-        exit_screensaver
-      fi
+        # Launch the 'tte' screensaver in the background.
+        # The canvas is sized to almost fill the terminal.
+        tte -i "${BRANDING_FILE}" \
+            --frame-rate 60 \
+            --canvas-width 0 \
+            --canvas-height "$(( $(tput lines) - 2 ))" \
+            --anchor-canvas c \
+            --anchor-text c \
+            "${effect}" &
+
+        # Wait for user input to exit.
+        while pgrep -x tte &>/dev/null; do
+            # 'read' waits for a single keypress with a 3-second timeout.
+            if read -r -n 1 -t 3; then
+                exit_screensaver
+            fi
+        done
     done
-  done
 }
 
 main "$@"

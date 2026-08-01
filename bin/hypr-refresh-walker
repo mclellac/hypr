@@ -1,21 +1,51 @@
 #!/bin/bash
-#
-# Refreshes the walker configuration and restarts the service.
-
 set -euo pipefail
 
-#######################################
-# Main function to refresh the walker configuration.
-# Globals:
-#   None
-# Arguments:
-#   None
-# Outputs:
-#   None
-#######################################
+# Overwrite the user configs for the Walker application launcher (which also powers the Hypr Menu) and restart the services.
+
+# Ensure walker is set to autostart
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
 main() {
-  hypr-refresh-config walker/config.toml
-  hypr-restart-walker
+    check_help "$@"
+
+    # Refresh walker desktop entry via template
+    hypr-refresh-config applications/walker.desktop
+
+    # And restarts if it crashes or is killed
+    hypr-refresh-config walker/restart.conf
+    
+    mkdir -p ~/.config/systemd/user/elephant.service.d/
+    cp ~/.config/walker/restart.conf ~/.config/systemd/user/elephant.service.d/restart.conf
+    
+    if systemctl --user list-unit-files | grep -Fq "app-walker@autostart.service"; then
+        mkdir -p ~/.config/systemd/user/app-walker@autostart.service.d/
+        cp ~/.config/walker/restart.conf ~/.config/systemd/user/app-walker@autostart.service.d/restart.conf
+    fi
+
+    systemctl --user daemon-reload
+
+    # Refresh configs
+    hypr-refresh-config walker/config.toml
+    hypr-refresh-config walker/elephant.toml
+    hypr-refresh-config walker/theme.css
+    hypr-refresh-config walker/themes/hypr-default/layout.xml
+    hypr-refresh-config walker/themes/hypr-default/item.xml
+    hypr-refresh-config walker/themes/hypr-default/style.css
+    hypr-refresh-config elephant/calc.toml
+    hypr-refresh-config elephant/desktopapplications.toml
+    hypr-refresh-config elephant/symbols.toml
+    hypr-refresh-config elephant/clipboard.toml
+
+    # Restart service
+    hypr-restart-walker
 }
 
-main
+main "$@"

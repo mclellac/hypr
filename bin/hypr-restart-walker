@@ -1,30 +1,45 @@
 #!/bin/bash
-#
-# Restarts the 'walker' application launcher and its 'elephant' service.
-
 set -euo pipefail
 
-#######################################
-# Main function to restart walker and elephant.
-# Globals:
-#   None
-# Arguments:
-#   None
-# Outputs:
-#   None
-#######################################
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
 main() {
-  echo "Restarting walker and elephant services..."
+    check_help "$@"
 
-  # Kill existing processes.
-  pkill walker || true
-  pkill elephant || true
+    restart_services() {
+      elephant service enable >/dev/null 2>&1 || true
+      pkill -f "wl-paste --watch echo clipboard-changed" || true
+      systemctl --user daemon-reload || true
+      systemctl --user restart elephant.service || true
 
-  # Start new instances in the background.
-  setsid walker --gapplication-service &
-  setsid elephant &
+      if systemctl --user list-units --full -all | grep -Fq "app-walker@autostart.service"; then
+        systemctl --user restart app-walker@autostart.service || true
+      else
+        pkill -f "walker --gapplication-service" || true
+        sleep 0.2
+        if command -v uwsm >/dev/null 2>&1 && [[ -n "${UWSM_ACTIVE:-}" ]]; then
+          setsid uwsm app -- walker --gapplication-service >/dev/null 2>&1 &
+        else
+          setsid walker --gapplication-service >/dev/null 2>&1 &
+        fi
+      fi
+    }
 
-  echo "Walker and elephant restarted."
+    if (( EUID == 0 )); then
+      SCRIPT_OWNER=$(stat -c '%U' "$0")
+      USER_UID=$(id -u "$SCRIPT_OWNER")
+      systemd-run --uid="$SCRIPT_OWNER" --setenv=XDG_RUNTIME_DIR="/run/user/$USER_UID" \
+        bash -c "$(declare -f restart_services); restart_services"
+    else
+      restart_services
+    fi
 }
 
-main
+main "$@"

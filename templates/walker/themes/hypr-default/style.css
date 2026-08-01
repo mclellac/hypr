@@ -1,0 +1,151 @@
+{% from "partials/fonts.j2" import font_family, font_size, font_style %}
+@import url("file://{{ env.HOME }}/.config/walker/theme.css");
+
+@define-color window_bg_color alpha(@base, 0.95);
+@define-color accent_bg_color @selected-text;
+@define-color theme_fg_color @text;
+@define-color border_color @border;
+
+* {
+  all: unset;
+  font-family: "{{ font_family() }}", "JetBrainsMono Nerd Font", "JetBrainsMono Nerd Font Mono", "JetBrainsMono NF", "Roboto", sans-serif;
+  font-size: {{ font_size(theme.walker.font_size, 13) }}px;
+}
+
+.normal-icons {
+  -gtk-icon-size: 16px;
+}
+
+.large-icons {
+  -gtk-icon-size: 32px;
+}
+
+scrollbar {
+  opacity: 0;
+}
+
+window {
+  background: transparent;
+}
+
+.window {
+  background: transparent;
+}
+
+{%- set shadow_offset = theme.layout.shadow_offset | default("0 5") %}
+{%- set shadow_parts = shadow_offset | split %}
+.box-wrapper {
+  box-shadow: {{ shadow_parts[0] | default(0) }}px {{ shadow_parts[1] | default(5) }}px {{ theme.layout.shadow_range | default(30) }}px @shadow_color;
+  background: @window_bg_color;
+  padding: 20px;
+  margin: 60px;
+  border-radius: {{ theme.layout.rounding | default(10) }}px;
+  border: {{ theme.layout.border_size }}px solid @border_color;
+}
+
+.preview-box,
+.elephant-hint,
+.placeholder {
+  color: @theme_fg_color;
+}
+
+.box {
+}
+
+.search-container {
+  background: @base;
+  padding: 10px;
+  margin-bottom: 0;
+}
+
+.input placeholder {
+  opacity: 0.5;
+  color: @theme_fg_color;
+}
+
+.input {
+  background: none;
+  color: @theme_fg_color;
+  padding: 0;
+}
+
+.input:focus,
+.input:active {
+}
+
+.content-container {
+}
+
+.placeholder {
+}
+
+.scroll {
+}
+
+.list {
+  background: transparent;
+}
+
+child {
+  padding: 0px 12px;
+  background: transparent;
+  border-radius: {{ theme.layout.rounding | default(0) }}px;
+}
+
+.item-box {
+  padding: 0;
+}
+
+.item-quick-activation {
+  opacity: 0;
+  min-width: 0;
+}
+
+child:hover .item-box,
+child:selected .item-box {
+  background: transparent;
+}
+
+child:selected {
+  background: var(--selection-gradient);
+  border-radius: {{ theme.layout.rounding | default(8) }}px;
+}
+
+child:selected .item-text,
+child:selected .item-subtext,
+child:hover .item-text,
+child:hover .item-subtext {
+  color: @base;
+  font-weight: bold;
+}
+
+.item-text-box {
+  min-width: 0;
+  max-width: none;
+}
+
+.item-text {
+  color: @theme_fg_color;
+  padding: 14px 0;
+  min-width: 0;
+  max-width: none;
+}
+
+.item-subtext {
+  opacity: 0;
+  font-size: 0;
+  min-height: 0;
+}
+
+.item-image {
+  margin-right: 10px;
+  -gtk-icon-transform: scale(0.7);
+}
+
+.keybind-hints {
+  opacity: 0;
+}
+
+.preview {
+  opacity: 0;
+}

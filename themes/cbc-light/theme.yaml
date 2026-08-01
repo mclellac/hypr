@@ -1,0 +1,61 @@
+name: CBC Light
+fonts:
+  font_family: AdwaitaMono Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#FFFFFF'
+  foreground: '#121212'
+  cursor: '#EE0000'
+  cursor_text: '#FFFFFF'
+  selection_bg: '#EE0000'
+  selection_fg: '#FFFFFF'
+  primary: '#EE0000'
+  secondary: '#253D86'
+  accent: '#EE0000'
+  alert: '#EE0000'
+  warning: '#F9A825'
+  success: '#2E7D32'
+  color0: '#FFFFFF'
+  color1: '#EE0000'
+  color2: '#2E7D32'
+  color3: '#F9A825'
+  color4: '#253D86'
+  color5: '#7B1FA2'
+  color6: '#0097A7'
+  color7: '#121212'
+  color8: '#E0E0E0'
+  color9: '#D32F2F'
+  color10: '#388E3C'
+  color11: '#FBC02D'
+  color12: '#1976D2'
+  color13: '#7B1FA2'
+  color14: '#0097A7'
+  color15: '#000000'
+layout:
+  active_border: rgba(EE0000FF) rgba(253D86FF) 45deg
+  inactive_border: rgba(E0E0E0FF)
+  nogroup_border: rgba(1a2529FF)
+  shadow_color: rgba(00000099)
+  groupbar_text_color: '#121212'
+  group_border_active: '#253D86'
+  group_border_inactive: '#FFFFFF'
+  group_border_locked_active: '#7B1FA2'
+  group_border_locked_inactive: '#E0E0E0'
+  groupbar_col_active: '#253D86'
+  groupbar_col_inactive: '#FFFFFF'
+  groupbar_col_locked_active: '#7B1FA2'
+  groupbar_col_locked_inactive: '#E0E0E0'
+  nogroup_border_active: rgba(ffff00ff)
+  glow_color: rgba(EE0000ee)
+  animation_style: classic
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(80, 80, 80, 0.88)
+  style:
+    size: 16

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Walker Service
+Exec=walker --gapplication-service
+Terminal=false
+NoDisplay=true

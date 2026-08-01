@@ -1,0 +1,24 @@
+-- --- Picture-in-Picture ---
+hl.window_rule({
+    name = "pip-initial-setup",
+    match = {
+        title = "(Picture.?in.?[Pp]icture)"
+    },
+    float = true,
+    pin = true,
+    size = { 600, 338 },
+    move = "(100%-window_w-40) 4%",
+    tag = "+pip"
+})
+
+
+hl.window_rule({
+    name = "pip-dynamic-behavior",
+    match = {
+        tag = "pip"
+    },
+    keep_aspect_ratio = true,
+    border_size = false,
+    opaque = true
+})
+

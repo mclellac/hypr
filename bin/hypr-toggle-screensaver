@@ -1,29 +1,22 @@
 #!/bin/bash
-#
-# Toggles the screensaver by creating or deleting a state file.
-
 set -euo pipefail
 
-readonly STATE_FILE="${HOME}/.local/state/hypr/toggles/screensaver-off"
 
-#######################################
-# Main function to toggle the screensaver.
-# Globals:
-#   STATE_FILE
-# Arguments:
-#   None
-# Outputs:
-#   None
-#######################################
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
 main() {
-  if [[ -f "${STATE_FILE}" ]]; then
-    rm -f "${STATE_FILE}"
-    notify-send "󱄄   Screensaver Enabled" -t 5000
-  else
-    mkdir -p "$(dirname "${STATE_FILE}")"
-    touch "${STATE_FILE}"
-    notify-send "󱄄   Screensaver Disabled" -t 5000
-  fi
+    check_help "$@"
+
+    hypr-toggle \
+      --enabled-notification "󱄄   Screensaver disabled" \
+      --disabled-notification "󱄄   Screensaver enabled" \
+      screensaver-off
 }
 
-main
+main "$@"

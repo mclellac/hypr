@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+# Cleans system packages and cache.
+
+set -euo pipefail
+
+# Source utility functions
+# This sets HYPR_PATH if not already set
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Cleans the system by removing unused packages (orphans) and clearing package caches.
+
+Options:
+  -h, --help    Show this help message and exit
+EOF
+}
+
+main() {
+    check_help "$@"
+
+    log_info "Starting system cleanup..."
+
+    # Clean pacman cache
+    log_info "Cleaning pacman cache..."
+    # Keep installed packages, remove uninstalled from cache.
+    # To remove ALL cache: -Scc. To keep installed: -Sc.
+    # We use -Sc for safety.
+    if command -v pacman &>/dev/null; then
+        sudo pacman -Sc --noconfirm < /dev/null || log_warn "Failed to clean pacman cache."
+    fi
+
+    # Remove orphans
+    log_info "Removing orphaned packages..."
+    if command -v pacman &>/dev/null; then
+        if orphans=$(pacman -Qtdq); then
+            echo "${orphans}" | sudo pacman -Rns - --noconfirm || log_warn "Failed to remove orphans."
+        else
+            log_info "No orphans found."
+        fi
+    fi
+
+    # Clean AUR helper cache (yay)
+    if command -v yay &>/dev/null; then
+        log_info "Cleaning yay cache..."
+        yay -Sc --noconfirm < /dev/null || log_warn "Failed to clean yay cache."
+    fi
+
+    log_info "System cleanup complete."
+}
+
+main "$@"

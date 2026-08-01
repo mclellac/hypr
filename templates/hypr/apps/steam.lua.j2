@@ -1,0 +1,56 @@
+-- --- Global Steam Behavior ---
+hl.window_rule({
+    name = "steam-global",
+    match = {
+        class = "^(steam|Steam)$"
+    },
+    float = true,
+    opacity = "1.0 1.0 override",
+    idle_inhibit = "fullscreen"
+})
+
+
+-- --- Steam Window Fixes ---
+-- Fix Steam login / startup windows not centering
+hl.window_rule({
+    name = "steam-login-center",
+    match = {
+        class = "^(steam|Steam)$",
+        title = "^(Steam Login|Sign in to Steam|Steam)$"
+    },
+    center = true
+})
+
+
+-- Tearing for games
+hl.window_rule({
+    name = "gaming-tearing",
+    match = {
+        class = "^(steam_app_.*|gamescope)$"
+    },
+    immediate = true
+})
+
+
+-- Specific sizing for the main Steam window
+hl.window_rule({
+    name = "steam-main-window",
+    match = {
+        class = "^(steam|Steam)$",
+        title = "^(Steam)$"
+    },
+    center = true,
+    size = { 1600, 1200 }
+})
+
+
+-- Specific sizing for the Friends List
+hl.window_rule({
+    name = "steam-friends-list",
+    match = {
+        class = "^(steam|Steam)$",
+        title = "^(Friends List)$"
+    },
+    size = { 460, 800 }
+})
+

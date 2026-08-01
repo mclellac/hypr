@@ -1,0 +1,366 @@
+{% from "partials/fonts.j2" import font_family, font_size, font_style %}
+/* -----------------------------------------------------------------------------
+ * Keyframes
+ * -------------------------------------------------------------------------- */
+
+@keyframes blink-warning {
+    70% {
+        color: @selection_background_color;
+    }
+
+    to {
+        color: @selection_background_color;
+        background-color: @warning_color;
+    }
+}
+
+@keyframes blink-critical {
+    0% {
+        box-shadow: 0 0 0px 0px alpha(@error_color, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0px 10px alpha(@error_color, 0);
+    }
+    100% {
+        box-shadow: 0 0 0px 0px alpha(@error_color, 0);
+    }
+}
+
+@keyframes pulse-accent {
+    0% {
+        background-color: @accent_color;
+    }
+    50% {
+        background-color: @error_color;
+    }
+    100% {
+        background-color: @accent_color;
+    }
+}
+
+/* -----------------------------------------------------------------------------
+ * Base styles
+ * -------------------------------------------------------------------------- */
+
+/* Reset all styles */
+* {
+    border: none;
+    /*border-radius: {{ theme.layout.rounding | default(0) }}px;*/
+    min-height: 0;
+    margin: 0;
+    padding: 0 {{ theme.waybar.style.padding | default(2) }}px;
+    font-family: "{{ font_family() }}", "JetBrainsMono Nerd Font", "JetBrainsMono Nerd Font Mono", "JetBrainsMono NF", "Roboto", sans-serif;
+}
+
+/* The whole bar */
+window#waybar {
+    background: @glass_background;
+    color: @foreground_color;
+    font-size: {{ theme.waybar.style.size | default(theme.fonts.size) | default(13) }}px;
+    border-bottom: 1px solid @glass_border;
+    transition: all 0.3s ease;
+}
+
+/* Left and Center modules */
+#custom-hypr,
+#submap {
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: {{ theme.layout.rounding | default(10) }}px;
+}
+
+/* Right modules */
+#custom-notifications,
+#custom-clipboard,
+#battery,
+#custom-audio,
+#custom-temperature,
+#backlight,
+#custom-playerctl,
+#privacy,
+#custom-power {
+    color: @foreground_color;
+    margin-left: {{ theme.waybar.style.margin | default(2) }}px;
+    margin-right: {{ theme.waybar.style.margin | default(2) }}px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: {{ theme.layout.rounding | default(10) }}px;
+}
+
+#custom-cpu {
+    color: @cpu_color;
+    margin-left: {{ theme.waybar.style.margin | default(2) }}px;
+    margin-right: {{ theme.waybar.style.margin | default(2) }}px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: {{ theme.layout.rounding | default(10) }}px;
+}
+
+#custom-memory {
+    color: @memory_color;
+    margin-left: {{ theme.waybar.style.margin | default(2) }}px;
+    margin-right: {{ theme.waybar.style.margin | default(2) }}px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: {{ theme.layout.rounding | default(10) }}px;
+}
+
+#custom-disk {
+    color: @disk_color;
+    margin-left: {{ theme.waybar.style.margin | default(2) }}px;
+    margin-right: {{ theme.waybar.style.margin | default(2) }}px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: {{ theme.layout.rounding | default(10) }}px;
+}
+
+#custom-network {
+    color: @network_color;
+    margin-left: {{ theme.waybar.style.margin | default(2) }}px;
+    margin-right: {{ theme.waybar.style.margin | default(2) }}px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: {{ theme.layout.rounding | default(10) }}px;
+}
+
+#custom-update {
+    color: @warning_color;
+    border-radius: {{ theme.layout.rounding | default(10) }}px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+#tray {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+/* -----------------------------------------------------------------------------
+ * Group styles
+ * -------------------------------------------------------------------------- */
+
+#hardware {
+    background-color: @group_background_color;
+    border: {{ theme.layout.border_size }}px solid {{ theme.waybar.colors.hardware_border | default('rgba(80, 80, 80, 0.88)') }};
+    color: rgba(255,255,255,1);
+    border-radius: {{ theme.layout.rounding | default(10) }}px;
+    margin: 1px 5px;
+    padding: 1px 2px;
+}
+
+#hardware > * {
+    margin: 0;
+    padding: 0 5px;
+    background: transparent;
+}
+
+/* Date and Time Group */
+#datetime {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+/* -----------------------------------------------------------------------------
+ * Module styles
+ * -------------------------------------------------------------------------- */
+
+#workspaces button.active {
+    color: @background_color;
+    background-color: @accent_color;
+}
+
+#custom-hypr {
+    color: @accent_color;
+}
+
+#clock {
+    color: @background_color;
+    background-color: @accent_color;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: {{ theme.layout.rounding | default(10) }}px 0 0 {{ theme.layout.rounding | default(10) }}px;
+}
+
+#battery.charging {
+    color: @error_color; /* Using Rose accent for charging */
+}
+
+#custom-weather {
+    color: @foreground_color;
+    background-color: @secondary_accent_color;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 0 {{ theme.layout.rounding | default(10) }}px {{ theme.layout.rounding | default(10) }}px 0;
+}
+
+#battery {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#battery.warning {
+    color: @warning_color;
+}
+
+#battery.critical {
+    color: @error_color;
+}
+
+#battery.warning.discharging {
+    animation-name: blink-warning;
+    animation-duration: 3s;
+}
+
+#battery.critical.discharging {
+    animation-name: blink-critical;
+    animation-duration: 2s;
+}
+
+#custom-cpu.warning {
+    color: @warning_color;
+}
+
+#custom-cpu.critical {
+    color: @error_color;
+}
+
+#custom-hypr {
+    padding-left: 8px;
+    padding-right: 13px;
+}
+
+#custom-memory {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#custom-memory.warning {
+    color: @warning_color;
+}
+
+#custom-memory.critical {
+    color: @error_color;
+    animation-name: blink-critical;
+    animation-duration: 2s;
+}
+
+#submap {
+    background: @background_color;
+}
+
+#custom-network.disconnected {
+    color: @warning_color;
+}
+
+#custom-audio.muted {
+    color: #808080;
+    opacity: 0.5;
+}
+
+#custom-audio.vol-25 {
+    color: @accent_color;
+    opacity: 0.5;
+}
+
+#custom-audio.vol-50 {
+    color: @accent_color;
+    opacity: 0.65;
+}
+
+#custom-audio.vol-75 {
+    color: @accent_color;
+    opacity: 0.8;
+}
+
+#custom-audio.vol-100 {
+    color: @accent_color;
+    opacity: 1.0;
+}
+
+#custom-temperature {
+    color: @foreground_color;
+}
+
+#custom-temperature.critical {
+    color: @error_color;
+}
+
+#workspaces {
+    background-color: @group_background_color;
+    border: {{ theme.layout.border_size }}px solid {{ theme.waybar.colors.hardware_border | default('rgba(80, 80, 80, 0.88)') }};
+    margin: 1px 5px;
+    padding: 1px 2px;
+    border-radius: {{ theme.layout.rounding | default(10) }}px;
+}
+
+#workspaces button {
+    margin: 0 2px;
+    padding: 0 6px;
+    color: @foreground_color;
+    border-radius: {{ theme.layout.rounding | default(10) }}px;
+    transition: all 0.2s ease;
+}
+
+#workspaces button.active {
+    color: @background_color;
+    background-color: @accent_color;
+}
+
+#workspaces button.urgent {
+    background-color: @error_color;
+    color: @background_color;
+    animation: blink-critical 1s steps(12) infinite;
+}
+
+#workspaces button:hover {
+    color: @accent_color;
+}
+
+#privacy {
+    color: @accent_color;
+}
+
+tooltip {
+  border-radius: {{ theme.layout.rounding | default(10) }}px;
+  padding: 15px;
+  margin: 20px;
+  border: {{ theme.layout.border_size }}px solid @accent_color;
+  background-color: @background_color;
+
+  /* Use a more compatible shadow format for GTK 3 */
+  {%- set shadow_offset = theme.layout.shadow_offset | default("0 5") %}
+  {%- set shadow_parts = shadow_offset | split %}
+  {%- set shadow_color_hex = theme.layout.shadow_color | default(theme.colors.primary | hypr_shadow) | hypr_color %}
+  box-shadow: {{ shadow_parts[0] | default(0) }}px {{ shadow_parts[1] | default(5) }}px {{ theme.layout.shadow_range | default(15) }}px alpha({{ shadow_color_hex[0:7] }}, 0.6);
+}
+
+tooltip label {
+  padding: 5px;
+  margin: 5px;
+  color: @foreground_color;
+}
+
+#custom-update.empty {
+    padding: 0;
+    margin: 0;
+}
+
+#custom-voxtype {
+    color: @accent_color;
+}
+
+#custom-voxtype.recording {
+    color: @error_color;
+    animation-name: blink-critical;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}

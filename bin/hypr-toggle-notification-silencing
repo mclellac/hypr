@@ -1,0 +1,27 @@
+#!/bin/bash
+set -euo pipefail
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    makoctl mode -t do-not-disturb
+
+    if makoctl mode | grep -q 'do-not-disturb'; then
+      notify-send -u low "󰂛    Silenced notifications"
+    else
+      notify-send -u low "󰂚    Enabled notifications"
+    fi
+
+    pkill -RTMIN+10 waybar
+}
+
+main "$@"

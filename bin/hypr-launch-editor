@@ -1,0 +1,36 @@
+#!/bin/bash
+set -euo pipefail
+
+# Launch the default editor as determined by $EDITOR (set via ~/.config/uwsm/default) (or nvim if missing).
+# Starts suitable editors in a terminal window and otherwise as a regular application.
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    hypr-cmd-present "$EDITOR" || EDITOR=nvim
+
+    case "$EDITOR" in
+    nvim | vim | nano | micro | hx | helix | fresh)
+      exec hypr-launch-tui "$EDITOR" "$@"
+      ;;
+    *)
+      if is_uwsm_active; then
+          exec setsid uwsm-app -- "$EDITOR" "$@"
+      else
+          exec setsid "$EDITOR" "$@"
+      fi
+      ;;
+    esac
+}
+
+main "$@"
+

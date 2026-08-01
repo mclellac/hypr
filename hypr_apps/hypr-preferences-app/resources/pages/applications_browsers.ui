@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkBox" id="page_content"><property name="orientation">vertical</property><property name="spacing">12</property>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title">General</property>
+        <child>
+          <object class="AdwComboRow" id="default_browser_combo">
+            <property name="title">Default Web Browser</property>
+            <property name="subtitle">The primary browser for opening links</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title">Chromium Flags</property>
+        <property name="description">Additional command-line flags for Chromium-based browsers</property>
+        <child>
+          <object class="AdwExpanderRow">
+            <property name="title">Edit Chromium Flags</property>
+            <property name="subtitle">~/.config/chromium-flags.conf</property>
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="min-content-height">150</property>
+                <property name="vexpand">True</property>
+                <property name="child">
+                  <object class="GtkTextView" id="chromium_flags_editor">
+                    <property name="monospace">True</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title">Brave Flags</property>
+        <property name="description">Additional command-line flags for Brave browser</property>
+        <child>
+          <object class="AdwExpanderRow">
+            <property name="title">Edit Brave Flags</property>
+            <property name="subtitle">~/.config/brave-flags.conf</property>
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="min-content-height">150</property>
+                <property name="vexpand">True</property>
+                <property name="child">
+                  <object class="GtkTextView" id="brave_flags_editor">
+                    <property name="monospace">True</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title">Web Applications</property>
+        <property name="description">Manage installed progressive web apps</property>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title">Install New Web App</property>
+            <property name="subtitle">Launch the web app installer script</property>
+            <property name="activatable-widget">install_webapp_btn</property>
+            <child>
+              <object class="GtkButton" id="install_webapp_btn">
+                <property name="label">Install</property>
+                <property name="valign">center</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup" id="webapps_list_group">
+        <property name="title">Installed Web Apps</property>
+      </object>
+    </child>
+  </object>
+</interface>

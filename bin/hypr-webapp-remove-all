@@ -1,0 +1,52 @@
+#!/bin/bash
+set -euo pipefail
+
+# Remove all web apps installed via hypr-webapp-install.
+# Identifies web apps by their Exec pattern (hypr-launch-webapp or hypr-webapp-handler).
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    set -e
+
+    APP_DIR="${1:-$HOME/.local/share/applications}"
+    ICON_DIR="$HOME/.local/share/applications/icons"
+
+    log_info "Scanning for web apps in $APP_DIR..."
+
+    webapp_desktop_files=()
+    while IFS= read -r -d '' file; do
+      if grep -q "Exec=hypr-launch-webapp\|Exec=hypr-webapp-handler" "$file" 2>/dev/null; then
+        webapp_desktop_files+=("$file")
+      fi
+    done < <(find "$APP_DIR" -maxdepth 1 -name "*.desktop" -print0 2>/dev/null)
+
+    if (( ${#webapp_desktop_files[@]} == 0 )); then
+      log_info "No web apps found."
+      exit 0
+    fi
+
+    for file in "${webapp_desktop_files[@]}"; do
+      app_name=$(basename "$file" .desktop)
+      log_info "Removing web app: $app_name"
+      rm -f "$file"
+      rm -f "$ICON_DIR/$app_name.png"
+    done
+
+    if command -v update-desktop-database &>/dev/null; then
+      update-desktop-database "$APP_DIR" &>/dev/null || true
+    fi
+
+    log_info "Web apps removed successfully."
+}
+
+main "$@"

@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# Checks if an NVIDIA GPU with GSP firmware (Turing or newer) is active.
+
+set -euo pipefail
+
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    echo "Usage: $(basename "$0")"
+    echo
+    echo "Returns 0 if an NVIDIA GPU with GSP firmware is present, 1 otherwise."
+}
+
+main() {
+    check_help "$@"
+
+    if hypr-hw check nvidia; then
+        if [[ -f /proc/driver/nvidia/gsp/firmware_version ]] || lspci | grep -iE "(VGA|3D).*NVIDIA" | grep -iE "(RTX|GTX 16|Turing|Ampere|Ada|Hopper|Blackwell)" >/dev/null; then
+            exit 0
+        fi
+    fi
+
+    exit 1
+}
+
+main "$@"

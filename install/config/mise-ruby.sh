@@ -10,7 +10,8 @@ set -euo pipefail
 #######################################
 main() {
   if command -v mise &>/dev/null; then
-    echo "Configuring mise for Ruby..."
+    print_header "Configuring Ruby Environment"
+    log_info "Configuring mise for Ruby..."
 
     # Set Ruby build options to use gcc-14 for compatibility.
     mise settings set ruby.ruby_build_opts "CC=gcc-14 CXX=g++-14"
@@ -18,9 +19,9 @@ main() {
     # Configure mise to automatically trust and use .ruby-version files.
     mise settings add idiomatic_version_file_enable_tools ruby
 
-    echo "mise Ruby configuration complete."
+    log_info "mise Ruby configuration complete."
   else
-    echo "Warning: mise command not found. Skipping Ruby configuration."
+    log_info "Warning: mise command not found. Skipping Ruby configuration."
   fi
 }
 

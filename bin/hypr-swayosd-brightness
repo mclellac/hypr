@@ -1,0 +1,30 @@
+#!/bin/bash
+set -euo pipefail
+
+# Display brightness level using SwayOSD on the current monitor.
+# Usage: hypr-swayosd-brightness <percent>
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    percent="$1"
+
+    progress="$(awk -v p="$percent" 'BEGIN{printf "%.2f", p/100}')"
+    [[ $progress == "0.00" ]] && progress="0.01"
+
+    hypr-swayosd-client \
+      --custom-icon display-brightness-symbolic \
+      --custom-progress "$progress" \
+      --custom-progress-text "${percent}%"
+}
+
+main "$@"

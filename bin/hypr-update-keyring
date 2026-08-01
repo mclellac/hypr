@@ -1,0 +1,34 @@
+#!/bin/bash
+set -euo pipefail
+
+# Ensure we have the hypr-keyring and it's populated
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    if hypr-pkg-missing hypr-keyring || ! sudo pacman-key --list-keys 40DFB630FF42BCFFB047046CF0134EE680CAC571 &>/dev/null; then
+      sudo pacman-key --recv-keys 40DFB630FF42BCFFB047046CF0134EE680CAC571 --keyserver keys.openpgp.org
+      sudo pacman-key --lsign-key 40DFB630FF42BCFFB047046CF0134EE680CAC571
+
+      # This is generally not a good idea, but this is a special case because we're going to be updating
+      # the full set of packages in hypr-update-system-pkgs right after this (and it needs latest keyring)!
+      sudo pacman -Sy
+      hypr-pkg-add hypr-keyring
+
+      sudo pacman-key --list-keys 40DFB630FF42BCFFB047046CF0134EE680CAC571
+    fi
+
+    # Ensure we have the latest archlinux-keyring, maintainer keys might have changed
+    echo -e "\e[32m\nUpdate Arch signing keys\e[0m"
+    sudo pacman -Sy --noconfirm archlinux-keyring >/dev/null
+}
+
+main "$@"

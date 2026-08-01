@@ -1,0 +1,45 @@
+#!/bin/bash
+#
+# Configures the system for VMware hardware acceleration (vGPU).
+# Ensures drivers are installed and environment variables are set.
+
+set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    log_info "Configuring VMware guest for hardware acceleration..."
+
+    if ! hypr-hw check vmware; then
+        log_warn "VMware not detected. This script is intended for VMware guests."
+        if ! gum confirm "Proceed anyway?"; then
+            exit 0
+        fi
+    fi
+
+    # Install necessary packages for VMware 3D acceleration
+    # - mesa: Core OpenGL/Vulkan support
+    # - open-vm-tools: Guest integration
+    # - xf86-video-vmware: Fallback driver (optional but good for XWayland)
+    local -a packages=("mesa" "open-vm-tools" "xf86-video-vmware")
+    
+    log_info "Ensuring VMware driver packages are installed..."
+    hypr-pkg-add "${packages[@]}"
+
+    # Enable and start open-vm-tools services
+    log_info "Ensuring open-vm-tools services are active..."
+    activate_service "vmtoolsd.service"
+    activate_service "vmware-vmblock-fuse.service"
+
+    log_info "VMware guest configuration complete."
+    log_info "Note: Hardware acceleration is now enabled in the environment templates."
+    log_info "Please run 'hypr-refresh-config' and restart your session to apply."
+}
+
+main "$@"

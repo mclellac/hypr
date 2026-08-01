@@ -1,0 +1,97 @@
+# Changes require a restart to take effect.
+
+# Ensure Omarchy bins are in the path
+export HYPR_PATH={{ HYPR_PATH }}
+export PATH=$HYPR_PATH/bin:$PATH:$HOME/.local/bin
+
+# Set default terminal and editor
+source ~/.config/uwsm/default
+
+# Activate mise if present on the system
+hypr-cmd-present mise && eval "$(mise activate bash --shims)"
+
+# --- Toolkit Settings ---
+
+# Cursor settings
+export XCURSOR_SIZE=24
+export HYPRCURSOR_SIZE=24
+
+# XDG Session Settings
+export XDG_CURRENT_DESKTOP="Hyprland"
+export XDG_SESSION_TYPE="wayland"
+export XDG_SESSION_DESKTOP="Hyprland"
+
+# GDK / GTK settings
+export GDK_BACKEND="wayland,x11,*"
+# GDK_SCALE must be an integer. Use GDK_DPI_SCALE for fractional.
+{% if theme.gtk.gdk_scale | default(1) != 1 -%}
+export GDK_SCALE={{ theme.gtk.gdk_scale }}
+{%- endif %}
+{% if theme.gtk.gdk_dpi_scale | default(1.0) != 1.0 -%}
+export GDK_DPI_SCALE={{ theme.gtk.gdk_dpi_scale }}
+{%- endif %}
+
+# QT settings
+export QT_QPA_PLATFORM="wayland;xcb"
+export QT_STYLE_OVERRIDE="kvantum"
+# Use qt6ct/qt5ct as the platform theme for best compatibility with Kvantum
+export QT_QPA_PLATFORMTHEME="qt6ct"
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+# Scaling settings - Only set if non-default to avoid interfering with Wayland's auto-detection
+{% if theme.gtk.qt_scale_factor | default(1.0) != 1.0 -%}
+export QT_SCALE_FACTOR={{ theme.gtk.qt_scale_factor }}
+export QT_AUTO_SCREEN_SCALE_FACTOR=0
+{%- endif %}
+{% if theme.gtk.text_scaling_factor | default(1.0) != 1.0 -%}
+export QT_FONT_DPI={{ (theme.gtk.text_scaling_factor * 96) | int }}
+{%- endif %}
+
+# Font rendering environment variables
+export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dsun.java2d.xrender=true"
+export FREETYPE_PROPERTIES="truetype:interpreter-version=40"
+
+# KDE Compatibility
+
+export KDE_SESSION_VERSION=6
+export KDE_FULL_SESSION=true
+
+# Toolkit Backends
+export CLUTTER_BACKEND="wayland"
+export SDL_VIDEODRIVER="wayland"
+export MOZ_ENABLE_WAYLAND=1
+export ELECTRON_OZONE_PLATFORM_HINT="wayland"
+export OZONE_PLATFORM="wayland"
+export XDG_MENU_PREFIX="plasma-"
+
+
+# Use XCompose file
+export XCOMPOSEFILE="$HOME/.XCompose"
+
+{% if is_vm -%}
+# --- VM Specific Overrides ---
+# GTK4 renderer: "gl" is now the new unified renderer (formerly ngl).
+# In VMs, we follow the mandate to manage these via Hyprland config (vm_defaults.lua).
+# export GSK_RENDERER="gl"
+
+{% if is_virgl -%}
+# virgl (VirtIO GPU) is highly optimized for QEMU/KVM on ARM64/Apple Silicon
+export MESA_LOADER_DRIVER_OVERRIDE="virtio_gpu"
+# Force OpenGL 3.3+ support for Alacritty and other modern apps in VM
+export MESA_GL_VERSION_OVERRIDE=3.3
+export MESA_GLSL_VERSION_OVERRIDE=330
+{% elif is_vmware -%}
+# VMware performance and compatibility
+export MESA_LOADER_DRIVER_OVERRIDE="vmwgfx"
+export LIBGL_ALWAYS_SOFTWARE=1
+{% else -%}
+# Generic VM fallback
+export LIBGL_ALWAYS_SOFTWARE=1
+{% endif -%}
+
+# Input method for VM
+export QT_IM_MODULE=fcitx
+export XMODIFIERS="@im=fcitx"
+export SDL_IM_MODULE=fcitx
+export GLFW_IM_MODULE=ibus
+export INPUT_METHOD=fcitx
+{%- endif %}

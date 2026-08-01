@@ -1,0 +1,38 @@
+#!/bin/bash
+set -euo pipefail
+
+# Set the power profile to the requested level, falling back to balanced
+# if the requested profile isn't available on this machine.
+#
+# Usage: hypr-powerprofiles-set <ac|battery>
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    mapfile -t profiles < <(powerprofilesctl list | awk '/^\s*[* ]\s*[a-zA-Z0-9\-]+:$/ { gsub(/^[*[:space:]]+|:$/,""); print }')
+
+    case "$1" in
+      ac)
+        # Prefer performance, fall back to balanced
+        if [[ " ${profiles[*]} " == *" performance "* ]]; then
+          powerprofilesctl set performance
+        else
+          powerprofilesctl set balanced
+        fi
+        ;;
+      battery)
+        powerprofilesctl set balanced
+        ;;
+    esac
+}
+
+main "$@"

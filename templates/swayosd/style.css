@@ -1,0 +1,29 @@
+{% from "partials/colors.j2" import get_color %}
+{% from "partials/fonts.j2" import font_family, font_size, font_style %}
+window {
+  border-radius: {{ theme.layout.rounding | default(0) }}px;
+  opacity: 0.97;
+  border: {{ theme.layout.border_size }}px solid {{ theme.layout.active_border | hypr_color | default("#33ccff") }};
+  background-color: {{ get_color('background') | hypr_color | default("#1a1b26")  }};
+}
+
+* {
+  font-family: '{{ font_family() }}';
+}
+
+label {
+  font-size: {{ font_size(theme.swayosd.font_size, 14) }}px;
+  color: {{ get_color('foreground') | hypr_color | default("#cdd6f4")  }};
+}
+
+image {
+  color: {{ get_color('primary') | hypr_color | default("#89b4fa")  }};
+}
+
+progressbar {
+  border-radius: {{ theme.layout.rounding | default(0) }}px;
+}
+
+progress {
+  background-color: {{ get_color('primary') | hypr_color | default("#89b4fa")  }};
+}

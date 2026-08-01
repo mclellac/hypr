@@ -1,0 +1,62 @@
+name: Rose Pine Moon
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#232136'
+  foreground: '#e0def4'
+  cursor: '#908caa'
+  cursor_text: '#232136'
+  selection_bg: '#44415a'
+  selection_fg: '#e0def4'
+  primary: '#9ccfd8'
+  secondary: '#9ccfd8'
+  alert: '#eb6f92'
+  warning: '#f6c177'
+  success: '#3e8fb0'
+  color0: '#393552'
+  color1: '#eb6f92'
+  color2: '#3e8fb0'
+  color3: '#f6c177'
+  color4: '#9ccfd8'
+  color5: '#c4a7e7'
+  color6: '#ea9a97'
+  color7: '#e0def4'
+  color8: '#6e6a86'
+  color9: '#eb6f92'
+  color10: '#3e8fb0'
+  color11: '#f6c177'
+  color12: '#9ccfd8'
+  color13: '#c4a7e7'
+  color14: '#ea9a97'
+  color15: '#e0def4'
+  accent: '#9ccfd8'
+  url_color: '#c4a7e7'
+layout:
+  active_border: '#9ccfd8ff'
+  inactive_border: '#393552ff'
+  groupbar_text_color: '#e0def4'
+  group_border_active: '#9ccfd8'
+  group_border_inactive: '#393552'
+  group_border_locked_active: '#c4a7e7'
+  group_border_locked_inactive: '#6e6a86'
+  groupbar_col_active: '#9ccfd8'
+  groupbar_col_inactive: '#393552'
+  groupbar_col_locked_active: '#c4a7e7'
+  groupbar_col_locked_inactive: '#6e6a86'
+  nogroup_border: '#393552'
+  nogroup_border_active: '#9ccfd8'
+  glow_color: '#9ccfd8ee'
+  shadow_color: '#2321367b'
+  animation_style: bouncy
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(57, 53, 82, 0.53)
+  style:
+    size: 16

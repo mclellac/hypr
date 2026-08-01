@@ -1,0 +1,244 @@
+-- --- General System Rules ---
+
+-- Fix dragging issues with XWayland
+hl.window_rule({
+    name = "xwayland-tooltip-fix",
+    match = {
+        class = [=[^$]=],
+        title = [=[^$]=],
+        xwayland = true,
+        float = true
+    },
+    fullscreen = false,
+    pin = false,
+    no_focus = true
+})
+
+
+-- --- Tools & Floating Utilities ---
+
+-- Generic floating window behavior
+hl.window_rule({
+    name = "floating-window-behavior",
+    match = {
+        tag = [=[floating-window]=]
+    },
+    float = true,
+    center = true,
+    size = { {{ theme.hypr.window.size.floating | default('1100 800') | replace(' ', ', ') }} }
+})
+
+
+-- Window rules for floating windows launched by hypr-exec
+hl.window_rule({
+    name = "hypr-exec-float",
+    match = {
+        tag = [=[floating-window]=]
+    },
+    float = true,
+    size = { {{ theme.hypr.window.size.floating | default('1100 800') | replace(' ', ', ') }} },
+    center = true
+})
+
+
+hl.window_rule({
+    name = "hypr-exec-class-float",
+    match = {
+        class = [=[^(hypr-exec)$]=]
+    },
+    float = true,
+    size = { {{ theme.hypr.window.size.floating | default('1100 800') | replace(' ', ', ') }} },
+    center = true
+})
+
+
+hl.window_rule({
+    name = "hypr-exec-title-float",
+    match = {
+        initial_title = [=[^(hypr-exec)$]=]
+    },
+    float = true,
+    size = { {{ theme.hypr.window.size.floating | default('1100 800') | replace(' ', ', ') }} },
+    center = true
+})
+
+
+-- Window rule for the Hyprland Preferences App
+hl.window_rule({
+    name = "hypr-preferences-app-float",
+    match = {
+        class = [=[^(com.github.mclellac.hypr-preferences-app)$]=]
+    },
+    float = true,
+    size = { {{ theme.hypr.window.size.floating | default('1100 800') | replace(' ', ', ') }} },
+    center = true
+})
+
+
+-- Window rule for the Keybindings Editor
+hl.window_rule({
+    name = "keybindings-editor-float",
+    match = {
+        class = [=[^(com.github.hypr_apps.keybindings_editor)$]=]
+    },
+    float = true,
+    size = { {{ theme.hypr.window.size.editor | default('1600 800') | replace(' ', ', ') }} },
+    center = true
+})
+
+
+-- Window rule for the Theme Creator
+hl.window_rule({
+    name = "theme-creator-float",
+    match = {
+        class = [=[^(com.github.hyprland.theme_creator)$]=]
+    },
+    float = true,
+    size = { {{ theme.hypr.window.size.creator | default('1100 700') | replace(' ', ', ') }} },
+    center = true
+})
+
+
+-- Fix Select Directory dialog (xdg-desktop-portal-gtk)
+hl.window_rule({
+    name = "select-directory-dialog",
+    match = {
+        class = [=[^(xdg-desktop-portal-gtk)$]=],
+        title = [=[^(Select Directory)$]=]
+    },
+    float = true,
+    size = { {{ theme.hypr.window.size.dialog | default('900 600') | replace(' ', ', ') }} },
+    center = true
+})
+
+
+-- Fix Color Picker (Pick a Color)
+hl.window_rule({
+    name = "color-picker-float",
+    match = {
+        title = [=[^(Pick a Color)$]=]
+    },
+    float = true,
+    size = { 700, 500 },
+    center = true
+})
+
+
+-- Solaar Floating Window
+hl.window_rule({
+    name = "solaar-float",
+    match = {
+        class = [=[^(solaar)$]=]
+    },
+    float = true,
+    size = { 800, 600 },
+    center = true
+})
+
+
+-- --- JetBrains Fixes ---
+hl.window_rule({
+    name = "jetbrains-popup-fix",
+    match = {
+        class = [=[(.*jetbrains.*)$]=],
+        title = [=[^$]=],
+        float = true
+    },
+    size = [=[50% 50%]=]
+})
+
+
+hl.window_rule({
+    name = "jetbrains-tab-drag-fix",
+    match = {
+        class = [=[^(.*jetbrains.*)$]=],
+        title = [=[^\\s$]=]
+    },
+    no_initial_focus = true,
+    no_focus = true
+})
+
+
+-- --- Media & Opaque Overrides ---
+hl.window_rule({
+    name = "media-opaque-override",
+    match = {
+        class = [=[^(zoom|vlc|mpv|org.kde.kdenlive|com.obsproject.Studio|com.github.PintaProject.Pinta|imv|org.gnome.NautilusPreviewer)$]=]
+    },
+    tag = [=[-default-opacity]=],
+    opacity = [=[1.0 1.0 override]=]
+})
+
+
+-- --- Screensaver ---
+hl.window_rule({
+    name = "screensaver-fullscreen",
+    match = {
+        class = [=[(Screensaver|org.hypr.screensaver)]=]
+    },
+    fullscreen = true,
+    float = true,
+    animation = [=[slide]=]
+})
+
+
+-- --- Semantic Tags & Blocks ---
+
+-- Assign the tag to simple classes
+hl.window_rule({
+    name = "tag-simple-floats",
+    match = {
+        class = [=[(blueberry.py|Impala|Wiremix|org.gnome.NautilusPreviewer|org.hypr.bluetui|org.hypr.impala|org.hypr.wiremix|org.hypr.btop|org.hypr.terminal|org.hypr.bash|org.gnome.Evince|com.gabm.satty|hypr|About|TUI.float|org.keepassxc.KeePassXC|keepassxc|nwg-look|nm-connection-editor|blueman-manager|org.pulseaudio.pavucontrol|pavucontrol|org.kde.polkit-kde-authentication-agent-1|polkit-gnome-authentication-agent-1|com.example.HyprlandPreferences|com.github.mclellac.hypr-preferences-app|org.gnome.Calculator|org.gnome.Nautilus|nautilus|akamaistaging|AkamaiStaging|woes|Woes)]=]
+    },
+    tag = [=[+floating-window]=]
+})
+
+
+-- Assign the tag to specific windows (e.g., File Pickers)
+hl.window_rule({
+    name = "tag-file-pickers",
+    match = {
+        class = [=[(xdg-desktop-portal-gtk|sublime_text|DesktopEditors|org.gnome.Nautilus)]=],
+        title = [=[^(Open.*Files?|Open [F|f]older.*|Save.*Files?|Save.*As|Save|All Files|.*wants to [open|save].*|[C|c]hoose.*)]=]
+    },
+    tag = [=[+floating-window]=]
+})
+
+
+-- Assign the tag to generic dialogs
+hl.window_rule({
+    name = "tag-general-dialogs",
+    match = {
+        title = [=[^(Open.*Files?|Open [F|f]older.*|Save.*Files?|Save.*As|Save|All Files|Confirm|Error|Warning|Properties|Preferences|Question|Info)]=]
+    },
+    tag = [=[+floating-window]=]
+})
+
+
+-- Popped window rounding
+hl.window_rule({
+    name = "pop-rounding",
+    match = {
+        tag = [=[pop]=]
+    },
+    rounding = 8
+})
+
+
+-- Prevent idle while open
+hl.window_rule({
+    name = "prevent-idle",
+    match = {
+        tag = [=[noidle]=]
+    },
+    idle_inhibit = [=[always]=]
+})
+
+
+-- --- Waybar Glassmorphism ---
+hl.config({
+    layerrule = {
+        "blur, waybar",
+        "ignorealpha 0.7, waybar",
+    }
+})

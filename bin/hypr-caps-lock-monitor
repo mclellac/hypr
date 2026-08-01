@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+"""
+Background monitor for Caps Lock state.
+Triggers OSD when state changes without intercepting the key event.
+"""
+import json
+import os
+import subprocess
+import time
+
+# pylint: disable=invalid-name
+
+HYPR_PATH = os.environ.get("HYPR_PATH", os.path.expanduser("~/.local/share/hypr"))
+OSD_BIN = os.path.join(HYPR_PATH, "bin", "hypr-caps-lock-osd")
+
+
+def get_caps_lock_state():
+    """Returns True if Caps Lock is ON for any physical keyboard."""
+    try:
+        result = subprocess.run(
+            ["hyprctl", "devices", "-j"],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        data = json.loads(result.stdout)
+        
+        # Check physical keyboards
+        for k in data.get("keyboards", []):
+            if "virtual" in k.get("name", "").lower():
+                continue
+            if k.get("capsLock"):
+                return True
+        return False
+    except Exception:  # pylint: disable=broad-except
+        return None
+
+
+def trigger_osd(is_on):
+    """Triggers the OSD via swayosd."""
+    msg = "Caps Lock ON" if is_on else "Caps Lock OFF"
+    subprocess.run([
+        "hypr-swayosd-client",
+        "--custom-message", msg,
+        "--custom-icon", "input-keyboard-symbolic"
+    ], stderr=subprocess.DEVNULL, check=False)
+
+
+def main():
+    """Main loop for caps lock monitor."""
+    last_state = get_caps_lock_state()
+    
+    # Run polling loop
+    while True:
+        time.sleep(0.15) # 150ms is reactive but low CPU
+        current_state = get_caps_lock_state()
+        
+        if current_state is not None and current_state != last_state:
+            trigger_osd(current_state)
+            last_state = current_state
+
+
+if __name__ == "__main__":
+    main()

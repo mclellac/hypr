@@ -1,9 +1,17 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Sets up various development environments using 'mise' for version management
 # and system package managers for other dependencies.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Installs PHP and its common extensions using pacman and sed.
@@ -15,16 +23,16 @@ set -euo pipefail
 #   None
 #######################################
 install_php() {
-  echo "Installing PHP and related dependencies..."
+  log_info "Installing PHP and related dependencies..."
   sudo pacman -S --noconfirm --needed php composer php-sqlite
 
   if ! grep -q 'composer/vendor/bin' "${HOME}/.bashrc"; then
-    echo "Adding Composer's global bin directory to PATH in ~/.bashrc..."
+    log_info "Adding Composer's global bin directory to PATH in ~/.bashrc..."
     echo 'export PATH="$HOME/.config/composer/vendor/bin:$PATH"' >>"${HOME}/.bashrc"
-    echo "Please start a new terminal session for this change to take effect."
+    log_info "Please start a new terminal session for this change to take effect."
   fi
 
-  echo "Enabling core PHP extensions in php.ini..."
+  log_info "Enabling core PHP extensions in php.ini..."
   local php_ini_path="/etc/php/php.ini"
   local extensions=("bcmath" "intl" "iconv" "openssl" "pdo_sqlite" "pdo_mysql")
   for ext in "${extensions[@]}"; do
@@ -44,7 +52,7 @@ install_php() {
 #   None
 #######################################
 install_node() {
-  echo "Installing Node.js (LTS)..."
+  log_info "Installing Node.js (LTS)..."
   mise use --global node@lts
 }
 
@@ -61,7 +69,7 @@ install_node() {
 install_with_mise() {
   local name="$1"
   local tool_version="$2"
-  echo "Installing ${name}..."
+  log_info "Installing ${name}..."
   mise use --global "${tool_version}"
 }
 
@@ -75,6 +83,7 @@ install_with_mise() {
 #   Exits with an error if dependencies are missing or an unknown env is specified.
 #######################################
 main() {
+    check_help "$@"
   if ! command -v mise &>/dev/null; then
     echo "Error: 'mise' command not found. Please install it first." >&2
     exit 1
@@ -89,7 +98,7 @@ main() {
   case "${env_target}" in
   ruby)
     install_with_mise "Ruby" "ruby@latest"
-    echo "Installing Rails gem..."
+    log_info "Installing Rails gem..."
     mise x ruby -- gem install rails --no-document
     ;;
   node)
@@ -110,36 +119,36 @@ main() {
   laravel)
     install_php
     install_node
-    echo "Installing Laravel installer via Composer..."
+    log_info "Installing Laravel installer via Composer..."
     composer global require laravel/installer
     ;;
   symfony)
     install_php
-    echo "Installing Symfony CLI..."
+    log_info "Installing Symfony CLI..."
     hypr-pkg-add symfony-cli
     ;;
   python)
     install_with_mise "Python" "python@latest"
-    echo "Installing uv package manager..."
+    log_info "Installing uv package manager..."
     curl -fsSL https://astral.sh/uv/install.sh | sh
     ;;
   elixir)
     install_with_mise "Erlang" "erlang@latest"
     install_with_mise "Elixir" "elixir@latest"
-    echo "Running mix local.hex..."
+    log_info "Running mix local.hex..."
     mise x elixir -- mix local.hex --force
     ;;
   phoenix)
     install_with_mise "Erlang" "erlang@latest"
     install_with_mise "Elixir" "elixir@latest"
-    echo "Running mix local.hex and local.rebar..."
+    log_info "Running mix local.hex and local.rebar..."
     mise x elixir -- mix local.hex --force
     mise x elixir -- mix local.rebar --force
-    echo "Installing Phoenix installer..."
+    log_info "Installing Phoenix installer..."
     mise x elixir -- mix archive.install hex phx_new --force
     ;;
   rust)
-    echo "Installing Rust via rustup..."
+    log_info "Installing Rust via rustup..."
     bash -c "$(curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs)" -- -y
     ;;
   java)
@@ -149,7 +158,7 @@ main() {
     install_with_mise "Zig" "zig@latest"
     ;;
   ocaml)
-    echo "Installing OCaml via opam..."
+    log_info "Installing OCaml via opam..."
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)"
     opam init --yes
     eval "$(opam env)"

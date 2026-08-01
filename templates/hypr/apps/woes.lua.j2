@@ -1,0 +1,20 @@
+-- --- Woes ---
+hl.window_rule({
+    name = "woes-float",
+    match = {
+        class = [=[^(?i).*(woes).*$]=]
+    },
+    float = true,
+    center = true,
+    size = { 1100, 700 }
+})
+
+hl.window_rule({
+    name = "woes-title-float",
+    match = {
+        title = [=[^(?i).*(woes).*$]=]
+    },
+    float = true,
+    center = true,
+    size = { 1100, 700 }
+})

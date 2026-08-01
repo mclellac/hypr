@@ -1,0 +1,61 @@
+name: Green Monster
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#05100D'
+  foreground: '#D0F4EA'
+  cursor: '#00FF9F'
+  cursor_text: '#05100D'
+  selection_bg: '#1F4D43'
+  selection_fg: '#D0F4EA'
+  primary: '#00ff9f'
+  secondary: '#00d998'
+  alert: '#ff4b4b'
+  warning: '#e9ff70'
+  success: '#00ff9f'
+  color0: '#141B19'
+  color1: '#FF5C5C'
+  color2: '#00FF9F'
+  color3: '#E9FF70'
+  color4: '#00D998'
+  color5: '#7CFFCB'
+  color6: '#00CCFF'
+  color7: '#D0F4EA'
+  color8: '#2A3834'
+  color9: '#FF8585'
+  color10: '#33FFB2'
+  color11: '#F0FF99'
+  color12: '#00F2AA'
+  color13: '#A3FFE0'
+  color14: '#66E0FF'
+  color15: '#F0FFFB'
+  accent: '#00D998'
+layout:
+  active_border: rgba(00ff9fff) rgba(00d998ff) 45deg
+  inactive_border: rgba(141b19ff)
+  nogroup_border: rgba(1a202cff)
+  groupbar_text_color: '#d0f4ea'
+  group_border_active: '#00d998'
+  group_border_inactive: '#141b19'
+  group_border_locked_active: '#7cffcb'
+  group_border_locked_inactive: '#2a3834'
+  groupbar_col_active: '#00d998'
+  groupbar_col_inactive: '#141b19'
+  groupbar_col_locked_active: '#7cffcb'
+  groupbar_col_locked_inactive: '#2a3834'
+  nogroup_border_active: rgba(ffff00ff)
+  glow_color: rgba(00d998ee)
+  shadow_color: rgba(1a1a1aee)
+  animation_style: snappy
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(80, 80, 80, 0.88)
+  style:
+    size: 16

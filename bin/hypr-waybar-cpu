@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+"""CPU usage module for Waybar."""
+import json
+import subprocess
+
+# pylint: disable=invalid-name,broad-except
+
+def main():
+    """Main function to get CPU usage and top processes."""
+    try:
+        cmd_cpu = "top -bn1 | awk '/Cpu/ { print 100 - $8 }'"
+        usage_str = subprocess.check_output(cmd_cpu, shell=True, text=True).strip()
+        usage = float(usage_str)
+    except Exception:
+        usage = 0.0
+
+    try:
+        cmd_procs = (
+            "ps -Ao comm,pcpu --sort=-pcpu | head -n 6 | "
+            "awk 'NR>1 {printf \"%-15s %s%%\\n\", $1, $2}'"
+        )
+        procs = subprocess.check_output(cmd_procs, shell=True, text=True).strip()
+    except Exception:
+        procs = ""
+
+    tooltip = f"CPU Usage: {usage:.0f}%\n\nTop Processes:\n{procs}"
+
+    css_class = "normal"
+    if usage >= 90:
+        css_class = "critical"
+    elif usage >= 70:
+        css_class = "warning"
+
+    print(json.dumps({
+        "text": f"󰘚 {usage:.0f}%",
+        "tooltip": tooltip,
+        "class": css_class
+    }))
+
+if __name__ == "__main__":
+    main()

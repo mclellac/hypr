@@ -1,70 +1,102 @@
-#!/usr/bin/env python
+#!/bin/bash
+#
+# Checks for system updates (Official and AUR) and returns JSON for Waybar.
+# Supports updating the system when called with the 'update' argument.
 
-import json
-import subprocess
-import sys
+set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
+usage() {
+    echo "Usage: $(basename "$0") [OPTIONS]"
+    echo
+    echo "Checks for system updates and returns JSON for Waybar."
+    echo
+    echo "Options:"
+    echo "  update        Trigger system update"
+    echo "  -h, --help    Show this help message and exit"
+}
 
-def GetUpdates():
-    """Returns a list of official and AUR package updates."""
-    try:
-        official_updates = (
-            subprocess.check_output(["checkupdates"], text=True).strip().split("\n")
-        )
-        if official_updates == [""]:
-            official_updates = []
-    except subprocess.CalledProcessError:
-        official_updates = []
+get_ignored_packages() {
+    hypr-pkg-ignored | tr ',' '\n'
+}
 
-    try:
-        aur_updates = (
-            subprocess.check_output(["yay", "-Qum"], text=True).strip().split("\n")
-        )
-        if aur_updates == [""]:
-            aur_updates = []
-    except subprocess.CalledProcessError:
-        aur_updates = []
+get_updates() {
+    local official_updates=""
+    local aur_updates=""
 
-    return official_updates, aur_updates
+    official_updates=$(checkupdates 2>/dev/null || true)
+    aur_updates=$(yay -Qum 2>/dev/null || true)
 
+    local ignored
+    ignored=$(get_ignored_packages)
 
-def main():
-    """Main function."""
-    if len(sys.argv) > 1 and sys.argv[1] == "update":
-        subprocess.run(
-            [
-                "hypr-exec",
-                "hypr-update",
-            ]
-        )
+    if [[ -n "${ignored}" ]]; then
+        if [[ -n "${official_updates}" ]]; then
+            official_updates=$(echo "${official_updates}" | grep -vFf <(echo "${ignored}"))
+        fi
+        if [[ -n "${aur_updates}" ]]; then
+            aur_updates=$(echo "${aur_updates}" | grep -vFf <(echo "${ignored}"))
+        fi
+    fi
+
+    echo "${official_updates}"
+    echo "---AUR---"
+    echo "${aur_updates}"
+}
+
+main() {
+    check_help "$@"
+
+    if [[ "${1:-}" == "update" ]]; then
+        log_info "Triggering system update..."
+        hypr-exec hypr-update-system-pkgs
+        hypr-refresh-waybar
         return
+    fi
 
-    official_updates, aur_updates = GetUpdates()
-    count_official = len(official_updates)
-    count_aur = len(aur_updates)
-    update_count = count_official + count_aur
-
-    if update_count == 0:
-        print(json.dumps({}))
+    if [[ -f "/tmp/hypr-system-updated" ]]; then
+        rm -f "/tmp/hypr-system-updated"
+        echo '{"text": "", "tooltip": ""}'
         return
+    fi
 
-    tooltip = f"󱓻 Updates available: {update_count}\n"
-    tooltip += f"Official: {count_official}  AUR: {count_aur}"
+    local updates
+    updates=$(get_updates)
 
-    if official_updates:
-        tooltip += "\n\nOfficial:\n" + "\n".join(official_updates)
-    if aur_updates:
-        tooltip += "\n\nAUR:\n" + "\n".join(aur_updates)
+    local official_updates
+    official_updates=$(echo "${updates}" | sed -n '1,/---AUR---/p' | grep -v -- '---AUR---' | grep . || true)
+    local aur_updates
+    aur_updates=$(echo "${updates}" | sed -n '/---AUR---/,$p' | grep -v -- '---AUR---' | grep . || true)
 
-    print(
-        json.dumps(
-            {
-                "text": f"󰏗 {update_count}",
-                "tooltip": tooltip,
-            }
-        )
-    )
+    local count_official
+    count_official=$(echo "${official_updates}" | grep -c . || true)
+    local count_aur
+    count_aur=$(echo "${aur_updates}" | grep -c . || true)
+    local update_count
+    update_count=$((count_official + count_aur))
 
+    if [[ ${update_count} -eq 0 ]]; then
+        echo '{"text": "", "tooltip": ""}'
+        return
+    fi
 
-if __name__ == "__main__":
-    main()
+    local tooltip="󱓻 Updates available: ${update_count}\n"
+    tooltip+="Official: ${count_official}  AUR: ${count_aur}"
+
+    if [[ -n "${official_updates}" ]]; then
+        tooltip+="\n\nOfficial:\n$(echo "${official_updates}" | sed ':a;N;$!ba;s/\n/\\n/g')"
+    fi
+    if [[ -n "${aur_updates}" ]]; then
+        tooltip+="\n\nAUR:\n$(echo "${aur_updates}" | sed ':a;N;$!ba;s/\n/\\n/g')"
+    fi
+
+    # JSON output
+    printf '{"text": "󰏗 %s", "tooltip": "%s"}\n' "${update_count}" "${tooltip}"
+}
+
+main "$@"

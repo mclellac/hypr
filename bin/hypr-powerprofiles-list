@@ -1,9 +1,17 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Lists the available power profiles using 'powerprofilesctl' and formats
 # the output for use in menus.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Main function to list and format power profiles.
@@ -15,18 +23,19 @@ set -euo pipefail
 #   A newline-separated list of power profile names.
 #######################################
 main() {
-  if ! command -v powerprofilesctl &>/dev/null; then
-    echo "Error: 'powerprofilesctl' not found. Is power-profiles-daemon installed?" >&2
-    exit 1
-  fi
+    check_help "$@"
+    if ! command -v powerprofilesctl &>/dev/null; then
+        echo "Error: 'powerprofilesctl' not found. Is power-profiles-daemon installed?" >&2
+        exit 1
+    fi
 
-  # This pipeline does the following:
-  # 1. 'powerprofilesctl list' gets the raw profile list.
-  # 2. 'awk' extracts only the profile names, removing asterisks and colons.
-  # 3. 'tac' reverses the order to a more intuitive "high power -> low power".
-  powerprofilesctl list |
-    awk '/^\s*[* ]\s*[a-zA-Z0-9\-]+:$/ { gsub(/^[*[:space:]]+|:$/,""); print }' |
-    tac
+    # This pipeline does the following:
+    # 'powerprofilesctl list' gets the raw profile list.
+    # 'awk' extracts only the profile names, removing asterisks and colons.
+    # 'tac' reverses the order to a more intuitive "high power -> low power".
+    powerprofilesctl list |
+        awk '/^\s*[* ]\s*[a-zA-Z0-9\-]+:$/ { gsub(/^[*[:space:]]+|:$/,""); print }' |
+        tac
 }
 
-main
+main "$@"

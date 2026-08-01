@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# Dell XPS haptic touchpad feedback initialization/monitoring helper.
+
+set -euo pipefail
+
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    echo "Usage: $(basename "$0")"
+    echo
+    echo "Dell XPS haptic touchpad feedback service helper."
+}
+
+main() {
+    check_help "$@"
+
+    log_info "Dell XPS haptic touchpad service running."
+    # Maintain process active for systemd service supervision
+    exec sleep infinity
+}
+
+main "$@"

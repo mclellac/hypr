@@ -1,53 +1,64 @@
-#!/usr/bin/env python3
-import json
-import subprocess
-import shutil
+#!/bin/bash
+#
+# Returns audio status (volume and mute) as JSON for Waybar.
 
-def main():
-    if not shutil.which("pamixer"):
-        print(json.dumps({"text": "err", "tooltip": "pamixer not found", "class": "error", "percentage": 0}))
+set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    echo "Usage: $(basename "$0") [OPTIONS]"
+    echo
+    echo "Returns audio status (volume and mute) as JSON for Waybar."
+    echo
+    echo "Options:"
+    echo "  -h, --help    Show this help message and exit"
+}
+
+main() {
+    check_help "$@"
+
+    if ! command -v pamixer &>/dev/null; then
+        echo '{"text": "err", "tooltip": "pamixer not found", "class": "error", "percentage": 0}'
         return
+    fi
 
-    try:
-        # Check if muted
-        muted_res = subprocess.run(["pamixer", "--get-mute"], capture_output=True, text=True)
-        muted = muted_res.stdout.strip() == "true"
+    local muted
+    muted=$(pamixer --get-mute)
 
-        # Get volume
-        vol_res = subprocess.run(["pamixer", "--get-volume"], capture_output=True, text=True)
-        try:
-            volume = int(vol_res.stdout.strip())
-        except ValueError:
-            volume = 0
+    local volume
+    volume=$(pamixer --get-volume || echo 0)
 
-        tooltip = f"Volume: {volume}%"
-        css_class = ""
-        text = ""
+    local tooltip="Volume: ${volume}%"
+    local css_class=""
+    local text=""
 
-        if muted or volume == 0:
-            css_class = "muted"
-            text = "󰝟"
-            tooltip += " (Muted)"
-        elif volume <= 50:
-            css_class = "low"
-            # Icons:  (low),  (med),  (high)
-            if volume < 30: text = ""
-            else: text = ""
-        else:
-            css_class = "high"
-            text = ""
+    if [[ "${muted}" == "true" ]] || [[ ${volume} -eq 0 ]]; then
+        css_class="muted"
+        text="󰝟"
+        tooltip+=" (Muted)"
+    else
+        if [[ ${volume} -le 25 ]]; then
+            css_class="vol-25"
+            text=""
+        elif [[ ${volume} -le 50 ]]; then
+            css_class="vol-50"
+            text=""
+        elif [[ ${volume} -le 75 ]]; then
+            css_class="vol-75"
+            text=""
+        else
+            css_class="vol-100"
+            text=""
+        fi
+    fi
 
-        output = {
-            "text": text,
-            "tooltip": tooltip,
-            "class": css_class,
-            "percentage": volume
-        }
+    printf '{"text": "%s", "tooltip": "%s", "class": "%s", "percentage": %d}\n' \
+        "${text}" "${tooltip}" "${css_class}" "${volume}"
+}
 
-        print(json.dumps(output))
-
-    except Exception as e:
-        print(json.dumps({"text": "err", "tooltip": str(e), "class": "error", "percentage": 0}))
-
-if __name__ == "__main__":
-    main()
+main "$@"

@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="AdwPreferencesGroup" id="gtk_settings_group">
+    <property name="title">GTK and GNOME Settings</property>
+    <child>
+      <object class="AdwComboRow" id="gtk_color_scheme">
+        <property name="title">Color Scheme</property>
+        <property name="subtitle">Global preferred color scheme</property>
+        <property name="model">
+          <object class="GtkStringList">
+            <items>
+              <item>default</item>
+              <item>prefer-dark</item>
+              <item>prefer-light</item>
+            </items>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwComboRow" id="gtk_theme">
+        <property name="title">GTK Theme</property>
+        <property name="subtitle">Application theme</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwComboRow" id="gtk_icon_theme">
+        <property name="title">Icon Theme</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwComboRow" id="gtk_cursor_theme">
+        <property name="title">Cursor Theme</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSwitchRow" id="cursor_no_hardware">
+        <property name="title">Enable Hardware Cursor</property>
+        <property name="subtitle">Toggle hardware-accelerated cursor rendering</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwComboRow" id="gtk_accent_color">
+        <property name="title">Accent Color</property>
+        <property name="subtitle">GNOME 47+ accent color</property>
+        <property name="model">
+          <object class="GtkStringList">
+            <items>
+              <item>blue</item>
+              <item>teal</item>
+              <item>green</item>
+              <item>yellow</item>
+              <item>orange</item>
+              <item>red</item>
+              <item>pink</item>
+              <item>purple</item>
+              <item>slate</item>
+            </items>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="scaling_group">
+    <property name="title">Toolkit Scaling</property>
+    <child>
+      <object class="AdwSpinRow" id="gdk_scale">
+        <property name="title">GDK Scale (Integer)</property>
+        <property name="subtitle">GDK_SCALE - integer factor for GTK apps</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">1</property>
+            <property name="lower">1</property>
+            <property name="upper">4</property>
+            <property name="step-increment">1</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="gdk_dpi_scale">
+        <property name="title">GDK DPI Scale (Fractional)</property>
+        <property name="subtitle">GDK_DPI_SCALE - fractional scale for GTK</property>
+        <property name="digits">2</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">1.0</property>
+            <property name="lower">0.5</property>
+            <property name="upper">4.0</property>
+            <property name="step-increment">0.05</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="qt_scale_factor">
+        <property name="title">QT Scale Factor</property>
+        <property name="subtitle">QT_SCALE_FACTOR - scale for QT apps</property>
+        <property name="digits">2</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">1.0</property>
+            <property name="lower">0.5</property>
+            <property name="upper">4.0</property>
+            <property name="step-increment">0.05</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="text_scaling_factor">
+        <property name="title">Text Scaling Factor</property>
+        <property name="subtitle">GNOME Interface text-scaling-factor (GTK4)</property>
+        <property name="digits">2</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">1.0</property>
+            <property name="lower">0.5</property>
+            <property name="upper">4.0</property>
+            <property name="step-increment">0.05</property>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="borders_group">
+    <property name="title">Gaps and Borders</property>
+    <child>
+      <object class="AdwSpinRow" id="gaps_in">
+        <property name="title">Gaps In</property>
+        <property name="subtitle">Space between windows</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">5</property>
+            <property name="lower">0</property>
+            <property name="upper">100</property>
+            <property name="step-increment">1</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="gaps_out">
+        <property name="title">Gaps Out</property>
+        <property name="subtitle">Space between windows and screen edge</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">10</property>
+            <property name="lower">0</property>
+            <property name="upper">100</property>
+            <property name="step-increment">1</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="border_size">
+        <property name="title">Border Size</property>
+        <property name="subtitle">Width of window borders</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">2</property>
+            <property name="lower">0</property>
+            <property name="upper">20</property>
+            <property name="step-increment">1</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="rounding">
+        <property name="title">Rounding</property>
+        <property name="subtitle">Corner radius</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">8</property>
+            <property name="lower">0</property>
+            <property name="upper">50</property>
+            <property name="step-increment">1</property>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="shadow_group">
+    <property name="title">Shadows</property>
+    <child>
+      <object class="AdwSwitchRow" id="shadow_enabled">
+        <property name="title">Enabled</property>
+        <property name="subtitle">Enable window shadows</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="shadow_range">
+        <property name="title">Range</property>
+        <property name="subtitle">Shadow size</property>
+         <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">4</property>
+            <property name="lower">0</property>
+            <property name="upper">100</property>
+            <property name="step-increment">1</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="shadow_power">
+        <property name="title">Render Power</property>
+        <property name="subtitle">Shadow sharpness (1-4)</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">3</property>
+            <property name="lower">1</property>
+            <property name="upper">4</property>
+            <property name="step-increment">1</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">Shadow Offset (x y)</property>
+        <child>
+          <object class="GtkEntry" id="shadow_offset">
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="glow_group">
+    <property name="title">Glow Decoration</property>
+    <child>
+      <object class="AdwSwitchRow" id="glow_enabled">
+        <property name="title">Enabled</property>
+        <property name="subtitle">Enable window glow effect</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="glow_range">
+        <property name="title">Glow Range</property>
+        <property name="subtitle">Range of the glow effect</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">10</property>
+            <property name="lower">0</property>
+            <property name="upper">100</property>
+            <property name="step-increment">1</property>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="dimming_group">
+    <property name="title">Dimming</property>
+    <child>
+      <object class="AdwSwitchRow" id="dim_inactive">
+        <property name="title">Dim Inactive</property>
+        <property name="subtitle">Dim inactive windows</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="dim_strength">
+        <property name="title">Dim Strength</property>
+        <property name="subtitle">Amount of dimming</property>
+        <property name="digits">2</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">0.20</property>
+            <property name="lower">0.0</property>
+            <property name="upper">1.0</property>
+            <property name="step-increment">0.05</property>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="blur_group">
+    <property name="title">Blur</property>
+    <child>
+      <object class="AdwSwitchRow" id="blur_enabled">
+        <property name="title">Enabled</property>
+        <property name="subtitle">Enable background blur</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="blur_size">
+        <property name="title">Size</property>
+        <property name="subtitle">Blur size</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">2</property>
+            <property name="lower">1</property>
+            <property name="upper">20</property>
+            <property name="step-increment">1</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="blur_passes">
+        <property name="title">Passes</property>
+        <property name="subtitle">Number of blur passes</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">1</property>
+            <property name="lower">1</property>
+            <property name="upper">10</property>
+            <property name="step-increment">1</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="blur_vibrancy">
+        <property name="title">Vibrancy</property>
+        <property name="subtitle">Vibrancy of the blur</property>
+        <property name="digits">4</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">0.1696</property>
+            <property name="lower">0.0</property>
+            <property name="upper">1.0</property>
+            <property name="step-increment">0.01</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwExpanderRow" id="specific_animations_expander">
+        <property name="title">Specific Animations</property>
+        <property name="subtitle">Enable or disable specific animations</property>
+        <child>
+          <object class="AdwSwitchRow" id="anim_windows_enabled">
+            <property name="title">Windows</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSwitchRow" id="anim_windows_out_enabled">
+            <property name="title">Windows Out</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSwitchRow" id="anim_workspaces_enabled">
+            <property name="title">Workspaces</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSwitchRow" id="anim_border_enabled">
+            <property name="title">Borders</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSwitchRow" id="anim_fade_enabled">
+            <property name="title">Fade</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="animations_group">
+    <property name="title">Animations</property>
+    <child>
+      <object class="AdwSwitchRow" id="animations_enabled">
+        <property name="title">Enabled</property>
+        <property name="subtitle">Enable window animations</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwComboRow" id="animation_style">
+        <property name="title">Animation Style</property>
+        <property name="subtitle">Choose the animation style</property>
+        <property name="model">
+          <object class="GtkStringList">
+            <items>
+              <item>Fluid</item>
+              <item>Fast</item>
+              <item>Bouncy</item>
+              <item>Classic</item>
+              <item>Minimal</item>
+              <item>Exaggerated</item>
+              <item>Snappy</item>
+              <item>Smooth</item>
+              <item>Relaxed</item>
+              <item>Cyberpunk</item>
+              <item>Custom</item>
+            </items>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="custom_animations_group">
+    <property name="title">Custom Animations</property>
+    <property name="visible">False</property>
+    <child>
+      <object class="AdwActionRow">
+        <property name="title">Windows Curve</property>
+        <child>
+          <object class="GtkEntry" id="anim_windows_curve">
+            <property name="valign">center</property>
+          </object>
+        </child>
+        <property name="tooltip-text">Bezier curve values (e.g., 0.05, 0.9, 0.1, 1.05)</property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="anim_windows_speed">
+        <property name="title">Windows Speed</property>
+        <property name="subtitle">Animation speed (1-20)</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">5</property>
+            <property name="lower">1</property>
+            <property name="upper">20</property>
+            <property name="step-increment">1</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="anim_fade_speed">
+        <property name="title">Fade Speed</property>
+        <property name="subtitle">Animation speed (1-20)</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">5</property>
+            <property name="lower">1</property>
+            <property name="upper">20</property>
+            <property name="step-increment">1</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="anim_workspaces_speed">
+        <property name="title">Workspaces Speed</property>
+        <property name="subtitle">Animation speed (1-20)</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="value">5</property>
+            <property name="lower">1</property>
+            <property name="upper">20</property>
+            <property name="step-increment">1</property>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+</interface>

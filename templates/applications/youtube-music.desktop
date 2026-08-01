@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=YouTube Music
+Comment=YouTube Music
+Exec={{ HYPR_PATH }}/bin/hypr-launch-webapp https://music.youtube.com/
+Terminal=false
+Type=Application
+Icon={{ env.HOME }}/.local/share/applications/icons/youtube-music.png
+StartupNotify=true

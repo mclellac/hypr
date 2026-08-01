@@ -1,0 +1,7 @@
+[
+  { "label": "Shrug", "text": "¯\\_(ツ)_/¯" },
+  { "label": "Table Flip", "text": "(╯°□°)╯︵ ┻━┻" },
+  { "label": "Email", "text": "email@example.com" },
+  { "label": "Lorum", "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
+  { "label": "Signoff", "text": "Best regards,\nYour Name" }
+]

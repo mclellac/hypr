@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# Displays an interactive selection menu from list of options.
+
+set -euo pipefail
+
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    echo "Usage: $(basename "$0") TITLE OPTION1 [OPTION2]..."
+}
+
+main() {
+    check_help "$@"
+
+    if [[ $# -lt 2 ]]; then
+        log_error "Usage: $(basename "$0") TITLE OPTION1 [OPTION2]..."
+        exit 1
+    fi
+
+    local title="$1"
+    shift
+    local options=("$@")
+
+    local selected=""
+    if command -v walker &>/dev/null; then
+        selected=$(printf '%s\n' "${options[@]}" | walker --dmenu -p "${title}" || true)
+    elif command -v rofi &>/dev/null; then
+        selected=$(printf '%s\n' "${options[@]}" | rofi -dmenu -p "${title}" || true)
+    else
+        selected="${options[0]}"
+    fi
+
+    if [[ -n "${selected}" ]]; then
+        echo "${selected}"
+        exit 0
+    fi
+
+    exit 1
+}
+
+main "$@"

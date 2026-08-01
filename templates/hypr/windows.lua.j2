@@ -1,0 +1,121 @@
+-- --- General Behavior ---
+hl.window_rule({
+    name = "global-event-suppression",
+    match = { class = ".*" },
+    {% if theme.hypr.window.suppress_maximize | default(true) %}
+    suppress_event = "maximize"
+    {% endif %}
+})
+
+-- --- Opacity & Aesthetics ---
+hl.window_rule({
+    name = "global-opacity",
+    match = { class = ".*" },
+    opacity = [=[{{ theme.hypr.window.opacity.active | default(0.99) }} {{ theme.hypr.window.opacity.inactive | default(0.98) }}]=]
+})
+
+-- --- Semantic Workspaces ---
+-- Workspace 2: Web Browsers (NET)
+{% if theme.hypr.window.workspace_assignment.browsers | default(true) %}
+hl.window_rule({
+    name = "tag-browsers",
+    match = { class = [=[^(?i).*(firefox|chromium|brave-browser|librewolf|Vivaldi|epiphany|thorium-browser|google-chrome.*|microsoft-edge.*|zen.*).*$]=] },
+    tag = "+browser"
+})
+
+hl.window_rule({
+    name = "workspace-browsers",
+    match = { tag = "browser" },
+    workspace = "2",
+    animation = [=[{{ theme.hypr.window.animation.browsers | default('slide') }}]=]
+})
+{% endif %}
+
+-- Workspace 3: Coding (CODE)
+{% if theme.hypr.window.workspace_assignment.coding | default(true) %}
+hl.window_rule({
+    name = "tag-coding",
+    match = { class = [=[^(?i).*([Cc]ode.*|VSCodium|vscodium|cursor|zed|emacs|org.gnome.Builder|jetbrains-.*|nvim|neovide|org.hypr.nvim|org.hypr.emacs|sublime_text).*$]=] },
+    tag = "+coding"
+})
+
+hl.window_rule({
+    name = "workspace-coding",
+    match = { tag = "coding" },
+    workspace = "3",
+    animation = [=[{{ theme.hypr.window.animation.coding | default('slide') }}]=]
+})
+{% endif %}
+
+-- Workspace 4: Communications (COMMS)
+{% if theme.hypr.window.workspace_assignment.communications | default(true) %}
+hl.window_rule({
+    name = "tag-communications",
+    match = { class = [=[^(?i).*(Slack|discord|Signal|telegram-desktop|Element|WebCord|vesktop|whatsapp|caprine|teams|Microsoft Teams|zoom|skype|thunderbird|messenger|gmail|outlook|proton|messages\.google\.com|google-messages|wechat|line|session|jami|qtox).*$]=] },
+    tag = "+communications"
+})
+
+hl.window_rule({
+    name = "workspace-communications",
+    match = { tag = "communications" },
+    workspace = "4",
+    animation = [=[{{ theme.hypr.window.animation.communications | default('slide') }}]=]
+})
+{% endif %}
+
+-- Workspace 5: Media & Gaming
+{% if theme.hypr.window.workspace_assignment.media | default(true) %}
+hl.window_rule({
+    name = "tag-media",
+    match = { class = [=[^(?i).*(Spotify|steam|Lutris|heroic|geforcenow|GeForceNOW|retroarch|PrismLauncher|org.prismlauncher.PrismLauncher|com.usebottles.bottles|Ryujinx|dolphin-emu|com.obsproject.Studio|vlc|mpv).*$]=] },
+    tag = "+media"
+})
+
+hl.window_rule({
+    name = "workspace-media",
+    match = { tag = "media" },
+    workspace = "5",
+    animation = [=[{{ theme.hypr.window.animation.media | default('slide') }}]=]
+})
+{% endif %}
+
+-- Workspace 6: Notes (SEC/NOTES)
+{% if theme.hypr.window.workspace_assignment.notes | default(true) %}
+hl.window_rule({
+    name = "tag-notes",
+    match = { class = [=[^(?i).*(obsidian|Notion|notion|Logseq|logseq|Simplenote|simplenote|Standard Notes|standard-notes|Joplin|joplin|CherryTree|cherrytree|Zettlr|zettlr|Anytype|anytype).*$]=] },
+    tag = "+notes"
+})
+
+hl.window_rule({
+    name = "workspace-notes",
+    match = { tag = "notes" },
+    workspace = "6",
+    animation = [=[{{ theme.hypr.window.animation.notes | default('slide') }}]=]
+})
+{% endif %}
+
+-- --- Default Window Sizes ---
+hl.window_rule({
+    name = "size-floating",
+    match = { class = ".*", initial_title = [=[^(Floating.*)$]=] },
+    size = { {{ theme.hypr.window.size.floating | default('1200 800') | replace(' ', ', ') }} }
+})
+
+hl.window_rule({
+    name = "size-dialog",
+    match = { class = ".*", initial_title = [=[^(Dialog.*|Select.*|Open.*|Save.*)$]=] },
+    size = { {{ theme.hypr.window.size.dialog | default('900 600') | replace(' ', ', ') }} }
+})
+
+hl.window_rule({
+    name = "size-editor",
+    match = { class = ".*", initial_title = [=[^(Editor.*)$]=] },
+    size = { {{ theme.hypr.window.size.editor | default('1000 700') | replace(' ', ', ') }} }
+})
+
+hl.window_rule({
+    name = "size-creator",
+    match = { class = ".*", initial_title = [=[^(Creator.*)$]=] },
+    size = { {{ theme.hypr.window.size.creator | default('1100 700') | replace(' ', ', ') }} }
+})

@@ -1,9 +1,17 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Checks if the Arch User Repository (AUR) is accessible by making a test
 # request to its RPC interface.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Main function to check AUR accessibility.
@@ -15,10 +23,11 @@ set -euo pipefail
 #   Exits with status 0 on success, or a non-zero status on failure (e.g., timeout).
 #######################################
 main() {
-  # We send a request for a known package ('base') to test connectivity.
-  # The output is discarded as we only care about the exit code.
-  curl -sf --connect-timeout 30 --retry 3 --retry-delay 3 -A "hypr-aur-check" \
-    "https://aur.archlinux.org/rpc/?v=5&type=info&arg=base" >/dev/null
+    check_help "$@"
+    # We send a request for a known package ('base') to test connectivity.
+    # The output is discarded as we only care about the exit code.
+    curl -sf --connect-timeout 30 --retry 3 --retry-delay 3 -A "hypr-aur-check" \
+        "https://aur.archlinux.org/rpc/?v=5&type=info&arg=base" >/dev/null
 }
 
-main
+main "$@"

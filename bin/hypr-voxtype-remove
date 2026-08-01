@@ -1,0 +1,36 @@
+#!/bin/bash
+set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    set -e
+
+    # Remove voxtype and its configurations.
+
+    if hypr-cmd-present voxtype; then
+      log_info "Uninstall Voxtype to remove dictation."
+
+      # Remove services
+      systemctl --user stop voxtype.service 2>/dev/null || true
+      rm -f ~/.config/systemd/user/voxtype*
+      systemctl --user daemon-reload
+
+      # Remove packages and configs
+      hypr-pkg-drop wtype voxtype-bin
+      rm -rf ~/.config/voxtype
+      rm -rf ~/.local/share/voxtype
+    else
+      log_info "Voxtype was not installed."
+    fi
+}
+
+main "$@"

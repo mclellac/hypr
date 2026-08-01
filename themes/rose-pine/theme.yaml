@@ -1,0 +1,62 @@
+name: Rose Pine
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#faf4ed'
+  foreground: '#575279'
+  cursor: '#cecacd'
+  cursor_text: '#faf4ed'
+  selection_bg: '#dfdad9'
+  selection_fg: '#575279'
+  primary: '#56949f'
+  secondary: '#56949f'
+  alert: '#b4637a'
+  warning: '#ea9d34'
+  success: '#286983'
+  color0: '#f2e9e1'
+  color1: '#b4637a'
+  color2: '#286983'
+  color3: '#ea9d34'
+  color4: '#56949f'
+  color5: '#907aa9'
+  color6: '#d7827e'
+  color7: '#575279'
+  color8: '#9893a5'
+  color9: '#b4637a'
+  color10: '#286983'
+  color11: '#ea9d34'
+  color12: '#56949f'
+  color13: '#907aa9'
+  color14: '#d7827e'
+  color15: '#575279'
+  accent: '#56949f'
+  url_color: '#c4a7e7'
+layout:
+  active_border: '#56949fff'
+  inactive_border: '#f2e9e1ff'
+  groupbar_text_color: '#e0def4'
+  group_border_active: '#56949f'
+  group_border_inactive: '#f2e9e1'
+  group_border_locked_active: '#c4a7e7'
+  group_border_locked_inactive: '#6e6a86'
+  groupbar_col_active: '#56949f'
+  groupbar_col_inactive: '#f2e9e1'
+  groupbar_col_locked_active: '#c4a7e7'
+  groupbar_col_locked_inactive: '#6e6a86'
+  nogroup_border: '#f2e9e1'
+  nogroup_border_active: '#56949f'
+  glow_color: '#56949fee'
+  shadow_color: '#faf4ed7b'
+  animation_style: minimal
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(242, 233, 225, 0.53)
+  style:
+    size: 16

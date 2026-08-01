@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkBox" id="page_content"><property name="orientation">vertical</property><property name="spacing">12</property>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title">Alacritty Terminal</property>
+        <child>
+          <object class="AdwSpinRow" id="alacritty_font_size">
+            <property name="title">Font Size</property>
+            <property name="subtitle">Override global size (0 for default)</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="lower">0</property>
+                <property name="upper">72</property>
+                <property name="step-increment">1</property>
+                <property name="value">0</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSpinRow" id="alacritty_padding_x">
+            <property name="title">Window Padding X</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="lower">0</property>
+                <property name="upper">100</property>
+                <property name="step-increment">1</property>
+                <property name="value">0</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSpinRow" id="alacritty_padding_y">
+            <property name="title">Window Padding Y</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="lower">0</property>
+                <property name="upper">100</property>
+                <property name="step-increment">1</property>
+                <property name="value">0</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwSpinRow" id="alacritty_opacity">
+            <property name="title">Window Opacity</property>
+            <property name="digits">2</property>
+            <property name="adjustment">
+              <object class="GtkAdjustment">
+                <property name="lower">0.1</property>
+                <property name="upper">1.0</property>
+                <property name="step-increment">0.05</property>
+                <property name="value">1.0</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwComboRow" id="alacritty_cursor_shape">
+            <property name="title">Cursor Shape</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>Block</item>
+                  <item>Underline</item>
+                  <item>Beam</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwExpanderRow">
+            <property name="title">Edit Config</property>
+            <property name="subtitle">~/.config/alacritty/user.toml</property>
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="min-content-height">300</property>
+                <property name="vexpand">True</property>
+                <property name="has-frame">True</property>
+                <child>
+                  <object class="GtkTextView" id="alacritty_editor">
+                    <property name="monospace">True</property>
+                    <property name="wrap-mode">none</property>
+                    <property name="top-margin">10</property>
+                    <property name="bottom-margin">10</property>
+                    <property name="left-margin">10</property>
+                    <property name="right-margin">10</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

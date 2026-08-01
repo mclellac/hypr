@@ -1,0 +1,23 @@
+window {
+    background: alpha(#343F50, 0.9);
+    border: 2px solid #33ffdd;
+    border-radius: 4px;
+}
+
+#container {
+    margin: 16px;
+}
+
+image {
+    color: #CEE2E4;
+}
+
+progressbar {
+    background-color: #445163;
+    border-radius: 4px;
+}
+
+progress {
+    background-color: #33ffdd;
+    border-radius: 4px;
+}

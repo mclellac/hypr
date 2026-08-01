@@ -1,0 +1,62 @@
+# HYPR* and AQ_* variables for UWSM
+# Changes require a restart to take effect.
+
+# --- Aquamarine (Renderer) Settings ---
+
+# Device selection for Multi-GPU (Bare Metal)
+# Recommendation: Use /dev/dri/by-path/ for stability
+# export AQ_DRM_DEVICES="/dev/dri/by-path/pci-0000:06:00.0-card:/dev/dri/by-path/pci-0000:00:02.0-card"
+
+{% if is_vm -%}
+# --- VM Specific Rendering ---
+# Allow rendering on vGPUs that lack a physical output
+export AQ_NO_KMS_REQUIREMENT=1
+
+# Disable atomic modesetting and modifiers for virtual GPUs (fixes virtio-gpu modesetting errors on UTM/VM/QEMU)
+export AQ_NO_ATOMIC=1
+export AQ_NO_MODIFIERS=1
+
+# Wayland / DRM tweaks for VM compatibility
+export WLR_DRM_NO_ATOMIC=1
+# export WLR_RENDERER_ALLOW_SOFTWARE=1
+{% if theme.cursor.no_hardware is defined and theme.cursor.no_hardware is not none -%}
+export WLR_NO_HARDWARE_CURSORS={{ '1' if theme.cursor.no_hardware else '0' }}
+{%- else -%}
+export WLR_NO_HARDWARE_CURSORS=1
+{%- endif %}
+{%- else -%}
+# --- Bare Metal Rendering ---
+{% if is_nvidia -%}
+# Nvidia specific (Bare Metal)
+export LIBVA_DRIVER_NAME=nvidia
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
+export GBM_BACKEND=nvidia-drm
+{% if theme.cursor.no_hardware is defined and theme.cursor.no_hardware is not none -%}
+export WLR_NO_HARDWARE_CURSORS={{ '1' if theme.cursor.no_hardware else '0' }}
+{%- else -%}
+export WLR_NO_HARDWARE_CURSORS=1
+{%- endif %}
+
+{% if nvidia_arch == 'turing_plus' -%}
+# NVIDIA (Turing+ with GSP firmware)
+export NVD_BACKEND=direct
+{%- elif nvidia_arch == 'maxwell_pascal_volta' -%}
+# NVIDIA (Maxwell/Pascal/Volta without GSP firmware)
+export NVD_BACKEND=egl
+{%- endif %}
+
+# export __NV_PRIME_RENDER_OFFLOAD=1
+# export __VK_LAYER_NV_optimus=NVIDIA_only
+# export WLR_DRM_NO_ATOMIC=1
+{%- else -%}
+# Bare Metal Rendering (Non-Nvidia)
+{% if theme.cursor.no_hardware is defined and theme.cursor.no_hardware is not none -%}
+export WLR_NO_HARDWARE_CURSORS={{ '1' if theme.cursor.no_hardware else '0' }}
+{%- endif %}
+{%- endif %}
+{%- endif %}
+
+# --- Hyprland Debug & Logging ---
+export HYPRLAND_LOG_WLR=1
+export HYPRLAND_NO_RT=1
+# export HYPRLAND_NO_SD_NOTIFY=1

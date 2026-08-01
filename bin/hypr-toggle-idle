@@ -1,26 +1,31 @@
 #!/bin/bash
-#
-# Toggles the 'hypridle' service, which locks the screen when the system is idle.
-
 set -euo pipefail
 
-#######################################
-# Main function to toggle the hypridle service.
-# Globals:
-#   None
-# Arguments:
-#   None
-# Outputs:
-#   None
-#######################################
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
 main() {
-  if pgrep -x hypridle >/dev/null; then
-    pkill -x hypridle
-    notify-send "Idle Lock Disabled" "The screen will no longer lock automatically." -t 5000
-  else
-    setsid uwsm app -- hypridle >/dev/null 2>&1 &
-    notify-send "Idle Lock Enabled" "The screen will lock automatically when idle." -t 5000
-  fi
+    check_help "$@"
+
+    if pgrep -x hypridle >/dev/null; then
+      pkill -x hypridle
+      notify-send -u low "󱫖    Stop locking computer when idle"
+    else
+      if is_uwsm_active; then
+        uwsm-app -- hypridle >/dev/null 2>&1 &
+      else
+        hypridle >/dev/null 2>&1 &
+      fi
+      notify-send -u low "󱫖    Now locking computer when idle"
+    fi
+
+    pkill -RTMIN+9 waybar
 }
 
-main
+main "$@"

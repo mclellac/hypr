@@ -1,0 +1,56 @@
+#!/bin/bash
+set -euo pipefail
+# Seamless navigation between Hyprland and Vim/Neovim
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    DIRECTION="${1:-}"
+
+    if [[ -z "$DIRECTION" ]]; then
+        log_error "Direction argument is required (l, r, u, d)"
+        exit 1
+    fi
+
+    # Map direction to standard vim keys for passing to terminal
+    case ${DIRECTION,,} in
+        l|left)  VIM_KEY="h"; HYPR_DIR="left" ;;
+        r|right) VIM_KEY="l"; HYPR_DIR="right" ;;
+        u|up)    VIM_KEY="k"; HYPR_DIR="up" ;;
+        d|down)  VIM_KEY="j"; HYPR_DIR="down" ;;
+        *) log_error "Invalid direction: $DIRECTION"; exit 1 ;;
+    esac
+
+    # We can use hyprctl activewindow to check if the focused app is nvim/vim.
+    # If so, we pass the movement keys.
+    ACTIVE_INFO=$(hyprctl activewindow -j)
+    ACTIVE_CLASS=$(echo "$ACTIVE_INFO" | jq -r '.class')
+    ACTIVE_TITLE=$(echo "$ACTIVE_INFO" | jq -r '.title')
+
+    # Map terminal classes that might run nvim/vim
+    TERMINAL_CLASSES="Alacritty|kitty|foot|xterm|ghostty"
+
+    if [[ "$ACTIVE_CLASS" =~ ($TERMINAL_CLASSES) ]] && [[ "${ACTIVE_TITLE,,}" =~ (nvim|vim) ]]; then
+        # We are in Neovim/Vim inside a terminal.
+        # We send the Ctrl+w <dir> keys to Neovim.
+        hyprctl eval "hl.dispatch(hl.dsp.send_shortcut({ mods = \"CTRL\", key = \"w\", window = \"activewindow\" }))"
+        hyprctl eval "hl.dispatch(hl.dsp.send_shortcut({ mods = \"\", key = \"$VIM_KEY\", window = \"activewindow\" }))"
+
+        exit 0
+    fi
+
+    # Hyprland 0.55+ Lua native focus dispatcher
+    # Note: Dispatchers return action objects; they must be passed to hl.dispatch() to execute.
+    hyprctl eval "hl.dispatch(hl.dsp.focus({ direction = \"$HYPR_DIR\" }))"
+}
+
+main "$@"

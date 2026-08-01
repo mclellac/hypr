@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=ChatGPT
+Comment=ChatGPT
+Exec={{ HYPR_PATH }}/bin/hypr-launch-webapp https://chatgpt.com
+Terminal=false
+Type=Application
+Icon={{ env.HOME }}/.local/share/applications/icons/chatgpt.png
+StartupNotify=true

@@ -1,9 +1,17 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Installs a new theme for hypr from a git repository.
 # Usage: hypr-theme-install [git-repo-url]
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 #######################################
 # Main function to install a new theme.
@@ -15,38 +23,39 @@ set -euo pipefail
 #   Exits with an error if the git clone fails.
 #######################################
 main() {
-  local repo_url="${1:-}"
-  if [[ -z "${repo_url}" ]]; then
-    echo -e "\e[32mSee https://manuals.omamix.org/2/the-hypr-manual/90/extra-themes\n\e[0m"
-    repo_url=$(gum input --placeholder="Git repo URL for theme" --header="")
-  fi
+    check_help "$@"
+    local repo_url="${1:-}"
+    if [[ -z "${repo_url}" ]]; then
+        echo -e "\e[32mSee https://manuals.omamix.org/2/the-hypr-manual/90/extra-themes\n\e[0m"
+        repo_url=$(gum input --placeholder="Git repo URL for theme" --header="")
+    fi
 
-  if [[ -z "${repo_url}" ]]; then
-    exit 1
-  fi
+    if [[ -z "${repo_url}" ]]; then
+        exit 1
+    fi
 
-  local themes_dir="${HOME}/.config/hypr/themes"
-  local theme_name
-  theme_name=$(basename "${repo_url}" .git | sed -E 's/^hypr-//; s/-theme$//')
-  local theme_path="${themes_dir}/${theme_name}"
+    local themes_dir="${HOME}/.config/hypr/themes"
+    local theme_name
+    theme_name=$(basename "${repo_url}" .git | sed -E 's/^hypr-//; s/-theme$//')
+    local theme_path="${themes_dir}/${theme_name}"
 
-  # Remove existing theme if present.
-  if [[ -d "${theme_path}" ]]; then
-    echo "Removing existing theme: ${theme_name}"
-    rm -rf "${theme_path}"
-  fi
+    # Remove existing theme if present.
+    if [[ -d "${theme_path}" ]]; then
+        log_info "Removing existing theme: ${theme_name}"
+        rm -rf "${theme_path}"
+    fi
 
-  # Clone the repo directly to the themes directory.
-  echo "Cloning theme from ${repo_url}..."
-  if ! git clone "${repo_url}" "${theme_path}"; then
-    echo "Error: Failed to clone theme repo." >&2
-    exit 1
-  fi
+    # Clone the repo directly to the themes directory.
+    log_info "Cloning theme from ${repo_url}..."
+    if ! git clone "${repo_url}" "${theme_path}"; then
+        echo "Error: Failed to clone theme repo." >&2
+        exit 1
+    fi
 
-  # Apply the new theme.
-  echo "Applying new theme: ${theme_name}"
-  hypr-theme-set "${theme_name}"
-  echo "Theme installed successfully."
+    # Apply the new theme.
+    log_info "Applying new theme: ${theme_name}"
+    hypr-theme-set "${theme_name}"
+    log_info "Theme installed successfully."
 }
 
 main "$@"

@@ -1,0 +1,115 @@
+{%- set terminal_bin = theme.terminal | default('ghostty') -%}
+{%- if is_vm and terminal_bin == 'ghostty' -%}
+    {%- set terminal_bin = 'alacritty' -%}
+{%- endif -%}
+local terminal = [=[uwsm app -- {{ terminal_bin }}]=]
+local browser = [=[hypr-launch-browser]=]
+local osdclient = [=[hypr-swayosd-client]=]
+
+local function format_keys(m, k)
+    local main_mod = [=[{{ theme.input.main_mod | default('ALT') }}]=]
+    local s = m
+    if m == "$mainMod ALT" and k == "SPACE" and main_mod == "ALT" then
+        s = "ALT SUPER"
+    else
+        s = s:gsub("%$mainMod", main_mod)
+    end
+    s = s:gsub("%s+", " + ")
+    if s == "" then return k end
+    if k == "" then return s end
+    return s .. " + " .. k
+end
+
+local function resolve_arg(arg)
+    local s = arg:gsub("%$terminal", function() return terminal end)
+    s = s:gsub("%$browser", function() return browser end)
+    s = s:gsub("%$osdclient", function() return osdclient end)
+    -- Additionally replace any other dynamically registered variables or $scrPath if necessary
+    -- However, standard vars in defaults.yaml are only $terminal, $browser, $osdclient
+    -- If $scrPath is used, we can expand it here:
+    s = s:gsub("%$scrPath", [=[{{ HYPR_PATH }}/bin]=])
+    {%- if not is_vm %}
+    -- Strip GPU disabling flags on bare-metal systems
+    s = s:gsub("%s*%-disable%-gpu%s*", " ")
+    s = s:gsub("%s*%-%-disable%-gpu%s*", " ")
+    {%- endif %}
+    return s
+end
+
+-- --- Keybindings ---
+{%- set unbinds = theme.keybindings | selectattr("type", "equalto", "unbind") | list %}
+{%- for binding in unbinds %}
+hl.unbind(format_keys([=[{{ binding.mods | default('') }}]=], [=[{{ binding.key | default('') }}]=]))
+{%- endfor %}
+
+{%- set active_binds = theme.keybindings | rejectattr("type", "equalto", "unbind") | list %}
+{%- for binding in active_binds %}
+{%- set raw_type = binding.type | default('bind') %}
+{%- set bind_mods = raw_type[4:] if raw_type is startingwith('bind') else '' %}
+{%- set disp = binding.dispatcher | default('') %}
+{%- set arg = binding.arg | default('') %}
+{%- set mods = binding.mods | default('') %}
+{%- set key = binding.key | default('') %}
+{%- set description = binding.desc | default('') %}
+
+{%- set flags = [] %}
+{%- if 'l' in bind_mods %}{% set flags = flags + ['locked = true'] %}{% endif %}
+{%- if 'e' in bind_mods %}{% set flags = flags + ['repeating = true'] %}{% endif %}
+{%- if 'm' in bind_mods %}{% set flags = flags + ['mouse = true'] %}{% endif %}
+{%- if 'r' in bind_mods %}{% set flags = flags + ['release = true'] %}{% endif %}
+{%- if 'n' in bind_mods %}{% set flags = flags + ['non_consuming = true'] %}{% endif %}
+{%- if 'a' in bind_mods %}{% set flags = flags + ['auto_consuming = true'] %}{% endif %}
+{%- if description %}{% set flags = flags + ['description = [=[' ~ description ~ ']=]'] %}{% endif %}
+
+hl.bind(
+    format_keys([=[{{ mods }}]=], [=[{{ key }}]=]),
+    {% if disp == 'exec' -%}
+    hl.dsp.exec_cmd(resolve_arg([=[{{ arg }}]=]))
+    {%- elif disp == 'killactive' -%}
+    hl.dsp.window.close()
+    {%- elif disp == 'workspace' -%}
+    hl.dsp.focus({ workspace = [=[{{ arg }}]=] })
+    {%- elif disp == 'movetoworkspace' -%}
+    hl.dsp.window.move({ workspace = [=[{{ arg }}]=] })
+    {%- elif disp == 'togglefloating' -%}
+    hl.dsp.window.float({ action = "toggle" })
+    {%- elif disp == 'fullscreen' -%}
+    hl.dsp.window.fullscreen({ action = "toggle" })
+    {%- elif disp == 'pseudo' -%}
+    hl.dsp.window.pseudo()
+    {%- elif disp == 'layoutmsg' -%}
+    hl.dsp.layout([=[{{ arg }}]=])
+    {%- elif disp == 'resizeactive' -%}
+    {%- set parts = arg | split(' ') -%}
+    hl.dsp.window.resize({ x = [=[{{ parts[0] }}]=], y = [=[{{ parts[1] if parts|length > 1 else 0 }}]=], relative = true })
+    {%- elif disp == 'swapwindow' -%}
+    hl.dsp.window.swap({ direction = [=[{{ arg }}]=] })
+    {%- elif disp == 'cyclenext' -%}
+    hl.dsp.window.cycle_next({ prev = {{ 'true' if arg == 'prev' else 'false' }} })
+    {%- elif disp == 'bringactivetotop' -%}
+    hl.dsp.window.bring_to_top()
+    {%- elif disp == 'fullscreenstate' -%}
+    {%- set parts = arg | split(' ') -%}
+    hl.dsp.window.fullscreen_state({ internal = [=[{{ parts[0] }}]=], client = [=[{{ parts[1] if parts|length > 1 else '0' }}]=] })
+    {%- elif disp == 'pass' -%}
+    hl.dsp.pass({ window = [=[{{ arg }}]=] })
+    {%- elif disp == 'sendshortcut' -%}
+    {%- set parts = arg | split(',') -%}
+    hl.dsp.send_shortcut({ mods = [=[{{ parts[0]|trim | replace(' ', '+') }}]=], key = [=[{{ parts[1]|trim }}]=], window = [=[{{ parts[2]|trim if parts|length > 2 else '' }}]=] })
+    {%- elif disp == 'movewindow' -%}
+    hl.dsp.window.drag()
+    {%- elif disp == 'resizewindow' -%}
+    hl.dsp.window.resize()
+    {%- elif disp == 'scrolling' -%}
+    hl.dsp.layout([=[scrolling]=], [=[{{ arg }}]=])
+    {%- else -%}
+    hl.dsp.exec_raw([=[{{ disp }} {{ arg }}]=])
+    {%- endif %}
+    {%- if flags %}, { {{ flags | join(', ') }} }{% endif %}
+)
+{%- endfor %}
+
+-- --- Submaps ---
+hl.define_submap("empty", function()
+    hl.bind("F24", hl.dsp.pass({ window = "^$" }), { description = "Submap: Empty Passthrough" })
+end)

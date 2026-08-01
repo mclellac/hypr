@@ -1,0 +1,94 @@
+-- --- Browser Tags ---
+hl.window_rule({
+    name = "tag-chromium",
+    match = {
+        class = "^(?i).*([cC]hrom(e|ium)|[bB]rave-browser|microsoft-edge|Vivaldi-stable|helium).*$"
+    },
+    tag = "+chromium-based-browser"
+})
+
+
+hl.window_rule({
+    name = "tag-firefox",
+    match = {
+        class = "^(?i).*(Firefox|zen|librewolf).*$"
+    },
+    tag = "+firefox-based-browser"
+})
+
+
+-- --- Browser Popup Fixes ---
+-- We use match:initial_title for "Save password" and "Authentication Required"
+-- These must set 'tile = 0' and 'float = 1' to beat the tag-based tile fix.
+hl.window_rule({
+    name = "browser-popups-float",
+    match = {
+        initial_title = "^(Save password|Password Required|Authentication Required|Confirm File Upload|Open File)$",
+        class = "([cC]hrom(e|ium)|[bB]rave-browser|Microsoft-edge|Vivaldi-stable|Firefox|zen|librewolf)"
+    },
+    tile = false,
+    float = true,
+    center = true
+})
+
+
+-- Force chromium-based browsers into a tile to deal with --app bug
+hl.window_rule({
+    name = "chromium-tile-fix",
+    match = {
+        tag = "chromium-based-browser",
+        initial_title = "!(Save password|Password Required|Authentication Required)"
+    },
+    tile = true
+})
+
+
+-- --- Opacity Rules ---
+hl.window_rule({
+    name = "browser-opacity",
+    match = {
+        tag = "(chromium-based-browser|firefox-based-browser)"
+    },
+    opacity = "1.0 1.0 override"
+})
+
+
+hl.window_rule({
+    name = "chromium-extension-opacity",
+    match = {
+        class = "^(crx_.*)$"
+    },
+    opacity = "1.0 1.0 override"
+})
+
+
+-- --- Video/Meeting Site Overrides ---
+hl.window_rule({
+    name = "video-site-opaque",
+    match = {
+        initial_title = "(youtube\\.com_/|app\\.zoom\\.us_/wc/home)"
+    },
+    opacity = "1.0 1.0 override"
+})
+
+
+-- Video apps: remove chromium browser tag so they don't get opacity applied
+hl.window_rule({
+    name = "browser-video-tag-fix",
+    match = {
+        class = "(chrome-youtube.com__-Default|chrome-app.zoom.us__wc_home-Default)"
+    },
+    tag = "-chromium-based-browser -default-opacity",
+    opacity = "1.0 1.0 override"
+})
+
+
+-- Hide the screen-sharing notification bar (the "Hide" button on it is broken on Wayland)
+hl.window_rule({
+    name = "hide-sharing-notification",
+    match = {
+        title = ".*is sharing.*"
+    },
+    workspace = "special silent"
+})
+

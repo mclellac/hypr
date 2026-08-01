@@ -1,81 +1,69 @@
-# Theme: Amateur
-# By: Jules
+# btop theme for Amateur theme
+# Colors should match the palette.md and theme.yaml
 
-# Main bg
-theme[main_bg]="#112330"
+# Main background, empty for terminal default, black for 24-bit test
+theme[main_bg]="#343F50"
 
 # Main text color
-theme[main_fg]="#cdd6f4"
+theme[main_fg]="#CEE2E4"
 
 # Title color for boxes
-theme[title]="#00e5ff"
+theme[title]="#33ffdd"
 
 # Highlight color for keyboard shortcuts
-theme[hi_fg]="#33ecff"
+theme[hi_fg]="#FFB86C"
 
 # Background color of selected item in processes box
-theme[selected_bg]="#254f54"
+theme[selected_bg]="#00A8A8"
 
 # Foreground color of selected item in processes box
-theme[selected_fg]="#00e5ff"
+theme[selected_fg]="#CEE2E4"
 
 # Color of inactive/disabled text
-theme[inactive_fg]="#3b4252"
+theme[inactive_fg]="#4D5566"
+
+# Color of graph points
+theme[graph_text]="#59C2FF"
 
 # Misc colors for processes box including mini cpu graphs, details memory graph and details status text
-theme[proc_misc]="#00e5ff"
+theme[proc_misc]="#59C2FF"
 
 # Cpu box outline color
-theme[cpu_box]="#33ecff"
+theme[cpu_box]="#33ffdd"
 
-# Memory/disks box outline color
-theme[mem_box]="#33bbff"
+# Memory box outline color
+theme[mem_box]="#59C2FF"
 
-# Net up/down box outline color
-theme[net_box]="#e085e0"
+# Net box outline color
+theme[net_box]="#e393f6"
 
 # Processes box outline color
-theme[proc_box]="#00e5ff"
+theme[proc_box]="#33ffdd"
 
 # Box divider line and small boxes line color
-theme[div_line]="#254f54"
+theme[div_line]="#445163"
 
 # Temperature graph colors
 theme[temp_start]="#33ffdd"
-theme[temp_mid]="#ffcc00"
-theme[temp_end]="#ff4444"
+theme[temp_mid]="#FFB86C"
+theme[temp_end]="#FF5722"
 
 # CPU graph colors
-theme[cpu_start]="#33ecff"
-theme[cpu_mid]="#ffcc00"
-theme[cpu_end]="#ff4444"
+theme[cpu_start]="#33ffdd"
+theme[cpu_mid]="#59C2FF"
+theme[cpu_end]="#e393f6"
 
-# Mem/Disk free meter
-theme[free_start]="#00ffcc"
-theme[free_mid]="#33ffdd"
-theme[free_end]="#cdd6f4"
+# Mem graph colors
+theme[mem_start]="#59C2FF"
+theme[mem_mid]="#e393f6"
+theme[mem_end]="#FFB86C"
 
-# Mem/Disk cached meter
-theme[cached_start]="#254f54"
-theme[cached_mid]="#00e5ff"
-theme[cached_end]="#33ecff"
+# Net graph colors
+theme[net_start]="#e393f6"
+theme[net_mid]="#33ffdd"
+theme[net_end]="#59C2FF"
 
-# Mem/Disk available meter
-theme[available_start]="#00ffcc"
-theme[available_mid]="#33ffdd"
-theme[available_end]="#cdd6f4"
-
-# Mem/Disk used meter
-theme[used_start]="#ffcc00"
-theme[used_mid]="#ff6666"
-theme[used_end]="#ff4444"
-
-# Download graph colors
-theme[download_start]="#00e5ff"
-theme[download_mid]="#33ecff"
-theme[download_end]="#254f54"
-
-# Upload graph colors
-theme[upload_start]="#00ffcc"
-theme[upload_mid]="#33ffdd"
-theme[upload_end]="#cdd6f4"
+# Processes graph colors
+theme[proc_start]="#33ffdd"
+theme[proc_mid]="#59C2FF"
+theme[proc_end]="#e393f6"

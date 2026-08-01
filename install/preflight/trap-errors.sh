@@ -14,34 +14,34 @@ set -eEuo pipefail
 #   BASH_COMMAND (read-only)
 #######################################
 error_handler() {
-  local -r exit_code="$?"
-  echo -e "\n\e[31mhypr installation failed!\e[0m"
-  echo
-  echo "This command halted with exit code ${exit_code}:"
-  echo "${BASH_COMMAND}"
-  echo
-  echo "Get help from the community via QR code or at https://discord.gg/tXFUdasqhY"
-  echo "                                 "
-  echo "    █▀▀▀▀▀█ ▄ ▄ ▀▄▄▄█ █▀▀▀▀▀█    "
-  echo "    █ ███ █ ▄▄▄▄▀▄▀▄▀ █ ███ █    "
-  echo "    █ ▀▀▀ █ ▄█  ▄█▄▄▀ █ ▀▀▀ █    "
-  echo "    ▀▀▀▀▀▀▀ ▀▄█ █ █ █ ▀▀▀▀▀▀▀    "
-  echo "    ▀▀█▀▀▄▀▀▀▀▄█▀▀█  ▀ █ ▀ █     "
-  echo "    █▄█ ▄▄▀▄▄ ▀ ▄ ▀█▄▄▄▄ ▀ ▀█    "
-  echo "    ▄ ▄▀█ ▀▄▀▀▀▄ ▄█▀▄█▀▄▀▄▀█▀    "
-  echo "    █ ▄▄█▄▀▄█ ▄▄▄  ▀ ▄▀██▀ ▀█    "
-  echo "    ▀ ▀   ▀ █ ▀▄  ▀▀█▀▀▀█▄▀      "
-  echo "    █▀▀▀▀▀█ ▀█  ▄▀▀ █ ▀ █▄▀██    "
-  echo "    █ ███ █ █▀▄▄▀ █▀███▀█▄██▄    "
-  echo "    █ ▀▀▀ █ ██  ▀ █▄█ ▄▄▄█▀ █    "
-  echo "    ▀▀▀▀▀▀▀ ▀ ▀ ▀▀▀  ▀ ▀▀▀▀▀▀    "
-  echo "                                 "
+    local -r exit_code="$?"
+    log_error "\n\e[31mhypr installation failed!\e[0m"
+    echo
+    log_info "This command halted with exit code ${exit_code}:"
+    log_info "${BASH_COMMAND}"
+    echo
+    log_info "Get help from the community via QR code or at https://discord.gg/tXFUdasqhY"
+    echo "                                 "
+    echo "    █▀▀▀▀▀█ ▄ ▄ ▀▄▄▄█ █▀▀▀▀▀█    "
+    echo "    █ ███ █ ▄▄▄▄▀▄▀▄▀ █ ███ █    "
+    echo "    █ ▀▀▀ █ ▄█  ▄█▄▄▀ █ ▀▀▀ █    "
+    echo "    ▀▀▀▀▀▀▀ ▀▄█ █ █ █ ▀▀▀▀▀▀▀    "
+    echo "    ▀▀█▀▀▄▀▀▀▀▄█▀▀█  ▀ █ ▀ █     "
+    echo "    █▄█ ▄▄▀▄▄ ▀ ▄ ▀█▄▄▄▄ ▀ ▀█    "
+    echo "    ▄ ▄▀█ ▀▄▀▀▀▄ ▄█▀▄█▀▄▀▄▀█▀    "
+    echo "    █ ▄▄█▄▀▄█ ▄▄▄  ▀ ▄▀██▀ ▀█    "
+    echo "    ▀ ▀   ▀ █ ▀▄  ▀▀█▀▀▀█▄▀      "
+    echo "    █▀▀▀▀▀█ ▀█  ▄▀▀ █ ▀ █▄▀██    "
+    echo "    █ ███ █ █▀▄▄▀ █▀███▀█▄██▄    "
+    echo "    █ ▀▀▀ █ ██  ▀ █▄█ ▄▄▄█▀ █    "
+    echo "    ▀▀▀▀▀▀▀ ▀ ▀ ▀▀▀  ▀ ▀▀▀▀▀▀    "
+    echo "                                 "
 
-  if command -v gum >/dev/null && gum confirm "Retry installation?"; then
-    bash "${HOME}/.local/share/hypr/install.sh"
-  else
-    echo "You can retry later by running: bash ${HOME}/.local/share/hypr/install.sh"
-  fi
+    if command -v gum >/dev/null && gum confirm "Retry installation?"; then
+        bash "${HOME}/.local/share/hypr/install.sh"
+    else
+        log_info "You can retry later by running: bash ${HOME}/.local/share/hypr/install.sh"
+    fi
 }
 
 trap error_handler ERR

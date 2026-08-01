@@ -1,0 +1,111 @@
+#!/bin/bash
+#
+# Provides a searchable menu for social and communication applications.
+
+set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+#######################################
+# Displays a dmenu-style menu using walker.
+#######################################
+menu() {
+    local prompt="$1"
+    local options="$2"
+    local extra="${3:-}"
+    local preselect="${4:-}"
+    local -a args
+
+    # shellcheck disable=SC2206
+    args=($extra)
+
+    if [[ -n "$preselect" ]]; then
+        local index
+        index=$(echo -e "$options" | grep -nxF "$preselect" | cut -d: -f1)
+        if [[ -n "$index" ]]; then
+            args+=("-c" "$((index - 1))")
+        fi
+    fi
+
+    echo -e "$options" | walker --dmenu -p "$prompt…" "${args[@]}"
+}
+
+show_socials_menu() {
+    local options="󰌻  LinkedIn\n󰒱  Slack\n󰖣  WhatsApp\n󰔗  Telegram\n󰵠  Signal\n󰓎  Matrix (Element)\n󰭹  Bluesky\n󰭹  Mastodon\n󰭹  Lemmy\n󰗗  Google Meet\n󰭹  Google Chat\n󰍦  Google Messages\n  Gmail\n󰈏  Messenger\n󰗗  Zoom\n  Audio Settings\n󰂯  Bluetooth Settings\n  WiFi Settings"
+    local choice
+    choice=$(menu "Socials" "${options}")
+
+    case "${choice}" in
+    *LinkedIn*) hypr-launch-or-focus-webapp "linkedin" "https://www.linkedin.com" ;;
+    *Slack*)
+        if command -v slack >/dev/null 2>&1; then
+            hypr-launch-or-focus "slack" "uwsm app -- slack"
+        elif command -v flatpak >/dev/null 2>&1 && flatpak info com.slack.Slack >/dev/null 2>&1; then
+            hypr-launch-or-focus "slack" "uwsm app -- flatpak run com.slack.Slack"
+        else
+            hypr-launch-or-focus-webapp "slack" "https://app.slack.com"
+        fi
+        ;;
+    *WhatsApp*) hypr-launch-or-focus-webapp "whatsapp" "https://web.whatsapp.com" ;;
+    *Telegram*)
+        if command -v telegram-desktop >/dev/null 2>&1; then
+            hypr-launch-or-focus "telegram" "uwsm app -- telegram-desktop"
+        else
+            hypr-launch-or-focus-webapp "telegram" "https://web.telegram.org"
+        fi
+        ;;
+    *Signal*)
+        if command -v signal-desktop >/dev/null 2>&1; then
+            hypr-launch-or-focus "signal" "uwsm app -- signal-desktop"
+        else
+            hypr-launch-or-focus-webapp "signal" "https://signal.org"
+        fi
+        ;;
+    *Matrix*)
+        if command -v element-desktop >/dev/null 2>&1; then
+            hypr-launch-or-focus "element" "uwsm app -- element-desktop"
+        elif command -v nheko >/dev/null 2>&1; then
+            hypr-launch-or-focus "nheko" "uwsm app -- nheko"
+        elif command -v neochat >/dev/null 2>&1; then
+            hypr-launch-or-focus "neochat" "uwsm app -- neochat"
+        elif command -v flatpak >/dev/null 2>&1 && flatpak info im.riot.Riot >/dev/null 2>&1; then
+            hypr-launch-or-focus "element" "uwsm app -- flatpak run im.riot.Riot"
+        elif command -v flatpak >/dev/null 2>&1 && flatpak info io.github.NhekoReborn.Nheko >/dev/null 2>&1; then
+            hypr-launch-or-focus "nheko" "uwsm app -- flatpak run io.github.NhekoReborn.Nheko"
+        else
+            hypr-launch-or-focus-webapp "element" "https://app.element.io"
+        fi
+        ;;
+    *Bluesky*) hypr-launch-or-focus-webapp "bluesky" "https://bsky.app" ;;
+    *Mastodon*) hypr-launch-or-focus-webapp "mastodon" "https://mastodon.social" ;;
+    *Lemmy*) hypr-launch-or-focus-webapp "lemmy" "https://lemmy.ml" ;;
+    *Google\ Meet*) hypr-launch-or-focus-webapp "meet" "https://meet.google.com" ;;
+    *Google\ Chat*) hypr-launch-or-focus-webapp "chat.google.com" "https://chat.google.com" ;;
+    *Google\ Messages*) hypr-launch-or-focus-webapp "messages.google.com" "https://messages.google.com/web" ;;
+    *Gmail*) hypr-launch-or-focus-webapp "gmail" "https://mail.google.com" ;;
+    *Messenger*) hypr-launch-or-focus-webapp "messenger" "https://www.messenger.com" ;;
+    *Zoom*)
+        if command -v zoom >/dev/null 2>&1; then
+            hypr-launch-or-focus "zoom" "uwsm app -- zoom"
+        else
+            hypr-launch-or-focus-webapp "zoom" "https://zoom.us"
+        fi
+        ;;
+    *Audio\ Settings*) hypr-launch-audio ;;
+    *Bluetooth\ Settings*) hypr-launch-bluetooth ;;
+    *WiFi\ Settings*) hypr-launch-wifi ;;
+    esac
+}
+
+main() {
+    check_help "$@"
+    show_socials_menu
+}
+
+main "$@"

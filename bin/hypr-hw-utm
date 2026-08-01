@@ -1,0 +1,79 @@
+#!/bin/bash
+#
+# Configures the system for UTM/QEMU hardware acceleration and integration.
+# Ensures drivers and agents are installed.
+
+set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    local force=false
+    if [[ "${1:-}" == "--force" ]]; then
+        force=true
+    fi
+
+    log_info "Configuring UTM/QEMU guest for better integration..."
+
+    # Log detection results for debugging
+    local is_vm=false
+    local is_qemu=false
+    local is_virgl=false
+
+    if hypr-hw check vm; then is_vm=true; fi
+    if hypr-hw check qemu; then is_qemu=true; fi
+    if hypr-hw check virgl; then is_virgl=true; fi
+
+    log_info "Detection: VM=${is_vm}, QEMU=${is_qemu}, VirGL=${is_virgl}"
+
+    if [[ "${is_vm}" == "false" ]] && [[ "${force}" == "false" ]]; then
+        log_warn "VM not detected. This script is intended for virtual machines."
+        if ! gum confirm "Proceed anyway?"; then
+            exit 0
+        fi
+    fi
+
+    # Install necessary packages for UTM/QEMU integration
+    # - mesa: Core OpenGL/Vulkan support
+    # - vulkan-virtio: Vulkan support for Virtio-GPU (Venus)
+    # - spice-vdagent: Dynamic resolution and clipboard sharing
+    # - qemu-guest-agent: Better power management and integration
+    local -a packages=("mesa" "vulkan-virtio" "spice-vdagent" "qemu-guest-agent")
+    
+    log_info "Ensuring VM integration packages are installed..."
+    hypr-pkg-add "${packages[@]}"
+
+    # Ensure user is in necessary groups for GPU access
+    local user
+    user=$(whoami)
+    for group in "video" "render"; do
+        if ! groups "${user}" | grep -q "\b${group}\b"; then
+            log_info "Adding user ${user} to group ${group}..."
+            sudo usermod -aG "${group}" "${user}"
+            log_warn "You may need to log out and back in for group changes to take effect."
+        fi
+    done
+
+    # Enable and start services
+    log_info "Ensuring integration services are active..."
+    
+    # spice-vdagentd (system daemon)
+    # On Arch, spice-vdagentd.service usually requires spice-vdagentd.socket
+    activate_service "spice-vdagentd.socket"
+    activate_service "spice-vdagentd.service"
+    
+    # qemu-guest-agent
+    activate_service "qemu-guest-agent.service"
+
+    log_info "UTM/QEMU guest configuration complete."
+    log_info "Note: Hardware acceleration settings are managed in environment templates."
+    log_info "Please run 'hypr-refresh-config' and restart your session to apply."
+}
+
+main "$@"

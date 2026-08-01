@@ -1,9 +1,17 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Detects and prints the current monospace font family by reading it from the
 # Alacritty configuration file.
 
-set -euo pipefail
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
 
 readonly ALACRITTY_CONFIG="${HOME}/.config/alacritty/alacritty.toml"
 
@@ -18,14 +26,15 @@ readonly ALACRITTY_CONFIG="${HOME}/.config/alacritty/alacritty.toml"
 #   Exits with an error if the config file is not found.
 #######################################
 main() {
-  if [[ ! -f "${ALACRITTY_CONFIG}" ]]; then
-    echo "Error: Alacritty config file not found at ${ALACRITTY_CONFIG}" >&2
-    exit 1
-  fi
+    check_help "$@"
+    if [[ ! -f "${ALACRITTY_CONFIG}" ]]; then
+        echo "Error: Alacritty config file not found at ${ALACRITTY_CONFIG}" >&2
+        exit 1
+    fi
 
-  # Use grep with a Perl-compatible regex (-P) to find the 'family' setting.
-  # \K resets the start of the match, so only the font name inside the quotes is returned.
-  grep -oP 'family\s*=\s*"\K[^"]+' "${ALACRITTY_CONFIG}" | head -n 1
+    # Use grep with a Perl-compatible regex (-P) to find the 'family' setting.
+    # \K resets the start of the match, so only the font name inside the quotes is returned.
+    grep -oP 'family\s*=\s*"\K[^"]+' "${ALACRITTY_CONFIG}" | head -n 1
 }
 
-main
+main "$@"

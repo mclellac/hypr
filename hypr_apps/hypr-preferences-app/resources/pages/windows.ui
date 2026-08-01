@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="AdwPreferencesGroup" id="aesthetics_group">
+    <property name="title">Opacity and Aesthetics</property>
+    <child>
+      <object class="AdwSpinRow" id="opacity_active">
+        <property name="title">Active Window Opacity</property>
+        <property name="subtitle">Transparency of the focused window</property>
+        <property name="digits">2</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">0.1</property>
+            <property name="upper">1.0</property>
+            <property name="step-increment">0.01</property>
+            <property name="value">0.99</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="opacity_inactive">
+        <property name="title">Inactive Window Opacity</property>
+        <property name="subtitle">Transparency of unfocused windows</property>
+        <property name="digits">2</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">0.1</property>
+            <property name="upper">1.0</property>
+            <property name="step-increment">0.01</property>
+            <property name="value">0.98</property>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="semantic_group">
+    <property name="title">Semantic Workspaces</property>
+    <child>
+      <object class="AdwExpanderRow" id="workspace_browsers_row">
+        <property name="title">Web Browsers (Workspace 2)</property>
+        <property name="subtitle">Automatically move browsers to workspace 2</property>
+        <property name="show-enable-switch">True</property>
+        <child>
+          <object class="AdwComboRow" id="animation_browsers">
+            <property name="title">Animation Style</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>slide</item>
+                  <item>fade</item>
+                  <item>popin</item>
+                  <item>none</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwExpanderRow" id="workspace_coding_row">
+        <property name="title">Coding (Workspace 3)</property>
+        <property name="subtitle">Automatically move editors to workspace 3</property>
+        <property name="show-enable-switch">True</property>
+        <child>
+          <object class="AdwComboRow" id="animation_coding">
+            <property name="title">Animation Style</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>slide</item>
+                  <item>fade</item>
+                  <item>popin</item>
+                  <item>none</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwExpanderRow" id="workspace_communications_row">
+        <property name="title">Communications (Workspace 4)</property>
+        <property name="subtitle">Automatically move chat apps to workspace 4</property>
+        <property name="show-enable-switch">True</property>
+        <child>
+          <object class="AdwComboRow" id="animation_communications">
+            <property name="title">Animation Style</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>slide</item>
+                  <item>fade</item>
+                  <item>popin</item>
+                  <item>none</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwExpanderRow" id="workspace_media_row">
+        <property name="title">Media and Gaming (Workspace 5)</property>
+        <property name="subtitle">Automatically move media apps to workspace 5</property>
+        <property name="show-enable-switch">True</property>
+        <child>
+          <object class="AdwComboRow" id="animation_media">
+            <property name="title">Animation Style</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>slide</item>
+                  <item>fade</item>
+                  <item>popin</item>
+                  <item>none</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="sizes_group">
+    <property name="title">Default Window Sizes</property>
+    <child>
+      <object class="AdwSpinRow" id="size_floating_width">
+        <property name="title">Floating Windows Width</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">100</property>
+            <property name="upper">5000</property>
+            <property name="step-increment">10</property>
+            <property name="value">1200</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="size_floating_height">
+        <property name="title">Floating Windows Height</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">100</property>
+            <property name="upper">5000</property>
+            <property name="step-increment">10</property>
+            <property name="value">800</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="size_dialog_width">
+        <property name="title">Dialogs Width</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">100</property>
+            <property name="upper">5000</property>
+            <property name="step-increment">10</property>
+            <property name="value">900</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="size_dialog_height">
+        <property name="title">Dialogs Height</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">100</property>
+            <property name="upper">5000</property>
+            <property name="step-increment">10</property>
+            <property name="value">600</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="size_editor_width">
+        <property name="title">Editors Width</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">100</property>
+            <property name="upper">5000</property>
+            <property name="step-increment">10</property>
+            <property name="value">1000</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="size_editor_height">
+        <property name="title">Editors Height</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">100</property>
+            <property name="upper">5000</property>
+            <property name="step-increment">10</property>
+            <property name="value">700</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="size_creator_width">
+        <property name="title">Creator Windows Width</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">100</property>
+            <property name="upper">5000</property>
+            <property name="step-increment">10</property>
+            <property name="value">1100</property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwSpinRow" id="size_creator_height">
+        <property name="title">Creator Windows Height</property>
+        <property name="adjustment">
+          <object class="GtkAdjustment">
+            <property name="lower">100</property>
+            <property name="upper">5000</property>
+            <property name="step-increment">10</property>
+            <property name="value">700</property>
+          </object>
+        </property>
+      </object>
+    </child>
+  </object>
+
+  <object class="AdwPreferencesGroup" id="behavior_group">
+    <property name="title">General Behavior</property>
+    <child>
+      <object class="AdwSwitchRow" id="suppress_maximize">
+        <property name="title">Suppress Maximize</property>
+        <property name="subtitle">Ignore window maximize requests</property>
+      </object>
+    </child>
+  </object>
+</interface>

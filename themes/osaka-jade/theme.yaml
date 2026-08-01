@@ -1,0 +1,61 @@
+name: Osaka Jade
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#111c18'
+  foreground: '#C1C497'
+  cursor: '#D7C995'
+  cursor_text: '#111c18'
+  selection_bg: '#C1C497'
+  selection_fg: '#111C18'
+  primary: '#509475'
+  secondary: '#509475'
+  alert: '#FF5345'
+  warning: '#459451'
+  success: '#549e6a'
+  color0: '#23372B'
+  color1: '#FF5345'
+  color2: '#549e6a'
+  color3: '#459451'
+  color4: '#509475'
+  color5: '#D2689C'
+  color6: '#2DD5B7'
+  color7: '#F6F5DD'
+  color8: '#53685B'
+  color9: '#db9f9c'
+  color10: '#63b07a'
+  color11: '#E5C736'
+  color12: '#ACD4CF'
+  color13: '#75bbb3'
+  color14: '#8CD3CB'
+  color15: '#9eebb3'
+  accent: '#509475'
+layout:
+  active_border: '#509475ff'
+  inactive_border: '#23372Bff'
+  groupbar_text_color: '#c1c497'
+  group_border_active: '#509475'
+  group_border_inactive: '#23372B'
+  group_border_locked_active: '#d2689c'
+  group_border_locked_inactive: '#53685b'
+  groupbar_col_active: '#509475'
+  groupbar_col_inactive: '#23372B'
+  groupbar_col_locked_active: '#d2689c'
+  groupbar_col_locked_inactive: '#53685b'
+  nogroup_border: '#23372B'
+  nogroup_border_active: '#509475'
+  glow_color: '#509475ee'
+  shadow_color: '#111c187b'
+  animation_style: classic
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: green
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(35, 55, 43, 0.53)
+  style:
+    size: 16

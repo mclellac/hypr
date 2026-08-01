@@ -1,0 +1,64 @@
+name: Deus Ex
+fonts:
+  font_family: Iosevka Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#351409'
+  foreground: '#fff69f'
+  cursor: '#fff69f'
+  cursor_text: '#351409'
+  selection_bg: '#a15501'
+  selection_fg: '#c6ac6f'
+  primary: '#c6ac6f'
+  secondary: '#948a54'
+  accent: '#d0902f'
+  alert: '#a54242'
+  warning: '#90835a'
+  success: '#617a41'
+  color0: '#351409'
+  color1: '#a15501'
+  color2: '#d0902f'
+  color3: '#fff69f'
+  color4: '#d0902f'
+  color5: '#a15501'
+  color6: '#d0902f'
+  color7: '#fff69f'
+  color8: '#a15501'
+  color9: '#a15501'
+  color10: '#d0902f'
+  color11: '#fff69f'
+  color12: '#d0902f'
+  color13: '#a15501'
+  color14: '#d0902f'
+  color15: '#fff69f'
+  url_color: '#d0902f'
+layout:
+  active_border: rgba(c6ac6fee) rgba(948a54ee) 45deg
+  inactive_border: rgba(261f1788)
+  groupbar_text_color: '#c6ac6f'
+  group_border_active: '#948a54'
+  group_border_inactive: '#261f17'
+  group_border_locked_active: '#705c33'
+  group_border_locked_inactive: '#4d4035'
+  groupbar_col_active: '#948a54'
+  groupbar_col_inactive: '#261f17'
+  groupbar_col_locked_active: '#705c33'
+  groupbar_col_locked_inactive: '#4d4035'
+  nogroup_border: rgba(ffffaaff)
+  nogroup_border_active: rgba(ffff00ff)
+  glow_color: rgba(c6ac6fee)
+  shadow_color: rgba(1a1a1aee)
+  animation_style: fast
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: blue
+  theme: Adwaita
+waybar:
+  colors:
+    hardware_border: rgba(80, 80, 80, 0.88)
+  style:
+    size: 16
+nvim:
+  colorscheme: gruvbox

@@ -4,6 +4,19 @@
 # switches to the first workspace. This script requires 'hyprctl' and 'jq'.
 
 set -euo pipefail
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+usage() {
+    echo "Usage: $(basename "$0")"
+    echo
+    echo "Closes all open windows on the current Hyprland workspace and then"
+    echo "switches to the first workspace."
+}
 
 #######################################
 # Closes all client windows managed by Hyprland.
@@ -15,20 +28,24 @@ set -euo pipefail
 #   None
 #######################################
 close_all_windows() {
-  # Get a list of all client window addresses in JSON format.
-  local window_addresses
-  window_addresses=$(hyprctl clients -j | jq -r '.[].address')
+    # Get the current workspace ID.
+    local current_workspace
+    current_workspace=$(hyprctl activeworkspace -j | jq -r '.id')
 
-  if [[ -z "${window_addresses}" ]]; then
-    echo "No open windows to close."
-    return
-  fi
+    # Get a list of all client window addresses on the current workspace in JSON format.
+    local window_addresses
+    window_addresses=$(hyprctl clients -j | jq -r ".[] | select(.workspace.id == ${current_workspace}) | .address")
 
-  # Iterate over each address and dispatch a close command.
-  while read -r addr; do
-    echo "Closing window with address: ${addr}"
-    hyprctl dispatch closewindow "address:${addr}"
-  done <<<"${window_addresses}"
+    if [[ -z "${window_addresses}" ]]; then
+        log_info "No open windows on workspace ${current_workspace} to close."
+        return
+    fi
+
+    # Iterate over each address and dispatch a close command.
+    while read -r addr; do
+        log_info "Closing window with address: ${addr}"
+        hyprctl eval "hl.dsp.window.close(\"address:${addr}\")"
+    done <<<"${window_addresses}"
 }
 
 #######################################
@@ -41,19 +58,21 @@ close_all_windows() {
 #   Exits with an error if dependencies are not met.
 #######################################
 main() {
-  if ! command -v hyprctl &>/dev/null; then
-    echo "Error: 'hyprctl' command not found. Is Hyprland running?" >&2
-    exit 1
-  fi
+    check_help "$@"
 
-  if ! command -v jq &>/dev/null; then
-    echo "Error: 'jq' command not found. Please install it to use this script." >&2
-    exit 1
-  fi
+    if ! command -v hyprctl &>/dev/null; then
+        log_error "'hyprctl' command not found. Is Hyprland running?"
+        exit 1
+    fi
 
-  close_all_windows
-  echo "All windows closed. Switching to workspace 1."
-  hyprctl dispatch workspace 1
+    if ! command -v jq &>/dev/null; then
+        log_error "'jq' command not found. Please install it to use this script."
+        exit 1
+    fi
+
+    close_all_windows
+    log_info "All windows closed. Switching to workspace 1."
+    hyprctl dispatch workspace 1
 }
 
-main
+main "$@"

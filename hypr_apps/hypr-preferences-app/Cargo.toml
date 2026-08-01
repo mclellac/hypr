@@ -1,0 +1,20 @@
+[package]
+name = "hypr-preferences-app"
+version = "2.0.0"
+edition = "2024"
+
+[[bin]]
+name = "hypr-preferences-app-bin"
+path = "src/main.rs"
+
+[dependencies]
+gtk4 = { version = "0.11.4", features = ["v4_22"] }
+hypr_config_manager = { version = "2.0.0", path = "../../hypr_config_manager" }
+libadwaita = { version = "0.9.2", features = ["v1_9"] }
+serde = { version = "1.0.229", features = ["derive"] }
+yaml_serde = "0.10.4"
+serde_json = "1.0.151"
+regex = "1.13.1"
+gdk-pixbuf = "0.22.0"
+gio = { version = "0.22.8", package = "gio", features = ["v2_88"] }
+glib = { version = "0.22.8", features = ["v2_88"] }

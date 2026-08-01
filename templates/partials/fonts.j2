@@ -1,0 +1,11 @@
+{% macro font_family(default="AdwaitaMonoNerdFont") -%}
+{{ theme.fonts.font_family | default(default) }}
+{%- endmacro %}
+
+{% macro font_size(override=None, default=13.0) -%}
+{{ override | default(default) }}
+{%- endmacro %}
+
+{% macro font_style(default="Regular") -%}
+{{ theme.fonts.font_style | default(default) }}
+{%- endmacro %}

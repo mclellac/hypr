@@ -1,0 +1,59 @@
+name: Cyan
+fonts:
+  font_family: JetBrainsMono Nerd Font Mono
+  font_style: Regular
+colors:
+  background: '#274242'
+  foreground: '#00ffff'
+  cursor: '#00ffff'
+  cursor_text: '#274242'
+  selection_bg: '#004d4d'
+  selection_fg: '#00ffff'
+  primary: '#00ffff'
+  secondary: '#008b8b'
+  alert: '#00e6e6'
+  warning: '#20b2aa'
+  success: '#48d1cc'
+  accent: '#7cfcf0'
+  color0: '#274242'
+  color1: '#7cfcf0'
+  color2: '#00f2f2'
+  color3: '#00a3a3'
+  color4: '#00c7c7'
+  color5: '#00ebeb'
+  color6: '#00ffff'
+  color7: '#7cfcf0'
+  color8: '#00a3a3'
+  color9: '#009696'
+  color10: '#009696'
+  color11: '#00bfbf'
+  color12: '#00d6d6'
+  color13: '#00f2f2'
+  color14: '#33ffff'
+  color15: '#7cfcf0'
+layout:
+  active_border: rgba(00ffffFF)
+  inactive_border: rgba(004d4daa)
+  shadow_color: rgba(00000000)
+  groupbar_text_color: '#00ffff'
+  group_border_active: '#00ffff'
+  group_border_inactive: '#004d4d'
+  group_border_locked_active: '#00ffff'
+  group_border_locked_inactive: '#004d4d'
+  groupbar_col_active: '#00ffff'
+  groupbar_col_inactive: '#274242'
+  groupbar_col_locked_active: '#00ffff'
+  groupbar_col_locked_inactive: '#004d4d'
+  nogroup_border: rgba(00a3a3aa)
+  nogroup_border_active: rgba(00ffffFF)
+  glow_color: rgba(00ffffaa)
+  animation_style: relaxed
+cursor:
+  theme: Adwaita
+gtk:
+  icon_theme: Adwaita
+  accent_color: cyan
+  theme: Adwaita
+waybar:
+  style:
+    size: 16

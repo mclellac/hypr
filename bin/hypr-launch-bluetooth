@@ -1,0 +1,23 @@
+#!/bin/bash
+set -euo pipefail
+
+# Launch the Hypr bluetooth controls TUI (provided by bluetui).
+# Also attempts to unblock bluetooth service if rfkill had blocked it.
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    rfkill unblock bluetooth
+    exec hypr-launch-or-focus-tui bluetui
+}
+
+main "$@"

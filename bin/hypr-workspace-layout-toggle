@@ -1,0 +1,30 @@
+#!/bin/bash
+set -euo pipefail
+
+# Toggle the layout on the current active workspace between dwindle and scrolling
+
+
+# Source utility functions
+# Resolve script directory (handles PATH lookup and direct execution)
+_SCRIPT_DIR="$(dirname "$0")"
+if [ ! -f "$_SCRIPT_DIR/hypr-utils" ]; then
+    _SCRIPT_DIR="$(dirname "$(command -v "$0" 2>/dev/null || echo "$0")")"
+fi
+source "$_SCRIPT_DIR/hypr-utils"
+
+main() {
+    check_help "$@"
+
+    ACTIVE_WORKSPACE=$(hyprctl activeworkspace -j | jq -r '.id')
+    CURRENT_LAYOUT=$(hyprctl activeworkspace -j | jq -r '.tiledLayout')
+
+    case "$CURRENT_LAYOUT" in
+      dwindle) NEW_LAYOUT=scrolling ;;
+      *) NEW_LAYOUT=dwindle ;;
+    esac
+
+    hyprctl eval "hl.workspace_rule({ workspace = \"$ACTIVE_WORKSPACE\", layout = \"$NEW_LAYOUT\" })"
+    notify-send -u low "󱂬    Workspace layout set to $NEW_LAYOUT"
+}
+
+main "$@"
